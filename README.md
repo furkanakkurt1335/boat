@@ -15,8 +15,8 @@ Main changes to the original is:
 All the available columns are here for reference: ID, FORM, LEMMA, UPOS, XPOS, FEATS, HEAD, DEPREL, DEPS, MISC, Abbr, Animacy, Aspect, Case, Clusivity, Definite, Degree, Echo, Evident, Foreign, Gender, Mood, NounClass, Number, Number[psor], NumType, Person, Person[psor], Polarity, Polite, Poss, PronType, Reflex, Register, Tense, VerbForm, Voice
 
 ### Changes to document saving
-The original application saves the document with the new annotations after each change to the cells, after going to a sentence with the `Go` button and after resetting with the `Reset` button (or by the shortcut). Document saving has been observed to cause a freezing for a couple seconds. Hence, saving by the aforementioned 3 ways has been deprecated and 2 new ways to save the `conllu` document has been established:
-- A new button `Save` has been added next to the `Next` button where the document can be saved.
+The original application saves the document with the new annotations after each change to the cells, after going to a sentence with the `Go` button and after resetting with the `Reset` button (or by the shortcut). Document saving has been observed to cause a freezing for a couple seconds. Hence, saving by the aforementioned 3 ways has been deprecated and 2 new ways to save the `conllu` document have been established:
+- A new button `Save` has been added next to the `Next` button whereby the document can be saved.
 - Closing the application also triggers saving the document in case it was not saved with the button.
 
 As mentioned, saving the document takes a couple seconds, so after closing the application, one should be aware that it's saving the document before closing.
