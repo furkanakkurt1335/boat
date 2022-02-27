@@ -16,7 +16,7 @@ All the available columns are here for reference: ID, FORM, LEMMA, UPOS, XPOS, F
 
 ### Changes to document saving
 The original application saves the document with the new annotations after each change to the cells, after going to a sentence with the `Go` button and after resetting with the `Reset` button (or by the shortcut). Document saving has been observed to cause a freezing for a couple seconds. Saving by the aforementioned 3 ways have been deprecated. Hence, 2 new ways to save the `conllu` document has been established:
-- A new button 'Save' has been added next to the 'Next' button where the document can be saved.
+- A new button `Save` has been added next to the `Next` button where the document can be saved.
 - Closing the application also triggers saving the document in case it was not saved with the button.
 
 As mentioned, saving the document takes a couple seconds, so after closing the application, one should be aware that it's saving the document before closing.
