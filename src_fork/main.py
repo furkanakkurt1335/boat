@@ -11,7 +11,6 @@ from validate import get_errors
 class QDataViewer(QWidget):
 	def __init__(self):
 		super().__init__()
-		
 		# Layout Init.
 		self.language = 'ud'
 		if len(sys.argv) > 1:
@@ -36,6 +35,11 @@ class QDataViewer(QWidget):
 
 		# Signal Init.
 		self.connect(self.uploadButton, SIGNAL('clicked()'), self.open)
+
+	def closeEvent(self, event):
+		if self.doc != None:
+			self.doc.write()
+		event.accept()
 
 	def open(self):
 		filename = QFileDialog.getOpenFileName(self, 'Open File', '.')[0]
@@ -87,7 +91,6 @@ class QDataViewer(QWidget):
 		self.first_time = False
 
 	def go(self):
-		self.doc.write()
 		self.first_time = True
 		self.writeNotes()
 
@@ -103,20 +106,17 @@ class QDataViewer(QWidget):
 		self.qTextEdit.setText(str(self.sentence_id))
 		self.first_time = False
 
-
 	def reset(self):
 		if not self.first_time:
 			self.first_time = True
 			self.sentence = copy.deepcopy(self.sentence_backup)
 			self.doc.sentences[self.sentence_id] = copy.deepcopy(self.sentence_backup)
 			self.session_start = True
-			self.doc.write()
 			self.update_table()
 			self.update_html()
 			self.check_errors()
 
 			self.first_time = False
-
 
 	def construct(self):
 		self.hBoxLayout = QHBoxLayout()
@@ -174,9 +174,16 @@ class QDataViewer(QWidget):
 		self.hBoxLayout.addWidget(self.qTextEdit)
 		self.hBoxLayout.addWidget(self.goButton)
 
+		# Edit checkboxes
 		self.hBoxLayout.addStretch()
 		self.hBoxLayout.addWidget(self.check_edit)
 		self.hBoxLayout.addWidget(self.qTextEdit2)
+
+		# Save
+		self.saveButton = QPushButton('Save', self)
+		self.saveButton.setShortcut('Alt+S')
+		self.hBoxLayout.addStretch()
+		self.hBoxLayout.addWidget(self.saveButton)
 
 		self.hBoxLayout.addStretch()
 		self.hBoxLayout.addWidget(self.nextButton)
@@ -212,6 +219,7 @@ class QDataViewer(QWidget):
 		self.connect(self.nextButton, SIGNAL('clicked()'), self.go_next)
 		self.connect(self.addRowButton, SIGNAL('clicked()'), self.add_row)
 		self.connect(self.deleteRowButton, SIGNAL('clicked()'), self.delete_row)
+		self.connect(self.saveButton, SIGNAL('clicked()'), self.save_doc)
 
 		# create table here
 		self.tableWidget = QTableWidget(self)
@@ -242,6 +250,9 @@ class QDataViewer(QWidget):
 		self.webView.loadFinished.connect(self.finito)
 
 		self.first_time = False
+
+	def save_doc(self):
+		self.doc.write()
 
 	def col_check_handle(self):
 		text = self.check_edit.toPlainText()
@@ -419,7 +430,6 @@ class QDataViewer(QWidget):
 				if word.head != '_' and int(word.head) > limit:
 					word.head = str(int(word.head) + 1)
 
-
 			w1 = Word('\t'.join([str(limit), base_word.form, base_word.lemma, base_word.upos, base_word.xpos, base_word.feats, base_word.head, base_word.deprel, base_word.deps, '_']), self.sentence.sent_address)
 			w2 = Word('\t'.join([str(limit + 1), base_word.form, base_word.lemma, base_word.upos, base_word.xpos, base_word.feats, str(limit), base_word.deprel, base_word.deps, '_']), self.sentence.sent_address)
 			self.sentence.words = self.sentence.words[:x + 1] + [w1, w2] + self.sentence.words[x + 1:]
@@ -525,7 +535,6 @@ class QDataViewer(QWidget):
 		self.webView.setHtml(html)
 		self.load_finished = False
 
-
 	def cb_change(self):
 		self.column_number = 0
 		self.columns = []
@@ -627,7 +636,6 @@ class QDataViewer(QWidget):
 				self.sentence.words[row].feats = re.sub(cur_col + '=\w*', col + '=' + text, self.sentence.words[row].feats)
 
 		if not self.first_time:
-			self.doc.write()
 			self.first_time = True
 			self.writeNotes()
 
