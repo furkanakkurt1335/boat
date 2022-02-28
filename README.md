@@ -22,4 +22,4 @@ The original application saves the document with the new annotations after each 
 As mentioned, saving the document takes a couple seconds, so after closing the application, one should be aware that it's saving the document before closing.
 
 ### Note to previous users of the application
-The Python library requirements have changed: PySide6 should be installed before executing the app. One can do this by calling `pip install -r requirements.txt` in the working directory.
+The Python library requirements have changed: PySide6 should be installed before executing the app. One can do this by executing the command `pip install -r requirements.txt` in the working directory.
