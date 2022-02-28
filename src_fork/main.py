@@ -381,25 +381,16 @@ class QDataViewer(QWidget):
 
 	def agg(self, x):
 
-		if self.sentence.words[x].unitword:#remove two-words thing into one
+		if self.sentence.words[x].unitword: # remove two-words thing into one
 			limit = int(self.sentence.words[x].id.split('-')[0])
-			for i in ['head', 'lemma', 'upos', 'xpos', 'feats', 'deprel', 'deps', 'misc']:
-				if i == 'head':
-					self.sentence.words[x].head = self.sentence.words[x+1].head
-				elif i == 'lemma':
-					self.sentence.words[x].lemma = self.sentence.words[x+1].lemma
-				elif i == 'upos':
-					self.sentence.words[x].upos = self.sentence.words[x+1].upos
-				elif i == 'xpos':
-					self.sentence.words[x].xpos = self.sentence.words[x+1].xpos
-				elif i == 'feats':
-					self.sentence.words[x].feats = self.sentence.words[x+1].feats
-				elif i == 'deprel':
-					self.sentence.words[x].deprel = self.sentence.words[x+1].deprel
-				elif i == 'deps':
-					self.sentence.words[x].deps = self.sentence.words[x+1].deps
-				elif i == 'misc':
-					self.sentence.words[x].misc = self.sentence.words[x+1].misc
+			self.sentence.words[x].head = self.sentence.words[x+1].head
+			self.sentence.words[x].lemma = self.sentence.words[x+1].lemma
+			self.sentence.words[x].upos = self.sentence.words[x+1].upos
+			self.sentence.words[x].xpos = self.sentence.words[x+1].xpos
+			self.sentence.words[x].feats = self.sentence.words[x+1].feats
+			self.sentence.words[x].deprel = self.sentence.words[x+1].deprel
+			self.sentence.words[x].deps = self.sentence.words[x+1].deps
+			self.sentence.words[x].misc = self.sentence.words[x+1].misc
 			self.sentence.words[x].id = str(limit)
 			self.sentence.words[x].unitword = False
 			del self.sentence.words[x + 1]
