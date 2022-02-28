@@ -385,14 +385,23 @@ class QDataViewer(QWidget):
 
 		if self.sentence.words[x].unitword:#remove two-words thing into one
 			limit = int(self.sentence.words[x].id.split('-')[0])
-			self.sentence.words[x].head = self.sentence.words[x + 1].head
-			self.sentence.words[x].lemma = self.sentence.words[x + 1].lemma
-			self.sentence.words[x].upos = self.sentence.words[x + 1].upos
-			self.sentence.words[x].xpos = self.sentence.words[x + 1].xpos
-			self.sentence.words[x].feats = self.sentence.words[x + 1].feats
-			self.sentence.words[x].deprel = self.sentence.words[x + 1].deprel
-			self.sentence.words[x].deps = self.sentence.words[x + 1].deps
-			self.sentence.words[x].misc = self.sentence.words[x + 1].misc
+			for i in ['head', 'lemma', 'upos', 'xpos', 'feats', 'deprel', 'deps', 'misc']:
+				if i == 'head':
+					self.sentence.words[x].head = self.sentence.words[x+1].head
+				elif i == 'lemma':
+					self.sentence.words[x].lemma = self.sentence.words[x+1].lemma
+				elif i == 'upos':
+					self.sentence.words[x].upos = self.sentence.words[x+1].upos
+				elif i == 'xpos':
+					self.sentence.words[x].xpos = self.sentence.words[x+1].xpos
+				elif i == 'feats':
+					self.sentence.words[x].feats = self.sentence.words[x+1].feats
+				elif i == 'deprel':
+					self.sentence.words[x].deprel = self.sentence.words[x+1].deprel
+				elif i == 'deps':
+					self.sentence.words[x].deps = self.sentence.words[x+1].deps
+				elif i == 'misc':
+					self.sentence.words[x].misc = self.sentence.words[x+1].misc
 			self.sentence.words[x].id = str(limit)
 			self.sentence.words[x].unitword = False
 			del self.sentence.words[x + 1]
@@ -434,13 +443,21 @@ class QDataViewer(QWidget):
 			w2 = Word('\t'.join([str(limit + 1), base_word.form, base_word.lemma, base_word.upos, base_word.xpos, base_word.feats, str(limit), base_word.deprel, base_word.deps, '_']), self.sentence.sent_address)
 			self.sentence.words = self.sentence.words[:x + 1] + [w1, w2] + self.sentence.words[x + 1:]
 			base_word.id = str(limit) + '-' + str(limit + 1)
-			base_word.lemma = '_'
-			base_word.upos = '_'
-			base_word.xpos = '_'
-			base_word.feats = '_'
-			base_word.head = '_'
-			base_word.deprel = '_'
-			base_word.deps = '_'
+			for i in ['lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps']:
+				if i == 'lemma':
+					base_word.lemma = '_'
+				elif i == 'upos':
+					base_word.upos = '_'
+				elif i == 'xpos':
+					base_word.xpos = '_'
+				elif i == 'feats':
+					base_word.feats = '_'
+				elif i == 'head':
+					base_word.head = '_'
+				elif i == 'deprel':
+					base_word.deprel = '_'
+				elif i == 'deps':
+					base_word.deps = '_'
 			base_word.unitword = True
 			self.first_time = True
 			self.update_table()
@@ -473,26 +490,27 @@ class QDataViewer(QWidget):
 					dict_feat[uf[0]] = uf[1]
 
 			for i in range(self.column_number):
-				if self.columns[i] == 'ID':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.id))
-				elif self.columns[i] == 'FORM':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.form))
-				elif self.columns[i] == 'LEMMA':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.lemma))
-				elif self.columns[i] == 'UPOS':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.upos))
-				elif self.columns[i] == 'XPOS':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.xpos))
-				elif self.columns[i] == 'FEATS':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.feats))
-				elif self.columns[i] == 'HEAD':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.head))
-				elif self.columns[i] == 'DEPREL':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.deprel))
-				elif self.columns[i] == 'DEPS':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.deps))
-				elif self.columns[i] == 'MISC':
-					self.tableWidget.setItem(enum, i, QTableWidgetItem(word.misc))
+				if self.columns[i] in ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']:
+					if self.columns[i] == 'ID':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.id))
+					elif self.columns[i] == 'FORM':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.form))
+					elif self.columns[i] == 'LEMMA':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.lemma))
+					elif self.columns[i] == 'UPOS':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.upos))
+					elif self.columns[i] == 'XPOS':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.xpos))
+					elif self.columns[i] == 'FEATS':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.feats))
+					elif self.columns[i] == 'HEAD':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.head))
+					elif self.columns[i] == 'DEPREL':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.deprel))
+					elif self.columns[i] == 'DEPS':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.deps))
+					elif self.columns[i] == 'MISC':
+						self.tableWidget.setItem(enum, i, QTableWidgetItem(word.misc))
 				else:
 					if self.columns[i] in dict_feat:
 						self.tableWidget.setItem(enum, i, QTableWidgetItem(dict_feat[self.columns[i]]))
@@ -579,7 +597,7 @@ class QDataViewer(QWidget):
 			pos_cats = [] # possible categories
 			for i in range(len(cats)):
 				if cats[i].lower().startswith(text.lower()): pos_cats.append(cats[i])
-			if len(pos_cats) == 1: text = pos_cats[0]
+			if len(pos_cats) > 0: text = pos_cats[0]
 			else: error = True
 		if error:
 			item.setText('_')
@@ -593,10 +611,27 @@ class QDataViewer(QWidget):
 		row = item.row()
 		self.sentence = self.doc.sentences[self.sentence_id]
 
-		if col in ['ID', 'FORM', 'LEMMA', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']:
-			globals()[f'self.sentence.words[row].{col.lower()}'] = text
-		elif col == 'UPOS':
-			self.sentence.words[row].upos = text.upper()
+		if col in ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']:
+			if col == 'ID':
+				self.sentence.words[row].id = text
+			elif col == 'FORM':
+				self.sentence.words[row].form = text
+			elif col == 'LEMMA':
+				self.sentence.words[row].lemma = text
+			elif col == 'UPOS':
+				self.sentence.words[row].upos = text
+			elif col == 'XPOS':
+				self.sentence.words[row].xpos = text
+			elif col == 'FEATS':
+				self.sentence.words[row].feats = text
+			elif col == 'HEAD':
+				self.sentence.words[row].head = text
+			elif col == 'DEPREL':
+				self.sentence.words[row].deprel = text
+			elif col == 'DEPS':
+				self.sentence.words[row].deps = text
+			elif col == 'MISC':
+				self.sentence.words[row].misc = text
 		else:
 			cur_col = col
 			if col == 'Number[psor]':
