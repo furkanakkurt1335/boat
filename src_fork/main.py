@@ -251,6 +251,9 @@ class QDataViewer(QWidget):
 
 		self.first_time = False
 
+	def back_to_table(self):
+		pass
+
 	def save_doc(self):
 		self.doc.write()
 
@@ -578,11 +581,8 @@ class QDataViewer(QWidget):
 			for i in range(len(cats)):
 				if cats[i].lower().startswith(text.lower()): pos_cats.append(cats[i])
 			if len(pos_cats) > 0: text = pos_cats[0]
-			else: error = True
-		if error:
-			item.setText('_')
-			return
-		
+			else: text = '_'
+
 		isSpace = False
 		if text == '':
 			if col in ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']:
