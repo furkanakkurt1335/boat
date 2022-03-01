@@ -254,9 +254,6 @@ class QDataViewer(QWidget):
 
 		self.first_time = False
 
-	def back_to_table(self):
-		pass
-
 	def save_doc(self):
 		self.doc.write()
 
