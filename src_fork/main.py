@@ -224,6 +224,9 @@ class QDataViewer(QWidget):
 		# create table here
 		self.tableWidget = QTableWidget(self)
 
+		self.shortcut_table = QShortcut(QKeySequence('Alt+T'), self)
+		self.shortcut_table.activated.connect(self.tableWidget.setFocus)
+
 		self.tableWidget.itemChanged.connect(self.handle_change)
 
 		self.connect(self.tableWidget.verticalHeader(), SIGNAL('sectionClicked(int)'), self.agg)
