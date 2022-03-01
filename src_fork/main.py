@@ -415,7 +415,7 @@ class QDataViewer(QWidget):
 			self.update_html()
 			self.first_time = False
 
-		else: #add two-elements below
+		else: # add two-elements below
 			base_word = self.sentence.words[x]
 			limit = int(base_word.id)
 
