@@ -1,2 +1,3 @@
-pyside6
-regex
+PySide6==6.2.3
+regex==2022.3.2
+spacy==3.2.3
