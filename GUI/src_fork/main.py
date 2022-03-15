@@ -57,7 +57,7 @@ class QDataViewer(QWidget):
         self.open_file()
 
     def open_file(self):
-        self.notename = 'notes-' + self.filepath.split('/')[-1].split('.')[0] + '.txt'
+        self.notename = 'notes-' + self.filepath.split('/')[-1].split('\\')[-1].replace('.conllu', '') + '.txt'
         self.doc = Doc(self.filepath)
 
         if not os.path.exists(self.notename): open(self.notename, 'w').close()

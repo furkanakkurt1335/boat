@@ -7,7 +7,7 @@ class Doc:
 		SENT_ID = r'sent_id\s*=\s*(.+)\s*$'
 		TEXT = r'text\s*=\s*(.+)\s*$'
 			
-		content = open(filepath, 'r', encoding = 'utf-8').read()
+		content = open(filepath, 'r', encoding='utf-8').read()
 
 		self.filepath = filepath
 		self.sentences = []
