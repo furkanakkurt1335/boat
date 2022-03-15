@@ -1,52 +1,68 @@
 import sys, os, copy
 from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtGui import QKeySequence, QShortcut, QIcon
 from PySide6.QtCore import Qt, SIGNAL
 from Doc import *
 from spacy import displacy
+import argparse
 # from __feature__ import snake_case, true_property
+
+THISDIR = os.path.dirname(os.path.realpath(__file__))
 
 class QDataViewer(QWidget):
     def __init__(self):
         super().__init__()
-        # Layout Init.
-        self.language = 'ud'
-        if len(sys.argv) > 1:
-            self.language = sys.argv[1]
-        self.setGeometry(650, 300, 600, 600)
-        self.setWindowTitle('Anno Tool')
-        self.uploadButton = QPushButton('Load CoNLL-U File', self)
+
+        opt_parser = argparse.ArgumentParser(description="BoAT Args")
+        group = opt_parser.add_argument_group("Lang & File")
+        group.add_argument('-lang', dest="lang", action="store", default="ud", help='Language to use BoAT with to annotate')
+        group.add_argument('-file', dest="file", action="store", default='', help='File to use BoAT with to annotate')
+        args = opt_parser.parse_args()
+
+        self.vBoxLayout = QVBoxLayout()
+        self.setLayout(self.vBoxLayout)
+
+        self.setWindowTitle('BoAT, Annotation Tool')
+        DIP_logo = QIcon()
+        DIP_logo.addFile(f'{THISDIR}\\DIP_logo.png')
+        self.setWindowIcon(DIP_logo)
+
         self.sentence_id = 0
         self.column_number = 10
         self.columns = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
         self.current_dict = dict()
-        # self.load_finished = True
         self.first_time = True
         self.session_start = True
         self.map_col = {0: 'ID', 1: 'FORM', 2: 'LEMMA', 3: 'UPOS', 4: 'XPOS', 5: 'FEATS', 6: 'HEAD', 7: 'DEPREL', 8: 'DEPS', 9: 'MISC', 10: 'Abbr', 11: 'Animacy', 12: 'Aspect', 13: 'Case', 14: 'Clusivity', 15: 'Definite', 16: 'Degree', 17: 'Echo', 18: 'Evident', 19: 'Foreign', 20: 'Gender', 21: 'Mood', 22: 'NounClass', 23: 'Number', 24: 'Number[psor]', 25: 'NumType', 26: 'Person', 27: 'Person[psor]', 28: 'Polarity', 29: 'Polite', 30: 'Poss', 31: 'PronType', 32: 'Reflex', 33: 'Register', 34: 'Tense', 35: 'VerbForm', 36: 'Voice'}
 
-        self.doc = None
-
-        self.vBoxLayout = QVBoxLayout()
-        self.vBoxLayout.addWidget(self.uploadButton)
-        self.setLayout(self.vBoxLayout)
-
-        # Signal Init.
-        self.connect(self.uploadButton, SIGNAL('clicked()'), self.open)
+        self.language = args.lang
+        if args.file != '':
+            self.filepath = args.file
+            self.open_file()
+        else:
+            self.uploadButton = QPushButton('Load CoNLL-U File', self)            
+            self.doc = None
+            self.vBoxLayout.addWidget(self.uploadButton)
+            self.connect(self.uploadButton, SIGNAL('clicked()'), self.uploaded)
+            self.setGeometry(100, 100, 400, 200)
 
     def closeEvent(self, event):
         if self.doc != None: self.doc.write()
         event.accept()
 
-    def open(self):
-        filename = QFileDialog.getOpenFileName(self, 'Open File', '.')[0]
-        self.notename = 'notes-' + filename.split('/')[-1].split('.')[0] + '.txt'
+    def uploaded(self):
+        self.filepath = QFileDialog.getOpenFileName(self, 'Open File', '.')[0]
         self.uploadButton.hide()
-        self.doc = Doc(filename)
+        self.open_file()
+
+    def open_file(self):
+        self.notename = 'notes-' + self.filepath.split('/')[-1].split('.')[0] + '.txt'
+        self.doc = Doc(self.filepath)
 
         if not os.path.exists(self.notename): open(self.notename, 'w').close()
 
+        self.setGeometry(100, 100, 800, 600)
         self.construct()
 
     def writeNotes(self):
@@ -215,7 +231,7 @@ class QDataViewer(QWidget):
         self.connect(self.deleteRowButton, SIGNAL('clicked()'), self.delete_row)
         self.connect(self.saveButton, SIGNAL('clicked()'), self.save_doc)
 
-        # create table here
+        # Table
         self.tableWidget = QTableWidget(self)
 
         self.shortcut_table = QShortcut(QKeySequence('Alt+T'), self)
@@ -517,9 +533,6 @@ class QDataViewer(QWidget):
         for w in self.sentence.words:
             index += w.form + '(' + w.id + ') '
         index += '\n'
-        # error_list = get_errors(self.sentence.get_raw(), self.sentence.sent_id, self.language)
-        error_list = []
-        THISDIR = os.path.dirname(os.path.realpath(__file__))
         content = '# sent_id = ' + self.sentence.sent_id + '\n'
         content += '# text = ' + self.sentence.text + '\n'
         for word in self.sentence.words:
@@ -552,7 +565,6 @@ class QDataViewer(QWidget):
         text = item.text()
 
         # Autocomplete
-        error = False
         if col in ['Aspect', 'Case', 'Evident', 'Mood', 'Number', 'Number[psor]', 'NumType', 'Person', 'Person[psor]', 'Polarity', 'PronType', 'Tense', 'VerbForm', 'Voice', 'UPOS', 'XPOS', 'DEPREL']:
             if col == 'Aspect': cats = ['Gen', 'Hab', 'Imp', 'Perf', 'Prog', 'Prosp']
             elif col == 'Case': cats = ['Abl', 'Acc', 'Dat', 'Equ', 'Gen', 'Ins', 'Nom', 'Loc', 'Voc']
