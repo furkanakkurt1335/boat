@@ -1,5 +1,5 @@
 import sys, os, copy
-from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QLabel)
+from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QLabel, QMessageBox)
 from PySide6.QtGui import QKeySequence, QShortcut, QIcon, QPixmap
 from PySide6.QtCore import Qt, SIGNAL
 from Doc import *
@@ -18,6 +18,10 @@ THISDIR = os.path.dirname(os.path.realpath(__file__))
 class QDataViewer(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.edit_saved = True
+        self.shortcutExit = QShortcut(QKeySequence('Ctrl+Q'), self)
+        self.shortcutExit.activated.connect(self.closeEvent)
 
         opt_parser = argparse.ArgumentParser(description="BoAT Args")
         group = opt_parser.add_argument_group("Lang & File")
@@ -46,15 +50,23 @@ class QDataViewer(QWidget):
             self.filepath = args.file
             self.open_file()
         else:
-            self.uploadButton = QPushButton('Load CoNLL-U File', self)            
+            self.uploadButton = QPushButton('Load a CoNLL-U file', self)            
             self.doc = None
             self.vBoxLayout.addWidget(self.uploadButton)
             self.connect(self.uploadButton, SIGNAL('clicked()'), self.uploaded)
             self.setGeometry(100, 100, 400, 200)
 
     def closeEvent(self, event):
-        if self.doc != None: self.doc.write()
-        event.accept()
+        if not self.edit_saved:
+            qm = QMessageBox()
+            print(dir(qm))
+            q_t = qm.question(self, 'Closing application', "You have unsaved edits. Do you want to save them before closing?", qm.Yes | qm.No | qm.Cancel)
+            if q_t == qm.Cancel: event.ignore()
+            elif q_t == qm.Yes:
+                self.doc.write()
+                event.accept()
+            elif q_t == qm.No: event.accept()
+        else: event.accept()
 
     def uploaded(self):
         self.filepath = QFileDialog.getOpenFileName(self, 'Open File', '.')[0]
@@ -268,6 +280,7 @@ class QDataViewer(QWidget):
         self.first_time = False
 
     def save_doc(self):
+        self.edit_saved = True
         self.doc.write()
 
     def col_check_handle(self):
@@ -594,6 +607,7 @@ class QDataViewer(QWidget):
         self.first_time = False
 
     def handle_change(self, item):
+
         col = self.map_col[item.column()]
         text = item.text()
 
@@ -696,6 +710,7 @@ class QDataViewer(QWidget):
             self.update_dep_graph()
             self.check_errors()
 
+            self.edit_saved = False
             self.first_time = False
 
 def main():
