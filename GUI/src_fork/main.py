@@ -1,11 +1,16 @@
 import sys, os, copy
-from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtGui import QKeySequence, QShortcut, QIcon
+from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QLabel)
+from PySide6.QtGui import QKeySequence, QShortcut, QIcon, QPixmap
 from PySide6.QtCore import Qt, SIGNAL
 from Doc import *
 from spacy import displacy
 import argparse
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
+import io
+from PIL import Image
+from PIL.ImageQt import ImageQt
+import math
 # from __feature__ import snake_case, true_property
 
 THISDIR = os.path.dirname(os.path.realpath(__file__))
@@ -249,7 +254,7 @@ class QDataViewer(QWidget):
         self.splitter1.addWidget(self.qTextEditError)
         self.vBoxLayout.addWidget(self.splitter1)
 
-        self.linear_dep_graph = QWebEngineView()
+        self.linear_dep_graph = QLabel()
 
         self.update_table()
         self.update_dep_graph()
@@ -288,7 +293,10 @@ class QDataViewer(QWidget):
     def update_dep_graph(self):
 
         manual = {"words": [], "arcs": [], "lemmas": []}
-        for i in range(len(self.sentence.words)):
+        word_count_t = len(self.sentence.words)
+        sentence_len = len(self.sentence.text)
+        dep_count = 0
+        for i in range(word_count_t):
             word = self.sentence.words[i]
             manual['words'].append({"text": word.form, "tag": word.upos, "lemma": word.id})
             if word.deprel == '_' or word.head in ['_', '0']: continue
@@ -302,9 +310,34 @@ class QDataViewer(QWidget):
             manual['arcs'].append({
                 "start": start, "end": end, "label": word.deprel, "dir": direction
             })
+            dep_count += 1
+        if dep_count == 0:
+            self.linear_dep_graph.setPixmap(QPixmap(''))
+            return
 
         svg = displacy.render(docs=manual, style="dep", manual=True, options={'compact':'True', 'add_lemma': 'True', 'distance': 125})
-        self.linear_dep_graph.setHtml(svg)
+        svg_path = os.path.join(THISDIR, 'graph.svg')
+        open(svg_path, 'w', encoding='utf-8').write(svg)
+        im = Image.open(io.BytesIO(renderPM.drawToString(svg2rlg(svg_path))))
+        im_w, im_h = im.size
+        h_t = im_h/3
+        white_count = 0
+        while 1:
+            full_white = True
+            for i in range(im_w):
+                if im.getpixel((i, h_t)) != 0:
+                    full_white = False
+                    h_t /= 3
+                    break
+            if full_white:
+                white_count += 1
+                if white_count == 10:
+                    im = im.crop((0, h_t, im_w, im_h))
+                    im_w, im_h = im.size
+                    break
+        label_w = self.linear_dep_graph.width()
+        if im_w > label_w: im = im.resize((int(label_w), math.floor(im_h * (label_w/im_w))))
+        self.linear_dep_graph.setPixmap(QPixmap.fromImage(ImageQt(im)))
 
     def add_row(self):
 
