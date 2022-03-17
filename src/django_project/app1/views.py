@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from .forms import UploadFileForm
+from .validate_conllu import validate_uploaded_file
 
 def register(request):
     if request.method == 'POST':
@@ -50,3 +52,16 @@ def logout(request):
 @login_required
 def profile(request):
     return render(request, 'profile.html', {'user': request.user})
+
+@login_required
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            is_valid_format = validate_uploaded_file(request.FILES['file'])
+            if is_valid_format: message = 'You have uploaded a file successfully.'
+            else: message = 'The file was not in the correct conllu format.'
+            return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message})
+    else:
+        form = UploadFileForm()
+    return render(request, 'upload_file.html', {'form': form})

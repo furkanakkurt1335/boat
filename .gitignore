@@ -1,4 +1,10 @@
-# added, 3/17/2022 8:15 AM
+# added for tex, 3/17/2022 11:05 PM
+*.abs
+*.xmpdata
+*.conllu
+__pycache__/
+
+# added for Django, 3/17/2022 8:15 AM
 *.sqlite3
 migrations
 
