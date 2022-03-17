@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title> Profile Page </title>
+{% endblock %}
+
+{% block body %}
+{{user}}<br><br>
+<a href={% url 'logout' %}>Log out</a>
+{% endblock %}
