@@ -1,5 +1,5 @@
 import sys, os, copy, re
-from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QMessageBox)
+from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QMessageBox, QLabel)
 from PySide6.QtGui import QKeySequence, QShortcut, QIcon
 from PySide6.QtCore import Qt, SIGNAL
 from Doc import *
@@ -256,6 +256,11 @@ class QDataViewer(QWidget):
         self.connect(self.deleteRowButton, SIGNAL('clicked()'), self.delete_row)
         self.connect(self.saveButton, SIGNAL('clicked()'), self.save_doc)
 
+        # Sentence
+        self.sentenceLabel = QLabel()
+        self.vBoxLayout.addWidget(self.sentenceLabel)
+        self.sentenceLabel.setText('')
+
         # Table
         self.tableWidget = QTableWidget(self)
 
@@ -508,6 +513,15 @@ class QDataViewer(QWidget):
             self.update_dep_graph()
             self.first_time = False
 
+    def update_sentence_label(self):
+        text = ''
+        for i in range(len(self.sentence.words)):
+            word = self.sentence.words[i]
+            id_t = word.id
+            if '-' in word.id: continue
+            text += f'{word.form}[{id_t}] '
+        self.sentenceLabel.setText(text)
+
     def update_table(self):
         if str(self.sentence_id) in self.noteDictionary:
             self.qTextEdit2.setText(self.noteDictionary[str(self.sentence_id)])
@@ -515,7 +529,8 @@ class QDataViewer(QWidget):
             self.qTextEdit2.setText('')
 
         self.sentence = self.doc.sentences[self.sentence_id]
-
+        self.update_sentence_label()
+        
         self.tableWidget.setRowCount(len(self.sentence.words))
         self.tableWidget.setColumnCount(self.column_number)
         self.tableWidget.setHorizontalHeaderLabels(self.columns)
