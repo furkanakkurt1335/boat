@@ -1,3 +1,6 @@
+# added for credentials, 3/18/2022 11:59 AM
+*credentials.txt
+
 # added for pipenv, 3/17/2022 11:09 PM
 Pipfile*
 
@@ -8,7 +11,7 @@ Pipfile*
 __pycache__/
 
 # added for Django, 3/17/2022 8:15 AM
-*.sqlite3
+# *.sqlite3 # using pg now, 3/18/2022 11:59 AM
 migrations
 
 
