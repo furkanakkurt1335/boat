@@ -1,4 +1,4 @@
-import sys, os, copy
+import sys, os, copy, re
 from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QMessageBox)
 from PySide6.QtGui import QKeySequence, QShortcut, QIcon
 from PySide6.QtCore import Qt, SIGNAL
@@ -8,6 +8,15 @@ import argparse
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
 THISDIR = os.path.dirname(os.path.realpath(__file__))
+
+def validate_file_format(filepath):
+    try:
+        file_text = open(filepath, 'r', encoding='utf-8').read()
+    except: return False
+    sentence_pattern = r'(#.+=.+\n){2}((.+\t){9}.+\n)+'
+    file_text = re.sub(sentence_pattern, '', file_text)
+    if file_text.strip() == '': return True
+    else: return False
 
 class QDataViewer(QWidget):
     def __init__(self):
@@ -42,6 +51,9 @@ class QDataViewer(QWidget):
         self.language = args.lang
         if args.file != '':
             self.filepath = args.file
+            if not validate_file_format(self.filepath):
+                print('The file was not in the right format. Please try again with a different file.')
+                exit()
             self.open_file()
         else:
             self.uploadButton = QPushButton('Load a CoNLL-U file', self)            
@@ -53,7 +65,6 @@ class QDataViewer(QWidget):
     def closeEvent(self, event):
         if not self.edit_saved:
             qm = QMessageBox()
-            print(dir(qm))
             q_t = qm.question(self, 'Closing application', "You have unsaved edits. Do you want to save them before closing?", qm.Yes | qm.No | qm.Cancel)
             if q_t == qm.Cancel: event.ignore()
             elif q_t == qm.Yes:
@@ -64,6 +75,9 @@ class QDataViewer(QWidget):
 
     def uploaded(self):
         self.filepath = QFileDialog.getOpenFileName(self, 'Open File', '.')[0]
+        if not validate_file_format(self.filepath):
+            QMessageBox().information(self, 'File format problem', 'The file was not in the right format. Please try again with a different file.')
+            return
         self.uploadButton.hide()
         self.open_file()
 
