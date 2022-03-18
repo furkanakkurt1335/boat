@@ -1,4 +1,4 @@
-import sys, os, copy, re
+import sys, os, copy, re, subprocess
 from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QMessageBox, QLabel)
 from PySide6.QtGui import QKeySequence, QShortcut, QIcon
 from PySide6.QtCore import Qt, SIGNAL
@@ -21,6 +21,7 @@ def validate_file_format(filepath):
 class QDataViewer(QWidget):
     def __init__(self):
         super().__init__()
+        self.platform = sys.platform
 
         self.edit_saved = True
         self.shortcutExit = QShortcut(QKeySequence('Ctrl+Q'), self)
@@ -37,7 +38,7 @@ class QDataViewer(QWidget):
 
         self.setWindowTitle('BoAT, Annotation Tool')
         DIP_logo = QIcon()
-        DIP_logo.addFile(f'{THISDIR}\\DIP_logo.png')
+        DIP_logo.addFile(f'{THISDIR}/DIP_logo.png')
         self.setWindowIcon(DIP_logo)
 
         self.sentence_id = 0
@@ -587,9 +588,10 @@ class QDataViewer(QWidget):
         for word in self.sentence.words:
             content += '\t'.join(word.get_list()) + '\n'
         content += '\n'
-        open(f'{THISDIR}\\errors.conllu', 'w', encoding='utf-8').write(content)
-        import subprocess
-        result = subprocess.getoutput(fr'{sys.executable} "{THISDIR}\\validate.py" --lang {self.language} "{THISDIR}\\errors.conllu"')
+        open(f'{THISDIR}/errors.conllu', 'w', encoding='utf-8').write(content)
+        cmd_t = 'python'
+        if 'darwin' in self.platform or 'linux' in self.platform: cmd_t += '3'
+        result = subprocess.getoutput(fr'{cmd_t} "{THISDIR}/validate.py" --lang {self.language} "{THISDIR}/errors.conllu"')
         self.qTextEditError.setText(result)
 
     def cb_change(self):
