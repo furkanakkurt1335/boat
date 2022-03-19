@@ -26,8 +26,18 @@ class Sentence(models.Model):
     def __str__(self):
         return self.sent_id
 
+class AnnotationManager(models.Manager):
+    def create_annotation(self, annotator, sentence, cats, notes={}):
+        annotation = self.create(annotator=annotator, sentence=sentence, cats=cats, notes={})
+        return annotation
+
 class Annotation(models.Model):
     annotator = models.ForeignKey(User, on_delete=models.CASCADE)
     sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
     cats = models.JSONField()
     notes = models.TextField(blank=True)
+
+    objects = AnnotationManager()
+
+    def __str__(self):
+        return self.sentence.sent_id

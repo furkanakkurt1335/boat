@@ -57,8 +57,10 @@ def profile(request):
 
 @login_required
 def upload_file(request):
+    treebanks = Treebank.objects.all()
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+        print(request.POST['title'])
         if form.is_valid():
             file = request.FILES['file']
             is_valid_format = conllu.validate_uploaded_file(file)
@@ -66,12 +68,13 @@ def upload_file(request):
                 error = False
                 sentences = conllu.parse_file(file)
                 for sentence in sentences:
-                    treebanks = Treebank.objects.filter(title=request.POST['title'])
-                    if len(treebanks) == 0:
+                    # Saving Sentence objects
+                    treebanks_filtered = Treebank.objects.filter(title=request.POST['title'])
+                    if len(treebanks_filtered) == 0:
                         error = True
                         message = 'No treebank with that title.'
                         break
-                    else: treebank_t = treebanks[0]
+                    else: treebank_t = treebanks_filtered[0]
                     sent_id_t = sentence['sent_id']
                     text_t = sentence['text']
                     if 'comments' in sentence.keys():
@@ -81,12 +84,20 @@ def upload_file(request):
                         sent_t = Sentence.objects.create_sentence(treebank_t, sent_id_t, text_t, comments_t)
                         sent_t.save()
                     except: continue # duplicate
+
+                    # Saving Annotation objects
+                    # user = request.user
+                    # cats = {}
+                    # for key in sentence.keys():
+                    #     if key not in ['sent_id', 'text', 'comments']: cats[key] = sentence[key]
+                    # anno_t = Annotation.objects.create_annotation(user, sent_t, cats)
+                    # anno_t.save()
                 if not error: message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
-            return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message})
+            return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message, 'treebanks': treebanks})
     else:
         form = UploadFileForm()
-    return render(request, 'upload_file.html', {'form': form})
+    return render(request, 'upload_file.html', {'form': form, 'treebanks': treebanks})
 
 @login_required
 def create_treebank(request):
