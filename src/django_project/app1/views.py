@@ -86,12 +86,12 @@ def upload_file(request):
                     except: continue # duplicate
 
                     # Saving Annotation objects
-                    # user = request.user
-                    # cats = {}
-                    # for key in sentence.keys():
-                    #     if key not in ['sent_id', 'text', 'comments']: cats[key] = sentence[key]
-                    # anno_t = Annotation.objects.create_annotation(user, sent_t, cats)
-                    # anno_t.save()
+                    user = request.user
+                    cats = {}
+                    for key in sentence.keys():
+                        if key not in ['sent_id', 'text', 'comments']: cats[key] = sentence[key]
+                    anno_t = Annotation.objects.create_annotation(user, sent_t, cats)
+                    anno_t.save()
                 if not error: message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
             return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message, 'treebanks': treebanks})
@@ -116,3 +116,18 @@ def create_treebank(request):
 def test(request):
     context = {}
     return render(request, 'test.html', context)
+
+@login_required
+def view_treebank(request, treebank):
+    treebanks = Treebank.objects.all()
+    treebank_selected = None
+    for treebank_t in treebanks:
+        if treebank_t.title.replace(' ', '-') == treebank: treebank_selected = treebank_t
+    sentences = Sentence.objects.filter(treebank=treebank_selected)
+    context = {'sentences': sentences}
+    return render(request, 'view_treebank.html', context)
+
+# @login_required
+# def annotate(request, ):
+#     context = {}
+#     return render(request, 'test.html', context)
