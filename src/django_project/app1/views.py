@@ -63,18 +63,25 @@ def upload_file(request):
             file = request.FILES['file']
             is_valid_format = conllu.validate_uploaded_file(file)
             if is_valid_format:
+                error = False
                 sentences = conllu.parse_file(file)
                 for sentence in sentences:
-                    # TODO: filter for specific treebank ; if no treebank matching, error
-                    treebank_t = Treebank.objects.all()[0]
+                    treebanks = Treebank.objects.filter(title=request.POST['title'])
+                    if len(treebanks) == 0:
+                        error = True
+                        message = 'No treebank with that title.'
+                        break
+                    else: treebank_t = treebanks[0]
                     sent_id_t = sentence['sent_id']
                     text_t = sentence['text']
                     if 'comments' in sentence.keys():
                         comments_t = sentence['comments']
                     else: comments_t = {}
-                    sent_t = Sentence.objects.create_sentence(treebank_t, sent_id_t, text_t, comments_t)
-                    sent_t.save()
-                message = 'You have uploaded a file successfully.'
+                    try:
+                        sent_t = Sentence.objects.create_sentence(treebank_t, sent_id_t, text_t, comments_t)
+                        sent_t.save()
+                    except: continue # duplicate
+                if not error: message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
             return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message})
     else:

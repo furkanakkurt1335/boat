@@ -1,3 +1,8 @@
+# added, 3/19/2022 10:41 PM
+*.pdf
+notes*
+Archive*
+
 # added for venv, 3/19/2022 3:13 PM
 *_venv*/
 

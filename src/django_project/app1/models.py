@@ -13,8 +13,10 @@ class SentenceManager(models.Manager):
         return sentence
 
 class Sentence(models.Model):
+    class Meta:
+        unique_together = ['sent_id', 'text']
+
     treebank = models.ForeignKey(Treebank, on_delete=models.CASCADE)
-    #TODO: make sent_id & text composite key together
     sent_id = models.CharField(max_length=30)
     text = models.TextField()
     comments = models.JSONField(blank=True)
