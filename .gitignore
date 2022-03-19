@@ -1,8 +1,11 @@
+# added for venv, 3/19/2022 3:13 PM
+*_venv*/
+
 # added for credentials, 3/18/2022 11:59 AM
 *credentials.txt
 
 # added for pipenv, 3/17/2022 11:09 PM
-Pipfile*
+# Pipfile* # using venv now, 3/19/2022 3:12 PM
 
 # added for tex, 3/17/2022 11:05 PM
 *.abs

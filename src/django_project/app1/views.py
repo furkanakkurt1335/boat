@@ -3,8 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UploadFileForm
-from .validate_conllu import validate_uploaded_file
+from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
+from .models import SentenceManager, Treebank, Sentence, Annotation
+from . import conllu
 
 def register(request):
     if request.method == 'POST':
@@ -44,6 +45,7 @@ def index(request):
     else:
         return redirect('profile')
 
+@login_required
 def logout(request):
     if request.user != 'AnonymousUser':
         logout_f(request)
@@ -58,10 +60,41 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            is_valid_format = validate_uploaded_file(request.FILES['file'])
-            if is_valid_format: message = 'You have uploaded a file successfully.'
+            file = request.FILES['file']
+            is_valid_format = conllu.validate_uploaded_file(file)
+            if is_valid_format:
+                sentences = conllu.parse_file(file)
+                for sentence in sentences:
+                    # TODO: filter for specific treebank ; if no treebank matching, error
+                    treebank_t = Treebank.objects.all()[0]
+                    sent_id_t = sentence['sent_id']
+                    text_t = sentence['text']
+                    if 'comments' in sentence.keys():
+                        comments_t = sentence['comments']
+                    else: comments_t = {}
+                    sent_t = Sentence.objects.create_sentence(treebank_t, sent_id_t, text_t, comments_t)
+                    sent_t.save()
+                message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
             return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message})
     else:
         form = UploadFileForm()
     return render(request, 'upload_file.html', {'form': form})
+
+@login_required
+def create_treebank(request):
+    if request.method == 'POST':
+        form = TreebankForm(request.POST)
+        if form.is_valid():
+            form.save()
+            message = 'You have created a treebank successfully.'
+        else: message = 'The treebank was not created.'
+        return render(request, 'create_treebank.html', {'form': TreebankForm(), 'message': message})
+    else:
+        form = TreebankForm()
+    return render(request, 'create_treebank.html', {'form': form})
+
+@login_required
+def test(request):
+    context = {}
+    return render(request, 'test.html', context)
