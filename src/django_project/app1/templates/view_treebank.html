@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    {% for sentence in sentences %}
-        {{sentence.text}} <span style="font-size: small;">{{sentence.sent_id}}</span><br><br>
-    {% endfor %}
+    {% if message|length != 0 %}
+        {{message}}
+    {% else %}
+        {% for sentence in sentences %}
+            {{sentence.text}} <span style="font-size: small;">{{sentence.sent_id}}</span><br><br>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

@@ -1,11 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class TreebankManager(models.Manager):
+    def get_treebank_from_url(self, url):
+        treebanks = Treebank.objects.all()
+        for treebank_t in treebanks:
+            if treebank_t.title.replace(' ', '-') == url: return treebank_t
+        return None
+
 class Treebank(models.Model):
     title = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
         return self.title
+
+    objects = TreebankManager()
 
 class SentenceManager(models.Manager):
     def create_sentence(self, treebank, sent_id, text, comments={}):

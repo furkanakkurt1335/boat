@@ -11,4 +11,5 @@ urlpatterns = [
     path('test/', views.test, name='test'),
     path('create_treebank/', views.create_treebank, name='create_treebank'),
     path('view_treebank/<slug:treebank>', views.view_treebank, name='view_treebank'),
+    path('annotate/<slug:treebank>/<int:id>', views.annotate, name='annotate'),
 ]

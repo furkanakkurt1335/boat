@@ -119,15 +119,20 @@ def test(request):
 
 @login_required
 def view_treebank(request, treebank):
-    treebanks = Treebank.objects.all()
-    treebank_selected = None
-    for treebank_t in treebanks:
-        if treebank_t.title.replace(' ', '-') == treebank: treebank_selected = treebank_t
+    message = ''
+    treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
+    if treebank_selected == None: message = 'There is no treebank with that title.'
     sentences = Sentence.objects.filter(treebank=treebank_selected)
-    context = {'sentences': sentences}
+    context = {'sentences': sentences, 'message': message}
     return render(request, 'view_treebank.html', context)
 
-# @login_required
-# def annotate(request, ):
-#     context = {}
-#     return render(request, 'test.html', context)
+@login_required
+def annotate(request, treebank, id):
+    message, sentence = '', None
+    treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
+    if treebank_selected == None: message = 'There is no treebank with that title.'
+    else:
+        sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
+        if id < len(sentences_filtered): sentence = sentences_filtered[id]
+    context = {'sentence': sentence, 'message': message}
+    return render(request, 'annotate.html', context)
