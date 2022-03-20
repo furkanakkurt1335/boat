@@ -133,6 +133,12 @@ def annotate(request, treebank, id):
     if treebank_selected == None: message = 'There is no treebank with that title.'
     else:
         sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
-        if id < len(sentences_filtered): sentence = sentences_filtered[id]
-    context = {'sentence': sentence, 'message': message}
+        if id < len(sentences_filtered):
+            sentence = sentences_filtered[id]
+            annotation = Annotation.objects.filter(annotator=request.user, sentence=sentence)
+            if len(annotation) == 1: pass
+            else:
+                annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
+                annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation}
     return render(request, 'annotate.html', context)

@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     <title> Annotate Page </title>
     <link rel="stylesheet" href="{% static 'annotate.css' %}">
     <script type="text/javascript" src="{% static 'annotate.js' %}"></script>
 {% endblock %}
-
+    
 {% block body %}
     {% if message|length != 0 %}
         {{message}}
@@ -13,7 +14,9 @@
         {% if sentence.sent_id|length == 0 %}
             There is no sentence with that ID.
         {% else %}
-            Annotate here.
+            {{sentence}}
+            {{annotation}}
+            {{message}}
         {% endif %}
     {% endif %}
 {% endblock %}
