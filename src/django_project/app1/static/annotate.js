@@ -1,4 +1,4 @@
-// TODO: don"t remove table, adjust
+// TODO: don't remove table, adjust
 
 var current_sentence_index = 0;
 var current_columns = [];
