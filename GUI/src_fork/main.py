@@ -261,6 +261,7 @@ class QDataViewer(QWidget):
 
         # Sentence
         self.sentenceLabel = QLabel()
+        self.sentenceLabel.setWordWrap(True)
         self.vBoxLayout.addWidget(self.sentenceLabel)
         self.sentenceLabel.setText('')
 
