@@ -229,6 +229,7 @@ class QDataViewer(QWidget):
         self.hBoxLayout.addWidget(self.nextButton)
         self.vBoxLayout.addLayout(self.hBoxLayout)
 
+        self.chBoxLayout = QHBoxLayout()
         cbs_on = ['ID', 'FORM', 'LEMMA', 'UPOS', 'XPOS', 'FEATS', 'HEAD', 'DEPREL', 'DEPS', 'MISC']
         cbs_off = ['Abbr', 'Animacy', 'Aspect', 'Case', 'Clusivity', 'Definite', 'Degree', 'Echo', 'Evident', 'Foreign', 'Gender', 'Mood', 'NounClass', 'Number', 'Number[psor]', 'NumType', 'Person', 'Person[psor]', 'Polarity', 'Polite', 'Poss', 'PronType', 'Reflex', 'Register', 'Tense', 'VerbForm', 'Voice']
         for cb_id in cbs_on + cbs_off:
@@ -237,6 +238,7 @@ class QDataViewer(QWidget):
                 cb.setChecked(True)
             else: cb.setChecked(False)
             cb.stateChanged.connect(self.cb_change)
+            self.chBoxLayout.addWidget(cb)
 
         self.qTextEdit.setText(str(self.sentence_id))
 
