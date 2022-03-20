@@ -4,30 +4,39 @@ var current_columns = [];
 
 // On document load
 window.onload = function() {
+    document.getElementById("bootstrap_js").remove();
+    document.getElementById("bootstrap_css").remove();
     let sent_id_el = document.getElementById('sentence.sent_id');
     var sent_id = sent_id_el.innerHTML;
     let text_el = document.getElementById('sentence.text');
     var text = text_el.innerHTML;
     let cats_el = document.getElementById('annotation.cats');
-    var cells = cats_el.innerHTML;
+    var cells = JSON.parse(cats_el.innerHTML);
     let notes_el = document.getElementById('annotation.notes');
     var notes = notes_el.innerHTML;
     let errors_el = document.getElementById('errors');
     var errors = errors_el.innerHTML;
+    init_page(cells);
 };
+
+function get_sentence_id_url() {
+    var url = window.location.href;
+    let matches = url.match(/\/(\d+$)/);
+    return parseInt(matches[1]);
+}
 
 function button_handle(type) {
     if (type == "previous") {
-        if (current_sentence_index > 0) {
-            current_sentence_index -= 1
-            inject_sentence(sentences[current_sentence_index]);
+        let sentence_id_url = get_sentence_id_url();
+        if (sentence_id_url != 0) {
+            let regexp_replacer = /\/\d+$/;
+            window.location.replace(window.location.href.replace(regexp_replacer, `/${sentence_id_url-1}`, window.location.href));
         }
     }
     else if (type == "next") {
-        if (current_sentence_index < sentences.length-1) {
-            current_sentence_index += 1
-            inject_sentence(sentences[current_sentence_index]);
-        }
+        let sentence_id_url = get_sentence_id_url();
+        let regexp_replacer = /\/\d+$/;
+        window.location.replace(window.location.href.replace(regexp_replacer, `/${sentence_id_url+1}`, window.location.href));
     }
     else if (type == "col_add_rm_button") {
         let sel = document.getElementById("col_add_rm_select");
@@ -66,7 +75,7 @@ function button_handle(type) {
         let input_number = parseInt(document.getElementById("row_select_input").value);
         if (selected == "Go to sentence") {
             let next_sentence_id = input_number;
-            if (next_sentence_id >= 0) inject_sentence(sentences[next_sentence_id]);
+            if (next_sentence_id >= 0) inject_sentence();
         }
         else if (selected == "Add row") {
 
@@ -75,10 +84,10 @@ function button_handle(type) {
         }
     }
     else if (type == "undo") {
-
+        
     }
     else if (type == "redo") {
-
+        
     }
     else if (type == "reset") {
 
@@ -117,7 +126,7 @@ document.onkeyup = function(e) {
         if (matches.length == 3) {
             let row = parseInt(matches[1]);
             let column = parseInt(matches[2]);
-            
+
             let form_count = document.getElementById("table").getElementsByTagName("tr").length-1;
             if (e.key == "ArrowUp" && row != 0) {
                 document.getElementById(`row:${row-1}, column:${column}`).focus();
@@ -133,13 +142,13 @@ document.onkeyup = function(e) {
             }
         }
     }
-};      
+};
 
 function column_change(column_option) {
     if (current_columns.includes(column_option)) current_columns.splice(current_columns.indexOf(column_option), 1);
     else current_columns = current_columns.concat(column_option);
     sort_columns();
-    inject_sentence(sentences[current_sentence_index]);
+    inject_sentence();
 }
 
 function sort_columns() {
@@ -159,7 +168,7 @@ function sort_columns() {
     }
 }
 
-function init_page(file_content) {
+function init_page(cells) {
 
     var element_splitter = document.createElement("span");
     element_splitter.innerHTML = "|";
@@ -169,7 +178,7 @@ function init_page(file_content) {
     previous_button.id = "previous";
     previous_button.innerHTML = "Previous";
     document.body.append(previous_button);
-    
+
     document.body.append(element_splitter.cloneNode(true));
 
     const reset_button = document.createElement("button");
@@ -181,7 +190,7 @@ function init_page(file_content) {
     undo_button.id = "undo";
     undo_button.innerHTML = "Undo";
     document.body.append(undo_button);
-    
+
     const redo_button = document.createElement("button");
     redo_button.id = "redo";
     redo_button.innerHTML = "Redo";
@@ -271,50 +280,7 @@ function init_page(file_content) {
     document.body.append(table);
 
     current_columns = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
-    parse_file(file_content);
-    inject_sentence(sentences[0]);
-}
-
-var sentences = [];
-function parse_file(text) {
-    const lines = text.split("\n");
-    var sentence_count = 0;
-    var sentence = {};
-    for (let i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        if (line.trim() == "") {
-            if (sentence[0] != undefined) {
-                sentences[sentence_count] = sentence;
-                sentence_count += 1;
-                sentence = {};
-            }
-            else {
-                break;
-            }
-        }
-        else if (line.startsWith("#")) {
-            let matches = line.match(/#(.*)=(.*)/);
-            sentence[matches[1].trim()] = matches[2].trim();
-        }
-        else {
-            let parts = line.split("\t");
-            let parts_d = {};
-
-            for (let i = 0; i < parts.length; i++) {
-                parts_d[cats[i]] = parts[i].trim();
-            }
-            let feats = parts_d["FEATS"];
-            if (feats != "_") {
-                if (!feats.includes("|")) feats = [feats];
-                else feats = feats.split("|");
-                for (let i = 0; i < feats.length; i++) {
-                    let feat_t = feats[i].split("=");
-                    parts_d[feat_t[0]] = feat_t[1];
-                }
-            }
-            sentence[Object.keys(sentence).length-2] = parts_d; // -2 for sent_id & text
-        }
-    }
+    inject_sentence(cells);
 }
 
 var cats = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
@@ -325,7 +291,7 @@ function create_table() {
 
 }
 
-function inject_sentence(sentence) {
+function inject_sentence(cells) {
     let t_s_i = document.getElementById("sentence_indices");
     if (document.getElementById("sentence_indices") != undefined) document.body.removeChild(t_s_i);
     let t = document.getElementById("table");
@@ -341,10 +307,11 @@ function inject_sentence(sentence) {
     table.append(thead);
     table.append(tbody);
     let row = document.createElement("tr");
-    let form_count = Object.keys(sentence).length-2; // -2 for sent_id & text
+    let form_count = Object.keys(cells).length;
+    let cells_keys = Object.keys(cells);
     for (let i = 0; i < form_count; i++) {
         let heading = document.createElement("th");
-        heading.innerHTML = sentence[i]["ID"];
+        heading.innerHTML = cells_keys[i];
         heading.style.textAlign = "center";
         row.append(heading);
     }
@@ -352,13 +319,13 @@ function inject_sentence(sentence) {
     row = document.createElement("tr");
     for (let i = 0; i < form_count; i++) {
         let data = document.createElement("td");
-        data.innerHTML = sentence[i]["FORM"];
+        data.innerHTML = cells[cells_keys[i]]["form"];
         data.style.textAlign = "center";
         row.append(data);
     }
     tbody.append(row);
     document.body.append(table);
-    
+
     br = document.createElement("br");
     br.id = "br";
     document.body.append(br);
@@ -385,8 +352,9 @@ function inject_sentence(sentence) {
         let row = document.createElement("tr");
         for (let j = 0; j < current_columns.length; j++) {
             let data = document.createElement("td");
-            if (sentence[i][current_columns[j]] == undefined) data.innerHTML = "_";
-            else data.innerHTML = sentence[i][current_columns[j]];
+            if (current_columns[j].toLowerCase() == "id") data.innerHTML = cells_keys[i];
+            else if (cells[cells_keys[i]][current_columns[j].toLowerCase()] == undefined) data.innerHTML = "_";
+            else data.innerHTML = cells[cells_keys[i]][current_columns[j].toLowerCase()];
             data.id = `row:${i}, column:${j}`;
             data.style.textAlign = "center";
             data.contentEditable = "true";
@@ -411,7 +379,7 @@ function column_click(column_name) {
         if (i != index_remove) arr_t = arr_t.concat(current_columns[i]);
     }
     current_columns = arr_t;
-    inject_sentence(sentences[current_sentence_index]);
+    inject_sentence();
 }
 
 function error_handle() {

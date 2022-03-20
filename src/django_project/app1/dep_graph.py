@@ -2,14 +2,16 @@ from spacy import displacy
 
 def get_dep_graph(sentence):
     manual = {"words": [], "arcs": [], "lemmas": []}
-    word_count_t = len(sentence.keys())
+    keys = list(sentence.keys())
+    word_count_t = len(keys)
     dep_count = 0
-    for i in range(len(sentence.keys())):
-        word = sentence[sentence.keys()[i]]
-        if '-' in word['id']: continue
-        manual['words'].append({"text": word['form'], "tag": word['upos'], "lemma": word['id']})
-        if word['deprel'] == '_' or word['head'] in ['_', '0']: continue
-        head_int = int(word['head'])-1
+    for i in range(len(keys)):
+        id_t = keys[i]
+        fields = sentence[id_t]
+        if '-' in id_t: continue
+        manual['words'].append({"text": fields['form'], "tag": fields['upos'], "lemma": id_t})
+        if fields['deprel'] == '_' or fields['head'] in ['_', '0']: continue
+        head_int = int(fields['head'])-1
         if i > head_int:
             direction = 'left'
             start, end = head_int, i
@@ -17,7 +19,7 @@ def get_dep_graph(sentence):
             direction = 'right'
             end, start = head_int, i
         manual['arcs'].append({
-            "start": start, "end": end, "label": word['deprel'], "dir": direction
+            "start": start, "end": end, "label": fields['deprel'], "dir": direction
         })
         dep_count += 1
     if dep_count == 0: return ''

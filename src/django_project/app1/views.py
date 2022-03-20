@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
 from .models import SentenceManager, Treebank, Sentence, Annotation
 from . import conllu
+from . import dep_graph
 
 def register(request):
     if request.method == 'POST':
@@ -141,5 +142,9 @@ def annotate(request, treebank, id):
                 annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
                 annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
                 errors = '' # TODO: get errors from validate.py
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors}
+            # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
+    dep_graph_svg = None
+    import json
+    annotation.cats = json.dumps(annotation.cats)
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
     return render(request, 'annotate.html', context)

@@ -43,8 +43,8 @@ def parse_file(f):
                     cats_t = cats_found.group().strip().split('\t')
                     id_t = cats_t[0]
                     sentence[id_t] = dict()
-                    for i in range(9):
+                    for i in range(1, 10):
                         cat_t = cats_t[i]
-                        sentence[id_t][cats[i]] = cat_t
+                        sentence[id_t][cats[i-1]] = cat_t
         sentences.append(sentence)
     return sentences
