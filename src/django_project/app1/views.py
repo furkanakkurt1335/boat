@@ -128,17 +128,18 @@ def view_treebank(request, treebank):
 
 @login_required
 def annotate(request, treebank, id):
-    message, sentence = '', None
+    message, sentence, errors = None, None, None
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
     if treebank_selected == None: message = 'There is no treebank with that title.'
     else:
         sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
         if id < len(sentences_filtered):
             sentence = sentences_filtered[id]
-            annotation = Annotation.objects.filter(annotator=request.user, sentence=sentence)
-            if len(annotation) == 1: pass
+            annotations_filtered = Annotation.objects.filter(annotator=request.user, sentence=sentence)
+            if len(annotations_filtered) == 1: annotation = annotations_filtered[0]
             else:
                 annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
                 annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation}
+                errors = '' # TODO: get errors from validate.py
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors}
     return render(request, 'annotate.html', context)

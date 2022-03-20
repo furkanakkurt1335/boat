@@ -1,10 +1,19 @@
 // TODO: don't remove table, adjust
 
-var current_sentence_index = 0;
 var current_columns = [];
 
 // On document load
 window.onload = function() {
+    let sent_id_el = document.getElementById('sentence.sent_id');
+    var sent_id = sent_id_el.innerHTML;
+    let text_el = document.getElementById('sentence.text');
+    var text = text_el.innerHTML;
+    let cats_el = document.getElementById('annotation.cats');
+    var cells = cats_el.innerHTML;
+    let notes_el = document.getElementById('annotation.notes');
+    var notes = notes_el.innerHTML;
+    let errors_el = document.getElementById('errors');
+    var errors = errors_el.innerHTML;
 };
 
 function button_handle(type) {
@@ -150,20 +159,7 @@ function sort_columns() {
     }
 }
 
-
-// On input file load
-document.getElementById("inputfile").addEventListener("change", read_file);
-
-function read_file(event) {
-    var fr = new FileReader();
-    fr.readAsText(this.files[0]);
-    fr.onload = event => {
-        init_page(fr.result);
-    };
-}
-
 function init_page(file_content) {
-    document.getElementById("load-file").remove();
 
     var element_splitter = document.createElement("span");
     element_splitter.innerHTML = "|";
