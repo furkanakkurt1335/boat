@@ -3,8 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UploadFileForm
-from .validate_conllu import validate_uploaded_file
+from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
+from .models import SentenceManager, Treebank, Sentence, Annotation
+from . import conllu
 
 def register(request):
     if request.method == 'POST':
@@ -44,6 +45,7 @@ def index(request):
     else:
         return redirect('profile')
 
+@login_required
 def logout(request):
     if request.user != 'AnonymousUser':
         logout_f(request)
@@ -55,13 +57,82 @@ def profile(request):
 
 @login_required
 def upload_file(request):
+    treebanks = Treebank.objects.all()
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+        print(request.POST['title'])
         if form.is_valid():
-            is_valid_format = validate_uploaded_file(request.FILES['file'])
-            if is_valid_format: message = 'You have uploaded a file successfully.'
+            file = request.FILES['file']
+            is_valid_format = conllu.validate_uploaded_file(file)
+            if is_valid_format:
+                error = False
+                sentences = conllu.parse_file(file)
+                for sentence in sentences:
+                    # Saving Sentence objects
+                    treebanks_filtered = Treebank.objects.filter(title=request.POST['title'])
+                    if len(treebanks_filtered) == 0:
+                        error = True
+                        message = 'No treebank with that title.'
+                        break
+                    else: treebank_t = treebanks_filtered[0]
+                    sent_id_t = sentence['sent_id']
+                    text_t = sentence['text']
+                    if 'comments' in sentence.keys():
+                        comments_t = sentence['comments']
+                    else: comments_t = {}
+                    try:
+                        sent_t = Sentence.objects.create_sentence(treebank_t, sent_id_t, text_t, comments_t)
+                        sent_t.save()
+                    except: continue # duplicate
+
+                    # Saving Annotation objects
+                    user = request.user
+                    cats = {}
+                    for key in sentence.keys():
+                        if key not in ['sent_id', 'text', 'comments']: cats[key] = sentence[key]
+                    anno_t = Annotation.objects.create_annotation(user, sent_t, cats)
+                    anno_t.save()
+                if not error: message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
-            return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message})
+            return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message, 'treebanks': treebanks})
     else:
         form = UploadFileForm()
-    return render(request, 'upload_file.html', {'form': form})
+    return render(request, 'upload_file.html', {'form': form, 'treebanks': treebanks})
+
+@login_required
+def create_treebank(request):
+    if request.method == 'POST':
+        form = TreebankForm(request.POST)
+        if form.is_valid():
+            form.save()
+            message = 'You have created a treebank successfully.'
+        else: message = 'The treebank was not created.'
+        return render(request, 'create_treebank.html', {'form': TreebankForm(), 'message': message})
+    else:
+        form = TreebankForm()
+    return render(request, 'create_treebank.html', {'form': form})
+
+@login_required
+def test(request):
+    context = {}
+    return render(request, 'test.html', context)
+
+@login_required
+def view_treebank(request, treebank):
+    message = ''
+    treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
+    if treebank_selected == None: message = 'There is no treebank with that title.'
+    sentences = Sentence.objects.filter(treebank=treebank_selected)
+    context = {'sentences': sentences, 'message': message}
+    return render(request, 'view_treebank.html', context)
+
+@login_required
+def annotate(request, treebank, id):
+    message, sentence = '', None
+    treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
+    if treebank_selected == None: message = 'There is no treebank with that title.'
+    else:
+        sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
+        if id < len(sentences_filtered): sentence = sentences_filtered[id]
+    context = {'sentence': sentence, 'message': message}
+    return render(request, 'annotate.html', context)

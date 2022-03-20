@@ -8,4 +8,8 @@ urlpatterns = [
     path('accounts/profile/', views.profile, name='profile'),
     path('accounts/logout/', views.logout, name='logout'),
     path('upload_file/', views.upload_file, name='upload_file'),
+    path('test/', views.test, name='test'),
+    path('create_treebank/', views.create_treebank, name='create_treebank'),
+    path('view_treebank/<slug:treebank>', views.view_treebank, name='view_treebank'),
+    path('annotate/<slug:treebank>/<int:id>', views.annotate, name='annotate'),
 ]

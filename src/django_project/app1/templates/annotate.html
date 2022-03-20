@@ -5,5 +5,13 @@
 {% endblock %}
 
 {% block body %}
-
+    {% if message|length != 0 %}
+        {{message}}
+    {% else %}
+        {% if sentence.sent_id|length == 0 %}
+            There is no sentence with that ID.
+        {% else %}
+            Annotate here.
+        {% endif %}
+    {% endif %}
 {% endblock %}
