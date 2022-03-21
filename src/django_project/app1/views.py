@@ -127,6 +127,7 @@ def view_treebank(request, treebank):
     context = {'sentences': sentences, 'message': message}
     return render(request, 'view_treebank.html', context)
 
+import json
 @login_required
 def annotate(request, treebank, id):
     message, sentence, errors = None, None, None
@@ -144,7 +145,6 @@ def annotate(request, treebank, id):
                 errors = '' # TODO: get errors from validate.py
             # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
     dep_graph_svg = None
-    import json
     annotation.cats = json.dumps(annotation.cats)
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
     return render(request, 'annotate.html', context)

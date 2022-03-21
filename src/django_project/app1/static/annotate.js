@@ -6,17 +6,12 @@ var current_columns = [];
 window.onload = function() {
     document.getElementById("bootstrap_js").remove();
     document.getElementById("bootstrap_css").remove();
-    let sent_id_el = document.getElementById('sentence.sent_id');
-    var sent_id = sent_id_el.innerHTML;
-    let text_el = document.getElementById('sentence.text');
-    var text = text_el.innerHTML;
-    let cats_el = document.getElementById('annotation.cats');
-    var cells = JSON.parse(cats_el.innerHTML);
-    let notes_el = document.getElementById('annotation.notes');
-    var notes = notes_el.innerHTML;
-    let errors_el = document.getElementById('errors');
-    var errors = errors_el.innerHTML;
-    init_page(cells);
+    window.sent_id = document.getElementById('sentence.sent_id').innerHTML;
+    window.text = document.getElementById('sentence.text').innerHTML;
+    window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
+    window.notes = document.getElementById('annotation.notes').innerHTML;
+    window.errors = document.getElementById('errors').innerHTML;
+    init_page();
 };
 
 function get_sentence_id_url() {
@@ -168,7 +163,7 @@ function sort_columns() {
     }
 }
 
-function init_page(cells) {
+function init_page() {
 
     var element_splitter = document.createElement("span");
     element_splitter.innerHTML = "|";
@@ -280,7 +275,7 @@ function init_page(cells) {
     document.body.append(table);
 
     current_columns = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
-    inject_sentence(cells);
+    inject_sentence();
 }
 
 var cats = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
@@ -291,7 +286,8 @@ function create_table() {
 
 }
 
-function inject_sentence(cells) {
+function inject_sentence() {
+    let cells = window.cells;
     let t_s_i = document.getElementById("sentence_indices");
     if (document.getElementById("sentence_indices") != undefined) document.body.removeChild(t_s_i);
     let t = document.getElementById("table");
