@@ -144,29 +144,31 @@ import json
 @login_required
 def annotate(request, treebank, id):
     sentence, message, annotation, errors, dep_graph = None, None, None, None, None
+    treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
+    if treebank_selected == None: message = 'There is no treebank with that title.'
+    else:
+        sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
+        if id < len(sentences_filtered):
+            sentence = sentences_filtered[id]
+            annotations_filtered = Annotation.objects.filter(annotator=request.user, sentence=sentence)
+            if len(annotations_filtered) == 1: annotation = annotations_filtered[0]
+            else:
+                annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
+                annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
     if request.method == "POST":
         data = request.POST['data']
         notes = request.POST['notes']
-        # handle post, save, update, etc.
+        annotation.cats = json.loads(data)
+        annotation.notes = notes
+        annotation.save()
         current_path = request.path
-        type = request.POST['type']
-        if type == 'go': number = request.POST['number']
+        button_type = request.POST['type']
+        if button_type == 'go': number = request.POST['number']
         else: number = None
-        return redirect(replace_path(current_path, type, number))
+        return redirect(replace_path(current_path, button_type, number))
     else:
-        treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
-        if treebank_selected == None: message = 'There is no treebank with that title.'
-        else:
-            sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
-            if id < len(sentences_filtered):
-                sentence = sentences_filtered[id]
-                annotations_filtered = Annotation.objects.filter(annotator=request.user, sentence=sentence)
-                if len(annotations_filtered) == 1: annotation = annotations_filtered[0]
-                else:
-                    annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
-                    annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
-                    errors = '' # TODO: get errors from validate.py
-                # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
+        errors = '' # TODO: get errors from validate.py
+        # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
         dep_graph_svg = None
         annotation.cats = json.dumps(annotation.cats)
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}

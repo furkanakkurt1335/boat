@@ -421,9 +421,11 @@ function inject_sentence() {
     document.body.append(table);
 }
 
-function cell_change(form, column, cell) {
+function cell_change(key, column, cell) {
     let cells_keys = get_sorted_cells_keys();
-    cells[cells_keys[form]][current_columns[column].toLowerCase()] = cell;
+    let curr_col = current_columns[column].toLowerCase();
+    if (curr_col == "id") window.cells[cell] = window.cells[key];
+    else window.cells[cells_keys[key]][curr_col] = cell;
 }
 
 function column_click(column_name) {
