@@ -69,15 +69,13 @@ function get_sentence_id_url() {
 }
 
 function get_sorted_cells_keys() {
-    let cells_keys = Object.keys(window.cells).sort();
-    for (let i = 0; i < cells_keys.length; i++) {
-        if (cells_keys[i].indexOf('-') != -1) {
-            let temp = cells_keys[i];
-            cells_keys[i] = cells_keys[i-1];
-            cells_keys[i-1] = temp;
-        }
+    let cells_keys = Object.keys(window.cells);
+    let new_list = [];
+    for (let i = 1; i < cells_keys.length*2; i++) {
+        if (cells_keys.indexOf(`${i}-${i+1}`) != -1) new_list.push(`${i}-${i+1}`);
+        if (cells_keys.indexOf(`${i}`) != -1) new_list.push(`${i}`);
     }
-    return cells_keys;
+    return new_list;
 }
 
 function button_handle(type) {
