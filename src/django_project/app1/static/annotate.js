@@ -4,15 +4,47 @@ var current_columns = [];
 
 // On document load
 window.onload = function() {
-    document.getElementById("bootstrap_js").remove();
-    document.getElementById("bootstrap_css").remove();
+    // document.getElementById("bootstrap_js").remove();
+    // document.getElementById("bootstrap_css").remove();
     window.sent_id = document.getElementById('sentence.sent_id').innerHTML;
     window.text = document.getElementById('sentence.text').innerHTML;
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.errors = document.getElementById('errors').innerHTML;
+    window.edits = []; // use for undo, redos
     init_page();
 };
+
+function post_to_save(type, number) {
+    // current columns can be sent for continuing with the same set
+    // type should be sent for next, prev, or just save
+    const form = document.createElement('form');
+    form.method = "post";
+    form.action = `${get_sentence_id_url()}`;
+    form.enctype = "multipart/form-data";
+    const csrf_token_input = document.getElementsByName('csrfmiddlewaretoken')[0];
+    form.append(csrf_token_input);
+
+    const form_type = document.createElement('input');
+    form_type.type = 'hidden';
+    form_type.name = "type";
+    form_type.value = type;
+    form.append(form_type);
+    if (type == "go") {
+        const form_type = document.createElement('input');
+        form_type.type = 'hidden';
+        form_type.name = "number";
+        form_type.value = number;
+        form.append(form_type);
+    }
+    const form_data = document.createElement('input');
+    form_data.type = 'hidden';
+    form_data.name = "data";
+    form_data.value = JSON.stringify(window.cells);
+    form.append(form_data);
+    document.body.append(form);
+    form.submit();
+}  
 
 function get_sentence_id_url() {
     var url = window.location.href;
@@ -22,55 +54,24 @@ function get_sentence_id_url() {
 
 function button_handle(type) {
     if (type == "previous") {
-        let sentence_id_url = get_sentence_id_url();
-        if (sentence_id_url != 0) {
-            let regexp_replacer = /\/\d+$/;
-            window.location.replace(window.location.href.replace(regexp_replacer, `/${sentence_id_url-1}`, window.location.href));
-        }
+        post_to_save(type);
     }
     else if (type == "next") {
-        let sentence_id_url = get_sentence_id_url();
-        let regexp_replacer = /\/\d+$/;
-        window.location.replace(window.location.href.replace(regexp_replacer, `/${sentence_id_url+1}`, window.location.href));
+        post_to_save(type);
     }
     else if (type == "col_add_rm_button") {
         let sel = document.getElementById("col_add_rm_select");
         if (sel.selectedIndex != 0) column_change(sel.options[sel.selectedIndex].text);
     }
     else if (type == "save") {
-        var content = "";
-        var sentences_len_t = sentences.length;
-        for (let i = 0; i < sentences_len_t; i++) {
-            var sentence_t = sentences[i];
-            content += "# sent_id = " + sentence_t["sent_id"] + "\n";
-            content += "# text = " + sentence_t["text"] + "\n";
-            for (let j = 0; j < sentence_t.length-2; j++) { // -2 for sent_id & text
-                var cols_t = parts_t[j];
-                var cols_len_t = cols_t.length;
-                for (let k = 0; k < cols_len_t; k++) {
-                    content += cols_t[k];
-                    if (k != cols_len_t-1) content += "\t";
-                }
-                content += "\n";
-            }
-            if (i != sentences_len_t-1) content += "\n";
-        }
-        var conllu_blob = new Blob([content], {type: "text/plain"});
-        var url = window.URL.createObjectURL(conllu_blob);
-        var anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = "main.conllu";
-        anchor.click();
-        window.URL.revokeObjectURL(url);
-        document.removeChild(anchor);
-    }
+        post_to_save(type);
+}
     else if (type == "do") {
         let sel = document.getElementById("row_select_select");
         let selected = sel.options[sel.selectedIndex].text;
         let input_number = parseInt(document.getElementById("row_select_input").value);
         if (selected == "Go to sentence") {
-            let next_sentence_id = input_number;
-            if (next_sentence_id >= 0) inject_sentence();
+            post_to_save("go", input_number);
         }
         else if (selected == "Add row") {
 

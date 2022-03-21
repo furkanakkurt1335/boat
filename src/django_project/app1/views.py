@@ -127,24 +127,47 @@ def view_treebank(request, treebank):
     context = {'sentences': sentences, 'message': message}
     return render(request, 'view_treebank.html', context)
 
+def replace_path(current_path, type, number=None):
+    path_split = current_path.split('/')
+    print(path_split)
+    new_path = '/'.join(path_split[:3]) + '/'
+    current_number = int(path_split[-1])
+    number_to_go = current_number
+    if type == 'previous':
+        if current_number > 0: number_to_go = current_number - 1
+    elif type == 'next':
+        number_to_go = 5
+        number_to_go = current_number + 1
+    elif type == 'go': number_to_go = number
+    return new_path + str(number_to_go)
+
 import json
 @login_required
 def annotate(request, treebank, id):
-    message, sentence, errors = None, None, None
-    treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
-    if treebank_selected == None: message = 'There is no treebank with that title.'
+    if request.method == "POST":
+        data = request.POST['data']
+        # handle post, save, update, etc.
+        current_path = request.path
+        type = request.POST['type']
+        if type == 'go': number = request.POST['number']
+        else: number = None
+        return redirect(replace_path(current_path, type, number))
     else:
-        sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
-        if id < len(sentences_filtered):
-            sentence = sentences_filtered[id]
-            annotations_filtered = Annotation.objects.filter(annotator=request.user, sentence=sentence)
-            if len(annotations_filtered) == 1: annotation = annotations_filtered[0]
-            else:
-                annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
-                annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
-                errors = '' # TODO: get errors from validate.py
-            # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
-    dep_graph_svg = None
-    annotation.cats = json.dumps(annotation.cats)
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
+        message, sentence, errors = None, None, None
+        treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
+        if treebank_selected == None: message = 'There is no treebank with that title.'
+        else:
+            sentences_filtered = Sentence.objects.filter(treebank=treebank_selected)
+            if id < len(sentences_filtered):
+                sentence = sentences_filtered[id]
+                annotations_filtered = Annotation.objects.filter(annotator=request.user, sentence=sentence)
+                if len(annotations_filtered) == 1: annotation = annotations_filtered[0]
+                else:
+                    annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
+                    annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
+                    errors = '' # TODO: get errors from validate.py
+                # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
+        dep_graph_svg = None
+        annotation.cats = json.dumps(annotation.cats)
+        context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
     return render(request, 'annotate.html', context)

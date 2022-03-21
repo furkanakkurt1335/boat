@@ -19,7 +19,9 @@
             <p id="annotation.cats" hidden="true">{{annotation.cats}}</p>
             <p id="annotation.notes" hidden="true">{{annotation.notes}}</p>
             <p id="errors" hidden="true">{{errors}}</p>
-
+            
+            {% csrf_token %}
+            
             <!-- {{ dep_graph }} -->
         {% endif %}
     {% endif %}
