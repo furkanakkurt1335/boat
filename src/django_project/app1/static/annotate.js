@@ -39,7 +39,7 @@ function post_to_save(type, number) {
         const form_type = document.createElement('input');
         form_type.type = 'hidden';
         form_type.name = "number";
-        form_type.value = number;
+        form_type.value = parseInt(number);
         form.append(form_type);
     }
 
@@ -68,6 +68,18 @@ function get_sentence_id_url() {
     return parseInt(matches[1]);
 }
 
+function get_sorted_cells_keys() {
+    let cells_keys = Object.keys(window.cells).sort();
+    for (let i = 0; i < cells_keys.length; i++) {
+        if (cells_keys[i].indexOf('-') != -1) {
+            let temp = cells_keys[i];
+            cells_keys[i] = cells_keys[i-1];
+            cells_keys[i-1] = temp;
+        }
+    }
+    return cells_keys;
+}
+
 function button_handle(type) {
     if (["previous", "next", "save"].indexOf(type) != -1) {
         post_to_save(type);
@@ -79,15 +91,36 @@ function button_handle(type) {
     else if (type == "do") {
         let sel = document.getElementById("row_select_select");
         let selected = sel.options[sel.selectedIndex].text;
-        let input_number = parseInt(document.getElementById("row_select_input").value);
+        let input_number = document.getElementById("row_select_input").value;
         if (selected == "Go to sentence") {
             post_to_save("go", input_number);
         }
-        else if (selected == "Add row") {
-
-        }
-        else if (selected == "Remove row") {
-
+        else if (["Add row", "Remove row"].indexOf(selected) != -1) {
+            let cells_keys = get_sorted_cells_keys();
+            if (cells_keys.indexOf(input_number) == -1) return;
+            let row_place = cells_keys.indexOf(input_number);
+            if (selected == "Add row") {
+                input_number = parseInt(input_number);
+                if (input_number == NaN) return;
+                let new_row = `${input_number}-${input_number+1}`;
+                window.cells[new_row] = window.cells[cells_keys[row_place]];
+                window.cells[(parseInt(cells_keys[cells_keys.length-1])+1).toString()] = window.cells[cells_keys[cells_keys.length-1]];
+                for (let i = cells_keys.length-1; i > row_place; i--) {
+                    if (cells_keys[i].indexOf('-') != -1) {
+                        let matches = cells_keys[i].match(/(\d+)-(\d+)/);
+                        let n1 = matches[1];
+                        window.cells[`${n1+1}-${n1+2}`] = window.cells[cells_keys[i]];
+                    }
+                    else window.cells[cells_keys[i]] = window.cells[cells_keys[i-1]];
+                }
+            }
+            else if (selected == "Remove row") {
+                for (let i = row_place; i < cells_keys.length-1; i++) {
+                    window.cells[cells_keys[i]] = window.cells[cells_keys[i+1]];
+                }
+                delete window.cells[cells_keys[cells_keys.length-1]];
+            }
+            inject_sentence();
         }
     }
     else if (type == "undo") {
@@ -323,7 +356,7 @@ function inject_sentence() {
     table.append(tbody);
     let row = document.createElement("tr");
     let form_count = Object.keys(cells).length;
-    let cells_keys = Object.keys(cells);
+    let cells_keys = get_sorted_cells_keys();
     for (let i = 0; i < form_count; i++) {
         let heading = document.createElement("th");
         heading.innerHTML = cells_keys[i];
@@ -391,7 +424,7 @@ function inject_sentence() {
 }
 
 function cell_change(form, column, cell) {
-    let cells_keys = Object.keys(cells);
+    let cells_keys = get_sorted_cells_keys();
     cells[cells_keys[form]][current_columns[column].toLowerCase()] = cell;
 }
 
