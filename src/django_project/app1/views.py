@@ -129,7 +129,6 @@ def view_treebank(request, treebank):
 
 def replace_path(current_path, type, number=None):
     path_split = current_path.split('/')
-    print(path_split)
     new_path = '/'.join(path_split[:3]) + '/'
     current_number = int(path_split[-1])
     number_to_go = current_number
@@ -144,8 +143,10 @@ def replace_path(current_path, type, number=None):
 import json
 @login_required
 def annotate(request, treebank, id):
+    sentence, message, annotation, errors, dep_graph = None, None, None, None, None
     if request.method == "POST":
         data = request.POST['data']
+        notes = request.POST['notes']
         # handle post, save, update, etc.
         current_path = request.path
         type = request.POST['type']
@@ -153,7 +154,6 @@ def annotate(request, treebank, id):
         else: number = None
         return redirect(replace_path(current_path, type, number))
     else:
-        message, sentence, errors = None, None, None
         treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
         if treebank_selected == None: message = 'There is no treebank with that title.'
         else:
@@ -169,5 +169,5 @@ def annotate(request, treebank, id):
                 # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
         dep_graph_svg = None
         annotation.cats = json.dumps(annotation.cats)
-        context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
     return render(request, 'annotate.html', context)

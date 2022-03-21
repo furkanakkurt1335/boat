@@ -11,7 +11,11 @@ window.onload = function() {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.errors = document.getElementById('errors').innerHTML;
+    window.initial_cells = window.cells;
     window.edits = []; // use for undo, redos
+    window.edits_undone = [];
+    window.last_focus = null;
+    window.last_focus_value = null;
     init_page();
 };
 
@@ -25,6 +29,7 @@ function post_to_save(type, number) {
     const csrf_token_input = document.getElementsByName('csrfmiddlewaretoken')[0];
     form.append(csrf_token_input);
 
+    // Type
     const form_type = document.createElement('input');
     form_type.type = 'hidden';
     form_type.name = "type";
@@ -37,12 +42,23 @@ function post_to_save(type, number) {
         form_type.value = number;
         form.append(form_type);
     }
+
+    // Cells
     const form_data = document.createElement('input');
     form_data.type = 'hidden';
     form_data.name = "data";
     form_data.value = JSON.stringify(window.cells);
     form.append(form_data);
     document.body.append(form);
+
+    // Notes
+    const form_notes = document.createElement('input');
+    form_notes.type = 'hidden';
+    form_notes.name = "notes";
+    form_notes.value = window.notes;
+    form.append(form_notes);
+    document.body.append(form);
+
     form.submit();
 }  
 
@@ -53,19 +69,13 @@ function get_sentence_id_url() {
 }
 
 function button_handle(type) {
-    if (type == "previous") {
-        post_to_save(type);
-    }
-    else if (type == "next") {
+    if (["previous", "next", "save"].indexOf(type) != -1) {
         post_to_save(type);
     }
     else if (type == "col_add_rm_button") {
         let sel = document.getElementById("col_add_rm_select");
         if (sel.selectedIndex != 0) column_change(sel.options[sel.selectedIndex].text);
     }
-    else if (type == "save") {
-        post_to_save(type);
-}
     else if (type == "do") {
         let sel = document.getElementById("row_select_select");
         let selected = sel.options[sel.selectedIndex].text;
@@ -77,16 +87,28 @@ function button_handle(type) {
 
         }
         else if (selected == "Remove row") {
+
         }
     }
     else if (type == "undo") {
-        
+        if (window.edits.length == 0) return;
+        let last_edit = window.edits.pop();
+        let undone_pair = [last_edit[0], window.cells[last_edit[0][0]][last_edit[0][1].toLowerCase()]];
+        window.edits_undone.push(undone_pair);
+        window.cells[last_edit[0][0]][last_edit[0][1].toLowerCase()] = last_edit[1];
+        inject_sentence();
     }
     else if (type == "redo") {
-        
+        if (window.edits_undone.length == 0) return;
+        let last_edit_undone = window.edits_undone.pop();
+        let redone_pair = [last_edit_undone[0], window.cells[last_edit_undone[0][0]][last_edit_undone[0][1].toLowerCase()]];
+        window.edits.push(redone_pair);
+        window.cells[last_edit_undone[0][0]][last_edit_undone[0][1].toLowerCase()] = last_edit_undone[1];
+        inject_sentence();
     }
     else if (type == "reset") {
-
+        window.cells = window.initial_cells;
+        inject_sentence();
     }
 }
 
@@ -116,7 +138,7 @@ document.onkeyup = function(e) {
     else if (e.key.toLowerCase() == "t" && e.altKey) {
         document.getElementById("table").focus();
     }
-    else if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+    else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
         let act_el_id = document.activeElement.id;
         let matches = act_el_id.match(/row:(\d*), column:(\d*)/);
         if (matches.length == 3) {
@@ -283,10 +305,6 @@ var cats = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "D
 var features = ["Abbr", "Animacy", "Aspect", "Case", "Clusivity", "Definite", "Degree", "Evident", "Foreign", "Gender", "Mood", "NounClass", "Number", "NumType", "Person", "Polarity", "Polite", "Poss", "PronType", "Reflex", "Tense", "Typo", "VerbForm", "Voice"];
 const all_column_count = cats.length + features.length;
 
-function create_table() {
-
-}
-
 function inject_sentence() {
     let cells = window.cells;
     let t_s_i = document.getElementById("sentence_indices");
@@ -355,8 +373,15 @@ function inject_sentence() {
             data.id = `row:${i}, column:${j}`;
             data.style.textAlign = "center";
             data.contentEditable = "true";
-            data.addEventListener("input", (event) => {
-                cell_change(i, j, event.target.innerHTML);
+            data.addEventListener("focus", (event) => {
+                window.last_focus = [cells_keys[i], current_columns[j]];
+                window.last_focus_value = event.target.innerHTML;
+            });
+            data.addEventListener("blur", (event) => { // potential problem with unfocusing after column removal!
+                if (window.last_focus_value != event.target.innerHTML) {
+                    cell_change(i, j, event.target.innerHTML);
+                    window.edits.push([window.last_focus, window.last_focus_value]);
+                }
             });
             row.append(data);
         }
@@ -366,7 +391,8 @@ function inject_sentence() {
 }
 
 function cell_change(form, column, cell) {
-    sentences[current_sentence_index][form][current_columns[column]] = cell;
+    let cells_keys = Object.keys(cells);
+    cells[cells_keys[form]][current_columns[column].toLowerCase()] = cell;
 }
 
 function column_click(column_name) {
@@ -377,8 +403,4 @@ function column_click(column_name) {
     }
     current_columns = arr_t;
     inject_sentence();
-}
-
-function error_handle() {
-
 }
