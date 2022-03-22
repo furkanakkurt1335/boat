@@ -38,7 +38,7 @@ class QDataViewer(QWidget):
 
         self.setWindowTitle('BoAT, Annotation Tool')
         DIP_logo = QIcon()
-        DIP_logo.addFile(f'{THISDIR}/DIP_logo.png')
+        DIP_logo.addFile(os.path.join(THISDIR, 'DIP_logo.png'))
         self.setWindowIcon(DIP_logo)
 
         self.sentence_id = 0
@@ -591,11 +591,8 @@ class QDataViewer(QWidget):
         for word in self.sentence.words:
             content += '\t'.join(word.get_list()) + '\n'
         content += '\n'
-        open(f'{THISDIR}/errors.conllu', 'w', encoding='utf-8').write(content)
-        cmd_t = 'python'
-        if 'darwin' in self.platform or 'linux' in self.platform: cmd_t += '3'
-        result = subprocess.getoutput(fr'{cmd_t} "{THISDIR}/validate.py" --lang {self.language} "{THISDIR}/errors.conllu"')
-        self.qTextEditError.setText(result)
+        p = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=content, encoding='utf-8', capture_output=True)
+        self.qTextEditError.setText(p.stderr)
 
     def cb_change(self):
         self.column_number = 0
