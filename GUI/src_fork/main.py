@@ -554,12 +554,8 @@ class QDataViewer(QWidget):
         self.tableWidget.resizeColumnsToContents()
 
     def check_errors(self):
-        index = ''
-        for w in self.sentence.words:
-            index += w.cats['form'] + '(' + w.cats['id'] + ') '
-        index += '\n'
-        content = '# sent_id = ' + self.sentence.sent_id + '\n'
-        content += '# text = ' + self.sentence.text + '\n'
+        content = f'# sent_id = {self.sentence.sent_id}\n'
+        content += f'# text = {self.sentence.text}\n'
         for word in self.sentence.words:
             content += '\t'.join(word.get_list()) + '\n'
         content += '\n'

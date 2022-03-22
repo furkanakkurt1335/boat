@@ -167,9 +167,9 @@ def annotate(request, treebank, id):
         else: number = None
         return redirect(replace_path(current_path, button_type, number))
     else:
-        errors = '' # TODO: get errors from validate.py
         # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
         dep_graph_svg = None
         annotation.cats = json.dumps(annotation.cats)
+        errors = conllu.get_errors(sentence.sent_id, sentence.text, json.loads(annotation.cats))
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
     return render(request, 'annotate.html', context)

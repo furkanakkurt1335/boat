@@ -1,4 +1,6 @@
-import re
+import re, subprocess, os, sys
+
+THISDIR = os.path.dirname(os.path.realpath(__file__))
 
 def validate_uploaded_file(f):
     file_text = None
@@ -48,3 +50,15 @@ def parse_file(f):
                         sentence[id_t][cats[i-1]] = cat_t
         sentences.append(sentence)
     return sentences
+
+def get_errors(sent_id, text, content):
+    input = f'# sent_id = {sent_id}\n'
+    input += f'# text = {text}\n'
+    order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] # id & misc removed
+    for key in content.keys():
+        input += f'{key}\t' # id
+        for i in range(8):
+            input += f'{content[key][order[i]]}\t'
+        input += f'{content[key]["misc"]}\n' # misc
+    input += '\n'
+    return subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=input, encoding='utf-8', capture_output=True).stderr

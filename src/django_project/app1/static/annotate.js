@@ -419,6 +419,23 @@ function inject_sentence() {
         tbody.append(row);
     }
     document.body.append(table);
+
+    display_errors();
+}
+
+function display_errors() {
+    let errors_div = document.createElement('div');
+    let errors_h2 = document.createElement('h2');
+    errors_h2.style.color = 'red';
+    errors_h2.innerHTML = 'Errors:';
+    errors_div.append(errors_h2);
+    let br = document.createElement('br');
+    let errors = window.errors.split('\n');
+    for (let i = 0; i < errors.length; i++) {
+        errors_div.innerHTML += errors[i];
+        errors_div.append(br);
+    }
+    document.body.append(errors_div);
 }
 
 function cell_change(key, column, cell) {
