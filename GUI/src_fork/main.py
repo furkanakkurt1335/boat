@@ -283,7 +283,7 @@ class QDataViewer(QWidget):
         self.vBoxLayout.addWidget(self.splitter1)
 
         self.linear_dep_graph = QWebEngineView()
-        self.linear_dep_graph.setZoomFactor(0.85)
+        self.linear_dep_graph.setZoomFactor(0.80)
 
         self.update_table()
         self.update_dep_graph()
@@ -563,9 +563,8 @@ class QDataViewer(QWidget):
         for word in self.sentence.words:
             content += '\t'.join(word.get_list()) + '\n'
         content += '\n'
-        open(f'{THISDIR}/errors.conllu', 'w', encoding='utf-8').write(content)
-        result = subprocess.getoutput(fr'"{sys.executable}" "{THISDIR}/validate.py" --lang {self.language} "{THISDIR}/errors.conllu"')
-        self.qTextEditError.setText(result)
+        p = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=content, encoding='utf-8', capture_output=True)
+        self.qTextEditError.setText(p.stderr)
 
     def cb_change(self):
         self.column_number = 0
