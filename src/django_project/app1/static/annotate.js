@@ -420,7 +420,32 @@ function inject_sentence() {
     }
     document.body.append(table);
 
+    // create_graph();
     display_errors();
+}
+
+function create_graph() {
+    let cells = window.cells;
+    let code = document.createElement('code');
+    code.className = "conllu-parse";
+    code.setAttribute("tabs", "yes");
+    console.log(code);
+    let pre = document.createElement('pre');
+    pre.innerHTML += `# sent_id = ${window.sent_id}\n`;
+    pre.innerHTML += `# text = ${window.text}\n`;
+    let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
+    let cells_keys = get_sorted_cells_keys();
+    for (let i = 0; i < cells_keys.length; i++) {
+        let key = cells_keys[i];
+        pre.innerHTML += key + "\t";
+        for (let j = 0; j < 8; j++) {
+            pre.innerHTML += cells[key][order[j]] + "\t";
+        }
+        pre.innerHTML += cells[key]["misc"] + "\n"; // misc
+    }
+    pre.innerHTML += "\n";
+    code.append(pre);
+    document.body.append(code);
 }
 
 function display_errors() {

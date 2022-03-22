@@ -170,6 +170,6 @@ def annotate(request, treebank, id):
         # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
         dep_graph_svg = None
         annotation.cats = json.dumps(annotation.cats)
-        errors = conllu.get_errors(sentence.sent_id, sentence.text, json.loads(annotation.cats))
+        # errors = conllu.get_errors(sentence.sent_id, sentence.text, json.loads(annotation.cats))
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
     return render(request, 'annotate.html', context)
