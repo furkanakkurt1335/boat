@@ -170,3 +170,7 @@ def annotate(request, treebank, id):
         annotation.cats = json.dumps(annotation.cats)
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors}
     return render(request, 'annotate.html', context)
+
+@login_required
+def search(request):
+    return render(request, 'search.html')

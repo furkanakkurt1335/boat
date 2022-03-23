@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title> Search Page </title>
+{% endblock %}
+
+{% block body %}
+<form method="post" action="{% url 'search' %}" enctype="multipart/form-data">{% csrf_token %}
+    <input type="text" name="query" placeholder="Query"><br><br>
+    <input type="checkbox" name="regex">Regex<br><br>
+    <input type="submit" value="Search"><br><br>
+    {{message}}
+</form>
+{% endblock %}
