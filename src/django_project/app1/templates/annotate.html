@@ -29,13 +29,17 @@
             
             {% csrf_token %}
             
+            <div id="vis"></div>
+            <div id="dep_graph" class="conllu-parse" data-visid="vis" data-inputid="input" data-parsedid="parsed" data-logid="log"/> 
+                <!-- <code class="conllu-parse" tabs="yes"> -->
+                <!-- <pre id="dep_graph"></pre> -->
+                </div>
             <!-- {{ dep_graph }} -->
         {% endif %}
     {% endif %}
 {% endblock %}
 
 {% block conllu-js %}
-
 <!-- conllu.js -->
 <script type="text/javascript">
     head.js(
@@ -65,17 +69,9 @@
     );
 
     var webFontURLs = [
-        '{% static 'fonts/PT_Sans-Caption-Web-Regular.ttf' %}',
-        '{% static 'fonts/Liberation_Sans-Regular.ttf' %}'
+        '{% static 'static/fonts/PT_Sans-Caption-Web-Regular.ttf' %}',
+        '{% static 'static/fonts/Liberation_Sans-Regular.ttf' %}'
     ];
-
-    /* not used here */
-    var documentCollections = {};
-
-    head.ready(function() {
-	// performes all embedding and support functions
-	Annodoc.activate(Config.bratCollData, documentCollections);
-    });
 </script>
 <!-- conllu.js -->
 {% endblock %}

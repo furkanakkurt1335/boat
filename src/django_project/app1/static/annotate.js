@@ -374,7 +374,7 @@ function inject_sentence() {
 
     br = document.createElement("br");
     br.id = "br";
-    document.body.append(br);
+    document.body.append(br.cloneNode(true));
 
     // Show table
     table = document.createElement("table");
@@ -419,20 +419,19 @@ function inject_sentence() {
         tbody.append(row);
     }
     document.body.append(table);
-
-    // create_graph();
+    document.body.append(br.cloneNode(true));
+    
+    create_graph();
+    document.body.append(br.cloneNode(true));
     display_errors();
 }
 
 function create_graph() {
     let cells = window.cells;
-    let code = document.createElement('code');
-    code.className = "conllu-parse";
-    code.setAttribute("tabs", "yes");
-    console.log(code);
-    let pre = document.createElement('pre');
-    pre.innerHTML += `# sent_id = ${window.sent_id}\n`;
-    pre.innerHTML += `# text = ${window.text}\n`;
+    let pre = document.getElementById("dep_graph");
+    pre.innerHTML = "";
+    // pre.innerHTML += `# sent_id = ${window.sent_id}\n`;
+    // pre.innerHTML += `# text = ${window.text}\n`;
     let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
     let cells_keys = get_sorted_cells_keys();
     for (let i = 0; i < cells_keys.length; i++) {
@@ -443,9 +442,9 @@ function create_graph() {
         }
         pre.innerHTML += cells[key]["misc"] + "\n"; // misc
     }
-    pre.innerHTML += "\n";
-    code.append(pre);
-    document.body.append(code);
+    Annodoc.activate(Config.bratCollData, {});
+    let vis = document.getElementById('vis');
+    document.body.append(vis);
 }
 
 function display_errors() {
