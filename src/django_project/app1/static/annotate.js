@@ -430,8 +430,6 @@ function create_graph() {
     let cells = window.cells;
     let pre = document.getElementById("dep_graph");
     pre.innerHTML = "";
-    // pre.innerHTML += `# sent_id = ${window.sent_id}\n`;
-    // pre.innerHTML += `# text = ${window.text}\n`;
     let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
     let cells_keys = get_sorted_cells_keys();
     for (let i = 0; i < cells_keys.length; i++) {

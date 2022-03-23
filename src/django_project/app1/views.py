@@ -6,7 +6,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
 from .models import SentenceManager, Treebank, Sentence, Annotation
 from . import conllu
-from . import dep_graph
 
 def register(request):
     if request.method == 'POST':
@@ -143,7 +142,7 @@ def replace_path(current_path, type, number=None):
 import json
 @login_required
 def annotate(request, treebank, id):
-    sentence, message, annotation, errors, dep_graph = None, None, None, None, None
+    sentence, message, annotation, errors = None, None, None, None
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
     if treebank_selected == None: message = 'There is no treebank with that title.'
     else:
@@ -167,9 +166,7 @@ def annotate(request, treebank, id):
         else: number = None
         return redirect(replace_path(current_path, button_type, number))
     else:
-        # dep_graph_svg = dep_graph.get_dep_graph(annotation.cats)
-        dep_graph_svg = None
+        errors = conllu.get_errors(sentence.sent_id, sentence.text, annotation.cats)
         annotation.cats = json.dumps(annotation.cats)
-        # errors = conllu.get_errors(sentence.sent_id, sentence.text, json.loads(annotation.cats))
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors, 'dep_graph': dep_graph_svg}
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors}
     return render(request, 'annotate.html', context)
