@@ -47,14 +47,6 @@ BoAT v1~\cite{turk-etal-2019-turkish}, the initial desktop application.
 Django\cite{django}
 Other annotation tools 3rd party or ones maintained by UD.
 
-\section{Desktop Modifications}
-
-Some modifications have been done to the desktop version of the tool, taking into account the users' feedback. Most modifications have to do with screen space considerations.
-Categorical labels for columns have been removed from the top of the window to increase the space that can be used by the annotation table. Instead, a textbox is used specify which column to add or remove from the table. Additionally, an autocomplete feature is provided, where a user can write a column's name in the textbox in a shorthand way and the application selects the column if the provided value matches a valid column. For example, writing \textit{depr} is enough to bring the DEPREL column, or hide.
-Another autocomplete feature requested by our annotator is used in the table itself where a user can enter a value to a field and the application ensures that the entry is valid by checking the entry against all possible values. For example, writing \textit{s} in the Number column fills the cell with \textit{Single} immediately after entry.
-A linear dependency graph from the Python library \textit{spacy} is included instead of the previous UD graph. This is a more compact and informative graph, attested to by our annotator.
-Error validation is improved by using the most recent script and data provided by the UD framework.
-
 \section{Requirements and Design}
 
 First tool's requirements and new requirements that have been constructed as a result of and throughout the usage of the initial tool are here. It should be condensed and readable, not enumerated.
