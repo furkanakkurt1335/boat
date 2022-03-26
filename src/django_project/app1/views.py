@@ -167,23 +167,40 @@ def annotate(request, treebank, id):
             annotations_filtered = Annotation.objects.filter(annotator=request.user, sentence=sentence)
             if len(annotations_filtered) == 1: annotation = annotations_filtered[0]
             else:
-                annotation_else = Annotation.objects.filter(sent_id=sentence.sent_id)[0]
-                annotation = Annotation.objects.create_annotation(annotator=request.user, sentence=sentence, cats=annotation_else.cats)
+                dummy_user = User.objects.get(username=DUMMY_USER_NAME)
+                annotation = Annotation.objects.get(annotator=dummy_user, sentence=sentence)
     if request.method == "POST":
         data = request.POST['data']
         notes = request.POST['notes']
-        annotation.cats = json.loads(data)
+        word_lines = json.loads(data)
         annotation.notes = notes
-        annotation.save()
+        if request.user == annotation.annotator:
+            anno_t = annotation.save()
+        else:
+            anno_t = Annotation.objects.create_annotation(request.user, sentence, notes)
+        for key in word_lines.keys():
+            line_t = word_lines[key]
+            id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
+            wl_t = Word_Line.objects.get(annotation=anno_t, id_f=id_f)
+            if wl_t:
+                wl_t.form_f, wl_t.lemma, wl_t.upos, wl_t.xpos, wl_t.feats, wl_t.head, wl_t.deprel, wl_t.deps, wl_t.misc = form_f, lemma, upos, xpos, feats, head, deprel, deps, misc
+                wl_t.save()
+            else:
+                word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc)
         current_path = request.path
         button_type = request.POST['type']
         if button_type == 'go': number = request.POST['number']
         else: number = None
         return redirect(replace_path(current_path, button_type, number))
-    else:
-        errors = conllu.get_errors(sentence.sent_id, sentence.text, annotation.cats)
-        annotation.cats = json.dumps(annotation.cats)
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'errors': errors}
+    elif request.method == "GET":
+        word_lines_selected = Word_Line.objects.filter(annotation=annotation)
+        cats = {}
+        for word_line in word_lines_selected:
+            id_f = word_line.id_f
+            cats[id_f] = {'form': word_line.form_f, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos, 'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
+        errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
+        cats = json.dumps(cats)
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors}
     return render(request, 'annotate.html', context)
 
 @login_required
