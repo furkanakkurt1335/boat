@@ -399,9 +399,11 @@ function inject_sentence() {
 
     for (let i = 0; i < form_count; i++) {
         let feats = cells[cells_keys[i]]['feats'].split('|');
-        for (let j = 0; j < feats.length; j++) {
-            let matches = feats[j].match(/(.+)=(.+)/);
-            cells[cells_keys[i]][matches[1].toLowerCase()] = matches[2];
+        if (feats != '_') {
+            for (let j = 0; j < feats.length; j++) {
+                let matches = feats[j].match(/(.+)=(.+)/);
+                cells[cells_keys[i]][matches[1].toLowerCase()] = matches[2];
+            }
         }
         let row = document.createElement("tr");
         for (let j = 0; j < current_columns.length; j++) {
@@ -418,7 +420,7 @@ function inject_sentence() {
             });
             data.addEventListener("blur", (event) => { // potential problem with unfocusing after column removal!
                 if (window.last_focus_value != event.target.innerHTML) {
-                    cell_change(i, j, event.target.innerHTML);
+                    cell_change(cells_keys[i], j, event.target.innerHTML);
                     window.edits.push([window.last_focus, window.last_focus_value]);
                 }
             });

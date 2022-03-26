@@ -218,4 +218,24 @@ def annotate(request, treebank, order):
 
 @login_required
 def search(request):
-    return render(request, 'search.html')
+    message = None
+    if request.method == "POST":
+        data = request.POST
+        if 'type_select' not in data.keys():
+            message = 'You need to select a type.'
+        else:
+            search_type = data['type_select']
+            search_query = data['search']
+            if 'regex' in data.keys():
+                regexp = True
+            data = {1:2, 3:4}
+            return redirect('search_result')
+    elif request.method == "GET":
+        pass
+    context = {'message': message}
+    return render(request, 'search.html', context)
+
+@login_required
+def search_result(request, x):
+    context = {'1':x}
+    return render(request, 'search_result.html', context)
