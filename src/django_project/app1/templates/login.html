@@ -10,11 +10,11 @@
 <main class="form-signin">
     <form method="post" action="{% url 'login' %}">{% csrf_token %}
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username"><br><br>
+            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username"><br>
             <label for="floatingInput">Username</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password"><br><br>
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password"><br>
             <label for="floatingPassword">Password</label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit" value="Log in">Log in</button>

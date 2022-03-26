@@ -5,26 +5,33 @@
 {% endblock %}
 
 {% block body %}
-<form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
-    {% if treebanks|length == 0 %}
+
+<div class="container">
+    <br><br>
+    <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
+        {% if treebanks|length == 0 %}
         You need to create a treebank first. Go <a href="{% url 'create_treebank' %}">here</a>.
-    {% else %}
-    <select id="treebank_select">
-        {% for treebank in treebanks %}
-        <option value="{{treebank}}"> {{treebank}} </option>
-        {% endfor %}
-    </select>
-    <input hidden="true" type="text" id="title" name="title" maxlength="50" required id="id_title" placeholder="Treebank Name"><br><br>
-    <input type="file" name="file" required id="id_file"><br><br>
-    <input type="submit" value="Upload"><br><br>
-    {{message}}
-    {% endif %}
-</form>
+        {% else %}
+        Choose a treebank to upload to:
+        <select id="treebank_select">
+            {% for treebank in treebanks %}
+            <option value="{{treebank}}"> {{treebank}} </option>
+            {% endfor %}
+        </select>
+        <input hidden="true" type="text" id="title" name="title" maxlength="50" required id="id_title"
+            placeholder="Treebank Name"><br><br>
+        <input class="form-control form-control-lg" type="file" name="file" required id="id_file"><br><br>
+        <input type="submit" value="Upload"><br><br>
+        {{message}}
+        {% endif %}
+    </form>
+</div>
+
 <script>
     title_input = document.getElementById('title');
     treebank_select = document.getElementById('treebank_select');
     title_input.value = treebank_select.options[treebank_select.selectedIndex].text;
-    treebank_select.addEventListener("change", function() {
+    treebank_select.addEventListener("change", function () {
         title_input.value = treebank_select.options[treebank_select.selectedIndex].text;
     });
 </script>

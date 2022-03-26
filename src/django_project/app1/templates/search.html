@@ -6,9 +6,30 @@
 
 {% block body %}
 <form method="post" action="{% url 'search' %}" enctype="multipart/form-data">{% csrf_token %}
-    <input type="text" name="query" placeholder="Query"><br><br>
-    <input type="checkbox" name="regex">Regex<br><br>
-    <input type="submit" value="Search"><br><br>
-    {{message}}
+    <div class="container">
+        <div style="max-width: 330px;">
+            <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit" value="Search">Search</button>
+        </div>
+        <input type="checkbox" name="regex">Regex<br><br>
+        {{message}}
+    </div>
 </form>
+<div class="container px-4">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border bg-light">
+                <input style="max-width: 330px;" class="form-control" name="search" type="search"
+                    placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit" value="Search">Search</button>
+            </div>
+        </div>
+        <!-- <div class="col">
+            <div class="p-3 border bg-light">
+                <input type="checkbox" name="regex">Regex<br><br>
+                {{message}}
+            </div>
+        </div> -->
+    </div>
+</div>
 {% endblock %}

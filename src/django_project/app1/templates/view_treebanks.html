@@ -1,0 +1,12 @@
+{% extends 'base-nav.html' %}
+
+{% block head %}
+<title> View Treebanks Page </title>
+{% endblock %}
+
+{% block body %}
+    <strong>Treebanks</strong><br>
+    {% for treebank in treebanks %}
+        <a href={% url 'view_treebank' treebank %}>{{treebank}}</a><br>
+    {% endfor %}
+{% endblock %}

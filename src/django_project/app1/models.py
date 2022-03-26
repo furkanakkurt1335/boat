@@ -18,13 +18,16 @@ class Treebank(models.Model):
 
 class SentenceManager(models.Manager):
     def create_sentence(self, treebank, sent_id, text, comments={}):
-        sentence = self.create(treebank=treebank, sent_id=sent_id, text=text, comments=comments)
+        if len(Sentence.objects.filter(treebank=treebank)) == 0: next_order = 1
+        else: next_order = list(Sentence.objects.filter(treebank=treebank).order_by('order'))[-1].order + 1
+        sentence = self.create(order=next_order, treebank=treebank, sent_id=sent_id, text=text, comments=comments)
         return sentence
 
 class Sentence(models.Model):
     class Meta:
         unique_together = ['sent_id', 'text']
 
+    order = models.PositiveIntegerField()
     treebank = models.ForeignKey(Treebank, on_delete=models.CASCADE)
     sent_id = models.CharField(max_length=30)
     text = models.TextField()

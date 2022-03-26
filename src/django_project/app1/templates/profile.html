@@ -1,10 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base-nav.html' %}
 
 {% block head %}
 <title> Profile Page </title>
 {% endblock %}
 
 {% block body %}
-    {{user}}<br><br>
-    <a href={% url 'logout' %}>Log out</a>
 {% endblock %}

@@ -10,7 +10,9 @@ urlpatterns = [
     path('upload_file/', views.upload_file, name='upload_file'),
     path('test/', views.test, name='test'),
     path('create_treebank/', views.create_treebank, name='create_treebank'),
+    path('view_treebanks/', views.view_treebanks, name='view_treebanks'),
     path('view_treebank/<slug:treebank>', views.view_treebank, name='view_treebank'),
-    path('annotate/<slug:treebank>/<int:id>', views.annotate, name='annotate'),
+    path('annotate/<slug:treebank>/<int:order>', views.annotate, name='annotate'),
     path('search/', views.search, name='search'),
+    path('help/', views.help, name='help'),
 ]
