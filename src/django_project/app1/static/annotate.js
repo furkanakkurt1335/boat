@@ -167,7 +167,7 @@ document.onkeyup = function(e) {
         button_handle("save");
     }
     else if (e.key.toLowerCase() == "t" && e.altKey) {
-        document.getElementById("table").focus();
+        document.getElementById("word_lines").focus();
     }
     else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
         let act_el_id = document.activeElement.id;
@@ -176,7 +176,7 @@ document.onkeyup = function(e) {
             let row = parseInt(matches[1]);
             let column = parseInt(matches[2]);
 
-            let form_count = document.getElementById("table").getElementsByTagName("tr").length-1;
+            let form_count = document.getElementById("word_lines").getElementsByTagName("tr").length-1;
             if (e.key == "ArrowUp" && row != 0) {
                 document.getElementById(`row:${row-1}, column:${column}`).focus();
             }
@@ -315,19 +315,6 @@ function init_page() {
         buttons[i].style = "margin: 5px";
     }
 
-    let br = document.createElement("br");
-    br.id = "br";
-    document.body.append(br.cloneNode(true));
-
-    const p_text = document.createElement("p");
-    p_text.id = "sentence_text";
-    document.body.append(p_text);
-    document.body.append(br);
-
-    const table = document.createElement("table");
-    table.id = "sentence_table";
-    document.body.append(table);
-
     current_columns = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
     inject_sentence();
 }
@@ -337,24 +324,21 @@ var features = ["Abbr", "Animacy", "Aspect", "Case", "Clusivity", "Definite", "D
 const all_column_count = cats.length + features.length;
 
 function inject_sentence() {
+    $('br').remove();
+    $('#sentence_text').remove();
+    $('#word_lines').remove();
     let cells = window.cells;
-    let t_s_i = document.getElementById("sentence_indices");
-    if (document.getElementById("sentence_indices") != undefined) document.body.removeChild(t_s_i);
-    let t = document.getElementById("table");
-    if (t != undefined) document.body.removeChild(t);
-    let br = document.getElementById("br");
-    if (br != undefined) document.body.removeChild(br);
 
     // Show sentence in table form with indices
-    let table = document.createElement("table");
-    table.id = "sentence_indices";
+    let sentence_text = document.createElement("table");
+    sentence_text.id = "sentence_text";
     let thead = document.createElement("thead");
     let tbody = document.createElement("tbody");
-    table.append(thead);
-    table.append(tbody);
+    sentence_text.append(thead);
+    sentence_text.append(tbody);
     let row = document.createElement("tr");
-    let form_count = Object.keys(cells).length;
     let cells_keys = get_sorted_cells_keys();
+    let form_count = cells_keys.length;
     for (let i = 0; i < form_count; i++) {
         let heading = document.createElement("th");
         heading.innerHTML = cells_keys[i];
@@ -370,19 +354,16 @@ function inject_sentence() {
         row.append(data);
     }
     tbody.append(row);
-    document.body.append(table);
-
-    br = document.createElement("br");
-    br.id = "br";
-    document.body.append(br.cloneNode(true));
+    document.body.append(sentence_text);
+    document.body.append(document.createElement("br"));
 
     // Show table
-    table = document.createElement("table");
-    table.id = "table";
+    let word_lines = document.createElement("table");
+    word_lines.id = "word_lines";
     thead = document.createElement("thead");
     tbody = document.createElement("tbody");
-    table.append(thead);
-    table.append(tbody);
+    word_lines.append(thead);
+    word_lines.append(tbody);
     row = document.createElement("tr");
     for (let i = 0; i < current_columns.length; i++) {
         let heading = document.createElement("th");
@@ -418,11 +399,11 @@ function inject_sentence() {
         }
         tbody.append(row);
     }
-    document.body.append(table);
-    document.body.append(br.cloneNode(true));
+    document.body.append(word_lines);
+    document.body.append(document.createElement("br"));
     
     create_graph();
-    document.body.append(br.cloneNode(true));
+    document.body.append(document.createElement("br"));
     display_errors();
 }
 
@@ -440,14 +421,22 @@ function create_graph() {
         }
         pre.innerHTML += cells[key]["misc"] + "\n"; // misc
     }
+    console.log(document.body);
+    document.body.append(document.getElementById('vis'));
+    document.body.append(document.getElementById('dep_graph'));
+    console.log(document.body);
     Annodoc.activate(Config.bratCollData, {});
-    let vis = document.getElementById('vis');
-    document.body.append(vis);
 }
 
 function display_errors() {
-    let errors_div = document.createElement('div');
-    let errors_h2 = document.createElement('h2');
+    let errors_div = document.getElementById('errors_div');
+    if (errors_div != undefined) document.body.removeChild(errors_div);
+    errors_div = document.createElement('div');
+    errors_div.id = "errors_div";
+    let errors_h2 = document.getElementById('errors_h2');
+    if (errors_h2 != undefined) document.body.removeChild(errors_h2);
+    errors_h2 = document.createElement('h2');
+    errors_h2.id = "errors_h2";
     errors_h2.style.color = 'red';
     errors_h2.innerHTML = 'Errors:';
     errors_div.append(errors_h2);

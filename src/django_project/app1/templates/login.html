@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-<title> Login Page </title>
+{% block head %}
+    <link rel="stylesheet" href="{% static 'signin.css' %}">
+    <title> Login Page </title>
 {% endblock %}
 
 {% block body %}
+<main class="form-signin">
     <form method="post" action="{% url 'login' %}">{% csrf_token %}
-        <input type="text" name="username" placeholder="Username"><br><br>
-        <input type="password" name="password" placeholder="Password"><br><br>
-        <input type="submit" value="Log in"><br><br>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username"><br><br>
+            <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password"><br><br>
+            <label for="floatingPassword">Password</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Log in">Log in</button>
     </form>
-    <a href={% url 'register' %}>Register page</a>
+    <br>
+    <a class="btn btn-primary" href={% url 'register' %} role="button">Register</a>
+  </main>
+
 {% endblock %}

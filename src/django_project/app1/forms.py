@@ -19,4 +19,4 @@ class SentenceForm(ModelForm):
 class AnnotationForm(ModelForm):
     class Meta:
         model = Annotation
-        fields = ['annotator', 'sentence', 'cats']
+        fields = ['annotator', 'sentence']

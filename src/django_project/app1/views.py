@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
-from .models import SentenceManager, Treebank, Sentence, Annotation
+from .models import SentenceManager, Treebank, Sentence, Annotation, Word_Line
 from . import conllu
+from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 
 def register(request):
     if request.method == 'POST':
@@ -16,6 +18,8 @@ def register(request):
         else:
             print(form)
     elif request.method == 'GET':
+        if request.user.is_active:
+            return redirect('profile')
         form = UserCreationForm()
         return render(request, 'register.html')
     return render(request, 'register.html')
@@ -35,6 +39,8 @@ def login(request):
         else:
             return redirect('login')
     elif request.method == 'GET':
+        if request.user.is_active:
+            return redirect('profile')
         form = AuthenticationForm()
         return render(request, 'login.html')
     return render(request, 'login.html')
@@ -60,7 +66,6 @@ def upload_file(request):
     treebanks = Treebank.objects.all()
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        print(request.POST['title'])
         if form.is_valid():
             file = request.FILES['file']
             is_valid_format = conllu.validate_uploaded_file(file)
@@ -86,12 +91,22 @@ def upload_file(request):
                     except: continue # duplicate
 
                     # Saving Annotation objects
-                    user = request.user
+                    user_selected = User.objects.filter(username=DUMMY_USER_NAME)
+                    if len(user_selected) == 0:
+                        user = User()
+                        user.username = DUMMY_USER_NAME
+                        user.password = DUMMY_USER_PW
+                        user.save()
+                    else: user = user_selected[0]
                     cats = {}
                     for key in sentence.keys():
                         if key not in ['sent_id', 'text', 'comments']: cats[key] = sentence[key]
-                    anno_t = Annotation.objects.create_annotation(user, sent_t, cats)
+                    anno_t = Annotation.objects.create_annotation(user, sent_t)
                     anno_t.save()
+                    for key in cats.keys():
+                        line_t = cats[key]
+                        id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
+                        word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc)
                 if not error: message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
             return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message, 'treebanks': treebanks})

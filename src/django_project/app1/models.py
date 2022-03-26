@@ -36,17 +36,39 @@ class Sentence(models.Model):
         return self.sent_id
 
 class AnnotationManager(models.Manager):
-    def create_annotation(self, annotator, sentence, cats, notes=''):
-        annotation = self.create(annotator=annotator, sentence=sentence, cats=cats, notes=notes)
+    def create_annotation(self, annotator, sentence, notes=''):
+        annotation = self.create(annotator=annotator, sentence=sentence, notes=notes)
         return annotation
 
 class Annotation(models.Model):
     annotator = models.ForeignKey(User, on_delete=models.CASCADE)
     sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
-    cats = models.JSONField()
     notes = models.TextField()
 
     objects = AnnotationManager()
 
     def __str__(self):
         return '%s by %s' % (self.sentence.sent_id, self.annotator)
+
+class Word_LineManager(models.Manager):
+    def create_word_line(self, annotation, id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc):
+        word_line = self.create(annotation=annotation, id_f=id_f, form_f=form_f, lemma=lemma, upos=upos, xpos=xpos, feats=feats, head=head, deprel=deprel, deps=deps, misc=misc)
+        return word_line
+
+class Word_Line(models.Model):
+    annotation = models.ForeignKey(Annotation, on_delete=models.CASCADE)
+    id_f = models.CharField(max_length=10)
+    form_f = models.CharField(max_length=100)
+    lemma = models.CharField(max_length=100)
+    upos = models.CharField(max_length=100)
+    xpos = models.CharField(max_length=100)
+    feats = models.CharField(max_length=500)
+    head = models.CharField(max_length=100)
+    deprel = models.CharField(max_length=100)
+    deps = models.CharField(max_length=100)
+    misc = models.CharField(max_length=200)
+
+    objects = Word_LineManager()
+
+    def __str__(self):
+        return '%s, ID: %s' % (self.annotation, self.id_f)
