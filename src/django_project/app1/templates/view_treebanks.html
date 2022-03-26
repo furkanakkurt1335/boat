@@ -5,8 +5,18 @@
 {% endblock %}
 
 {% block body %}
-    <strong>Treebanks</strong><br>
-    {% for treebank in treebanks %}
-        <a href={% url 'view_treebank' treebank %}>{{treebank}}</a><br>
-    {% endfor %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Treebanks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for treebank in treebanks %}
+        <tr>
+            <td><a href={% url 'view_treebank' treebank.title %}>{{treebank}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

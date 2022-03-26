@@ -9,7 +9,7 @@
         {{message}}
     {% else %}
         {% for sentence in sentences %}
-            {{sentence.text}} <a href={% url 'view_treebank' treebank.title sentence.order %}><span style="font-size: small;">{{sentence.sent_id}}</span></a><br><br>
+            {{sentence.text}} <a href={% url 'annotate' treebank.title sentence.order %}><span style="font-size: small;">{{sentence.sent_id}}</span></a><br><br>
         {% endfor %}
     {% endif %}
 {% endblock %}

@@ -398,6 +398,11 @@ function inject_sentence() {
     thead.append(row);
 
     for (let i = 0; i < form_count; i++) {
+        let feats = cells[cells_keys[i]]['feats'].split('|');
+        for (let j = 0; j < feats.length; j++) {
+            let matches = feats[j].match(/(.+)=(.+)/);
+            cells[cells_keys[i]][matches[1].toLowerCase()] = matches[2];
+        }
         let row = document.createElement("tr");
         for (let j = 0; j < current_columns.length; j++) {
             let data = document.createElement("td");
@@ -477,6 +482,18 @@ function cell_change(key, column, cell) {
     let cells_keys = get_sorted_cells_keys();
     let curr_col = current_columns[column].toLowerCase();
     if (curr_col == "id") window.cells[cell] = window.cells[key];
+    else if (curr_col == "feats") {
+        window.cells[cells_keys[key]]['feats'] = cell;
+        let feats = cell.split('|');
+        for (let j = 0; j < feats.length; j++) {
+            let matches = feats[j].match(/(.+)=(.+)/);
+            cells[cells_keys[key]][matches[1].toLowerCase()] = matches[2];
+            if (current_columns.indexOf(matches[1]) != -1) {
+                let col_t = current_columns.indexOf(matches[1]);
+                document.getElementById(`row:${key}, column:${col_t}`).innerHTML = matches[2];
+            }
+        }
+    }
     else window.cells[cells_keys[key]][curr_col] = cell;
 }
 
