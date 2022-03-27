@@ -28,13 +28,6 @@
             <p id="errors" hidden="true">{{errors}}</p>
             
             {% csrf_token %}
-            
-            <div id="vis"></div>
-            <div id="dep_graph" class="conllu-parse" data-visid="vis" data-inputid="input" data-parsedid="parsed" data-logid="log"/> 
-                <!-- <code class="conllu-parse" tabs="yes"> -->
-                <!-- <pre id="dep_graph"></pre> -->
-                </div>
-            <!-- {{ dep_graph }} -->
         {% endif %}
     {% endif %}
 {% endblock %}
