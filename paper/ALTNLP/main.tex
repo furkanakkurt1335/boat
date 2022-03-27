@@ -38,19 +38,46 @@ annotation
 
 \section{Introduction}
 
-Annotation is a crucial part of Natural Language Processing. Manually annotating is an intense activity undertaken by annotators. Listening to their experiences using the first version and other annotation tools gives us ideas to implement on the tool further and make their experiences healthier.
-Responses by annotators have been well for the initial application. Much feedback has been received regarding the user's experience. Some parts of the tool have been removed or altered, corresponding to the feedback. The initial feedback or tests done promise much for the future of the tool.
+Annotation is a crucial part of Natural Language Processing.
+Manually annotating treebanks is an intense activity undertaken by annotators.
+Automated tools for dependency parsing try to ease the annotation work.
+The efficiency of the work is further increased by the feedback and implementation cycle of the software.
+
+The automation of this work is more helpful in some languages than others.
+Turkish being an agglutinative language, the words are parsed further and further into lemmas.
+Parsing dependencies in a language like this manually is hard work.
+The automation tries to alleviate some of this work.
+
+Listening to our annotators' experiences using the first version and other annotation tools gave us ideas to implement on the tool further and make their experiences healthier.
+Feedback have been ample for the initial desktop version regarding the user's experience.
+This led us to design a database and web-based application where interannotator agreement would be smoother and automated.
+Some parts of the tool have been removed or altered, corresponding to the feedback.
+The initial feedback and the tests done promise much for the future of the tool.
+
+This paper presents this new web-based tool.
+In the next section, the related work is touched upon.
+In the third section, requirements and design procedure is detailed.
+In the fourth, how the implementation proceded is explained.
+The fifth section explains what features the tool contains.
+The sixth section contemplates what the future of the tool may entail.
 
 \section{Related Work}
 
-BoAT v1~\cite{turk-etal-2019-turkish}, the initial desktop application.
+BoAT v1~\cite{turk-etal-2019-turkish}, the initial desktop application. This tool has been used to reannotate the entire BOUN Treebank.
+
 Django\cite{django}
+
 Other annotation tools 3rd party or ones maintained by UD.
 
 \section{Requirements and Design}
 
-First tool's requirements and new requirements that have been constructed as a result of and throughout the usage of the initial tool are here. It should be condensed and readable, not enumerated.
-BoAT is a keyboard-oriented application. The annotation page includes a dependency graph and an editable table, both of which in sync. Errors are checked and annotations validated according to the UD framework and the language provided.
+First tool's requirements and new requirements that have been constructed as a result of and throughout the usage of the initial tool are here.
+It should be condensed and readable, not enumerated.
+
+BoAT is a keyboard-oriented application.
+The annotation page includes a dependency graph and an editable table, both of which in sync.
+Errors are checked and annotations validated according to the UD framework and the language provided.
+
 An annotator is able to search the corpora they are a part of to see other annotations done for that specific sentence or go to a sentence's annotation page to start annotating.
 An outsider can use a particular corpus's API to get the annotations to use in their tasks in a systematic way.
 
@@ -60,12 +87,17 @@ Django, Rest Framework, PostgreSQL and Spacy (dependency graph library) are to b
 
 \section{Features}
 
-One of the most game-changing features in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool. This can be helpful and a learning experience for annotators.
-Also one other thing the interannotator agreement allows us is the possibility to see some anomalies in the Turkish part of the UD framework. For example, if a sentence were annotated a way by many annotators but the UD validation script were giving errors for it, this may indicate the UD validation is lacking in this respect of the Turkish language. Some modifications may be done, and there could be a case for a proposal of change.
+One of the most game-changing features in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
+This can be helpful and a learning experience for annotators.
+
+Also one other thing the interannotator agreement allows us is the possibility to see some anomalies in the Turkish part of the UD framework.
+For example, if a sentence were annotated a way by many annotators but the UD validation script were giving errors for it, this may indicate the UD validation is lacking in this respect of the Turkish language.
+Some modifications may be done, and there could be a case for a proposal of change.
 
 \subsection{API}
 
-By using our annotated corpora API, other parties wanting to check out the capabilities of the tool can retrieve our annotated treebanks. Also, some parties wanting to use the treebanks in their computation tasks can easily extract information from our treebanks by using the API.
+By using our annotated corpora API, other parties wanting to check out the capabilities of the tool can retrieve our annotated treebanks.
+Also, some parties wanting to use the treebanks in their computation tasks can easily extract information from our treebanks by using the API.
 
 \subsection{Demo}
 
@@ -73,7 +105,8 @@ A demo is on this site where the annotation capabilities of the tool built can b
 
 \section{Use Cases}
 
-Some cases where Busra uses the tool and sees response. For this, at least some of the parts has to be built.
+Some cases where Busra uses the tool and sees response.
+For this, at least some of the parts has to be built.
 
 \section{Discussion}
 
