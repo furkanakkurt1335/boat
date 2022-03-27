@@ -1,7 +1,14 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer
+from .serializers import UserSerializer, GroupSerializer, SentenceSerializer
+from app1.models import *
+
+
+class SentenceViewSet(viewsets.ModelViewSet):
+    queryset = Sentence.objects.all()
+    serializer_class = SentenceSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserViewSet(viewsets.ModelViewSet):
