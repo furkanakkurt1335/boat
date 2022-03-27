@@ -3,7 +3,7 @@
 var current_columns = [];
 
 // On document load
-window.onload = function() {
+window.onload = function () {
     // document.getElementById("bootstrap_js").remove();
     // document.getElementById("bootstrap_css").remove();
     window.sent_id = document.getElementById('sentence.sent_id').innerHTML;
@@ -11,6 +11,17 @@ window.onload = function() {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.errors = document.getElementById('errors').innerHTML;
+    let cells_keys = get_sorted_cells_keys();
+    for (let i = 0; i < window.cells.length; i++) {
+        let feats = window.cells[cells_keys[i]]['feats'];
+        if (feats != '_') {
+            feats = feats.split('|');
+            for (let j = 0; j < feats.length; j++) {
+                let matches = feats[j].match(/(.+)=(.+)/);
+                window.cells[cells_keys[i]][matches[1].toLowerCase()] = matches[2];
+            }
+        }
+    }
     window.initial_cells = window.cells;
     window.edits = []; // use for undo, redos
     window.edits_undone = [];
@@ -60,7 +71,7 @@ function post_to_save(type, number) {
     document.body.append(form);
 
     form.submit();
-}  
+}
 
 function get_sentence_id_url() {
     var url = window.location.href;
@@ -71,8 +82,8 @@ function get_sentence_id_url() {
 function get_sorted_cells_keys() {
     let cells_keys = Object.keys(window.cells);
     let new_list = [];
-    for (let i = 1; i < cells_keys.length*2; i++) {
-        if (cells_keys.indexOf(`${i}-${i+1}`) != -1) new_list.push(`${i}-${i+1}`);
+    for (let i = 1; i < cells_keys.length * 2; i++) {
+        if (cells_keys.indexOf(`${i}-${i + 1}`) != -1) new_list.push(`${i}-${i + 1}`);
         if (cells_keys.indexOf(`${i}`) != -1) new_list.push(`${i}`);
     }
     return new_list;
@@ -97,7 +108,7 @@ function button_handle(type, number, way) {
             if (number != undefined) {
 
             }
-            else {}
+            else { }
             // TODO
             let cells_keys = get_sorted_cells_keys();
             if (cells_keys.indexOf(input_number) == -1) return;
@@ -105,23 +116,23 @@ function button_handle(type, number, way) {
             if (selected == "Add row") {
                 input_number = parseInt(input_number);
                 if (input_number == NaN) return;
-                let new_row = `${input_number}-${input_number+1}`;
+                let new_row = `${input_number}-${input_number + 1}`;
                 window.cells[new_row] = window.cells[cells_keys[row_place]];
-                window.cells[(parseInt(cells_keys[cells_keys.length-1])+1).toString()] = window.cells[cells_keys[cells_keys.length-1]];
-                for (let i = cells_keys.length-1; i > row_place; i--) {
+                window.cells[(parseInt(cells_keys[cells_keys.length - 1]) + 1).toString()] = window.cells[cells_keys[cells_keys.length - 1]];
+                for (let i = cells_keys.length - 1; i > row_place; i--) {
                     if (cells_keys[i].indexOf('-') != -1) {
                         let matches = cells_keys[i].match(/(\d+)-(\d+)/);
                         let n1 = matches[1];
-                        window.cells[`${n1+1}-${n1+2}`] = window.cells[cells_keys[i]];
+                        window.cells[`${n1 + 1}-${n1 + 2}`] = window.cells[cells_keys[i]];
                     }
-                    else window.cells[cells_keys[i]] = window.cells[cells_keys[i-1]];
+                    else window.cells[cells_keys[i]] = window.cells[cells_keys[i - 1]];
                 }
             }
             else if (selected == "Remove row") {
-                for (let i = row_place; i < cells_keys.length-1; i++) {
-                    window.cells[cells_keys[i]] = window.cells[cells_keys[i+1]];
+                for (let i = row_place; i < cells_keys.length - 1; i++) {
+                    window.cells[cells_keys[i]] = window.cells[cells_keys[i + 1]];
                 }
-                delete window.cells[cells_keys[cells_keys.length-1]];
+                delete window.cells[cells_keys[cells_keys.length - 1]];
             }
             inject_sentence();
         }
@@ -149,7 +160,7 @@ function button_handle(type, number, way) {
 }
 
 // Keyboard shortcuts
-document.onkeyup = function(e) {
+document.onkeyup = function (e) {
     if (e.key.toLowerCase() == "p" && e.altKey) {
         button_handle("previous");
     }
@@ -175,33 +186,34 @@ document.onkeyup = function(e) {
         document.getElementById("word_lines").focus();
     }
     else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
-        let act_el_id = document.activeElement.id;
-        let matches = act_el_id.match(/row:(\d*), column:(\d*)/);
+        if (!document.getElementById('word_lines').contains(document.activeElement)) return;
+        let matches = document.activeElement.id.match(/(.+) (.+)/);
         if (matches.length == 3) {
-            let row = parseInt(matches[1]);
-            let column = parseInt(matches[2]);
+            let cells_keys = get_sorted_cells_keys();
+            let row_id = cells_keys.indexOf(matches[1]);
+            let column_order = current_columns.indexOf(matches[2]);
 
-            let form_count = document.getElementById("word_lines").getElementsByTagName("tr").length-1;
-            if (e.key == "ArrowUp" && row != 0) {
-                document.getElementById(`row:${row-1}, column:${column}`).focus();
+            let form_count = document.getElementById("word_lines").getElementsByTagName("tr").length - 1;
+            if (e.key == "ArrowUp" && row_id != 0) {
+                document.getElementById(`${cells_keys[row_id - 1]} ${matches[2]}`).focus();
             }
-            else if (e.key == "ArrowDown" && row != form_count-1) {
-                document.getElementById(`row:${row+1}, column:${column}`).focus();
+            else if (e.key == "ArrowDown" && row_id != form_count - 1) {
+                document.getElementById(`${cells_keys[row_id + 1]} ${matches[2]}`).focus();
             }
-            else if (e.key == "ArrowRight" && column != current_columns.length-1) {
-                document.getElementById(`row:${row}, column:${column+1}`).focus();
+            else if (e.key == "ArrowRight" && column_order != current_columns.length - 1) {
+                document.getElementById(`${matches[1]} ${current_columns[column_order + 1]}`).focus();
             }
-            else if (e.key == "ArrowLeft" && column != 0) {
-                document.getElementById(`row:${row}, column:${column-1}`).focus();
+            else if (e.key == "ArrowLeft" && column_order != 0) {
+                document.getElementById(`${matches[1]} ${current_columns[column_order - 1]}`).focus();
             }
         }
     }
     else if (e.shiftKey && e.altKey) {
         if (e.key == "ArrowUp") {
-            button_handle('')
+            // button_handle('')
         }
         else if (e.key == "ArrowDown") {
-            console.log('down');
+            // console.log('down');
         }
     }
 };
@@ -285,7 +297,7 @@ function init_page() {
         row_select_select.append(row_select_option);
     }
     div_col3.append(row_select_select);
-    
+
     const do_button = document.createElement("button");
     do_button.id = "do";
     do_button.innerHTML = "Do";
@@ -318,7 +330,7 @@ function init_page() {
     const div_col5 = document.createElement('div');
     div_col5.className = 'col-md-auto';
     div_row.append(div_col5);
-    
+
     const next_button = document.createElement("button");
     next_button.id = "next";
     next_button.innerHTML = "Next";
@@ -335,14 +347,14 @@ function init_page() {
 
     const buttons = document.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", function() {
+        buttons[i].addEventListener("click", function () {
             button_handle(buttons[i].id);
         });
         buttons[i].style = "margin: 5px";
         buttons[i].className = "btn btn-light border-dark";
     }
 
-    current_columns = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
+    current_columns = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
     inject_sentence();
 }
 
@@ -396,7 +408,7 @@ function inject_sentence() {
         let heading = document.createElement("th");
         heading.innerHTML = current_columns[i];
         heading.style = 'text-align:center';
-        heading.addEventListener("click", function() {
+        heading.addEventListener("click", function () {
             column_click(heading.innerHTML);
         });
         row.append(heading);
@@ -417,7 +429,7 @@ function inject_sentence() {
             if (current_columns[j].toLowerCase() == "id") data.innerHTML = cells_keys[i];
             else if (cells[cells_keys[i]][current_columns[j].toLowerCase()] == undefined) data.innerHTML = "_";
             else data.innerHTML = cells[cells_keys[i]][current_columns[j].toLowerCase()];
-            data.id = `row:${i}, column:${j}`;
+            data.id = `${cells_keys[i]} ${current_columns[j].toLowerCase()}`;
             data.style.textAlign = "center";
             data.contentEditable = "true";
             data.addEventListener("focus", (event) => {
@@ -436,7 +448,7 @@ function inject_sentence() {
     }
     document.body.append(word_lines);
     document.body.append(document.createElement("br"));
-    
+
     create_graph();
     document.body.append(document.createElement("br"));
     display_errors();
@@ -503,8 +515,7 @@ function cell_change(key, column, cell) {
             let matches = feats[j].match(/(.+)=(.+)/);
             cells[cells_keys[key]][matches[1].toLowerCase()] = matches[2];
             if (current_columns.indexOf(matches[1]) != -1) {
-                let col_t = current_columns.indexOf(matches[1]);
-                document.getElementById(`row:${key}, column:${col_t}`).innerHTML = matches[2];
+                document.getElementById(`${cells_keys[key]} ${matches[1].toLowerCase()}`).innerHTML = matches[2];
             }
         }
     }
