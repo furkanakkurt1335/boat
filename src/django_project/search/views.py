@@ -3,12 +3,15 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from .serializers import UserSerializer, GroupSerializer, SentenceSerializer
 from app1.models import *
+from rest_framework import filters
 
 
 class SentenceViewSet(viewsets.ModelViewSet):
     queryset = Sentence.objects.all()
     serializer_class = SentenceSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['text']
 
 
 class UserViewSet(viewsets.ModelViewSet):
