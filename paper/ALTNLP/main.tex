@@ -73,31 +73,50 @@ There are third-party tools presented in the UD tools webpage such as UD Annotat
 
 \section{Requirements and Design}
 
-Users' feedback and interviews have been used to create an SRS (Software Requirements Specification) document.
+Users' feedback and in-depth interviews have been used to create an SRS (Software Requirements Specification) document.
 This feedback led us to believe a new web-based tool should be developed from scratch.
 Focus of the annotator makes out to be the first requirement.
 Annotators use the tools sometimes for hours on end.
 Software should make the work easier by reducing distractions and automating work that can be automated.
 
-One of the requirements for not breaking the focus of the annotator is for the software to use mouse or keyboard only.
+One of the requirements we have gathered for not breaking the focus of the annotator is for the software to use keyboard only for all tasks.
 BoAT is a keyboard-oriented application.
 User should not have to use a mouse for any type of task.
+Users lose focus after some time naturally.
+Automating the entries, checking errors and is a high priority in this respect.
+Autocomplete should be provided for parts of the annotation where it is known what values can be entered.
 
-Users lose focus after some time naturally. Automating the entries, checking errors and is a high priority in this respect. Autocomplete should be provided for parts of the annotation where it is known what values can be entered.
+One essential feature requested by the users is using the screen space in a compact manner and removing any clutter that's not used much.
 
+
+A search API for the annotation database of the treebanks is another requirement.
 An annotator should be able to search the treebank they are a part of to see other annotations done for that specific sentence or go to a sentence's annotation page to start annotating.
-
-
-
-An outsider can use a particular corpus's API to get the annotations to use in their tasks in a systematic way.
+Sometimes a user may not be sure of an annotation and would like to consult previous annotations for similar cases.
+They should be able to search the database in a complex way, by case, features or direct text, etc.
+An outsider also should be able to use the API to get the annotations of a particular treebank to use in their tasks in a systematic way.
 
 \section{Implementation}
 
-The annotation page includes a dependency graph and an editable table, both of which in sync.
+The annotation page resembles the initial standalone application.
+It includes a dependency graph and an editable table, both of which in sync.
+The graph is changed from the initial version due to space considerations.
+The new graph is horizontal and linear.
+The table is responsible for changing the word lines of \textit{conllu} files.
+A user is able to upload a \textit{conllu} file and start annotating.
 
 Errors are checked and annotations validated according to the UD framework and the language provided.
+The scripts for validation are already provided by the framework.\cite{UD-git}
 
-Django, Rest Framework, PostgreSQL and Spacy (dependency graph library) are to be used.
+Django\cite{django} and Django REST Framework\cite{drf} are used in this tool.
+Django is the backbone of the tool, serving the website with all its configurations.
+Django REST Framework is used for the API part.
+
+PostgreSQL\cite{psql} is used to provide a database for the server-side applications of the software.
+This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
+
+A Python library \textit{spaCy}\cite{spacy} is used to provide linear dependency graphs.
+Another JavaScript-based linear dependency graph\cite{spyssalo} making use of brat\cite{brat-vis} is used to provide graphs as well.
+We believe the preferences of annotators may vary and giving them options in different parts of the screen is important.
 
 \section{Features}
 
@@ -110,17 +129,13 @@ Some modifications may be done, and there could be a case for a proposal of chan
 
 \subsection{API}
 
-By using our annotated corpora API, other parties wanting to check out the capabilities of the tool can retrieve our annotated treebanks.
+By using our annotated treebank search API, other parties wanting to check out the capabilities of the tool can retrieve our annotated treebanks.
 Also, some parties wanting to use the treebanks in their computation tasks can easily extract information from our treebanks by using the API.
+This opens up many possibilities for the use of the tool beyond the annotator's UI experience.
 
 \subsection{Demo}
 
-A demo is on this site where the annotation capabilities of the tool built can be tested.
-
-\section{Use Cases}
-
-Some cases where Busra uses the tool and sees response.
-For this, at least some of the parts has to be built.
+A demo will be provided on our university's NLP web page where the annotation capabilities of the tool built can be tested.
 
 \section{Discussion}
 
