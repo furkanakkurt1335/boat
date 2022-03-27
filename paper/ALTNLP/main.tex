@@ -63,25 +63,39 @@ The sixth section contemplates what the future of the tool may entail.
 
 \section{Related Work}
 
-BoAT v1~\cite{turk-etal-2019-turkish}, the initial desktop application. This tool has been used to reannotate the entire BOUN Treebank.
+BoAT v1~\cite{turk-etal-2019-turkish}, the initial desktop application. 
+This tool has been used to reannotate the entire BOUN Treebank.
+We try to improve on this tool in this paper.
 
-Django\cite{django}
+brat: an open source project for text annotation.\cite{brat}
 
-Other annotation tools 3rd party or ones maintained by UD.
+There are third-party tools presented in the UD tools webpage such as UD Annotatrix\cite{tyers-etal:2018} and DgAnnotator\cite{dgannotator}.
 
 \section{Requirements and Design}
 
-First tool's requirements and new requirements that have been constructed as a result of and throughout the usage of the initial tool are here.
-It should be condensed and readable, not enumerated.
+Users' feedback and interviews have been used to create an SRS (Software Requirements Specification) document.
+This feedback led us to believe a new web-based tool should be developed from scratch.
+Focus of the annotator makes out to be the first requirement.
+Annotators use the tools sometimes for hours on end.
+Software should make the work easier by reducing distractions and automating work that can be automated.
 
+One of the requirements for not breaking the focus of the annotator is for the software to use mouse or keyboard only.
 BoAT is a keyboard-oriented application.
-The annotation page includes a dependency graph and an editable table, both of which in sync.
-Errors are checked and annotations validated according to the UD framework and the language provided.
+User should not have to use a mouse for any type of task.
 
-An annotator is able to search the corpora they are a part of to see other annotations done for that specific sentence or go to a sentence's annotation page to start annotating.
+Users lose focus after some time naturally. Automating the entries, checking errors and is a high priority in this respect. Autocomplete should be provided for parts of the annotation where it is known what values can be entered.
+
+An annotator should be able to search the treebank they are a part of to see other annotations done for that specific sentence or go to a sentence's annotation page to start annotating.
+
+
+
 An outsider can use a particular corpus's API to get the annotations to use in their tasks in a systematic way.
 
 \section{Implementation}
+
+The annotation page includes a dependency graph and an editable table, both of which in sync.
+
+Errors are checked and annotations validated according to the UD framework and the language provided.
 
 Django, Rest Framework, PostgreSQL and Spacy (dependency graph library) are to be used.
 
