@@ -242,17 +242,17 @@ function sort_columns() {
 
 function init_page() {
 
-    const div_cont = document.createElement('div');
+    let div_cont = document.createElement('div');
     div_cont.className = 'input-group d-flex';
-    const div_row = document.createElement('div');
+    let div_row = document.createElement('div');
     div_row.className = 'row mx-auto';
 
     let div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
-    const previous_button = document.createElement("button");
-    previous_button.id = "previous";
-    previous_button.innerHTML = "Previous";
-    div_col.append(previous_button);
+    let button = document.createElement("button");
+    button.id = "previous";
+    button.innerHTML = "Previous";
+    div_col.append(button);
     div_row.append(div_col);
 
     // split
@@ -262,26 +262,26 @@ function init_page() {
 
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
-    const reset_button = document.createElement("button");
-    reset_button.id = "reset";
-    reset_button.innerHTML = "Reset";
-    div_col.append(reset_button);
+    button = document.createElement("button");
+    button.id = "reset";
+    button.innerHTML = "Reset";
+    div_col.append(button);
     div_row.append(div_col);
 
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
-    const undo_button = document.createElement("button");
-    undo_button.id = "undo";
-    undo_button.innerHTML = "Undo";
-    div_col.append(undo_button);
+    button = document.createElement("button");
+    button.id = "undo";
+    button.innerHTML = "Undo";
+    div_col.append(button);
     div_row.append(div_col);
 
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
-    const redo_button = document.createElement("button");
-    redo_button.id = "redo";
-    redo_button.innerHTML = "Redo";
-    div_col.append(redo_button);
+    button = document.createElement("button");
+    button.id = "redo";
+    button.innerHTML = "Redo";
+    div_col.append(button);
     div_row.append(div_col);
 
     // split
@@ -291,33 +291,33 @@ function init_page() {
 
     div_col = document.createElement('div');
     div_col.className = 'col';
-    const row_select_input = document.createElement("input");
-    row_select_input.type = "number";
-    row_select_input.id = "row_select_input";
-    row_select_input.className = "form-control";
-    div_col.append(row_select_input);
+    let input = document.createElement("input");
+    input.type = "number";
+    input.id = "row_select_input";
+    input.className = "form-control";
+    div_col.append(input);
     div_row.append(div_col);
 
     div_col = document.createElement('div');
     div_col.className = 'col';
-    const row_select_select = document.createElement("select");
-    row_select_select.id = "row_select_select";
-    row_select_select.className = "form-select";
-    var row_select_options = ["Go to sentence", "Add row", "Remove row"];
-    for (let i = 0; i < row_select_options.length; i++) {
-        var row_select_option = document.createElement("option");
-        row_select_option.innerHTML = row_select_options[i];
-        row_select_select.append(row_select_option);
+    let select = document.createElement("select");
+    select.id = "row_select_select";
+    select.className = "form-select";
+    let options = ["Go to sentence", "Add row", "Remove row"];
+    for (let i = 0; i < options.length; i++) {
+        let option = document.createElement("option");
+        option.innerHTML = options[i];
+        select.append(option);
     }
-    div_col.append(row_select_select);
+    div_col.append(select);
     div_row.append(div_col);
 
     div_col = document.createElement('div');
     div_col.className = 'col';
-    const do_button = document.createElement("button");
-    do_button.id = "do";
-    do_button.innerHTML = "Do";
-    div_col.append(do_button);
+    button = document.createElement("button");
+    button.id = "do";
+    button.innerHTML = "Do";
+    div_col.append(button);
     div_row.append(div_col);
 
     // split
@@ -327,29 +327,29 @@ function init_page() {
 
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
-    const col_add_rm_select = document.createElement("select");
-    col_add_rm_select.id = "col_add_rm_select";
-    col_add_rm_select.className = "form-select";
-    var col_sel_placeholder = document.createElement("option");
-    col_sel_placeholder.disabled = true;
-    col_sel_placeholder.selected = true;
-    col_sel_placeholder.innerHTML = "Columns";
-    col_add_rm_select.append(col_sel_placeholder);
-    var column_options = cats.concat(features);
-    for (let i = 0; i < column_options.length; i++) {
-        var column_option = document.createElement("option");
-        column_option.innerHTML = column_options[i];
-        col_add_rm_select.append(column_option);
+    select = document.createElement("select");
+    select.id = "col_add_rm_select";
+    select.className = "form-select";
+    option = document.createElement("option");
+    option.disabled = true;
+    option.selected = true;
+    option.innerHTML = "Columns";
+    select.append(option);
+    options = cats.concat(features);
+    for (let i = 0; i < options.length; i++) {
+        option = document.createElement("option");
+        option.innerHTML = options[i];
+        select.append(option);
     }
-    div_col.append(col_add_rm_select);
+    div_col.append(select);
     div_row.append(div_col);
 
     div_col = document.createElement('div');
     div_col.className = 'col';
-    const col_add_rm_button = document.createElement("button");
-    col_add_rm_button.id = "col_add_rm_button";
-    col_add_rm_button.innerHTML = "Show/Hide";
-    div_col.append(col_add_rm_button);
+    button = document.createElement("button");
+    button.id = "col_add_rm_button";
+    button.innerHTML = "Show/Hide";
+    div_col.append(button);
     div_row.append(div_col);
 
     // split
@@ -359,10 +359,10 @@ function init_page() {
 
     div_col = document.createElement('div');
     div_col.className = 'col';
-    const next_button = document.createElement("button");
-    next_button.id = "next";
-    next_button.innerHTML = "Next";
-    div_col.append(next_button);
+    button = document.createElement("button");
+    button.id = "next";
+    button.innerHTML = "Next";
+    div_col.append(button);
     div_row.append(div_col);
 
     // split
@@ -372,16 +372,16 @@ function init_page() {
 
     div_col = document.createElement('div');
     div_col.className = 'col';
-    const save_button = document.createElement("button");
-    save_button.id = "save";
-    save_button.innerHTML = "Save";
-    div_col.append(save_button);
+    button = document.createElement("button");
+    button.id = "save";
+    button.innerHTML = "Save";
+    div_col.append(button);
     div_row.append(div_col);
 
     div_cont.append(div_row);
     document.body.append(div_cont);
 
-    const buttons = document.getElementsByTagName("button");
+    let buttons = document.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", function () {
             button_handle(buttons[i].id);
