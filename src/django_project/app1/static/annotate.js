@@ -1,24 +1,22 @@
-// TODO: don't remove table, adjust
 
 var current_columns = [];
 
 // On document load
 window.onload = function () {
-    // document.getElementById("bootstrap_js").remove();
-    // document.getElementById("bootstrap_css").remove();
     window.sent_id = document.getElementById('sentence.sent_id').innerHTML;
     window.text = document.getElementById('sentence.text').innerHTML;
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.errors = document.getElementById('errors').innerHTML;
     let cells_keys = get_sorted_cells_keys();
-    for (let i = 0; i < window.cells.length; i++) {
+    for (let i = 0; i < cells_keys.length; i++) {
         let feats = window.cells[cells_keys[i]]['feats'];
         if (feats != '_') {
             feats = feats.split('|');
             for (let j = 0; j < feats.length; j++) {
                 let matches = feats[j].match(/(.+)=(.+)/);
-                window.cells[cells_keys[i]][matches[1].toLowerCase()] = matches[2];
+                let column = matches[1].toLowerCase();
+                window.cells[cells_keys[i]][column] = matches[2];
             }
         }
     }
@@ -95,7 +93,7 @@ function button_handle(type, number, way) {
     }
     else if (type == "col_add_rm_button") {
         let sel = document.getElementById("col_add_rm_select");
-        if (sel.selectedIndex != 0) column_change(sel.options[sel.selectedIndex].text);
+        if (sel.selectedIndex != 0) column_change(sel.options[sel.selectedIndex].text.toLowerCase());
     }
     else if (type == "do") {
         let sel = document.getElementById("row_select_select");
@@ -140,17 +138,17 @@ function button_handle(type, number, way) {
     else if (type == "undo") {
         if (window.edits.length == 0) return;
         let last_edit = window.edits.pop();
-        let undone_pair = [last_edit[0], window.cells[last_edit[0][0]][last_edit[0][1].toLowerCase()]];
+        let undone_pair = [last_edit[0], window.cells[last_edit[0][0]][last_edit[0][1]]];
         window.edits_undone.push(undone_pair);
-        window.cells[last_edit[0][0]][last_edit[0][1].toLowerCase()] = last_edit[1];
+        window.cells[last_edit[0][0]][last_edit[0][1]] = last_edit[1];
         inject_sentence();
     }
     else if (type == "redo") {
         if (window.edits_undone.length == 0) return;
         let last_edit_undone = window.edits_undone.pop();
-        let redone_pair = [last_edit_undone[0], window.cells[last_edit_undone[0][0]][last_edit_undone[0][1].toLowerCase()]];
+        let redone_pair = [last_edit_undone[0], window.cells[last_edit_undone[0][0]][last_edit_undone[0][1]]];
         window.edits.push(redone_pair);
-        window.cells[last_edit_undone[0][0]][last_edit_undone[0][1].toLowerCase()] = last_edit_undone[1];
+        window.cells[last_edit_undone[0][0]][last_edit_undone[0][1]] = last_edit_undone[1];
         inject_sentence();
     }
     else if (type == "reset") {
@@ -227,14 +225,14 @@ function column_change(column_option) {
 
 function sort_columns() {
     for (let i = 0; i < cats.length; i++) {
-        let cat_t = cats[i];
+        let cat_t = cats_low[i];
         if (current_columns.includes(cat_t)) {
             current_columns.splice(current_columns.indexOf(cat_t), 1);
             current_columns = current_columns.concat(cat_t);
         }
     }
     for (let i = 0; i < features.length; i++) {
-        let feat_t = features[i];
+        let feat_t = features_low[i];
         if (current_columns.includes(feat_t)) {
             current_columns.splice(current_columns.indexOf(feat_t), 1);
             current_columns = current_columns.concat(feat_t);
@@ -359,7 +357,9 @@ function init_page() {
 }
 
 var cats = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
+var cats_low = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
 var features = ["Abbr", "Animacy", "Aspect", "Case", "Clusivity", "Definite", "Degree", "Evident", "Foreign", "Gender", "Mood", "NounClass", "Number", "NumType", "Person", "Polarity", "Polite", "Poss", "PronType", "Reflex", "Tense", "Typo", "VerbForm", "Voice"];
+var features_low = ["abbr", "animacy", "aspect", "case", "clusivity", "definite", "degree", "evident", "foreign", "gender", "mood", "nounclass", "number", "numtype", "person", "polarity", "polite", "poss", "prontype", "reflex", "tense", "typo", "verbform", "voice"];
 const all_column_count = cats.length + features.length;
 
 function inject_sentence() {
@@ -403,13 +403,14 @@ function inject_sentence() {
     tbody = document.createElement("tbody");
     word_lines.append(thead);
     word_lines.append(tbody);
-    row = document.createElement("tr");
+    let row = document.createElement("tr");
     for (let i = 0; i < current_columns.length; i++) {
         let heading = document.createElement("th");
-        heading.innerHTML = current_columns[i];
+        if (cats_low.includes(current_columns[i])) heading.innerHTML = cats[cats_low.indexOf(current_columns[i])];
+        else heading.innerHTML = features[features_low.indexOf(current_columns[i])];
         heading.style = 'text-align:center';
         heading.addEventListener("click", function () {
-            column_click(heading.innerHTML);
+            column_click(heading.innerHTML.toLowerCase());
         });
         row.append(heading);
     }
@@ -420,16 +421,17 @@ function inject_sentence() {
         if (feats != '_') {
             for (let j = 0; j < feats.length; j++) {
                 let matches = feats[j].match(/(.+)=(.+)/);
-                cells[cells_keys[i]][matches[1].toLowerCase()] = matches[2];
+                let column = matches[1].toLowerCase;
+                cells[cells_keys[i]][column] = matches[2];
             }
         }
         let row = document.createElement("tr");
         for (let j = 0; j < current_columns.length; j++) {
             let data = document.createElement("td");
-            if (current_columns[j].toLowerCase() == "id") data.innerHTML = cells_keys[i];
-            else if (cells[cells_keys[i]][current_columns[j].toLowerCase()] == undefined) data.innerHTML = "_";
-            else data.innerHTML = cells[cells_keys[i]][current_columns[j].toLowerCase()];
-            data.id = `${cells_keys[i]} ${current_columns[j].toLowerCase()}`;
+            if (current_columns[j] == "id") data.innerHTML = cells_keys[i];
+            else if (cells[cells_keys[i]][current_columns[j]] == undefined) data.innerHTML = "_";
+            else data.innerHTML = cells[cells_keys[i]][current_columns[j]];
+            data.id = `${cells_keys[i]} ${current_columns[j]}`;
             data.style.textAlign = "center";
             data.contentEditable = "true";
             data.addEventListener("focus", (event) => {
@@ -438,7 +440,7 @@ function inject_sentence() {
             });
             data.addEventListener("blur", (event) => { // potential problem with unfocusing after column removal!
                 if (window.last_focus_value != event.target.innerHTML) {
-                    cell_change(cells_keys[i], j, event.target.innerHTML);
+                    cell_change(cells_keys[i], current_columns[j], event.target.innerHTML);
                     window.edits.push([window.last_focus, window.last_focus_value]);
                 }
             });
@@ -505,21 +507,49 @@ function display_errors() {
 }
 
 function cell_change(key, column, cell) {
-    let cells_keys = get_sorted_cells_keys();
-    let curr_col = current_columns[column].toLowerCase();
-    if (curr_col == "id") window.cells[cell] = window.cells[key];
-    else if (curr_col == "feats") {
-        window.cells[cells_keys[key]]['feats'] = cell;
+    // autocomplete
+    if (['aspect', 'case', 'evident', 'mood', 'number', 'number[psor]', 'numtype', 'person', 'person[psor]', 'polarity', 'prontype', 'tense', 'verbform', 'voice', 'upos', 'xpos', 'deprel'].includes(column)) {
+        console.log('autocomplete');
+    }
+
+    if (column == "id") window.cells[cell] = window.cells[key];
+    else if (column == "feats") {
+        window.cells[key]['feats'] = cell;
         let feats = cell.split('|');
         for (let j = 0; j < feats.length; j++) {
             let matches = feats[j].match(/(.+)=(.+)/);
-            cells[cells_keys[key]][matches[1].toLowerCase()] = matches[2];
-            if (current_columns.indexOf(matches[1]) != -1) {
-                document.getElementById(`${cells_keys[key]} ${matches[1].toLowerCase()}`).innerHTML = matches[2];
+            let column = matches[1].toLowerCase();
+            window.cells[key][column] = matches[2];
+            if (current_columns.indexOf(column) != -1) {
+                document.getElementById(`${key} ${column}`).innerHTML = matches[2];
             }
         }
     }
-    else window.cells[cells_keys[key]][curr_col] = cell;
+    else if (features_low.includes(column)) {
+        window.cells[key][column] = cell;
+        let new_feats = "";
+        if (window.cells[key]['feats'] == "_") {
+            new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
+        }
+        else {
+            let feats = window.cells[key]['feats'].split('|');
+            for (let j = 0; j < feats.length; j++) {
+                let matches = feats[j].match(/(.+)=(.+)/);
+                let col_t = matches[1].toLowerCase();
+                if (col_t == column) {
+                    if (new_feats != "") new_feats += "|";
+                    new_feats += `${features[features_low.indexOf(column)]}=${cell}`;
+                }
+                else {
+                    if (new_feats != "") new_feats += "|";
+                    new_feats += feats[j];
+                }
+            }
+        }
+        document.getElementById(`${key} feats`).innerHTML = new_feats;
+        window.cells[key]['feats'] = new_feats;
+    }
+    else window.cells[key][column] = cell;
 }
 
 function column_click(column_name) {
