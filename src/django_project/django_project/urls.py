@@ -22,10 +22,12 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'sentences', views.SentenceViewSet)
+router.register(r'annotations', views.AnnotationViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app1.urls')),
+    # path('', include('search.urls')),
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

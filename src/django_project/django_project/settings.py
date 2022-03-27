@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'
 
 # Application definition
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'app1',
     'rest_framework',
     'search',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

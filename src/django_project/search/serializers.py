@@ -2,6 +2,10 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from app1.models import *
 
+class AnnotationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Word_Line
+        fields = ['url', 'form_f', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps']
 
 class SentenceSerializer(serializers.ModelSerializer):
     class Meta:
