@@ -112,19 +112,19 @@ function button_handle(type, number, way) {
         }
         else if (["Add row", "Remove row"].indexOf(selected) != -1) {
             if (number != undefined) {
-
+                input_number = number;
+                if (way == "down") selected = "Add row";
+                else if (way == "up") selected = "Remove row";
             }
-            else { }
-            // TODO
             let cells_keys = get_sorted_cells_keys();
             if (cells_keys.indexOf(input_number) == -1) return;
             let row_place = cells_keys.indexOf(input_number);
             if (selected == "Add row") {
-                input_number = parseInt(input_number);
-                if (input_number == NaN) return;
-                let new_row = `${input_number}-${input_number + 1}`;
-                window.cells[new_row] = window.cells[cells_keys[row_place]];
-                window.cells[(parseInt(cells_keys[cells_keys.length - 1]) + 1).toString()] = window.cells[cells_keys[cells_keys.length - 1]];
+                let first_num = parseInt(input_number);
+                if (first_num == NaN) return;
+                let new_row = `${first_num}-${first_num + 1}`;
+                window.cells[new_row] = { ...window.cells[cells_keys[row_place]] };
+                window.cells[(parseInt(cells_keys[cells_keys.length - 1]) + 1).toString()] = { ...window.cells[cells_keys[cells_keys.length - 1]] };
                 for (let i = cells_keys.length - 1; i > row_place; i--) {
                     if (cells_keys[i].indexOf('-') != -1) {
                         let matches = cells_keys[i].match(/(\d+)-(\d+)/);
@@ -135,10 +135,25 @@ function button_handle(type, number, way) {
                 }
             }
             else if (selected == "Remove row") {
-                for (let i = row_place; i < cells_keys.length - 1; i++) {
-                    window.cells[cells_keys[i]] = window.cells[cells_keys[i + 1]];
+                let new_key = "";
+                if (input_number.includes('-')) {
+                    delete window.cells[input_number];
                 }
-                delete window.cells[cells_keys[cells_keys.length - 1]];
+                else {
+                    for (let i = row_place; i < cells_keys.length - 1; i++) {
+                        let key = cells_keys[i + 1];
+                        if (key.includes('-')) {
+                            let first_num = parseInt(key.split('-')[0]);
+                            new_key = `${first_num - 1}-${first_num}`;
+                        }
+                        else {
+                            new_key = `${parseInt(key) - 1}`;
+                        }
+                        window.cells[new_key] = window.cells[cells_keys[i + 1]];
+                        delete window.cells[cells_keys[i + 1]];
+                    }
+                    delete window.cells[cells_keys[cells_keys.length - 1]];
+                }
             }
             inject_sentence();
         }
@@ -216,10 +231,10 @@ document.onkeyup = function (e) {
     }
     else if (e.shiftKey && e.altKey) {
         if (e.key == "ArrowUp") {
-            // button_handle('')
+            button_handle("do", document.activeElement.id.split(' ')[0], "up");
         }
         else if (e.key == "ArrowDown") {
-            // console.log('down');
+            button_handle("do", document.activeElement.id.split(' ')[0], "down");
         }
     }
 };
@@ -309,7 +324,7 @@ function init_page() {
     div_col = document.createElement('div');
     div_col.className = 'col';
     let input = document.createElement("input");
-    input.type = "number";
+    input.type = "text";
     input.id = "row_select_input";
     input.className = "form-control";
     div_col.append(input);
@@ -352,7 +367,9 @@ function init_page() {
     option.selected = true;
     option.innerHTML = "Columns";
     select.append(option);
-    options = cats.concat(features);
+    let cats_no_id = [...cats];
+    cats_no_id.shift();
+    options = cats_no_id.concat(features);
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
@@ -544,34 +561,34 @@ function create_graph() {
     }
     else if (window.graph_preference == "spacy") {
         $.post("/spacy/",
-        {
-            cells: JSON.stringify(window.cells)
-        },
-        function (data) {
-            let textarea_t = document.createElement('textarea');
-            textarea_t.innerHTML = data;
-            let graph = document.createElement('div');
-            graph.id = "spacy";
-            graph.innerHTML = textarea_t.value;
-            document.body.append(graph);
-            $("#spacy").after($("#error_div"));
-        });
+            {
+                cells: JSON.stringify(window.cells)
+            },
+            function (data) {
+                let textarea_t = document.createElement('textarea');
+                textarea_t.innerHTML = data;
+                let graph = document.createElement('div');
+                graph.id = "spacy";
+                graph.innerHTML = textarea_t.value;
+                document.body.append(graph);
+                $("#spacy").after($("#error_div"));
+            });
     }
     else if (window.graph_preference == "ud") {
         $.post("/ud_graph/",
-        {
-            cells: JSON.stringify(window.cells),
-            sent_id: window.sent_id,
-            text: window.text,
-        },
-        function (data) {
-            let graph = document.createElement('embed');
-            graph.id = "ud_graph";
-            graph.type = "text/html";
-            graph.src = data;
-            document.body.append(graph);
-            $("#ud_graph").after($("#error_div"));
-        });
+            {
+                cells: JSON.stringify(window.cells),
+                sent_id: window.sent_id,
+                text: window.text,
+            },
+            function (data) {
+                let graph = document.createElement('embed');
+                graph.id = "ud_graph";
+                graph.type = "text/html";
+                graph.src = data;
+                document.body.append(graph);
+                $("#ud_graph").after($("#error_div"));
+            });
     }
 }
 
@@ -658,6 +675,7 @@ function cell_change(key, column, cell) {
 }
 
 function column_click(column_name) {
+    if (column_name == "id") return;
     var arr_t = [];
     let index_remove = current_columns.indexOf(column_name);
     for (let i = 0; i < current_columns.length; i++) {
