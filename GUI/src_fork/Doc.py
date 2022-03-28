@@ -61,8 +61,7 @@ class Sentence:
 
     def get_head(self):
         for word in self.words:
-            if word.cats['head'] == '0': return word.address()
-            # if word.head == '0': return word.address()
+            if word.head == '0': return word.address()
         return 'Null'
 
     def get_raw(self):
@@ -78,19 +77,21 @@ class Word:
         items = word.split('\t')
 
         self.sent_add = sa
-        self.cats = dict()
-        cats_t = ['id', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc']
-        for i in range(10):
-            self.cats[cats_t[i]] = items[i]
+        self.id = items[0]
+        self.form = items[1]
+        self.lemma = items[2]
+        self.upos = items[3]
+        self.xpos = items[4]
+        self.feats = items[5]
+        self.head = items[6]
+        self.deprel = items[7]
+        self.deps = items[8]
+        self.misc = items[9]
         self.unitword = False
-        if '-' in self.cats['id']:
-            self.unitword = True
+        if '-' in self.id: self.unitword = True
 
     def get_list(self):
-        l_t = []
-        for key in self.cats.keys():
-            l_t.append(self.cats[key])
-        return l_t
+        return [self.id, self.form, self.lemma, self.upos, self.xpos, self.feats, self.head, self.deprel, self.deps, self.misc]
 
     def address(self):
-        return self.sent_add + '-' + self.cats['id']
+        return self.sent_add + '-' + self.id

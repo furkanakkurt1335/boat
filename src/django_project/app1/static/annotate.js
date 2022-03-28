@@ -9,6 +9,13 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.errors = document.getElementById('errors').innerHTML;
+    window.graph_preference = document.getElementById('graph_preference').innerHTML;
+    $('#sent_id').remove();
+    $('#text').remove();
+    $('#cells').remove();
+    $('#notes').remove();
+    $('#errors').remove();
+    $('#graph_preference').remove();
     let cells_keys = get_sorted_cells_keys();
     for (let i = 0; i < cells_keys.length; i++) {
         let feats = window.cells[cells_keys[i]]['feats'];
@@ -510,28 +517,57 @@ function inject_sentence() {
 }
 
 function create_graph() {
-    $('#vis').remove();
-    $('#dep_graph').remove();
-    let cells = window.cells;
-    let vis = document.createElement('div');
-    vis.id = "vis";
-    let dep_graph = document.createElement('div');
-    dep_graph.id = "dep_graph";
-    dep_graph.className = "conllu-parse";
-    dep_graph.attributes = 'data-visid="vis" data-inputid="input" data-parsedid="parsed" data-logid="log"';
-    let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
-    let cells_keys = get_sorted_cells_keys();
-    for (let i = 0; i < cells_keys.length; i++) {
-        let key = cells_keys[i];
-        dep_graph.innerHTML += key + "\t";
-        for (let j = 0; j < 8; j++) {
-            dep_graph.innerHTML += cells[key][order[j]] + "\t";
+    if (window.graph_preference == "none") return;
+    else if (window.graph_preference == "conllu.js") {
+        $('#vis').remove();
+        $('#dep_graph').remove();
+        let cells = window.cells;
+        let vis = document.createElement('div');
+        vis.id = "vis";
+        let dep_graph = document.createElement('div');
+        dep_graph.id = "dep_graph";
+        dep_graph.className = "conllu-parse";
+        dep_graph.attributes = 'data-visid="vis" data-inputid="input" data-parsedid="parsed" data-logid="log"';
+        let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
+        let cells_keys = get_sorted_cells_keys();
+        for (let i = 0; i < cells_keys.length; i++) {
+            let key = cells_keys[i];
+            dep_graph.innerHTML += key + "\t";
+            for (let j = 0; j < 8; j++) {
+                dep_graph.innerHTML += cells[key][order[j]] + "\t";
+            }
+            dep_graph.innerHTML += cells[key]["misc"] + "\n"; // misc
         }
-        dep_graph.innerHTML += cells[key]["misc"] + "\n"; // misc
+        document.body.append(vis);
+        document.body.append(dep_graph);
+        Annodoc.activate(Config.bratCollData, {});
     }
-    document.body.append(vis);
-    document.body.append(dep_graph);
-    Annodoc.activate(Config.bratCollData, {});
+    else if (window.graph_preference == "spacy") {
+        $.post("/spacy/",
+        {
+            cells: JSON.stringify(window.cells)
+        },
+        function (data) {
+            let textarea_t = document.createElement('textarea');
+            textarea_t.innerHTML = data;
+            let graph = document.createElement('div');
+            graph.id = "spacy";
+            graph.innerHTML = textarea_t.value;
+            document.body.append(graph);
+            $("#spacy").after($("#error_div"));
+        });
+    }
+    else if (window.graph_preference == "ud") {
+        $.post("/ud_graph/",
+        {
+            cells: JSON.stringify(window.cells),
+            sent_id: window.sent_id,
+            text: window.text,
+        },
+        function (data) {
+            // use data
+        });
+    }
 }
 
 function display_errors() {

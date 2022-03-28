@@ -5,13 +5,21 @@ from django.contrib.auth import login as login_f, logout as logout_f, authentica
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
-from .models import SentenceManager, Treebank, Sentence, Annotation, Word_Line
+from .models import SentenceManager, Treebank, Sentence, Annotation, Word_Line, ExtendUser
 from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
 
+@login_required
 def preferences(request):
     context = {}
+    if request.method == 'POST':
+        graph_selection = request.POST['graph_select']
+        eu = ExtendUser.objects.get(user=request.user)
+        eu.preferences['graph'] = graph_selection
+        eu.save()
+    elif request.method == 'GET':
+        context['graph_preference'] = ExtendUser.objects.get(user=request.user).preferences['graph']
     return render(request, 'preferences.html', context)
 
 # may need to deexempt
@@ -24,6 +32,47 @@ def error(request):
         sent_id, text = data['sent_id'], data['text']
         error = conllu.get_errors(sent_id, text, cells)
     return render(request, 'error.html', {'error': error})
+
+@csrf_exempt
+def ud_graph(request):
+    graph = None
+    if request.method == 'POST':
+        data = request.POST
+        cells = json.loads(data['cells'])
+        sent_id, text = data['sent_id'], data['text']
+        error = conllu.get_errors(sent_id, text, cells)
+    return render(request, 'ud_graph.html', {'graph': graph})
+
+@csrf_exempt
+def spacy(request):
+    graph = None
+    if request.method == 'POST':
+        from spacy import displacy
+        data = request.POST
+        cells = json.loads(data['cells'])
+        manual = {"words": [], "arcs": [], "lemmas": []}
+        dep_count = 0
+        for key in cells.keys():
+            word = cells[key]
+            if '-' in key: continue
+            manual['words'].append({"text": word['form'], "tag": word['upos'], "lemma": key})
+            if word['deprel'] == '_' or word['head'] in ['_', '0']: continue
+            head_int = int(word['head'])-1
+            if int(key) > head_int:
+                direction = 'left'
+                start, end = head_int, int(key)
+            else:
+                direction = 'right'
+                end, start = head_int, int(key)
+            manual['arcs'].append({
+                "start": start, "end": end, "label": word['deprel'], "dir": direction
+            })
+            dep_count += 1
+        if dep_count == 0:
+            graph = ''
+        else:
+            graph = displacy.render(docs=manual, style="dep", manual=True, options={'compact':'True', 'add_lemma': 'True', 'distance': 100})
+    return render(request, 'spacy.html', {'graph': graph})
 
 def register(request):
     if request.method == 'POST':
@@ -48,6 +97,11 @@ def login(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                if len(ExtendUser.objects.filter(user=user)) == 0:
+                    extenduser_t = ExtendUser()
+                    extenduser_t.user = user
+                    extenduser_t.preferences = {'graph': 'conllu.js'}
+                    extenduser_t.save()
                 login_f(request, user)
                 return redirect('profile')
             else:
@@ -229,7 +283,7 @@ def annotate(request, treebank, order):
                 cats[id_f] = {'form': word_line.form_f, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos, 'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
             errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
             cats = json.dumps(cats)
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors}
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference': ExtendUser.objects.get(user=request.user).preferences['graph']}
     return render(request, 'annotate.html', context)
 
 @login_required

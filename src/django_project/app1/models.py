@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-from spacy import blank
 
 class ExtendUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
     preferences = models.JSONField(blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 class TreebankManager(models.Manager):
     def get_treebank_from_url(self, url):

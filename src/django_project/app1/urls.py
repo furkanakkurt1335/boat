@@ -18,4 +18,6 @@ urlpatterns = [
     path('help/', views.help, name='help'),
     path('accounts/preferences/', views.preferences, name='preferences'),
     path('error/', views.error, name='error'),
+    path('spacy/', views.spacy, name='spacy'),
+    path('ud_graph/', views.ud_graph, name='ud_graph'),
 ]

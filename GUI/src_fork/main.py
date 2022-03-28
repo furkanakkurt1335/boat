@@ -327,10 +327,10 @@ class QDataViewer(QWidget):
         dep_count = 0
         for i in range(word_count_t):
             word = self.sentence.words[i]
-            if '-' in word.cats['id']: continue
-            manual['words'].append({"text": word.cats['form'], "tag": word.cats['upos'], "lemma": word.cats['id']})
-            if word.cats['deprel'] == '_' or word.cats['head'] in ['_', '0']: continue
-            head_int = int(word.cats['head'])-1
+            if '-' in word.id: continue
+            manual['words'].append({"text": word.form, "tag": word.upos, "lemma": word.id})
+            if word.deprel == '_' or word.head in ['_', '0']: continue
+            head_int = int(word.head)-1
             if i > head_int:
                 direction = 'left'
                 start, end = head_int, i
@@ -338,7 +338,7 @@ class QDataViewer(QWidget):
                 direction = 'right'
                 end, start = head_int, i
             manual['arcs'].append({
-                "start": start, "end": end, "label": word.cats['deprel'], "dir": direction
+                "start": start, "end": end, "label": word.deprel, "dir": direction
             })
             dep_count += 1
         if dep_count == 0:
@@ -358,8 +358,8 @@ class QDataViewer(QWidget):
 
             for word in self.sentence.words:
                 if word.unitword:
-                    x1 = int(word.cats['id'].split('-')[0])
-                    x2 = int(word.cats['id'].split('-')[1])
+                    x1 = int(word.id.split('-')[0])
+                    x2 = int(word.id.split('-')[1])
                     if word_id == x1 or word_id == x2:
                         possible_move = False
 
@@ -367,34 +367,34 @@ class QDataViewer(QWidget):
                 for word in self.sentence.words:
                     new_word = copy.deepcopy(word)
 
-                    if new_word.cats['head'] != '_' and int(new_word.cats['head']) >= word_id:
-                        new_word.cats['head'] = str(int(new_word.cats['head']) + 1)
+                    if new_word.head != '_' and int(new_word.head) >= word_id:
+                        new_word.head = str(int(new_word.head) + 1)
 
                     if new_word.unitword:
-                        new_word_id = int(new_word.cats['id'].split('-')[0])
+                        new_word_id = int(new_word.id.split('-')[0])
                     else:
-                        new_word_id = int(new_word.cats['id'])
+                        new_word_id = int(new_word.id)
 
                     if new_word_id < word_id:
                         new_sentence_words.append(new_word)
                     elif new_word_id == word_id:
                         if new_word.unitword:
-                            x1 = int(new_word.cats['id'].split('-')[0])
-                            x2 = int(new_word.cats['id'].split('-')[1])
-                            w = Word('\t'.join([str(x1), new_word.cats['form'], '_', '_', '_', '_', new_word.cats['head'], '_', '_', '_']), self.sentence.sent_address)
-                            new_word.cats['id'] = str(x1 + 1) + '-' + str(x2 + 1)
+                            x1 = int(new_word.id.split('-')[0])
+                            x2 = int(new_word.id.split('-')[1])
+                            w = Word('\t'.join([str(x1), new_word.form, '_', '_', '_', '_', new_word.head, '_', '_', '_']), self.sentence.sent_address)
+                            new_word.id = str(x1 + 1) + '-' + str(x2 + 1)
                         else:
-                            w = Word('\t'.join([new_word.cats['id'], new_word.cats['form'], '_', '_', '_', '_', new_word.cats['head'], '_', '_', '_']), self.sentence.sent_address)
-                            new_word.cats['id'] = str(int(new_word.cats['id']) + 1)
+                            w = Word('\t'.join([new_word.id, new_word.form, '_', '_', '_', '_', new_word.head, '_', '_', '_']), self.sentence.sent_address)
+                            new_word.id = str(int(new_word.id) + 1)
                         new_sentence_words.append(w)
                         new_sentence_words.append(new_word)
                     elif new_word_id > word_id:
                         if new_word.unitword:
-                            x1 = int(new_word.cats['id'].split('-')[0])
-                            x2 = int(new_word.cats['id'].split('-')[1])
-                            new_word.cats['id'] = str(x1 + 1) + '-' + str(x2 + 1)
+                            x1 = int(new_word.id.split('-')[0])
+                            x2 = int(new_word.id.split('-')[1])
+                            new_word.id = str(x1 + 1) + '-' + str(x2 + 1)
                         else:
-                            new_word.cats['id'] = str(int(new_word.cats['id']) + 1)
+                            new_word.id = str(int(new_word.id) + 1)
                         new_sentence_words.append(new_word)
 
                 self.sentence.words = copy.deepcopy(new_sentence_words)
@@ -413,35 +413,35 @@ class QDataViewer(QWidget):
 
             for word in self.sentence.words:
                 if word.unitword:
-                    x1 = int(word.cats['id'].split('-')[0])
-                    x2 = int(word.cats['id'].split('-')[1])
+                    x1 = int(word.id.split('-')[0])
+                    x2 = int(word.id.split('-')[1])
                     if word_id == x1 or word_id == x2:
                         possible_move = False
-                if not word.cats['head'] == '_':
-                    if int(word.cats['head']) == word_id:
+                if not word.head == '_':
+                    if int(word.head) == word_id:
                         possible_move = False
 
             if possible_move:
                 for word in self.sentence.words:
                     new_word = copy.deepcopy(word)
 
-                    if new_word.cats['head'] != '_' and int(new_word.cats['head']) >= word_id:
-                        new_word.cats['head'] = str(int(new_word.cats['head']) - 1)
+                    if new_word.head != '_' and int(new_word.head) >= word_id:
+                        new_word.head = str(int(new_word.head) - 1)
 
                     if new_word.unitword:
-                        new_word_id = int(new_word.cats['id'].split('-')[0])
+                        new_word_id = int(new_word.id.split('-')[0])
                     else:
-                        new_word_id = int(new_word.cats['id'])
+                        new_word_id = int(new_word.id)
 
                     if new_word_id < word_id:
                         new_sentence_words.append(new_word)
                     elif new_word_id > word_id:
                         if new_word.unitword:
-                            x1 = int(new_word.cats['id'].split('-')[0])
-                            x2 = int(new_word.cats['id'].split('-')[1])
-                            new_word.cats['id'] = str(x1 - 1) + '-' + str(x2 - 1)
+                            x1 = int(new_word.id.split('-')[0])
+                            x2 = int(new_word.id.split('-')[1])
+                            new_word.id = str(x1 - 1) + '-' + str(x2 - 1)
                         else:
-                            new_word.cats['id'] = str(int(new_word.cats['id']) - 1)
+                            new_word.id = str(int(new_word.id) - 1)
                         new_sentence_words.append(new_word)
 
                 self.sentence.words = copy.deepcopy(new_sentence_words)
@@ -453,26 +453,31 @@ class QDataViewer(QWidget):
     def agg(self, x):
 
         if self.sentence.words[x].unitword: # remove two-words thing into one
-            limit = int(self.sentence.words[x].cats['id'].split('-')[0])
-            cat_l_t = ['head', 'lemma', 'upos', 'xpos', 'feats', 'deprel', 'deps', 'misc']
-            for i in cat_l_t:
-                self.sentence.words[x].cats[i] = self.sentence.words[x+1].cats[i]
-            self.sentence.words[x].cats['id'] = str(limit)
+            limit = int(self.sentence.words[x].id.split('-')[0])
+            self.sentence.words[x].head = self.sentence.words[x+1].head
+            self.sentence.words[x].lemma = self.sentence.words[x+1].lemma
+            self.sentence.words[x].upos = self.sentence.words[x+1].upos
+            self.sentence.words[x].xpos = self.sentence.words[x+1].xpos
+            self.sentence.words[x].feats = self.sentence.words[x+1].feats
+            self.sentence.words[x].deprel = self.sentence.words[x+1].deprel
+            self.sentence.words[x].deps = self.sentence.words[x+1].deps
+            self.sentence.words[x].misc = self.sentence.words[x+1].misc
+            self.sentence.words[x].id = str(limit)
             self.sentence.words[x].unitword = False
-            del self.sentence.words[x + 1]
-            del self.sentence.words[x + 1]
+            del self.sentence.words[x+1]
+            del self.sentence.words[x+1]
 
             for word in self.sentence.words:
                 if word.unitword:
-                    first_word_id = int(word.cats['id'].split('-')[0])
+                    first_word_id = int(word.id.split('-')[0])
                     if first_word_id > limit:
-                        word.cats['id'] = str(first_word_id - 1) + '-' + str(first_word_id)
+                        word.id = str(first_word_id - 1) + '-' + str(first_word_id)
                 else:
-                    if int(word.cats['id']) > limit:
-                        word.cats['id'] = str(int(word.cats['id']) - 1)
+                    if int(word.id) > limit:
+                        word.id = str(int(word.id) - 1)
 
-                if word.cats['head'] != '_' and int(word.cats['head']) > limit:
-                    word.cats['head'] = str(int(word.cats['head']) - 1)
+                if word.head != '_' and int(word.head) > limit:
+                    word.head = str(int(word.head) - 1)
             self.first_time = True
             self.update_table()
             self.update_dep_graph()
@@ -480,24 +485,24 @@ class QDataViewer(QWidget):
 
         else: # add two-elements below
             base_word = self.sentence.words[x]
-            limit = int(base_word.cats['id'])
+            limit = int(base_word.id)
 
             for word in self.sentence.words:
                 if word.unitword:
-                    first_word_id = int(word.cats['id'].split('-')[0])
+                    first_word_id = int(word.id.split('-')[0])
                     if first_word_id > limit:
-                        word.cats['id'] = str(first_word_id + 1) + '-' + str(first_word_id + 2)
+                        word.id = str(first_word_id + 1) + '-' + str(first_word_id + 2)
                 else:
-                    if int(word.cats['id']) > limit:
-                        word.cats['id'] = str(int(word.cats['id']) + 1)
+                    if int(word.id) > limit:
+                        word.id = str(int(word.id) + 1)
 
-                if word.cats['head'] != '_' and int(word.cats['head']) > limit:
-                    word.cats['head'] = str(int(word.cats['head']) + 1)
+                if word.head != '_' and int(word.head) > limit:
+                    word.head = str(int(word.head) + 1)
 
-            w1 = Word('\t'.join([str(limit), base_word.cats['form'], base_word.cats['lemma'], base_word.cats['upos'], base_word.cats['xpos'], base_word.cats['feats'], base_word.cats['head'], base_word.cats['deprel'], base_word.cats['deps'], '_']), self.sentence.sent_address)
-            w2 = Word('\t'.join([str(limit + 1), base_word.cats['form'], base_word.cats['lemma'], base_word.cats['upos'], base_word.cats['xpos'], base_word.cats['feats'], str(limit), base_word.cats['deprel'], base_word.cats['deps'], '_']), self.sentence.sent_address)
+            w1 = Word('\t'.join([str(limit), base_word.form, base_word.lemma, base_word.upos, base_word.xpos, base_word.feats, base_word.head, base_word.deprel, base_word.deps, '_']), self.sentence.sent_address)
+            w2 = Word('\t'.join([str(limit + 1), base_word.form, base_word.lemma, base_word.upos, base_word.xpos, base_word.feats, str(limit), base_word.deprel, base_word.deps, '_']), self.sentence.sent_address)
             self.sentence.words = self.sentence.words[:x + 1] + [w1, w2] + self.sentence.words[x + 1:]
-            base_word.cats['id'] = str(limit) + '-' + str(limit + 1)
+            base_word.id = str(limit) + '-' + str(limit + 1)
             cat_l_t = ['lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps']
             for i in cat_l_t:
                 base_word.cats[i] = '_'
@@ -511,7 +516,7 @@ class QDataViewer(QWidget):
         text = ''
         for i in range(len(self.sentence.words)):
             word = self.sentence.words[i]
-            if '-' in word.cats['id']: continue
+            if '-' in word.id: continue
             text += f'{word.cats["form"]}[{word.cats["id"]}] '
         self.sentenceLabel.setText(text)
 
@@ -535,7 +540,7 @@ class QDataViewer(QWidget):
                 self.tableWidget.setVerticalHeaderItem(enum, QTableWidgetItem('+'))
 
             dict_feat = {}
-            uni_feats = re.split('\|', word.cats['feats'])
+            uni_feats = re.split('\|', word.feats)
             if uni_feats[0] != '_':
                 for uni_feat in uni_feats:
                     uf = re.split('\=', uni_feat)
@@ -626,10 +631,10 @@ class QDataViewer(QWidget):
                 cur_col = 'Number\[psor\]'
             if col == 'Person[psor]':
                 cur_col = 'Person\[psor\]'
-            if re.search(cur_col + '=\w*', self.sentence.words[row].cats['feats']) is None:
+            if re.search(cur_col + '=\w*', self.sentence.words[row].feats) is None:
                 if text != '_':
-                    if self.sentence.words[row].cats['feats'] == '_':
-                        self.sentence.words[row].cats['feats'] = col + '=' + text
+                    if self.sentence.words[row].feats == '_':
+                        self.sentence.words[row].feats = col + '=' + text
                     else:
                         sorted_feats = re.split('\|', self.sentence.words[row].feats)
                         match_col = ''
@@ -640,23 +645,23 @@ class QDataViewer(QWidget):
                                     match_col = sf[0]
                                     match_val = sf[1]
                         if match_col == '':
-                            self.sentence.words[row].cats['feats'] = col + '=' + text + '|' + self.sentence.words[row].cats['feats']
+                            self.sentence.words[row].feats = col + '=' + text + '|' + self.sentence.words[row].feats
                         else:
                             cur_match_col = match_col
                             if match_col == 'Number[psor]':
                                 cur_match_col = 'Number\[psor\]'
                             if match_col == 'Person[psor]':
                                 cur_match_col = 'Person\[psor\]'
-                            self.sentence.words[row].cats['feats'] = re.sub(cur_match_col + '=' + match_val, match_col + '=' + match_val + '|' + col + '=' + text, self.sentence.words[row].cats['feats'])
+                            self.sentence.words[row].feats = re.sub(cur_match_col + '=' + match_val, match_col + '=' + match_val + '|' + col + '=' + text, self.sentence.words[row].feats)
             elif isSpace:
-                old_feats = re.split('\|', self.sentence.words[row].cats['feats'])
+                old_feats = re.split('\|', self.sentence.words[row].feats)
                 new_feats = []
                 for old_feat in old_feats:
                     if old_feat.split('=')[0] != cur_col:
                         new_feats.append(old_feat)
-                self.sentence.words[row].cats['feats'] =  '|'.join(new_feats)
+                self.sentence.words[row].feats =  '|'.join(new_feats)
             else:
-                self.sentence.words[row].cats['feats'] = re.sub(cur_col + '=\w*', col + '=' + text, self.sentence.words[row].cats['feats'])
+                self.sentence.words[row].feats = re.sub(cur_col + '=\w*', col + '=' + text, self.sentence.words[row].feats)
 
         if not self.first_time:
             self.first_time = True
