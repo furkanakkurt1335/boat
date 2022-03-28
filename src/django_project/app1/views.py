@@ -37,10 +37,21 @@ def error(request):
 def ud_graph(request):
     graph = None
     if request.method == 'POST':
+        from .ud_graph import Sentence as uds
+        from .ud_graph import get_ud_graph
         data = request.POST
         cells = json.loads(data['cells'])
+        field_l = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps']
+        words = list()
+        for key in cells.keys():
+            word_t = key + '\t'
+            for field in field_l:
+                word_t += cells[key][field] + '\t'
+            word_t += cells[key]['misc']
+            words.append(word_t)
         sent_id, text = data['sent_id'], data['text']
-        error = conllu.get_errors(sent_id, text, cells)
+        sent_t = uds(sent_id, text, words)
+        graph = get_ud_graph(sent_t)
     return render(request, 'ud_graph.html', {'graph': graph})
 
 @csrf_exempt
@@ -80,8 +91,6 @@ def register(request):
         if form.is_valid():
             form.save()
             return redirect('login')
-        else:
-            print(form)
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('profile')

@@ -1,4 +1,53 @@
 
+class Sentence:
+	def __init__(self, sent_id, text, words):
+		self.text = text
+		self.sent_id = sent_id
+		self.sent_address = 'n' + str(sent_id)
+		self.words = []
+		for word in words:
+			w = Word(word, self.sent_address)
+			self.words.append(w)
+		
+	def get_head(self):
+		for word in self.words:
+			if word.head == '0':
+				return word.address()
+		return 'Null'
+
+	def get_raw(self):
+		content = '# sent_id = ' + self.sent_id + '\n'
+		content += '# text = ' + self.text + '\n'
+		for word in self.words:
+			content += '\t'.join(word.get_list()) + '\n'
+		content += '\n'
+		return content
+
+class Word:
+	def __init__(self, word, sa):
+		items = word.split('\t')
+		
+		self.sent_add = sa
+		self.id = items[0]
+		self.form = items[1]
+		self.lemma = items[2]
+		self.upos = items[3]
+		self.xpos = items[4]
+		self.feats = items[5]
+		self.head = items[6]
+		self.deprel = items[7]
+		self.deps = items[8]
+		self.misc = items[9]
+		self.unitword = False
+		if '-' in self.id:
+			self.unitword = True
+	
+	def get_list(self):
+		return [self.id, self.form, self.lemma, self.upos, self.xpos, self.feats, self.head, self.deprel, self.deps, self.misc]
+	
+	
+	def address(self):
+		return self.sent_add + '-' + self.id
 
 def get_ud_graph(sentence):
     jquery = 'https://code.jquery.com/jquery-2.1.4.min.js'

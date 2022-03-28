@@ -430,7 +430,7 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
-    sentence_text.className = "table-xs table-borderless table-sm mx-auto";
+    sentence_text.className = "table-sm table-borderless mx-auto";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
@@ -443,7 +443,7 @@ function inject_sentence() {
         heading.style = "text-align: center; color: gray;";
         let data = document.createElement("td");
         data.innerHTML = cells[cells_keys[i]]["form"];
-        data.style.textAlign = "center";
+        data.style = "text-align: center;";
         row1.append(data);
         row2.append(heading);
     }
@@ -565,7 +565,12 @@ function create_graph() {
             text: window.text,
         },
         function (data) {
-            // use data
+            let graph = document.createElement('embed');
+            graph.id = "ud_graph";
+            graph.type = "text/html";
+            graph.src = data;
+            document.body.append(graph);
+            $("#ud_graph").after($("#error_div"));
         });
     }
 }
