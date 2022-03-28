@@ -1,5 +1,5 @@
 
-var current_columns = [];
+var current_columns = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
 
 // On document load
 window.onload = function () {
@@ -218,8 +218,17 @@ document.onkeyup = function (e) {
 };
 
 function column_change(column_option) {
-    if (current_columns.includes(column_option)) current_columns.splice(current_columns.indexOf(column_option), 1);
-    else current_columns = current_columns.concat(column_option);
+    console.log($("select[innerHTML=ID]").innerHTML);
+    if (current_columns.includes(column_option)) {
+        current_columns.splice(current_columns.indexOf(column_option), 1);
+        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: black";
+        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].style = "color: black";
+    }
+    else {
+        current_columns = current_columns.concat(column_option);
+        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: gray";
+        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].style = "color: gray";
+    }
     sort_columns();
     inject_sentence();
 }
@@ -340,6 +349,12 @@ function init_page() {
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
+        if (current_columns.includes(options[i].toLowerCase())) {
+            option.style = "color: gray;";
+        }
+        else {
+            option.style = "color: black;";
+        }
         select.append(option);
     }
     div_col.append(select);
@@ -390,7 +405,6 @@ function init_page() {
         buttons[i].className = "btn btn-light border";
     }
 
-    current_columns = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
     inject_sentence();
 }
 

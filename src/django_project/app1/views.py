@@ -10,6 +10,10 @@ from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
 
+def preferences(request):
+    context = {}
+    return render(request, 'preferences.html', context)
+
 # may need to deexempt
 @csrf_exempt
 def error(request):
