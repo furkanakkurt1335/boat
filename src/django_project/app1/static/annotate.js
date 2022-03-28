@@ -101,7 +101,10 @@ function button_handle(type, number, way) {
     }
     else if (type == "col_add_rm_button") {
         let sel = document.getElementById("col_add_rm_select");
-        if (sel.selectedIndex != 0) column_change(sel.options[sel.selectedIndex].text.toLowerCase());
+        let opts = sel.options;
+        for (let i = 0; i < opts.length; i++) {
+            if (opts[i].selected) column_change(opts[i].text.toLowerCase());
+        }
     }
     else if (type == "do") {
         let sel = document.getElementById("row_select_select");
@@ -240,7 +243,6 @@ document.onkeyup = function (e) {
 };
 
 function column_change(column_option) {
-    console.log($("select[innerHTML=ID]").innerHTML);
     if (current_columns.includes(column_option)) {
         current_columns.splice(current_columns.indexOf(column_option), 1);
         if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: black";
@@ -362,6 +364,7 @@ function init_page() {
     select = document.createElement("select");
     select.id = "col_add_rm_select";
     select.className = "form-select";
+    select.multiple = true;
     option = document.createElement("option");
     option.disabled = true;
     option.selected = true;
@@ -503,20 +506,22 @@ function inject_sentence() {
         }
         let row = document.createElement("tr");
         for (let j = 0; j < current_columns.length; j++) {
+            let column_t = current_columns[j];
+            let row_t = cells_keys[i];
             let data = document.createElement("td");
-            if (current_columns[j] == "id") data.innerHTML = cells_keys[i];
-            else if (cells[cells_keys[i]][current_columns[j]] == undefined) data.innerHTML = "_";
-            else data.innerHTML = cells[cells_keys[i]][current_columns[j]];
-            data.id = `${cells_keys[i]} ${current_columns[j]}`;
+            if (column_t == "id") data.innerHTML = row_t;
+            else if (cells[row_t][column_t] == undefined) data.innerHTML = "_";
+            else data.innerHTML = cells[row_t][column_t];
+            data.id = `${row_t} ${column_t}`;
             data.style.textAlign = "center";
-            data.contentEditable = "true";
+            if (column_t != "id") data.contentEditable = true;
             data.addEventListener("focus", (event) => {
-                window.last_focus = [cells_keys[i], current_columns[j]];
+                window.last_focus = [row_t, column_t];
                 window.last_focus_value = event.target.innerHTML;
             });
             data.addEventListener("blur", (event) => { // potential problem with unfocusing after column removal!
                 if (window.last_focus_value != event.target.innerHTML) {
-                    cell_change(cells_keys[i], current_columns[j], event.target.innerHTML);
+                    cell_change(row_t, column_t, event.target.innerHTML);
                     window.edits.push([window.last_focus, window.last_focus_value]);
                     display_errors();
                 }
