@@ -3,6 +3,7 @@ var current_columns = [];
 
 // On document load
 window.onload = function () {
+    window.CSRF_TOKEN = document.getElementsByName('csrfmiddlewaretoken')[0];
     window.sent_id = document.getElementById('sentence.sent_id').innerHTML;
     window.text = document.getElementById('sentence.text').innerHTML;
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
@@ -31,21 +32,21 @@ window.onload = function () {
 function post_to_save(type, number) {
     // current columns can be sent for continuing with the same set
     // type should be sent for next, prev, or just save
-    const form = document.createElement('form');
+    let form = document.createElement('form');
     form.method = "post";
     form.action = `${get_sentence_id_url()}`;
     form.enctype = "multipart/form-data";
-    const csrf_token_input = document.getElementsByName('csrfmiddlewaretoken')[0];
+    let csrf_token_input = document.getElementsByName('csrfmiddlewaretoken')[0];
     form.append(csrf_token_input);
 
     // Type
-    const form_type = document.createElement('input');
+    let form_type = document.createElement('input');
     form_type.type = 'hidden';
     form_type.name = "type";
     form_type.value = type;
     form.append(form_type);
     if (type == "go") {
-        const form_type = document.createElement('input');
+        form_type = document.createElement('input');
         form_type.type = 'hidden';
         form_type.name = "number";
         form_type.value = parseInt(number);
@@ -53,7 +54,7 @@ function post_to_save(type, number) {
     }
 
     // Cells
-    const form_data = document.createElement('input');
+    let form_data = document.createElement('input');
     form_data.type = 'hidden';
     form_data.name = "data";
     form_data.value = JSON.stringify(window.cells);
@@ -61,7 +62,7 @@ function post_to_save(type, number) {
     document.body.append(form);
 
     // Notes
-    const form_notes = document.createElement('input');
+    let form_notes = document.createElement('input');
     form_notes.type = 'hidden';
     form_notes.name = "notes";
     form_notes.value = window.notes;
@@ -479,6 +480,7 @@ function inject_sentence() {
                 if (window.last_focus_value != event.target.innerHTML) {
                     cell_change(cells_keys[i], current_columns[j], event.target.innerHTML);
                     window.edits.push([window.last_focus, window.last_focus_value]);
+                    display_errors();
                 }
             });
             row.append(data);
@@ -522,6 +524,17 @@ function display_errors() {
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();
+
+    $.post("/error/",
+        {
+            cells: JSON.stringify(window.cells),
+            sent_id: window.sent_id,
+            text: window.text,
+        },
+        function (data) {
+            window.errors = data;
+        });
+
     let error_div = document.createElement('div');
     error_div.id = "error_div";
     error_div.className = "card border-danger bg-light mb-3";

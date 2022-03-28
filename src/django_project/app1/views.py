@@ -8,6 +8,18 @@ from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
 from .models import SentenceManager, Treebank, Sentence, Annotation, Word_Line
 from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
+from django.views.decorators.csrf import csrf_exempt
+
+# may need to deexempt
+@csrf_exempt
+def error(request):
+    error = None
+    if request.method == 'POST':
+        data = request.POST
+        cells = json.loads(data['cells'])
+        sent_id, text = data['sent_id'], data['text']
+        error = conllu.get_errors(sent_id, text, cells)
+    return render(request, 'error.html', {'error': error})
 
 def register(request):
     if request.method == 'POST':
