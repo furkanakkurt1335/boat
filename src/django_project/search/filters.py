@@ -1,4 +1,3 @@
-import django_filters
 from app1.models import Word_Line
 from django_filters import rest_framework as filters
 

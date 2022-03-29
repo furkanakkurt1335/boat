@@ -251,12 +251,11 @@ def view_treebanks(request):
     return render(request, 'view_treebanks.html', context)
 
 @login_required
-def view_treebank(request, treebank):
+def view_treebank(request, treebank, page):
     message = ''
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
     if treebank_selected == None: message = 'There is no treebank with that title.'
-    sentences = Sentence.objects.filter(treebank=treebank_selected)
-    context = {'sentences': sentences, 'message': message, 'treebank': treebank_selected}
+    context = {'message': message, 'treebank': treebank_selected, 'page': page}
     return render(request, 'view_treebank.html', context)
 
 def replace_path(current_path, type, number=None):

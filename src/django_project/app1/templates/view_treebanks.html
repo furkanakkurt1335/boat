@@ -39,7 +39,7 @@
     <tbody>
         {% for treebank in treebanks %}
         <tr>
-            <td><a href={% url 'view_treebank' treebank.title %}>{{treebank}}</a>
+            <td><a href={% url 'view_treebank' treebank.title 1 %}>{{treebank}}</a>
                 <button style="width: 100px;" class="btn btn-outline-success download" value="Download"
                     id="{{treebank.title}}">Download</button>
                 <!-- <a href=""
