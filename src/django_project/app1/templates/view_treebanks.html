@@ -2,6 +2,31 @@
 
 {% block head %}
 <title> View Treebanks Page </title>
+<script>
+    window.onload = function () {
+        let dl_buttons = document.getElementsByClassName('download');
+        for (let i = 0; i < dl_buttons.length; i++) {
+            dl_buttons[i].addEventListener("click", function () {
+                let treebank_title = dl_buttons[i].id;
+                $.post("/download_conllu/",
+                    {
+                        treebank_title: treebank_title
+                    },
+                    function (data) {
+                        let textarea_t = document.createElement('textarea');
+                        textarea_t.innerHTML = data;
+                        var conllu_blob = new Blob([textarea_t.value], { type: "text/plain" });
+                        var url = window.URL.createObjectURL(conllu_blob);
+                        var anchor = document.createElement("a");
+                        anchor.href = url;
+                        anchor.download = `${treebank_title}.conllu`;
+                        anchor.click();
+                        window.URL.revokeObjectURL(url);
+                    });
+            });
+        }
+    };
+</script>
 {% endblock %}
 
 {% block body %}
@@ -14,7 +39,12 @@
     <tbody>
         {% for treebank in treebanks %}
         <tr>
-            <td><a href={% url 'view_treebank' treebank.title %}>{{treebank}}</a></td>
+            <td><a href={% url 'view_treebank' treebank.title %}>{{treebank}}</a>
+                <button style="width: 100px;" class="btn btn-outline-success download" value="Download"
+                    id="{{treebank.title}}">Download</button>
+                <!-- <a href=""
+                    class="download">Download</a> -->
+            </td>
         </tr>
         {% endfor %}
     </tbody>

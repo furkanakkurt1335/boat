@@ -22,6 +22,36 @@ def preferences(request):
         context['graph_preference'] = ExtendUser.objects.get(user=request.user).preferences['graph']
     return render(request, 'preferences.html', context)
 
+def sort_word_lines(word_lines):
+    ret_l = []
+    for i in range(1, len(word_lines)*5):
+        dash_filtered = word_lines.filter(id_f=f'{i}-{i+1}')
+        if len(dash_filtered) == 1: ret_l.append(dash_filtered[0])
+        direct_filtered = word_lines.filter(id_f=f'{i}')
+        if len(direct_filtered) == 1: ret_l.append(direct_filtered[0])
+    return ret_l
+
+@csrf_exempt
+def download_conllu(request):
+    content = None
+    if request.method == 'POST':
+        treebank_title = request.POST['treebank_title']
+        treebank = Treebank.objects.get_treebank_from_title(treebank_title)
+        all_sentences = Sentence.objects.filter(treebank=treebank)
+        content = ''
+        for sentence_t in all_sentences:
+            annotations_t = Annotation.objects.filter(annotator=request.user, sentence=sentence_t)
+            for annotation_t in annotations_t:
+                word_lines_t = Word_Line.objects.filter(annotation=annotation_t)
+                if len(word_lines_t) != 0:
+                    word_lines_sorted = sort_word_lines(word_lines_t)
+                    content += f'# sent_id = {sentence_t.sent_id}\n'
+                    content += f'# text = {sentence_t.text}\n'
+                for word_line_t in word_lines_sorted:
+                    content += f'{word_line_t.id_f}\t{word_line_t.form_f}\t{word_line_t.lemma}\t{word_line_t.upos}\t{word_line_t.xpos}\t{word_line_t.feats}\t{word_line_t.head}\t{word_line_t.deprel}\n{word_line_t.deps}\t{word_line_t.misc}\n'
+                content += '\n'
+    return render(request, 'download_conllu.html', {'content': content})
+
 # may need to deexempt
 @csrf_exempt
 def error(request):

@@ -9,6 +9,12 @@ class ExtendUser(models.Model):
         return self.user.username
 
 class TreebankManager(models.Manager):
+    def get_treebank_from_title(self, title):
+        treebanks = Treebank.objects.all()
+        for treebank_t in treebanks:
+            if treebank_t.title == title: return treebank_t
+        return None
+    
     def get_treebank_from_url(self, url):
         treebanks = Treebank.objects.all()
         for treebank_t in treebanks:
