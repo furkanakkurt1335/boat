@@ -5,7 +5,44 @@
 <script>
     {% if queries %}
     window.onload = function () {
+        let queries = JSON.parse($('#result')[0].innerHTML);
+        $('#result')[0].innerHTML = '';
+        let keys = Object.keys(queries);
+        let url = '/api/wordlines/?'
+        for (let i = 0; i < keys.length; i++) {
+            let type = queries[keys[i]]['type'];
+            let input = queries[keys[i]]['input'];
+            if (type == "Treebank title") {
+                type_url = 'annotation__sentence__treebank__title';
+            }
+            else if (["sent_id", "text"].includes(type)) {
+                type_url = `annotation__sentence__${type}`;
+            }
+            else {
+                type_url = type.toLowerCase();
+            }
+            url += `${type_url}=${input}`;
+            if (i != keys.length - 1) url += '&';
+        }
+        let annotations = get_annotations(url, new Set());
 
+        function get_annotations(url, annotations) {
+            $.get(url,
+                function (data) {
+                    let results = data['results'];
+                    for (let i = 0; i < results.length; i++) {
+                        annotations.add(results[i]['annotation']);
+                    }
+                    if (data['next'] == null) return;
+                    get_annotations(data['next'], annotations);
+                    return annotations;
+                }
+            );
+        };
+
+        function use_annotations(annotations) {
+            console.log(annotations);
+        };
     };
     {% endif %}
     {% if not queries %}

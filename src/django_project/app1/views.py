@@ -332,14 +332,16 @@ def search(request):
     message = None
     if request.method == "POST":
         data = request.POST
-        queries = []
+        queries = {}
         count = 1
         while 1:
             if f'input_{count}' not in data.keys(): break
             if f'type_{count}' in data.keys() and data[f'input_{count}'] != '':
-                queries.append((data[f'input_{count}'], data[f'type_{count}']))
+                queries[count] = {}
+                queries[count]['type'] = data[f'type_{count}']
+                queries[count]['input'] = data[f'input_{count}']
             count += 1
-        return render(request, 'search.html', {'queries': queries})
+        return render(request, 'search.html', {'queries': json.dumps(queries)})
     elif request.method == "GET":
         pass
     context = {'message': message}

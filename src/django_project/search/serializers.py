@@ -15,7 +15,7 @@ class SentenceSerializer(serializers.ModelSerializer):
 class AnnotationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Annotation
-        fields = ['url', 'id', 'annotator', 'sentence', 'notes']
+        fields = ['url', 'id', 'annotator', 'sentence', 'notes', 'status']
 
 class WordLineSerializer(serializers.ModelSerializer):
     class Meta:

@@ -8,9 +8,11 @@ from django_filters import CharFilter
 
 class WordLineViewSet(viewsets.ModelViewSet):
     class WordLineFilter(filters.FilterSet):
+        id = CharFilter(lookup_expr='iexact')
+        annotation__id = CharFilter(lookup_expr='iexact')
         class Meta:
             model = Word_Line
-            fields = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc', 'id', 'annotation__sentence__sent_id', 'annotation__sentence__text']
+            fields = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc', 'id', 'annotation__id', 'annotation__sentence__sent_id', 'annotation__sentence__text', 'annotation__sentence__treebank__title']
     queryset = Word_Line.objects.all()
     serializer_class = WordLineSerializer
     permission_classes = [permissions.IsAuthenticated]
