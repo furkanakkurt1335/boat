@@ -18,6 +18,7 @@ def preferences(request):
         eu = ExtendUser.objects.get(user=request.user)
         eu.preferences['graph'] = graph_selection
         eu.save()
+        context['message'] = 'Your preferences were saved successfully.'
     elif request.method == 'GET':
         context['graph_preference'] = ExtendUser.objects.get(user=request.user).preferences['graph']
     return render(request, 'preferences.html', context)
@@ -341,3 +342,13 @@ def search(request):
         pass
     context = {'message': message}
     return render(request, 'search.html', context)
+
+@login_required
+def my_sentences(request):
+    message = None
+    if request.method == "POST":
+        pass
+    elif request.method == "GET":
+        pass
+    context = {'message': message}
+    return render(request, 'my_sentences.html', context)

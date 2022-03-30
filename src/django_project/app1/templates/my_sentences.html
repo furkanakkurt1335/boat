@@ -1,0 +1,27 @@
+{% extends 'base-nav.html' %}
+
+{% block head %}
+<title> My Sentences Page </title>
+<script>
+    window.onload = function () {
+        let select = document.getElementById('select');
+        select.addEventListener('change', function () {
+            change_sentences();
+        });
+    };
+
+    function change_sentences() {
+        let type = select.options[select.selectedIndex].text;
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<br>
+<select id="select" class="w-25 form-select">
+    <option id="none" selected>None</option>
+    <option id="annotated">Annotated</option>
+    <option id="half">Half</option>
+    <option id="not annotated">Not Annotated</option>
+</select>
+{% endblock %}
