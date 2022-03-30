@@ -2,12 +2,15 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
 from .serializers import UserSerializer, GroupSerializer, SentenceSerializer, AnnotationSerializer, WordLineSerializer
-from app1.models import *
+from app1.models import Sentence, Annotation, Word_Line
 from rest_framework import filters
-from .filters import AnnotationFilter, WordLineFilter
 from django_filters import rest_framework as d_filters
 
 class WordLineViewSet(viewsets.ModelViewSet):
+    class WordLineFilter(d_filters.FilterSet):
+        class Meta:
+            model = Word_Line
+            fields = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc', 'annotation__sentence__sent_id', 'annotation__sentence__text']
     queryset = Word_Line.objects.all()
     serializer_class = WordLineSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -15,6 +18,10 @@ class WordLineViewSet(viewsets.ModelViewSet):
     filterset_class = WordLineFilter
 
 class AnnotationViewSet(viewsets.ModelViewSet):
+    class AnnotationFilter(d_filters.FilterSet):
+        class Meta:
+            model = Annotation
+            fields = ['sentence__sent_id', 'sentence__text']
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
     permission_classes = [permissions.IsAuthenticated]

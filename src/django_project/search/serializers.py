@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from app1.models import *
+from app1.models import Sentence, Annotation, Word_Line
+from django_filters import rest_framework as filters
 
 class SentenceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,12 +14,9 @@ class AnnotationSerializer(serializers.ModelSerializer):
         fields = ['url', 'annotator', 'sentence', 'notes']
 
 class WordLineSerializer(serializers.ModelSerializer):
-    text = AnnotationSerializer(source='sentence__text', many=True)
-
     class Meta:
         model = Word_Line
-        fields = ['url', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc', 'text']
-        depth = 1
+        fields = ['url', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc']
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

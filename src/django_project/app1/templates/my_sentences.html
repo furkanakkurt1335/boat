@@ -17,11 +17,14 @@
 {% endblock %}
 
 {% block body %}
-<br>
-<select id="select" class="w-25 form-select">
-    <option id="none" selected>None</option>
-    <option id="annotated">Annotated</option>
-    <option id="half">Half</option>
-    <option id="not annotated">Not Annotated</option>
-</select>
+<div id="space" class="p-5 border bg-light">
+    <select id="select" class="w-25 form-select">
+        <option id="none" selected>None</option>
+        <option id="annotated">Annotated</option>
+        <option id="half">Half</option>
+        <option id="not annotated">Not Annotated</option>
+    </select>
+    <div id="sentences">
+    </div>
+</div>
 {% endblock %}
