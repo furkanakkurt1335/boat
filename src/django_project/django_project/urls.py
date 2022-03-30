@@ -23,6 +23,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'sentences', views.SentenceViewSet)
 router.register(r'annotations', views.AnnotationViewSet)
+router.register(r'wordlines', views.WordLineViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

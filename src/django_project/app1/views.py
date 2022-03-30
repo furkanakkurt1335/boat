@@ -48,7 +48,7 @@ def download_conllu(request):
                     content += f'# sent_id = {sentence_t.sent_id}\n'
                     content += f'# text = {sentence_t.text}\n'
                 for word_line_t in word_lines_sorted:
-                    content += f'{word_line_t.id_f}\t{word_line_t.form_f}\t{word_line_t.lemma}\t{word_line_t.upos}\t{word_line_t.xpos}\t{word_line_t.feats}\t{word_line_t.head}\t{word_line_t.deprel}\n{word_line_t.deps}\t{word_line_t.misc}\n'
+                    content += f'{word_line_t.id_f}\t{word_line_t.form}\t{word_line_t.lemma}\t{word_line_t.upos}\t{word_line_t.xpos}\t{word_line_t.feats}\t{word_line_t.head}\t{word_line_t.deprel}\n{word_line_t.deps}\t{word_line_t.misc}\n'
                 content += '\n'
     return render(request, 'download_conllu.html', {'content': content})
 
@@ -214,8 +214,8 @@ def upload_file(request):
                         anno_t.save()
                         for key in cats.keys():
                             line_t = cats[key]
-                            id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
-                            word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc)
+                            id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
+                            word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
                 if not error: message = 'You have uploaded a file successfully.'
             else: message = 'The file was not in the correct conllu format.'
             return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message, 'treebanks': treebanks})
@@ -300,13 +300,13 @@ def annotate(request, treebank, order):
                 anno_t = Annotation.objects.create_annotation(request.user, sentence, notes)
             for key in word_lines.keys():
                 line_t = word_lines[key]
-                id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
+                id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
                 wl_filtered = Word_Line.objects.filter(annotation=anno_t, id_f=id_f)
                 if len(wl_filtered) == 0:
-                    word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc)
+                    word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
                 else:
                     wl_t = wl_filtered[0]
-                    wl_t.form_f, wl_t.lemma, wl_t.upos, wl_t.xpos, wl_t.feats, wl_t.head, wl_t.deprel, wl_t.deps, wl_t.misc = form_f, lemma, upos, xpos, feats, head, deprel, deps, misc
+                    wl_t.form, wl_t.lemma, wl_t.upos, wl_t.xpos, wl_t.feats, wl_t.head, wl_t.deprel, wl_t.deps, wl_t.misc = form, lemma, upos, xpos, feats, head, deprel, deps, misc
                     wl_t.save()
             current_path = request.path
             button_type = request.POST['type']
@@ -318,7 +318,7 @@ def annotate(request, treebank, order):
             cats = {}
             for word_line in word_lines_selected:
                 id_f = word_line.id_f
-                cats[id_f] = {'form': word_line.form_f, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos, 'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
+                cats[id_f] = {'form': word_line.form, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos, 'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
             errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
             cats = json.dumps(cats)
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference': ExtendUser.objects.get(user=request.user).preferences['graph']}
@@ -329,21 +329,15 @@ def search(request):
     message = None
     if request.method == "POST":
         data = request.POST
-        if 'type_select' not in data.keys():
-            message = 'You need to select a type.'
-        else:
-            search_type = data['type_select']
-            search_query = data['search']
-            if 'regex' in data.keys():
-                regexp = True
-            data = {1:2, 3:4}
-            return redirect('search_result')
+        queries = []
+        count = 1
+        while 1:
+            if f'input_{count}' not in data.keys(): break
+            if f'type_{count}' in data.keys() and data[f'input_{count}'] != '':
+                queries.append((data[f'input_{count}'], data[f'type_{count}']))
+            count += 1
+        return render(request, 'search.html', {'queries': queries})
     elif request.method == "GET":
         pass
     context = {'message': message}
     return render(request, 'search.html', context)
-
-@login_required
-def search_result(request, x):
-    context = {'1':x}
-    return render(request, 'search_result.html', context)

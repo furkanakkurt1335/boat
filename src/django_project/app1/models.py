@@ -67,14 +67,14 @@ class Annotation(models.Model):
         return '%s by %s' % (self.sentence.sent_id, self.annotator)
 
 class Word_LineManager(models.Manager):
-    def create_word_line(self, annotation, id_f, form_f, lemma, upos, xpos, feats, head, deprel, deps, misc):
-        word_line = self.create(annotation=annotation, id_f=id_f, form_f=form_f, lemma=lemma, upos=upos, xpos=xpos, feats=feats, head=head, deprel=deprel, deps=deps, misc=misc)
+    def create_word_line(self, annotation, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc):
+        word_line = self.create(annotation=annotation, id_f=id_f, form=form, lemma=lemma, upos=upos, xpos=xpos, feats=feats, head=head, deprel=deprel, deps=deps, misc=misc)
         return word_line
 
 class Word_Line(models.Model):
     annotation = models.ForeignKey(Annotation, on_delete=models.CASCADE)
     id_f = models.CharField(max_length=10)
-    form_f = models.CharField(max_length=100)
+    form = models.CharField(max_length=100)
     lemma = models.CharField(max_length=100)
     upos = models.CharField(max_length=100)
     xpos = models.CharField(max_length=100)
