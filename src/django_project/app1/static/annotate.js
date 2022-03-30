@@ -8,6 +8,8 @@ window.onload = function () {
     window.text = document.getElementById('sentence.text').innerHTML;
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
+    window.status = document.getElementById('annotation.status').innerHTML;
+    window.status_d = {"not": "Not", "half": "Half", "done": "Done"};
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = document.getElementById('graph_preference').innerHTML;
     $('#sent_id').remove();
@@ -47,33 +49,41 @@ function post_to_save(type, number) {
     form.append(csrf_token_input);
 
     // Type
-    let form_type = document.createElement('input');
-    form_type.type = 'hidden';
-    form_type.name = "type";
-    form_type.value = type;
-    form.append(form_type);
+    let input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "type";
+    input.value = type;
+    form.append(input);
     if (type == "go") {
-        form_type = document.createElement('input');
-        form_type.type = 'hidden';
-        form_type.name = "number";
-        form_type.value = parseInt(number);
-        form.append(form_type);
+        input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = "number";
+        input.value = parseInt(number);
+        form.append(input);
     }
 
     // Cells
-    let form_data = document.createElement('input');
-    form_data.type = 'hidden';
-    form_data.name = "data";
-    form_data.value = JSON.stringify(window.cells);
-    form.append(form_data);
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "data";
+    input.value = JSON.stringify(window.cells);
+    form.append(input);
     document.body.append(form);
 
     // Notes
-    let form_notes = document.createElement('input');
-    form_notes.type = 'hidden';
-    form_notes.name = "notes";
-    form_notes.value = window.notes;
-    form.append(form_notes);
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "notes";
+    input.value = window.notes;
+    form.append(input);
+    document.body.append(form);
+
+    // Status
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "status";
+    input.value = window.status;
+    form.append(input);
     document.body.append(form);
 
     form.submit();
@@ -180,6 +190,24 @@ function button_handle(type, number, way) {
     else if (type == "reset") {
         window.cells = window.initial_cells;
         inject_sentence();
+    }
+    else if (type == "status") {
+        let button = $('#status')[0];
+        if (window.status == "not") {
+            button.innerHTML = "Done";
+            button.className = button.className.replace('border', 'border-success');
+            window.status = "done";
+        }
+        else if (window.status == "done") {
+            button.innerHTML = "Half";
+            button.className = button.className.replace('border-success', 'border-danger');
+            window.status = "half";
+        }
+        else if (window.status == "half") {
+            button.innerHTML = "Not";
+            button.className = button.className.replace('border-danger', 'border');
+            window.status = "not";
+        }
     }
 }
 
@@ -294,6 +322,7 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
+    // reset
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
     button = document.createElement("button");
@@ -302,6 +331,7 @@ function init_page() {
     div_col.append(button);
     div_row.append(div_col);
 
+    // undo
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
     button = document.createElement("button");
@@ -310,6 +340,7 @@ function init_page() {
     div_col.append(button);
     div_row.append(div_col);
 
+    // redo
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
     button = document.createElement("button");
@@ -323,6 +354,7 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
+    // do_input
     div_col = document.createElement('div');
     div_col.className = 'col';
     let input = document.createElement("input");
@@ -332,6 +364,7 @@ function init_page() {
     div_col.append(input);
     div_row.append(div_col);
 
+    // do_select
     div_col = document.createElement('div');
     div_col.className = 'col';
     let select = document.createElement("select");
@@ -346,6 +379,7 @@ function init_page() {
     div_col.append(select);
     div_row.append(div_col);
 
+    // do_button
     div_col = document.createElement('div');
     div_col.className = 'col';
     button = document.createElement("button");
@@ -359,6 +393,21 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
+    // status
+    div_col = document.createElement('div');
+    div_col.className = 'col';
+    button = document.createElement("button");
+    button.id = "status";
+    button.innerHTML = window.status_d[window.status];
+    div_col.append(button);
+    div_row.append(div_col);
+
+    // split
+    div_col = document.createElement('div');
+    div_col.className = 'col-md-auto';
+    div_row.append(div_col);
+
+    // column_select
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
     select = document.createElement("select");
@@ -387,6 +436,7 @@ function init_page() {
     div_col.append(select);
     div_row.append(div_col);
 
+    // column_button
     div_col = document.createElement('div');
     div_col.className = 'col';
     button = document.createElement("button");
@@ -400,6 +450,7 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
+    // next
     div_col = document.createElement('div');
     div_col.className = 'col';
     button = document.createElement("button");
@@ -413,6 +464,7 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
+    // save
     div_col = document.createElement('div');
     div_col.className = 'col';
     button = document.createElement("button");

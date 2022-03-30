@@ -292,13 +292,14 @@ def annotate(request, treebank, order):
         if request.method == "POST":
             data = request.POST['data']
             notes = request.POST['notes']
+            status = request.POST['status']
             word_lines = json.loads(data)
             annotation.notes = notes
             if request.user == annotation.annotator:
                 annotation.save()
                 anno_t = annotation
             else:
-                anno_t = Annotation.objects.create_annotation(request.user, sentence, notes)
+                anno_t = Annotation.objects.create_annotation(request.user, sentence, notes, status)
             for key in word_lines.keys():
                 line_t = word_lines[key]
                 id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']

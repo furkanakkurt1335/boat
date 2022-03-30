@@ -52,14 +52,15 @@ class Sentence(models.Model):
         return self.sent_id
 
 class AnnotationManager(models.Manager):
-    def create_annotation(self, annotator, sentence, notes=''):
-        annotation = self.create(annotator=annotator, sentence=sentence, notes=notes)
+    def create_annotation(self, annotator, sentence, notes='', status='not'):
+        annotation = self.create(annotator=annotator, sentence=sentence, notes=notes, status=status)
         return annotation
 
 class Annotation(models.Model):
     annotator = models.ForeignKey(User, on_delete=models.CASCADE)
     sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
     notes = models.TextField()
+    status = models.CharField(max_length=20)
 
     objects = AnnotationManager()
 
