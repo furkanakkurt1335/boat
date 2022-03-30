@@ -7,7 +7,7 @@
         window.current_page = parseInt({{ page }});
     $('#previous')[0].href += (window.current_page - 1).toString();
     $('#next')[0].href += (window.current_page + 1).toString();
-    $.get("/sentences/?page={{page}}&search={{treebank.title}}",
+    $.get("/api/sentences/?page={{page}}&treebank__title={{treebank.title}}",
         function (data) {
             let results = data['results'];
             for (let i = 0; i < results.length; i++) {

@@ -1,47 +1,69 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer, SentenceSerializer, AnnotationSerializer, WordLineSerializer
-from app1.models import Sentence, Annotation, Word_Line
-from rest_framework import filters
-from django_filters import rest_framework as d_filters
+from .serializers import UserSerializer, GroupSerializer, TreebankSerializer, SentenceSerializer, AnnotationSerializer, WordLineSerializer
+from app1.models import Treebank, Sentence, Annotation, Word_Line
+from django_filters import rest_framework as filters
+from django_filters import CharFilter
 
 class WordLineViewSet(viewsets.ModelViewSet):
-    class WordLineFilter(d_filters.FilterSet):
+    class WordLineFilter(filters.FilterSet):
         class Meta:
             model = Word_Line
-            fields = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc', 'annotation__sentence__sent_id', 'annotation__sentence__text']
+            fields = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc', 'id', 'annotation__sentence__sent_id', 'annotation__sentence__text']
     queryset = Word_Line.objects.all()
     serializer_class = WordLineSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [d_filters.DjangoFilterBackend,]
+    filter_backends = [filters.DjangoFilterBackend,]
     filterset_class = WordLineFilter
 
 class AnnotationViewSet(viewsets.ModelViewSet):
-    class AnnotationFilter(d_filters.FilterSet):
+    class AnnotationFilter(filters.FilterSet):
+        id = CharFilter(lookup_expr='iexact')
         class Meta:
             model = Annotation
             fields = ['sentence__sent_id', 'sentence__text']
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [d_filters.DjangoFilterBackend,]
+    filter_backends = [filters.DjangoFilterBackend,]
     filterset_class = AnnotationFilter
 
 class SentenceViewSet(viewsets.ModelViewSet):
+    class SentenceFilter(filters.FilterSet):
+        id = CharFilter(lookup_expr='iexact')
+        class Meta:
+            model = Sentence
+            fields = ['treebank__title', 'sent_id', 'text']
     queryset = Sentence.objects.all()
     serializer_class = SentenceSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['treebank__title']
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_class = SentenceFilter
+
+class TreebankViewSet(viewsets.ModelViewSet):
+    class TreebankFilter(filters.FilterSet):
+        id = CharFilter(lookup_expr='iexact')
+        class Meta:
+            model = Treebank
+            fields = ['title']
+    queryset = Treebank.objects.all()
+    serializer_class = TreebankSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_class = TreebankFilter
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
+    class UserFilter(filters.FilterSet):
+        id = CharFilter(lookup_expr='iexact')
+        class Meta:
+            model = User
+            fields = ['username']
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_class = UserFilter
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
