@@ -9,7 +9,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = document.getElementById('annotation.status').innerHTML;
-    window.status_d = {"not": "Not", "half": "Half", "done": "Done"};
+    window.status_d = { "not": "Not", "half": "Half", "done": "Done" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = document.getElementById('graph_preference').innerHTML;
     $('#sent_id').remove();
@@ -106,7 +106,7 @@ function get_sorted_cells_keys() {
 }
 
 function button_handle(type, number, way) {
-    if (["previous", "next", "save"].indexOf(type) != -1) {
+    if (["previous", "next", "save"].includes(type)) {
         post_to_save(type);
     }
     else if (type == "col_add_rm_button") {
@@ -209,6 +209,9 @@ function button_handle(type, number, way) {
             window.status = "not";
         }
     }
+    else if (type == "profile") {
+        post_to_save(type);
+    }
 }
 
 // Keyboard shortcuts
@@ -309,9 +312,23 @@ function init_page() {
     let div_row = document.createElement('div');
     div_row.className = 'row mx-auto';
 
+    // create button for profile
     let div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
     let button = document.createElement("button");
+    button.id = "profile";
+    button.innerHTML = "Profile";
+    div_col.append(button);
+    div_row.append(div_col);
+
+    // split
+    div_col = document.createElement('div');
+    div_col.className = 'col-md-auto';
+    div_row.append(div_col);
+
+    div_col = document.createElement('div');
+    div_col.className = 'col-md-auto';
+    button = document.createElement("button");
     button.id = "previous";
     button.innerHTML = "Previous";
     div_col.append(button);
@@ -683,6 +700,7 @@ function display_errors() {
         error_body.append(document.createElement('br'));
     }
     document.body.append(error_div);
+    document.body.append(document.createElement('br'));
 }
 
 function cell_change(key, column, cell) {
