@@ -30,7 +30,7 @@ window.onload = function () {
             }
         }
     }
-    window.initial_cells = window.cells;
+    window.initial_cells = JSON.parse(JSON.stringify(window.cells)); // deep copy
     window.edits = []; // use for undo, redos
     window.edits_undone = [];
     window.last_focus = null;
@@ -38,7 +38,24 @@ window.onload = function () {
     init_page();
 };
 
+function get_data_changed() {
+    let cells_keys = Object.keys(window.cells);
+    let initial_cells_keys = Object.keys(window.initial_cells);
+    if (cells_keys.length != initial_cells_keys.length) return true;
+    for (let i = 0; i < cells_keys.length; i++) {
+        if (cells_keys[i] != initial_cells_keys[i]) return true;
+
+        for (let j = 0; j < cats_low.length; j++) {
+            if (window.cells[cells_keys[i]][cats_low[j]] != window.initial_cells[initial_cells_keys[i]][cats_low[j]]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function post_to_save(type, number) {
+
     // current columns can be sent for continuing with the same set
     // type should be sent for next, prev, or just save
     let form = document.createElement('form');
@@ -67,6 +84,14 @@ function post_to_save(type, number) {
     input.type = 'hidden';
     input.name = "data";
     input.value = JSON.stringify(window.cells);
+    form.append(input);
+    document.body.append(form);
+
+    // Data Changed
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "data_changed";
+    input.value = get_data_changed();
     form.append(input);
     document.body.append(form);
 

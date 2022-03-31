@@ -291,25 +291,27 @@ def annotate(request, treebank, order):
     if not message:
         if request.method == "POST":
             data = request.POST['data']
+            data_changed = request.POST['data_changed']
             notes = request.POST['notes']
             status = request.POST['status']
             word_lines = json.loads(data)
             annotation.notes = notes
-            if request.user == annotation.annotator:
-                annotation.save()
-                anno_t = annotation
-            else:
-                anno_t = Annotation.objects.create_annotation(request.user, sentence, notes, status)
-            for key in word_lines.keys():
-                line_t = word_lines[key]
-                id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
-                wl_filtered = Word_Line.objects.filter(annotation=anno_t, id_f=id_f)
-                if len(wl_filtered) == 0:
-                    word_line_t = Word_Line.objects.create_word_line(anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
+            if data_changed == 'true':
+                if request.user == annotation.annotator:
+                    annotation.save()
+                    anno_t = annotation
                 else:
-                    wl_t = wl_filtered[0]
-                    wl_t.form, wl_t.lemma, wl_t.upos, wl_t.xpos, wl_t.feats, wl_t.head, wl_t.deprel, wl_t.deps, wl_t.misc = form, lemma, upos, xpos, feats, head, deprel, deps, misc
-                    wl_t.save()
+                    anno_t = Annotation.objects.create_annotation(request.user, sentence, notes, status)
+                for key in word_lines.keys():
+                    line_t = word_lines[key]
+                    id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t['upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
+                    wl_filtered = Word_Line.objects.filter(annotation=anno_t, id_f=id_f)
+                    if len(wl_filtered) == 0:
+                        Word_Line.objects.create_word_line(anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
+                    else:
+                        wl_t = wl_filtered[0]
+                        wl_t.form, wl_t.lemma, wl_t.upos, wl_t.xpos, wl_t.feats, wl_t.head, wl_t.deprel, wl_t.deps, wl_t.misc = form, lemma, upos, xpos, feats, head, deprel, deps, misc
+                        wl_t.save()
             current_path = request.path
             button_type = request.POST['type']
             if button_type == 'go': number = request.POST['number']
