@@ -5,8 +5,7 @@
 <script>
     {% if queries %}
     window.onload = function () {
-        let queries = JSON.parse($('#result')[0].innerHTML);
-        $('#result')[0].innerHTML = '';
+        let queries = JSON.parse($('#queries')[0].innerHTML);
         let keys = Object.keys(queries);
         let url = '/api/wordlines/?'
         for (let i = 0; i < keys.length; i++) {
@@ -26,6 +25,7 @@
         }
 
         window.annotations = new Set();
+        window.annotators = {};
         window.results = {};
         get_annotations(url);
 
@@ -48,13 +48,23 @@
 
         function use_annotations() {
             let annotation_url = '/api/annotations/?id='
+            let annotator_url = '/api/users/?id='
             let sentence_url = '/api/sentences/?id='
             for (let i = 0; i < window.annotations.length; i++) {
                 window.results[window.annotations[i]] = {};
                 $.get(annotation_url + window.annotations[i],
                     function (data) {
                         let annotator = data['results'][0]['annotator'];
-                        window.results[window.annotations[i]]['annotator'] = annotator;
+                        if (window.annotators[annotator] == undefined) { // find annotator & add to dictionary
+                            $.get(annotator_url + annotator,
+                                function (data) {
+                                    window.annotators[annotator] = data['results'][0]['username'];
+                                    window.results[window.annotations[i]]['annotator'] = window.annotators[annotator];
+                                }
+                            );
+                        }
+                        let status = data['results'][0]['status'];
+                        window.results[window.annotations[i]]['status'] = status;
                         let sentence_id = data['results'][0]['sentence'];
                         $.get(sentence_url + sentence_id,
                             function (data) {
@@ -81,38 +91,23 @@
         $('#result').append(button);
 
         function create_row(result) {
-            let row_order = $('.row').length + 1;
-            let row = document.createElement('div');
+            $('#result-table')[0].hidden = false;
+            let row = document.createElement("tr");
+            let row_order = $('.tr').length + 1;
             row.id = row_order;
-            row.className = "row border";
-
-            // text
-            let col = document.createElement('div');
-            col.className = "col";
-            col.id = "text";
-            col.innerHTML = result['text'];
-            row.append(col);
-
-            // sent_id
-            col = document.createElement('div');
-            col.className = "col";
-            col.id = "sent_id";
-            col.innerHTML = result['sent_id'];
-            row.append(col);
-
-            // annotator
-            col = document.createElement('div');
-            col.className = "col";
-            col.id = "annotator";
-            col.innerHTML = result['annotator'];
-            row.append(col);
-            row.append(document.createElement('br'));
-            row.append(document.createElement('br'));
-            $('#result').append(row);
-            $('#result').append(document.createElement('br'));
+            row.className = "border";
+            let fields = ["text", "sent_id", "annotator", "status"];
+            for (let i = 0; i < fields.length; i++) {
+                let data = document.createElement("td");
+                data.innerHTML = result[fields[i]];
+                data.style = 'text-align:center';
+                row.append(data);
+            }
+            $('#result-body')[0].append(row);
         }
     };
     {% endif %}
+
     {% if not queries %}
     window.onload = function () {
         create_row();
@@ -191,14 +186,20 @@
     {% endif %}
 
     {% if queries %}
-    <div id="result">{{queries}}</div>
-    <div id="resultss">
-        <div id="text">
-        </div>
-        <div id="sent_id">
-        </div>
-        <div id="annotator">
-        </div>
+    <div id="queries" hidden="true">{{queries}}</div>
+    <div id="result">
+        <table id="result-table" class="table table-bordered table-striped" hidden="true">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>text</th>
+                    <th>sent_id</th>
+                    <th>Annotator</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="result-body">
+            </tbody>
+        </table>
     </div>
     {% endif %}
 
