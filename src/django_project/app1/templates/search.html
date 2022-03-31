@@ -24,25 +24,93 @@
             url += `${type_url}=${input}`;
             if (i != keys.length - 1) url += '&';
         }
-        let annotations = get_annotations(url, new Set());
 
-        function get_annotations(url, annotations) {
+        window.annotations = new Set();
+        window.results = {};
+        get_annotations(url);
+
+        function get_annotations(url) {
             $.get(url,
                 function (data) {
                     let results = data['results'];
                     for (let i = 0; i < results.length; i++) {
-                        annotations.add(results[i]['annotation']);
+                        window.annotations.add(results[i]['annotation']);
                     }
-                    if (data['next'] == null) return;
-                    get_annotations(data['next'], annotations);
-                    return annotations;
+                    if (data['next'] == null || window.annotations.size > 20) {
+                        window.annotations = Array.from(window.annotations);
+                        use_annotations(); // annotations are calculated; last return; stop condition
+                        return;
+                    }
+                    get_annotations(data['next']);
                 }
             );
-        };
+        }
 
-        function use_annotations(annotations) {
-            console.log(annotations);
-        };
+        function use_annotations() {
+            let annotation_url = '/api/annotations/?id='
+            let sentence_url = '/api/sentences/?id='
+            for (let i = 0; i < window.annotations.length; i++) {
+                window.results[window.annotations[i]] = {};
+                $.get(annotation_url + window.annotations[i],
+                    function (data) {
+                        let annotator = data['results'][0]['annotator'];
+                        window.results[window.annotations[i]]['annotator'] = annotator;
+                        let sentence_id = data['results'][0]['sentence'];
+                        $.get(sentence_url + sentence_id,
+                            function (data) {
+                                let sent_id = data['results'][0]['sent_id'];
+                                window.results[window.annotations[i]]['sent_id'] = sent_id;
+                                let text = data['results'][0]['text'];
+                                window.results[window.annotations[i]]['text'] = text;
+                                create_row(window.results[window.annotations[i]]);
+                                $('#result').append(button);
+                            }
+                        );
+                    }
+                );
+            }
+        }
+
+        let button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-light border";
+        button.innerHTML = "Go back to search";
+        button.addEventListener('click', function () {
+            window.location.replace('/search/');
+        });
+        $('#result').append(button);
+
+        function create_row(result) {
+            let row_order = $('.row').length + 1;
+            let row = document.createElement('div');
+            row.id = row_order;
+            row.className = "row border";
+
+            // text
+            let col = document.createElement('div');
+            col.className = "col";
+            col.id = "text";
+            col.innerHTML = result['text'];
+            row.append(col);
+
+            // sent_id
+            col = document.createElement('div');
+            col.className = "col";
+            col.id = "sent_id";
+            col.innerHTML = result['sent_id'];
+            row.append(col);
+
+            // annotator
+            col = document.createElement('div');
+            col.className = "col";
+            col.id = "annotator";
+            col.innerHTML = result['annotator'];
+            row.append(col);
+            row.append(document.createElement('br'));
+            row.append(document.createElement('br'));
+            $('#result').append(row);
+            $('#result').append(document.createElement('br'));
+        }
     };
     {% endif %}
     {% if not queries %}
@@ -124,6 +192,14 @@
 
     {% if queries %}
     <div id="result">{{queries}}</div>
+    <div id="resultss">
+        <div id="text">
+        </div>
+        <div id="sent_id">
+        </div>
+        <div id="annotator">
+        </div>
+    </div>
     {% endif %}
 
     {% if message %}
