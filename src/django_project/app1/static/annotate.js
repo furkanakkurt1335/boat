@@ -1,6 +1,4 @@
 
-var current_columns = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
-
 // On document load
 window.onload = function () {
     window.CSRF_TOKEN = document.getElementsByName('csrfmiddlewaretoken')[0];
@@ -12,12 +10,16 @@ window.onload = function () {
     window.status_d = { "not": "Not", "half": "Half", "done": "Done" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = document.getElementById('graph_preference').innerHTML;
+    window.error_condition = document.getElementById('error_condition').innerHTML;
+    window.current_columns = document.getElementById('current_columns').innerHTML.split(',');
     $('#sent_id').remove();
     $('#text').remove();
     $('#cells').remove();
     $('#notes').remove();
     $('#errors').remove();
     $('#graph_preference').remove();
+    $('#error_condition').remove();
+    $('#current_columns').remove();
     let cells_keys = get_sorted_cells_keys();
     for (let i = 0; i < cells_keys.length; i++) {
         let feats = window.cells[cells_keys[i]]['feats'];
@@ -108,6 +110,22 @@ function post_to_save(type, number) {
     input.type = 'hidden';
     input.name = "status";
     input.value = window.status;
+    form.append(input);
+    document.body.append(form);
+
+    // Error condition
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "error_condition";
+    input.value = window.error_condition;
+    form.append(input);
+    document.body.append(form);
+
+    // Current columns
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "current_columns";
+    input.value = current_columns;
     form.append(input);
     document.body.append(form);
 
@@ -236,6 +254,20 @@ function button_handle(type, number, way) {
     }
     else if (type == "profile") {
         post_to_save(type);
+    }
+    else if (type == "errors") {
+        let error_card = $('#error_div')[0];
+        let error_button = $('button#errors')[0];
+        if (error_card.hidden) {
+            error_card.hidden = false;
+            error_button.innerHTML = "Hide errors";
+            window.error_condition = "shown";
+        }
+        else {
+            error_card.hidden = true;
+            error_button.innerHTML = "Show errors";
+            window.error_condition = "hidden";
+        }
     }
 }
 
@@ -441,6 +473,23 @@ function init_page() {
     button = document.createElement("button");
     button.id = "status";
     button.innerHTML = window.status_d[window.status];
+    div_col.append(button);
+    div_row.append(div_col);
+
+    // split
+    div_col = document.createElement('div');
+    div_col.className = 'col-md-auto';
+    div_row.append(div_col);
+
+    // hide errors
+    div_col = document.createElement('div');
+    div_col.className = 'col';
+    button = document.createElement("button");
+    button.id = "errors";
+    if (window.error_condition == "shown") {
+        button.innerHTML = "Hide errors";
+    }
+    else button.innerHTML = "Show errors";
     div_col.append(button);
     div_row.append(div_col);
 
@@ -692,6 +741,8 @@ function create_graph() {
 }
 
 function display_errors() {
+    if (window.error_condition == "hidden") return;
+
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();

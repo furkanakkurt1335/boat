@@ -4,6 +4,13 @@
 <title> View Treebanks Page </title>
 <script>
     window.onload = function () {
+        let view_buttons = document.getElementsByClassName('view-sentences');
+        for (let i = 0; i < view_buttons.length; i++) {
+            view_buttons[i].addEventListener("click", function () {
+                let treebank_title = view_buttons[i].id;
+                window.location.replace(`/view_treebank/${treebank_title}/1`);
+            });
+        }
         let dl_buttons = document.getElementsByClassName('download');
         for (let i = 0; i < dl_buttons.length; i++) {
             dl_buttons[i].addEventListener("click", function () {
@@ -39,11 +46,11 @@
     <tbody>
         {% for treebank in treebanks %}
         <tr>
-            <td><a href={% url 'view_treebank' treebank.title 1 %}>{{treebank}}</a>
-                <button style="width: 100px;" class="btn btn-outline-success download" value="Download"
+            <td>{{treebank}}</td>
+            <td> <button class="btn btn-outline-success view-sentences" id="{{treebank.title}}">View Sentences</button>
+            </td>
+            <td> <button class="btn btn-outline-success download" value="Download"
                     id="{{treebank.title}}">Download</button>
-                <!-- <a href=""
-                    class="download">Download</a> -->
             </td>
         </tr>
         {% endfor %}

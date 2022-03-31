@@ -24,7 +24,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         id = CharFilter(lookup_expr='iexact')
         class Meta:
             model = Annotation
-            fields = ['sentence__sent_id', 'sentence__text']
+            fields = ['annotator__id', 'sentence__sent_id', 'sentence__text', 'status']
     queryset = Annotation.objects.all()
     serializer_class = AnnotationSerializer
     permission_classes = [permissions.IsAuthenticated]

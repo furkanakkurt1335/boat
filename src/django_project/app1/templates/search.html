@@ -26,6 +26,7 @@
 
         window.annotations = new Set();
         window.annotators = {};
+        window.treebanks = {};
         window.results = {};
         get_annotations(url);
 
@@ -50,6 +51,7 @@
             let annotation_url = '/api/annotations/?id='
             let annotator_url = '/api/users/?id='
             let sentence_url = '/api/sentences/?id='
+            let treebank_url = '/api/treebanks/?id='
             for (let i = 0; i < window.annotations.length; i++) {
                 window.results[window.annotations[i]] = {};
                 $.get(annotation_url + window.annotations[i],
@@ -72,6 +74,19 @@
                                 window.results[window.annotations[i]]['sent_id'] = sent_id;
                                 let text = data['results'][0]['text'];
                                 window.results[window.annotations[i]]['text'] = text;
+                                let order = data['results'][0]['order'];
+                                window.results[window.annotations[i]]['order'] = order;
+                                let treebank = data['results'][0]['treebank'];
+                                if (window.treebanks[treebank] == undefined) {  // find treebank & add to dictionary
+                                    $.get(treebank_url + treebank,
+                                        function (data) {
+                                            window.treebanks[treebank] = data['results'][0]['title'];
+                                            window.results[window.annotations[i]]['treebank'] = window.treebanks[treebank];
+                                            window.results[window.annotations[i]]['annotate-link'] = `/annotate/${window.treebanks[treebank]}/${order}`;
+                                        }
+                                    );
+                                }
+                                // while (window.results[window.annotations[i]]['treebank'] == undefined) {}
                                 create_row(window.results[window.annotations[i]]);
                                 $('#result').append(button);
                             }
@@ -79,6 +94,10 @@
                     }
                 );
             }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         let button = document.createElement('button');
@@ -96,13 +115,32 @@
             let row_order = $('.tr').length + 1;
             row.id = row_order;
             row.className = "border";
-            let fields = ["text", "sent_id", "annotator", "status"];
+            let fields = ["text", "sent_id", "annotator", "status", "treebank"];
             for (let i = 0; i < fields.length; i++) {
                 let data = document.createElement("td");
                 data.innerHTML = result[fields[i]];
                 data.style = 'text-align:center';
                 row.append(data);
             }
+
+            // links
+            let data = document.createElement("td");
+            let link = document.createElement('a');
+            link.href = result['annotate-link'];
+            link.innerHTML = 'Annotate';
+            data.append(link);
+            data.style = 'text-align:center';
+            row.append(data);
+
+            // TODO, view annotation (toast, etc.)
+            // data = document.createElement("td");
+            // let button = document.createElement('button');
+            //  = result['view'];
+            // link.innerHTML = 'View';
+            // data.append(link);
+            // data.style = 'text-align:center';
+            // row.append(data);
+
             $('#result-body')[0].append(row);
         }
     };
@@ -195,10 +233,11 @@
                     <th>sent_id</th>
                     <th>Annotator</th>
                     <th>Status</th>
+                    <th>Treebank</th>
+                    <th>Links</th>
                 </tr>
             </thead>
-            <tbody id="result-body">
-            </tbody>
+            <tbody id="result-body"></tbody>
         </table>
     </div>
     {% endif %}

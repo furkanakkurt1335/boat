@@ -1,0 +1,129 @@
+{% extends 'base-nav.html' %}
+
+{% block head %}
+<title> My Annotations Page </title>
+<script>
+    window.onload = function () {
+        let select = document.getElementById('select');
+        select.addEventListener('change', function () {
+            change_sentences();
+        });
+    };
+
+    function change_sentences() {
+        let username = $('#username')[0].innerHTML;
+        let type = select.options[select.selectedIndex].text;
+        if (type == "None") type = "";
+        else if (type == "Annotated") type = "done";
+        else if (type == "Half") type = "half";
+        else if (type == "Not Annotated") type = "not";
+        $('#annotation-table')[0].hidden = false;
+        let url = `/api/annotations/?annotator__id=${username}&status=${type}`;
+        // $('#annotation-body')[0].append();
+
+        window.annotations = new Set();
+        window.results = {};
+        get_annotations(url);
+
+        function get_annotations(url) {
+            $.get(url,
+                function (data) {
+                    window.results = data['results'];
+                    for (let i = 0; i < results.length; i++) {
+                        window.annotations.add(results[i]);
+                    }
+                    window.annotations = Array.from(window.annotations);
+                    window.next = data['next'];
+                    use_annotations();
+                }
+            );
+        }
+
+        function use_annotations() {
+            console.log(window.results);
+        }
+        //     let annotation_url = '/api/annotations/?id='
+        //     let annotator_url = '/api/users/?id='
+        //     let sentence_url = '/api/sentences/?id='
+        //     for (let i = 0; i < window.annotations.length; i++) {
+        //         window.results[window.annotations[i]] = {};
+        //         $.get(annotation_url + window.annotations[i],
+        //             function (data) {
+        //                 let annotator = data['results'][0]['annotator'];
+        //                 if (window.annotators[annotator] == undefined) { // find annotator & add to dictionary
+        //                     $.get(annotator_url + annotator,
+        //                         function (data) {
+        //                             window.annotators[annotator] = data['results'][0]['username'];
+        //                             window.results[window.annotations[i]]['annotator'] = window.annotators[annotator];
+        //                         }
+        //                     );
+        //                 }
+        //                 let status = data['results'][0]['status'];
+        //                 window.results[window.annotations[i]]['status'] = status;
+        //                 let sentence_id = data['results'][0]['sentence'];
+        //                 $.get(sentence_url + sentence_id,
+        //                     function (data) {
+        //                         let sent_id = data['results'][0]['sent_id'];
+        //                         window.results[window.annotations[i]]['sent_id'] = sent_id;
+        //                         let text = data['results'][0]['text'];
+        //                         window.results[window.annotations[i]]['text'] = text;
+        //                         create_row(window.results[window.annotations[i]]);
+        //                         $('#result').append(button);
+        //                     }
+        //                 );
+        //             }
+        //         );
+        //     }
+        // }
+
+        // let button = document.createElement('button');
+        // button.type = "button";
+        // button.className = "btn btn-light border";
+        // button.innerHTML = "Go back to search";
+        // button.addEventListener('click', function () {
+        //     window.location.replace('/search/');
+        // });
+        // $('#result').append(button);
+
+        // function create_row(result) {
+        //     $('#result-table')[0].hidden = false;
+        //     let row = document.createElement("tr");
+        //     let row_order = $('.tr').length + 1;
+        //     row.id = row_order;
+        //     row.className = "border";
+        //     let fields = ["text", "sent_id", "annotator", "status"];
+        //     for (let i = 0; i < fields.length; i++) {
+        //         let data = document.createElement("td");
+        //         data.innerHTML = result[fields[i]];
+        //         data.style = 'text-align:center';
+        //         row.append(data);
+        //     }
+        //     $('#result-body')[0].append(row);
+        // }
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div id="username" hidden="true">{{username}}</div>
+<div id="space" class="p-5 border bg-light">
+    <select id="select" class="w-25 form-select">
+        <option disabled selected>Select type</option>
+        <option id="none">None</option>
+        <option id="annotated">Annotated</option>
+        <option id="half">Half</option>
+        <option id="not annotated">Not Annotated</option>
+    </select><br>
+    <div id="annotations">
+        <table id="annotation-table" class="table table-bordered table-striped" hidden="true">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>text</th>
+                    <th>sent_id</th>
+                </tr>
+            </thead>
+            <tbody id="annotation-body"></tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

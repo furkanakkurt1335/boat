@@ -140,7 +140,7 @@ def login(request):
                 if len(ExtendUser.objects.filter(user=user)) == 0:
                     extenduser_t = ExtendUser()
                     extenduser_t.user = user
-                    extenduser_t.preferences = {'graph': 'conllu.js'}
+                    extenduser_t.preferences = {'graph': 'conllu.js', "error_condition": "shown", "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
                     extenduser_t.save()
                 login_f(request, user)
                 return redirect('profile')
@@ -289,9 +289,12 @@ def annotate(request, treebank, order):
                 dummy_user = User.objects.get(username=DUMMY_USER_NAME)
                 annotation = Annotation.objects.get(annotator=dummy_user, sentence=sentence)
     if not message:
+        eu = ExtendUser.objects.get(user=request.user)
         if request.method == "POST":
             data = request.POST['data']
             data_changed = request.POST['data_changed']
+            current_columns = request.POST['current_columns']
+            error_condition = request.POST['error_condition']
             notes = request.POST['notes']
             status = request.POST['status']
             word_lines = json.loads(data)
@@ -312,6 +315,9 @@ def annotate(request, treebank, order):
                         wl_t = wl_filtered[0]
                         wl_t.form, wl_t.lemma, wl_t.upos, wl_t.xpos, wl_t.feats, wl_t.head, wl_t.deprel, wl_t.deps, wl_t.misc = form, lemma, upos, xpos, feats, head, deprel, deps, misc
                         wl_t.save()
+            eu.preferences['current_columns'] = current_columns
+            eu.preferences['error_condition'] = error_condition
+            eu.save()
             current_path = request.path
             button_type = request.POST['type']
             if button_type == 'go': number = request.POST['number']
@@ -326,7 +332,7 @@ def annotate(request, treebank, order):
                 cats[id_f] = {'form': word_line.form, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos, 'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
             errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
             cats = json.dumps(cats)
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference': ExtendUser.objects.get(user=request.user).preferences['graph']}
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference': eu.preferences['graph'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns']}
     return render(request, 'annotate.html', context)
 
 @login_required
@@ -350,11 +356,11 @@ def search(request):
     return render(request, 'search.html', context)
 
 @login_required
-def my_sentences(request):
+def my_annotations(request):
     message = None
     if request.method == "POST":
         pass
     elif request.method == "GET":
         pass
-    context = {'message': message}
-    return render(request, 'my_sentences.html', context)
+    context = {'message': message, 'username': request.user.id}
+    return render(request, 'my_annotations.html', context)
