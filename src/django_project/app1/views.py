@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import UploadFileForm, TreebankForm, SentenceForm, AnnotationForm
-from .models import SentenceManager, Treebank, Sentence, Annotation, Word_Line, ExtendUser
+from .forms import UploadFileForm, TreebankForm
+from .models import Treebank, Sentence, Annotation, Word_Line, ExtendUser
 from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
@@ -117,42 +115,37 @@ def spacy(request):
     return render(request, 'spacy.html', {'graph': graph})
 
 def register(request):
+    message = None
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
+        data = request.POST
+        if data['password1'] == data['password2']:
+            new_user = User.objects.create_user(username=data['username'], password=data['password1'], email=data['email'], first_name=data['first_name'], last_name=data['last_name'])
             return redirect('login')
+        else: 
+            message = 'The passwords do not match.'
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('profile')
-        form = UserCreationForm()
         return render(request, 'register.html')
-    return render(request, 'register.html')
+    return render(request, 'register.html', {'message': message})
 
 def login(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if len(ExtendUser.objects.filter(user=user)) == 0:
-                    extenduser_t = ExtendUser()
-                    extenduser_t.user = user
-                    extenduser_t.preferences = {'graph': 'conllu.js', "error_condition": "shown", "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
-                    extenduser_t.save()
-                login_f(request, user)
-                return redirect('profile')
-            else:
-                return redirect('login')
+        data = request.POST
+        user = authenticate(username=data['username'], password=data['password'])
+        if user is not None:
+            if len(ExtendUser.objects.filter(user=user)) == 0:
+                extenduser_t = ExtendUser()
+                extenduser_t.user = user
+                extenduser_t.preferences = {'graph': 'conllu.js', "error_condition": "shown", "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
+                extenduser_t.save()
+            login_f(request, user)
+            return redirect('profile')
         else:
             return redirect('login')
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('profile')
-        form = AuthenticationForm()
-        return render(request, 'login.html')
     return render(request, 'login.html')
 
 def index(request):
