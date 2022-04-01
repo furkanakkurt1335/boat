@@ -92,7 +92,6 @@
                                         }
                                     );
                                 }
-                                // while (window.results[window.annotations[i]]['treebank'] == undefined) {}
                                 create_row(window.results[window.annotations[i]]);
                                 $('#result').append(button);
                             }
@@ -100,10 +99,6 @@
                     }
                 );
             }
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         let button = document.createElement('button');

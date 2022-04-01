@@ -258,14 +258,17 @@ function button_handle(type, number, way) {
     else if (type == "errors") {
         let error_card = $('#error_div')[0];
         let error_button = $('button#errors')[0];
-        if (error_card.hidden) {
-            error_card.hidden = false;
-            error_button.innerHTML = "Hide errors";
+        if (window.error_condition == "hidden") {
             window.error_condition = "shown";
+            display_errors();
+            error_card = $('#error_div')[0];
+            error_button = $('button#errors')[0];
+            error_card.hidden = false;
+            error_button.style = "color: black;";
         }
-        else {
+        else if (window.error_condition == "shown") {
             error_card.hidden = true;
-            error_button.innerHTML = "Show errors";
+            error_button.style = "color: gray;";
             window.error_condition = "hidden";
         }
     }
@@ -383,12 +386,34 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
+    // previous-next button group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
+    let btn_group = document.createElement('div');
+    btn_group.className = 'btn-group';
+    div_col.append(btn_group);
+
+    // previous
     button = document.createElement("button");
     button.id = "previous";
-    button.innerHTML = "Previous";
-    div_col.append(button);
+    let img = $('#arrow_left_img')[0].cloneNode(true);
+    img.hidden = false;
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Go to the previous sentence');
+    button.append(img);
+    btn_group.append(button);
+
+    // next
+    button = document.createElement("button");
+    button.id = "next";
+    img = $('#arrow_right_img')[0].cloneNode(true);
+    img.hidden = false;
+    button.append(img);
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Go to the next sentence');
+    btn_group.append(button);
     div_row.append(div_col);
 
     // split
@@ -396,31 +421,33 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
-    // reset
+    // reset-undo-redo button group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
+    btn_group = document.createElement('div');
+    btn_group.className = 'btn-group';
+    div_col.append(btn_group);
+
+    // reset
     button = document.createElement("button");
     button.id = "reset";
     button.innerHTML = "Reset";
-    div_col.append(button);
-    div_row.append(div_col);
+    btn_group.append(button);
 
     // undo
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     button = document.createElement("button");
     button.id = "undo";
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Undo edits');
     button.innerHTML = "Undo";
-    div_col.append(button);
-    div_row.append(div_col);
+    btn_group.append(button);
 
     // redo
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     button = document.createElement("button");
     button.id = "redo";
     button.innerHTML = "Redo";
-    div_col.append(button);
+    btn_group.append(button);
     div_row.append(div_col);
 
     // split
@@ -428,38 +455,39 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
-    // do_input
+    // input-group
     div_col = document.createElement('div');
-    div_col.className = 'col';
+    div_col.className = 'col-md-auto';
+    let input_group = document.createElement('div');
+    input_group.className = 'input-group';
+    div_col.append(input_group);
+
+    // do_input
     let input = document.createElement("input");
     input.type = "text";
     input.id = "row_select_input";
-    input.className = "form-control";
-    div_col.append(input);
-    div_row.append(div_col);
+    input.className = "form-control form-control-sm";
+    input_group.append(input);
 
     // do_select
-    div_col = document.createElement('div');
-    div_col.className = 'col';
     let select = document.createElement("select");
     select.id = "row_select_select";
-    select.className = "form-select";
+    select.className = "form-select form-select-sm";
     let options = ["Go to sentence", "Add row", "Remove row"];
     for (let i = 0; i < options.length; i++) {
         let option = document.createElement("option");
         option.innerHTML = options[i];
         select.append(option);
     }
-    div_col.append(select);
-    div_row.append(div_col);
+    input_group.append(select);
 
     // do_button
-    div_col = document.createElement('div');
-    div_col.className = 'col';
     button = document.createElement("button");
     button.id = "do";
-    button.innerHTML = "Do";
-    div_col.append(button);
+    img = $('#check_img')[0].cloneNode(true);
+    img.hidden = false;
+    button.append(img);
+    input_group.append(button);
     div_row.append(div_col);
 
     // split
@@ -481,15 +509,12 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
-    // hide errors
+    // errors
     div_col = document.createElement('div');
     div_col.className = 'col';
     button = document.createElement("button");
     button.id = "errors";
-    if (window.error_condition == "shown") {
-        button.innerHTML = "Hide errors";
-    }
-    else button.innerHTML = "Show errors";
+    button.innerHTML = "Errors";
     div_col.append(button);
     div_row.append(div_col);
 
@@ -498,13 +523,18 @@ function init_page() {
     div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
-    // column_select
+    // input-group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
+    input_group = document.createElement('div');
+    input_group.className = 'input-group';
+    div_col.append(input_group);
+
+    // column_select
     select = document.createElement("select");
     select.id = "col_add_rm_select";
-    select.className = "form-select";
-    select.multiple = true;
+    select.className = "form-select form-select-sm";
+    // select.multiple = true;
     option = document.createElement("option");
     option.disabled = true;
     option.selected = true;
@@ -524,30 +554,15 @@ function init_page() {
         }
         select.append(option);
     }
-    div_col.append(select);
-    div_row.append(div_col);
+    input_group.append(select);
 
     // column_button
-    div_col = document.createElement('div');
-    div_col.className = 'col';
     button = document.createElement("button");
     button.id = "col_add_rm_button";
-    button.innerHTML = "Show/Hide";
-    div_col.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
-    // next
-    div_col = document.createElement('div');
-    div_col.className = 'col';
-    button = document.createElement("button");
-    button.id = "next";
-    button.innerHTML = "Next";
-    div_col.append(button);
+    img = $('#check_img')[0].cloneNode(true);
+    img.hidden = false;
+    button.append(img);
+    input_group.append(button);
     div_row.append(div_col);
 
     // split
@@ -572,7 +587,7 @@ function init_page() {
         buttons[i].addEventListener("click", function () {
             button_handle(buttons[i].id);
         });
-        buttons[i].className = "btn btn-light border";
+        buttons[i].className = "btn btn-light btn-sm border";
     }
 
     inject_sentence();
@@ -674,7 +689,6 @@ function inject_sentence() {
         tbody.append(row);
     }
     document.body.append(word_lines);
-    document.body.append(document.createElement("br"));
 
     create_graph();
     document.body.append(document.createElement("br"));
@@ -746,6 +760,7 @@ function display_errors() {
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();
+    $('#br_error').remove();
 
     $.post("/error/",
         {
@@ -776,7 +791,9 @@ function display_errors() {
         error_body.append(document.createElement('br'));
     }
     document.body.append(error_div);
-    document.body.append(document.createElement('br'));
+    let br_error = document.createElement('br');
+    br_error.id = "br_error";
+    document.body.append(br_error);
 }
 
 function cell_change(key, column, cell) {
