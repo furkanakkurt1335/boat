@@ -22,6 +22,7 @@ class WordLineViewSet(viewsets.ModelViewSet):
 class AnnotationViewSet(viewsets.ModelViewSet):
     class AnnotationFilter(filters.FilterSet):
         id = CharFilter(lookup_expr='iexact')
+        sentence__order = CharFilter(lookup_expr='iexact')
         class Meta:
             model = Annotation
             fields = ['annotator__id', 'sentence__sent_id', 'sentence__text', 'status']
@@ -60,7 +61,7 @@ class UserViewSet(viewsets.ModelViewSet):
         id = CharFilter(lookup_expr='iexact')
         class Meta:
             model = User
-            fields = ['username']
+            fields = ['username', 'first_name', 'last_name']
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]

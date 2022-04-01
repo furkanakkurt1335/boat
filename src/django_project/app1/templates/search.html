@@ -60,7 +60,13 @@
                         if (window.annotators[annotator] == undefined) { // find annotator & add to dictionary
                             $.get(annotator_url + annotator,
                                 function (data) {
-                                    window.annotators[annotator] = data['results'][0]['username'];
+                                    let name = "";
+                                    let first_name = data['results'][0]['first_name'];
+                                    if (first_name != undefined) name += first_name;
+                                    let last_name = data['results'][0]['last_name'];
+                                    if (last_name != undefined) name += last_name;
+                                    if (name != "") window.annotators[annotator] = name;
+                                    else window.annotators[annotator] = data['results'][0]['username'];
                                     window.results[window.annotations[i]]['annotator'] = window.annotators[annotator];
                                 }
                             );
