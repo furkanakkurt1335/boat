@@ -6,6 +6,52 @@ from app1.models import Treebank, Sentence, Annotation, Word_Line
 from django_filters import rest_framework as filters
 from django_filters import CharFilter
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view()
+def query(request):
+    q = request.GET
+    wordlines = Word_Line.objects.all()
+    if 'form' in q:
+        wordlines = wordlines.filter(form__contains=q['form'])
+    if 'lemma' in q:
+        wordlines = wordlines.filter(lemma__contains=q['lemma'])
+    if 'upos' in q:
+        wordlines = wordlines.filter(upos__contains=q['upos'])
+    if 'xpos' in q:
+        wordlines = wordlines.filter(xpos__contains=q['xpos'])
+    if 'feats' in q:
+        wordlines = wordlines.filter(feats__contains=q['feats'])
+    if 'head' in q:
+        wordlines = wordlines.filter(head__contains=q['head'])
+    if 'deprel' in q:
+        wordlines = wordlines.filter(deprel__contains=q['deprel'])
+    if 'deps' in q:
+        wordlines = wordlines.filter(deps__contains=q['deps'])
+    if 'misc' in q:
+        wordlines = wordlines.filter(misc__contains=q['misc'])
+    if 'sent_id' in q:
+        wordlines = wordlines.filter(annotation__sentence__sent_id__contains=q['sent_id'])
+    if 'text' in q:
+        wordlines = wordlines.filter(annotation__sentence__text__icontains=q['text'])
+    if 'treebank_title' in q:
+        wordlines = wordlines.filter(annotation__sentence__treebank__title__contains=q['treebank_title'])
+    result = {}
+    for wl_t in wordlines:
+        if wl_t.annotation_id in result.keys(): continue
+        ann_t = Annotation.objects.get(id=wl_t.annotation_id)
+        sen_t = Sentence.objects.get(id=ann_t.sentence_id)
+        user_t = User.objects.get(id=ann_t.annotator_id)
+        tb_t = Treebank.objects.get(id=sen_t.treebank_id)
+        wls = Word_Line.objects.filter(annotation=ann_t)
+        wls_d = {}
+        for wl in wls:
+            wls_d[wl.id_f] = {'form': wl.form, 'lemma': wl.lemma, 'upos': wl.upos, 'xpos': wl.xpos, 'feats': wl.feats, 'head': wl.head, 'deprel': wl.deprel, 'deps': wl.deps, 'misc': wl.misc}
+        d_t = {'text': sen_t.text, 'sent_id': sen_t.sent_id, 'annotator': user_t.username, 'status': ann_t.status, 'treebank_title': tb_t.title, 'order': sen_t.order, 'wordlines': wls_d}
+        result[wl_t.annotation_id] = d_t
+    return Response(result)
+
 class WordLineViewSet(viewsets.ModelViewSet):
     class WordLineFilter(filters.FilterSet):
         id = CharFilter(lookup_expr='iexact')

@@ -7,99 +7,39 @@
     window.onload = function () {
         let queries = JSON.parse($('#queries')[0].innerHTML);
         let keys = Object.keys(queries);
-        let url = '/api/wordlines/?'
+        let url = '/query/?'
+        window.query_info = "";
         for (let i = 0; i < keys.length; i++) {
             let type = queries[keys[i]]['type'];
             let input = queries[keys[i]]['input'];
-            if (type == "Treebank title") {
-                type_url = 'annotation__sentence__treebank__title';
-            }
-            else if (["sent_id", "text"].includes(type)) {
-                type_url = `annotation__sentence__${type}`;
-            }
-            else {
-                type_url = type.toLowerCase();
-            }
+            if (type == "Treebank title") type_url = 'treebank_title';
+            else type_url = type.toLowerCase();
+            window.query_info += `${type_url}: ${input}`;
             url += `${type_url}=${input}`;
-            if (i != keys.length - 1) url += '&';
-        }
-
-        window.annotations = new Set();
-        window.annotators = {};
-        window.treebanks = {};
-        window.results = {};
-        get_annotations(url);
-
-        function get_annotations(url) {
-            $.get(url,
-                function (data) {
-                    let results = data['results'];
-                    for (let i = 0; i < results.length; i++) {
-                        window.annotations.add(results[i]['annotation']);
-                    }
-                    if (data['next'] == null || window.annotations.size > 20) {
-                        window.annotations = Array.from(window.annotations);
-                        use_annotations(); // annotations are calculated; last return; stop condition
-                        return;
-                    }
-                    get_annotations(data['next']);
-                }
-            );
-        }
-
-        function use_annotations() {
-            let annotation_url = '/api/annotations/?id='
-            let annotator_url = '/api/users/?id='
-            let sentence_url = '/api/sentences/?id='
-            let treebank_url = '/api/treebanks/?id='
-            for (let i = 0; i < window.annotations.length; i++) {
-                window.results[window.annotations[i]] = {};
-                $.get(annotation_url + window.annotations[i],
-                    function (data) {
-                        let annotator = data['results'][0]['annotator'];
-                        if (window.annotators[annotator] == undefined) { // find annotator & add to dictionary
-                            $.get(annotator_url + annotator,
-                                function (data) {
-                                    let name = "";
-                                    let first_name = data['results'][0]['first_name'];
-                                    if (first_name != undefined) name += first_name;
-                                    let last_name = data['results'][0]['last_name'];
-                                    if (last_name != undefined) name += last_name;
-                                    if (name != "") window.annotators[annotator] = name;
-                                    else window.annotators[annotator] = data['results'][0]['username'];
-                                    window.results[window.annotations[i]]['annotator'] = window.annotators[annotator];
-                                }
-                            );
-                        }
-                        let status = data['results'][0]['status'];
-                        window.results[window.annotations[i]]['status'] = status;
-                        let sentence_id = data['results'][0]['sentence'];
-                        $.get(sentence_url + sentence_id,
-                            function (data) {
-                                let sent_id = data['results'][0]['sent_id'];
-                                window.results[window.annotations[i]]['sent_id'] = sent_id;
-                                let text = data['results'][0]['text'];
-                                window.results[window.annotations[i]]['text'] = text;
-                                let order = data['results'][0]['order'];
-                                window.results[window.annotations[i]]['order'] = order;
-                                let treebank = data['results'][0]['treebank'];
-                                if (window.treebanks[treebank] == undefined) {  // find treebank & add to dictionary
-                                    $.get(treebank_url + treebank,
-                                        function (data) {
-                                            window.treebanks[treebank] = data['results'][0]['title'];
-                                            window.results[window.annotations[i]]['treebank'] = window.treebanks[treebank];
-                                            window.results[window.annotations[i]]['annotate-link'] = `/annotate/${window.treebanks[treebank]}/${order}`;
-                                        }
-                                    );
-                                }
-                                create_row(window.results[window.annotations[i]]);
-                                $('#result').append(button);
-                            }
-                        );
-                    }
-                );
+            if (i != keys.length - 1) {
+                url += '&';
+                window.query_info += ", ";
             }
         }
+
+        $.get(url,
+            function (data) {
+                let keys = Object.keys(data);
+                let one_result = {};
+                window.res_size = keys.length;
+                $('#info')[0].innerHTML = `${window.res_size} results found.<br>Query was ${window.query_info}`;
+                for (let i = 0; i < keys.length; i++) {
+                    let res_t = data[keys[i]];
+                    one_result['text'] = res_t['text'];
+                    one_result['sent_id'] = res_t['sent_id'];
+                    one_result['annotator'] = res_t['annotator'];
+                    one_result['status'] = res_t['status'];
+                    one_result['treebank'] = res_t['treebank_title'];
+                    one_result['annotate-link'] = `/annotate/${res_t['treebank_title']}/${res_t['order']}`;
+                    create_row(one_result);
+                }
+            }
+        );
 
         let button = document.createElement('button');
         button.type = "button";
@@ -109,6 +49,11 @@
             window.location.replace('/search/');
         });
         $('#result').append(button);
+
+        let info = document.createElement('div');
+        info.id = "info";
+        $('#result').prepend(document.createElement('br'));
+        $('#result').prepend(info);
 
         function create_row(result) {
             $('#result-table')[0].hidden = false;
