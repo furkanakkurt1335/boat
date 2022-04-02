@@ -31,7 +31,7 @@ urlpatterns = [
     path('', include('app1.urls')),
     # path('', include('search.urls')),
     path('query/', views.query, name='query'),
-    path('api/my_annotations/', views.my_annotations, name='my_annotations'),
+    path('api/my_annotations/', views.my_annotations, name='my_annos'),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

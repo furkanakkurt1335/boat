@@ -14,11 +14,11 @@ def preferences(request):
     if request.method == 'POST':
         graph_selection = request.POST['graph_select']
         eu = ExtendUser.objects.get(user=request.user)
-        eu.preferences['graph'] = graph_selection
+        eu.preferences['graph_preference'] = graph_selection
         eu.save()
         context['message'] = 'Your preferences were saved successfully.'
     elif request.method == 'GET':
-        context['graph_preference'] = ExtendUser.objects.get(user=request.user).preferences['graph']
+        context['graph_preference'] = ExtendUser.objects.get(user=request.user).preferences['graph_preference']
     return render(request, 'preferences.html', context)
 
 def sort_word_lines(word_lines):
@@ -137,7 +137,7 @@ def login(request):
             if len(ExtendUser.objects.filter(user=user)) == 0:
                 extenduser_t = ExtendUser()
                 extenduser_t.user = user
-                extenduser_t.preferences = {'graph': 'conllu.js', "error_condition": "shown", "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
+                extenduser_t.preferences = {'graph_preference': 'conllu.js', "error_condition": "shown", "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
                 extenduser_t.save()
             login_f(request, user)
             return redirect('profile')
@@ -288,6 +288,8 @@ def annotate(request, treebank, order):
             data_changed = request.POST['data_changed']
             current_columns = request.POST['current_columns']
             error_condition = request.POST['error_condition']
+            graph_preference = request.POST['graph_preference']
+            print(graph_preference)
             notes = request.POST['notes']
             status = request.POST['status']
             word_lines = json.loads(data)
@@ -310,6 +312,7 @@ def annotate(request, treebank, order):
                         wl_t.save()
             eu.preferences['current_columns'] = current_columns
             eu.preferences['error_condition'] = error_condition
+            eu.preferences['graph_preference'] = graph_preference
             eu.save()
             current_path = request.path
             button_type = request.POST['type']
@@ -325,7 +328,7 @@ def annotate(request, treebank, order):
                 cats[id_f] = {'form': word_line.form, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos, 'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
             errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
             cats = json.dumps(cats)
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference': eu.preferences['graph'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns']}
+    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference': eu.preferences['graph_preference'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns']}
     return render(request, 'annotate.html', context)
 
 @login_required

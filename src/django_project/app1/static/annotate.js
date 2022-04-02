@@ -121,6 +121,14 @@ function post_to_save(type, number) {
     form.append(input);
     document.body.append(form);
 
+    // Graph preference
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "graph_preference";
+    input.value = window.graph_preference;
+    form.append(input);
+    document.body.append(form);
+
     // Current columns
     input = document.createElement('input');
     input.type = 'hidden';
@@ -256,21 +264,39 @@ function button_handle(type, number, way) {
         post_to_save(type);
     }
     else if (type == "errors") {
-        let error_card = $('#error_div')[0];
-        let error_button = $('button#errors')[0];
+        let button = $('button#errors')[0];
         if (window.error_condition == "hidden") {
             window.error_condition = "shown";
             display_errors();
-            error_card = $('#error_div')[0];
-            error_button = $('button#errors')[0];
-            error_card.hidden = false;
-            error_button.style = "color: black;";
+            $('#error_div')[0].hidden = false;
+            let img = $('#exclamation-square-fill')[0].cloneNode(true);
+            img.hidden = false;
+            $('button#errors').find('img')[0].remove();
+            button.append(img);
+            button.setAttribute('title', 'Hide errors');
         }
         else if (window.error_condition == "shown") {
-            error_card.hidden = true;
-            error_button.style = "color: gray;";
+            $('#error_div')[0].hidden = true;
+            let img = $('#exclamation-square')[0].cloneNode(true);
+            img.hidden = false;
+            $('button#errors').find('img')[0].remove();
+            button.append(img);
+            button.setAttribute('title', 'Show errors');
             window.error_condition = "hidden";
         }
+    }
+    else if (type == "graph") {
+        let select = $('select#graph')[0];
+        let selected = select.options[select.selectedIndex].text;
+        let options = $('select#graph').find('option');
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].innerHTML == selected) options[i].style = "color: gray;";
+            else options[i].style = "color: black;";
+        }
+        if (selected == "spaCy") window.graph_preference = "spacy";
+        else if (selected == "None") window.graph_preference = "none";
+        else window.graph_preference = selected;
+        create_graph();
     }
 }
 
@@ -396,7 +422,7 @@ function init_page() {
     // previous
     button = document.createElement("button");
     button.id = "previous";
-    let img = $('#arrow_left_img')[0].cloneNode(true);
+    let img = $('#arrow-left')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -407,7 +433,7 @@ function init_page() {
     // next
     button = document.createElement("button");
     button.id = "next";
-    img = $('#arrow_right_img')[0].cloneNode(true);
+    img = $('#arrow-right')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     button.setAttribute('data-bs-toggle', 'tooltip');
@@ -431,22 +457,34 @@ function init_page() {
     // reset
     button = document.createElement("button");
     button.id = "reset";
-    button.innerHTML = "Reset";
+    img = $('#backspace-fill')[0].cloneNode(true);
+    img.hidden = false;
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Reset edits');
+    button.append(img);
     btn_group.append(button);
 
     // undo
     button = document.createElement("button");
     button.id = "undo";
+    img = $('#backspace')[0].cloneNode(true);
+    img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
     button.setAttribute('title', 'Undo edits');
-    button.innerHTML = "Undo";
+    button.append(img);
     btn_group.append(button);
 
     // redo
     button = document.createElement("button");
     button.id = "redo";
-    button.innerHTML = "Redo";
+    img = $('#backspace-reverse')[0].cloneNode(true);
+    img.hidden = false;
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Redo edits');
+    button.append(img);
     btn_group.append(button);
     div_row.append(div_col);
 
@@ -484,7 +522,7 @@ function init_page() {
     // do_button
     button = document.createElement("button");
     button.id = "do";
-    img = $('#check_img')[0].cloneNode(true);
+    img = $('#check')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     input_group.append(button);
@@ -514,8 +552,63 @@ function init_page() {
     div_col.className = 'col';
     button = document.createElement("button");
     button.id = "errors";
-    button.innerHTML = "Errors";
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    if (window.error_condition == "shown") {
+        img = $('#exclamation-square-fill')[0].cloneNode(true);
+        button.setAttribute('title', 'Hide errors');
+    }
+    else if (window.error_condition == "hidden") {
+        img = $('#exclamation-square')[0].cloneNode(true);
+        button.setAttribute('title', 'Show errors');
+    }
+    img.hidden = false;
+    button.append(img);
     div_col.append(button);
+    div_row.append(div_col);
+
+    // split
+    div_col = document.createElement('div');
+    div_col.className = 'col-md-auto';
+    div_row.append(div_col);
+
+    // input-group
+    div_col = document.createElement('div');
+    div_col.className = 'col-md-auto';
+    input_group = document.createElement('div');
+    input_group.className = 'input-group';
+    div_col.append(input_group);
+
+    // graph_select
+    select = document.createElement("select");
+    select.id = "graph";
+    select.className = "form-select form-select-sm";
+    option = document.createElement("option");
+    option.disabled = true;
+    option.selected = true;
+    option.innerHTML = "Graphs";
+    select.append(option);
+    options = ['conllu.js', 'treex', 'spaCy', 'None'];
+    for (let i = 0; i < options.length; i++) {
+        option = document.createElement("option");
+        option.innerHTML = options[i];
+        if (window.graph_preference == options[i].toLowerCase()) {
+            option.style = "color: gray;";
+        }
+        else {
+            option.style = "color: black;";
+        }
+        select.append(option);
+    }
+    input_group.append(select);
+
+    // graph_button
+    button = document.createElement("button");
+    button.id = "graph";
+    img = $('#check')[0].cloneNode(true);
+    img.hidden = false;
+    button.append(img);
+    input_group.append(button);
     div_row.append(div_col);
 
     // split
@@ -559,7 +652,7 @@ function init_page() {
     // column_button
     button = document.createElement("button");
     button.id = "col_add_rm_button";
-    img = $('#check_img')[0].cloneNode(true);
+    img = $('#check')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     input_group.append(button);
@@ -575,12 +668,17 @@ function init_page() {
     div_col.className = 'col';
     button = document.createElement("button");
     button.id = "save";
-    button.innerHTML = "Save";
+    img = $('#save')[0].cloneNode(true);
+    img.hidden = false;
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Reset edits');
+    button.append(img);
     div_col.append(button);
     div_row.append(div_col);
 
     div_cont.append(div_row);
-    document.body.append(div_cont);
+    $('div#buttons')[0].append(div_cont);
 
     let buttons = document.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
@@ -628,9 +726,10 @@ function inject_sentence() {
     tbody.append(row1);
     tbody.append(row2);
     sentence_text.append(tbody);
-    document.body.append(document.createElement("br"));
-    document.body.append(sentence_text);
-    document.body.append(document.createElement("br"));
+    let div_table1 = $('div#table1')[0];
+    div_table1.append(document.createElement("br"));
+    div_table1.append(sentence_text);
+    div_table1.append(document.createElement("br"));
 
     // Show table
     let word_lines = document.createElement("table");
@@ -688,14 +787,15 @@ function inject_sentence() {
         }
         tbody.append(row);
     }
-    document.body.append(word_lines);
+    $('div#table2')[0].append(word_lines);
 
     create_graph();
-    document.body.append(document.createElement("br"));
     display_errors();
 }
 
 function create_graph() {
+    $('div#graph').empty();
+    let div_graph = $('div#graph')[0];
     if (window.graph_preference == "none") return;
     else if (window.graph_preference == "conllu.js") {
         $('#vis').remove();
@@ -704,7 +804,6 @@ function create_graph() {
         let vis = document.createElement('div');
         vis.id = "vis";
         let dep_graph = document.createElement('div');
-        dep_graph.id = "dep_graph";
         dep_graph.className = "conllu-parse";
         dep_graph.attributes = 'data-visid="vis" data-inputid="input" data-parsedid="parsed" data-logid="log"';
         let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
@@ -717,8 +816,8 @@ function create_graph() {
             }
             dep_graph.innerHTML += cells[key]["misc"] + "\n"; // misc
         }
-        document.body.append(vis);
-        document.body.append(dep_graph);
+        div_graph.append(vis);
+        div_graph.append(dep_graph);
         Annodoc.activate(Config.bratCollData, {});
     }
     else if (window.graph_preference == "spacy") {
@@ -730,13 +829,11 @@ function create_graph() {
                 let textarea_t = document.createElement('textarea');
                 textarea_t.innerHTML = data;
                 let graph = document.createElement('div');
-                graph.id = "spacy";
                 graph.innerHTML = textarea_t.value;
-                document.body.append(graph);
-                $("#spacy").after($("#error_div"));
+                div_graph.append(graph);
             });
     }
-    else if (window.graph_preference == "ud") {
+    else if (window.graph_preference == "treex") {
         $.post("/ud_graph/",
             {
                 cells: JSON.stringify(window.cells),
@@ -748,7 +845,7 @@ function create_graph() {
                 graph.id = "ud_graph";
                 graph.type = "text/html";
                 graph.src = data;
-                document.body.append(graph);
+                div_graph.append(graph);
                 $("#ud_graph").after($("#error_div"));
             });
     }
@@ -790,10 +887,10 @@ function display_errors() {
         error_body.innerHTML += errors[i];
         error_body.append(document.createElement('br'));
     }
-    document.body.append(error_div);
+    $('div#error')[0].append(error_div);
     let br_error = document.createElement('br');
     br_error.id = "br_error";
-    document.body.append(br_error);
+    $('div#error')[0].append(br_error);
 }
 
 function cell_change(key, column, cell) {
