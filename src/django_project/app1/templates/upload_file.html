@@ -1,13 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'base-nav.html' %}
 
 {% block head %}
 <title> Upload File Page </title>
 {% endblock %}
 
 {% block body %}
-
-<div class="container">
-    <br><br>
+<div id="space" class="p-5 border bg-light">
     <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
         {% if treebanks|length == 0 %}
         You need to create a treebank first. Go <a href="{% url 'create_treebank' %}">here</a>.
