@@ -490,10 +490,10 @@
 # sent_id = bio_1603
 # text = O hanımı asistan yaptılar.
 1	O	o	DET	Det	_	2	det	_	_
-2	hanımı	hanım	NOUN	_	Case=Acc|Number=Sing	3	obj	_	_
+2	hanımı	hanım	_	_	Case=Acc|Number=Sing	3	obj	_	_
 3	asistan	asistan	NOUN	_	Case=Nom|Number=Sing	4	iobj	_	_
-4	yaptılar	yap	VERB	_	Aspect=Perf|Evident=Fh|Number=Plur|Person=3|Polarity=Pos|Tense=Past	0	root	_	SpaceAfter=No
-5	.	.	PUNCT	Stop	_	4	punct	_	SpacesAfter=\n
+4	yaptılar	yap	VERB	_	Evident=Fh|Number=Plur|Person=3|Polarity=Pos|Tense=Past	0	root	_	SpaceAfter=No
+5	.	.	PUNCT	Stop	_	_	punct	_	SpacesAfter=\n
 
 # sent_id = news_499
 # text = Mini dizüstünde 3N dopingi
@@ -1563,12 +1563,10 @@
 16	davranış	davran	NOUN	_	Case=Nom|Number=Sing|Person=3	17	nmod:poss	_	df=davran
 17	biçimlerinin	biçim	NOUN	_	Case=Gen|Number=Plur|Number[psor]=Sing|Person=3|Person[psor]=3	18	nmod:poss	_	_
 18	detaylarını	detay	NOUN	_	Case=Acc|Number=Plur|Number[psor]=Plur|Person=3|Person[psor]=3	19	obj	_	_
-19-20	öğrenirken	_	_	_	_	_	_	_	_
-19	öğrenir	öğren	VERB	Ptcp	Aspect=Hab|Polarity=Pos|Tense=Pres|VerbForm=Part	22	advcl	_	_
-20	ken	y	AUX	Zero	Polarity=Pos|VerbForm=Conv	19	cop	_	_
-21	hayranlıklarını	hayranlık	NOUN	_	Case=Acc|Number=Sing|Number[psor]=Plur|Person=3|Person[psor]=3	22	obj	_	df=hayran
-22	gizleyemediler	gizle	VERB	_	Aspect=Perf|Evident=Fh|Mood=Pot|Number=Plur|Person=3|Polarity=Neg|Tense=Past	0	root	_	SpaceAfter=No|df=giz
-23	.	.	PUNCT	Stop	_	22	punct	_	SpacesAfter=\n
+19	öğrenirken	_	_	_	_	_	_	_	_
+20	hayranlıklarını	hayranlık	NOUN	_	Case=Acc|Number=Sing|Number[psor]=Plur|Person=3|Person[psor]=3	22	obj	_	df=hayran
+21	gizleyemediler	gizle	VERB	_	Aspect=Perf|Evident=Fh|Mood=Pot|Number=Plur|Person=3|Polarity=Neg|Tense=Past	0	root	_	SpaceAfter=No|df=giz
+22	.	.	PUNCT	Stop	_	22	punct	_	SpacesAfter=\n
 
 # sent_id = ess_541
 # text = Gümüş yılları aşan saygılı bir beraberliğin "parlak" ışıkları, günlerin prizmasında önce ikiye bölünüp tuz parça olacaksa, ortadan ikiye ayrık Karaoğlan, demokratik sol terazisinin hangi kefesinden sesleniyor?
@@ -1930,12 +1928,12 @@
 # text = Araştırmada yöneltilen "Sosyal güvenlik sistemi hakkında bilginiz var mı?" sorusuna ise, iş değiştirmeyi düşünenlerin yüzde 58'i "evet" yanıtı verirken, iş arayan katılımcılarda bu oran yüzde 54'te kaldı.
 1	Araştırmada	araştırma	NOUN	_	Case=Loc|Number=Sing|Person=3	2	obl	_	df=araştır
 2	yöneltilen	yönel	VERB	Ptcp	Polarity=Pos|Tense=Pres|VerbForm=Part|Voice=CauPass	13	acl	_	_
-3	"	"	PUNCT	Punc	_	9	punct	_	SpaceAfter=No
+3	"	"	PUNCT	Punc	_	9	_	_	SpaceAfter=No
 4	Sosyal	sosyal	ADJ	Adj	_	5	amod	_	_
 5	güvenlik	güvenlik	NOUN	_	Case=Nom|Number=Sing|Person=3	6	nmod:poss	_	df=güven
 6	sistemi	sistem	NOUN	_	Case=Nom|Number=Sing|Number[psor]=Sing|Person=3|Person[psor]=3	7	nmod:poss	_	_
 7	hakkında	hak	NOUN	_	Case=Loc|Number=Sing|Number[psor]=Sing|Person=3|Person[psor]=3	9	obl	_	_
-8	bilginiz	bilgi	NOUN	_	Case=Nom|Number=Sing|Number[psor]=Plur|Person=3|Person[psor]=1	9	nsubj	_	_
+8	bilginiz	bilgi	NOUN	_	Case=Nom|Number=Sing|Number[psor]=Plur|Person=3|Person[psor]=1	9	_	_	_
 9	var	var	NOUN	Exist	Number=Sing|Person=3|Polarity=Pos	13	nmod:poss	_	_
 10	mı	mı	PART	Ques	_	9	discourse:q	_	SpaceAfter=No
 11	?	?	PUNCT	Ques	_	9	punct	_	SpaceAfter=No
@@ -1945,8 +1943,8 @@
 15	,	,	PUNCT	Comma	_	25	punct	_	_
 16	iş	iş	NOUN	_	Case=Acc|Number=Sing|Person=3	17	obj	_	_
 17	değiştirmeyi	değiş	VERB	_	Case=Acc|Number=Sing|Person=3|Polarity=Pos|Voice=Cau	18	ccomp	_	_
-18	düşünenlerin	düşün	VERB	Ptcp	Case=Gen|Number=Plur|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Part	20	nmod:poss	_	_
-19	yüzde	yüz	NUM	NNum	Case=Loc|Number=Sing|Person=3	20	nummod	_	_
+18	düşünenlerin	düşün	VERB	Ptcp	Number=Plur|Person=3|Polarity=Pos|Tense=Pres|VerbForm=Part	20	nmod:poss	_	_
+19	yüzde	yüz	NUM	NNum	Case=Loc|Number=Sing	20	nummod	_	_
 20	58'i	58	NUM	NNum	Case=Nom|Number=Sing|Number[psor]=Sing|Person=3|Person[psor]=3	25	nsubj	_	_
 21	"	"	PUNCT	Punc	_	22	punct	_	SpaceAfter=No
 22	evet	evet	INTJ	_	_	24	nmod:poss	_	SpaceAfter=No
@@ -1957,13 +1955,13 @@
 26	ken	y	AUX	Zero	Polarity=Pos|VerbForm=Conv	25	cop	_	_
 27	,	,	PUNCT	Comma	_	35	punct	_	_
 28	iş	iş	NOUN	_	Case=Acc|Number=Sing|Person=3	29	obj	_	_
-29	arayan	ara	VERB	Ptcp	Polarity=Pos|Tense=Pres|VerbForm=Part	30	acl	_	_
+29	arayan	ara	VERB	Ptcp	Polarity=Pos|VerbForm=Part	30	acl	_	_
 30	katılımcılarda	katılımcı	NOUN	_	Case=Nom|Number=Plur|Person=3	35	obl	_	df=katılım
 31	bu	bu	DET	Demons	_	32	det	_	_
 32	oran	oran	NOUN	_	Case=Nom|Number=Sing|Person=3	35	nsubj	_	_
 33	yüzde	yüz	NUM	NNum	Case=Loc|Number=Sing|Person=3	34	nummod	_	_
 34	54'te	54	NUM	NNum	Case=Loc|Number=Sing|NumType=Card|Person=3	35	obl	_	_
-35	kaldı	kal	VERB	_	Aspect=Perf|Evident=Fh|Number=Sing|Person=3|Polarity=Pos|Tense=Past	0	root	_	SpaceAfter=No
+35	kaldı	kal	VERB	_	Aspect=Perf|Number=Sing|Person=3|Polarity=Pos|Tense=Past	0	root	_	SpaceAfter=No
 36	.	.	PUNCT	Stop	_	35	punct	_	SpacesAfter=\n
 
 # sent_id = bio_837
