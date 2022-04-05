@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
@@ -336,15 +337,17 @@ def search(request):
     message = None
     if request.method == "POST":
         data = request.POST
+        print(data)
         queries = {}
         count = 1
-        while 1:
-            if f'input_{count}' not in data.keys(): break
-            if f'type_{count}' in data.keys() and data[f'input_{count}'] != '':
-                queries[count] = {}
-                queries[count]['type'] = data[f'type_{count}']
-                queries[count]['input'] = data[f'input_{count}']
-            count += 1
+        for key in data.keys():
+            if key.startswith('input_'):
+                num_str = re.search('input_(\d+)', key).group(1)
+                if data[key] != '':
+                    queries[count] = {}
+                    queries[count]['type'] = data[f'type_{num_str}']
+                    queries[count]['input'] = data[f'input_{num_str}']
+                    count += 1
         return render(request, 'search.html', {'queries': json.dumps(queries)})
     elif request.method == "GET":
         pass

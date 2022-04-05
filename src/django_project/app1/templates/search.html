@@ -137,7 +137,7 @@
         row.append(col);
 
         // plus_button
-        $('#btn-plus').remove();
+        // $('#btn-plus').remove();
         col = document.createElement('div');
         col.className = "col";
         col.id = "btn-plus";
@@ -146,13 +146,22 @@
         button.className = "btn btn-light border";
         button.innerHTML = "+";
         button.addEventListener('click', function () {
-            create_row();
+            button_handle(row_order);
         });
         col.append(button);
         row.append(col);
         row.append(document.createElement('br'));
         row.append(document.createElement('br'));
         $('#queries').append(row);
+    }
+
+    function button_handle(row_order) {
+        let button = $(`div#${row_order}`).find('button')[0];
+        if (button.innerHTML == "-") $(`div#${row_order}`).remove();
+        else {
+            $(`div#${row_order}`).find('button')[0].innerHTML = "-";
+            create_row();
+        }
     }
     {% endif %}
 </script>
