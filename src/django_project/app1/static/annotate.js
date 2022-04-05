@@ -726,10 +726,10 @@ function inject_sentence() {
     tbody.append(row1);
     tbody.append(row2);
     sentence_text.append(tbody);
-    let div_table1 = $('div#table1')[0];
-    div_table1.append(document.createElement("br"));
-    div_table1.append(sentence_text);
-    div_table1.append(document.createElement("br"));
+    let nav_table1 = $('nav#table1')[0];
+    nav_table1.append(document.createElement("br"));
+    nav_table1.append(sentence_text);
+    nav_table1.append(document.createElement("br"));
 
     // Show table
     let word_lines = document.createElement("table");
