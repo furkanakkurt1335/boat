@@ -6,11 +6,14 @@ window.onload = function () {
     window.text = document.getElementById('sentence.text').innerHTML;
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
-    window.status = document.getElementById('annotation.status').innerHTML;
-    window.status_d = { "not": "Not", "half": "Half", "done": "Done" };
+    window.status = parseInt(document.getElementById('annotation.status').innerHTML);
+    window.status_d = { 0: "Not", 2: "Half", 1: "Done" };
     window.errors = document.getElementById('errors').innerHTML;
-    window.graph_preference = document.getElementById('graph_preference').innerHTML;
-    window.error_condition = document.getElementById('error_condition').innerHTML;
+    window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
+    window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
+    let error_condition_t = document.getElementById('error_condition').innerHTML;
+    if (error_condition_t == "True") window.error_condition = true;
+    else window.error_condition = false;
     window.current_columns = document.getElementById('current_columns').innerHTML.split(',');
     $('#sent_id').remove();
     $('#text').remove();
@@ -171,6 +174,7 @@ function button_handle(type, number, way) {
         let sel = document.getElementById("row_select_select");
         let selected = sel.options[sel.selectedIndex].text;
         let input_number = document.getElementById("row_select_input").value;
+        if (input_number == "") return;
         if (selected == "Go to sentence") {
             post_to_save("go", input_number);
         }
@@ -244,20 +248,20 @@ function button_handle(type, number, way) {
     }
     else if (type == "status") {
         let button = $('#status')[0];
-        if (window.status == "not") {
+        if (window.status == 0) {
             button.innerHTML = "Done";
             button.className = button.className.replace('border', 'border-success');
-            window.status = "done";
+            window.status = 1;
         }
-        else if (window.status == "done") {
+        else if (window.status == 1) {
             button.innerHTML = "Half";
             button.className = button.className.replace('border-success', 'border-danger');
-            window.status = "half";
+            window.status = 2;
         }
-        else if (window.status == "half") {
+        else if (window.status == 2) {
             button.innerHTML = "Not";
             button.className = button.className.replace('border-danger', 'border');
-            window.status = "not";
+            window.status = 0;
         }
     }
     else if (type == "profile") {
@@ -265,8 +269,8 @@ function button_handle(type, number, way) {
     }
     else if (type == "errors") {
         let button = $('button#errors')[0];
-        if (window.error_condition == "hidden") {
-            window.error_condition = "shown";
+        if (window.error_condition == 0) {
+            window.error_condition = 1;
             display_errors();
             $('#error_div')[0].hidden = false;
             let img = $('#exclamation-square-fill')[0].cloneNode(true);
@@ -275,14 +279,14 @@ function button_handle(type, number, way) {
             button.append(img);
             button.setAttribute('title', 'Hide errors');
         }
-        else if (window.error_condition == "shown") {
+        else if (window.error_condition == 1) {
             $('#error_div')[0].hidden = true;
             let img = $('#exclamation-square')[0].cloneNode(true);
             img.hidden = false;
             $('button#errors').find('img')[0].remove();
             button.append(img);
             button.setAttribute('title', 'Show errors');
-            window.error_condition = "hidden";
+            window.error_condition = 0;
         }
     }
     else if (type == "graph") {
@@ -293,9 +297,10 @@ function button_handle(type, number, way) {
             if (options[i].innerHTML == selected) options[i].style = "color: gray;";
             else options[i].style = "color: black;";
         }
-        if (selected == "spaCy") window.graph_preference = "spacy";
-        else if (selected == "None") window.graph_preference = "none";
-        else window.graph_preference = selected;
+        if (selected == "None") window.graph_preference = 0;
+        else if (selected == "conllu.js") window.graph_preference = 1;
+        else if (selected == "treex") window.graph_preference = 2;
+        else if (selected == "spaCy") window.graph_preference = 3;
         create_graph();
     }
 }
@@ -554,11 +559,11 @@ function init_page() {
     button.id = "errors";
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
-    if (window.error_condition == "shown") {
+    if (window.error_condition == 1) {
         img = $('#exclamation-square-fill')[0].cloneNode(true);
         button.setAttribute('title', 'Hide errors');
     }
-    else if (window.error_condition == "hidden") {
+    else if (window.error_condition == 0) {
         img = $('#exclamation-square')[0].cloneNode(true);
         button.setAttribute('title', 'Show errors');
     }
@@ -588,11 +593,11 @@ function init_page() {
     option.selected = true;
     option.innerHTML = "Graphs";
     select.append(option);
-    options = ['conllu.js', 'treex', 'spaCy', 'None'];
+    options = ['None', 'conllu.js', 'treex', 'spaCy'];
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
-        if (window.graph_preference == options[i].toLowerCase()) {
+        if (window.graph_preference == i) {
             option.style = "color: gray;";
         }
         else {
@@ -796,8 +801,8 @@ function inject_sentence() {
 function create_graph() {
     $('div#graph').empty();
     let div_graph = $('div#graph')[0];
-    if (window.graph_preference == "none") return;
-    else if (window.graph_preference == "conllu.js") {
+    if (window.graph_preference == 0) return;
+    else if (window.graph_preference == 1) {
         $('#vis').remove();
         $('#dep_graph').remove();
         let cells = window.cells;
@@ -820,20 +825,7 @@ function create_graph() {
         div_graph.append(dep_graph);
         Annodoc.activate(Config.bratCollData, {});
     }
-    else if (window.graph_preference == "spacy") {
-        $.post("/spacy/",
-            {
-                cells: JSON.stringify(window.cells)
-            },
-            function (data) {
-                let textarea_t = document.createElement('textarea');
-                textarea_t.innerHTML = data;
-                let graph = document.createElement('div');
-                graph.innerHTML = textarea_t.value;
-                div_graph.append(graph);
-            });
-    }
-    else if (window.graph_preference == "treex") {
+    else if (window.graph_preference == 2) {
         $.post("/ud_graph/",
             {
                 cells: JSON.stringify(window.cells),
@@ -849,10 +841,23 @@ function create_graph() {
                 $("#ud_graph").after($("#error_div"));
             });
     }
+    else if (window.graph_preference == 3) {
+        $.post("/spacy/",
+            {
+                cells: JSON.stringify(window.cells)
+            },
+            function (data) {
+                let textarea_t = document.createElement('textarea');
+                textarea_t.innerHTML = data;
+                let graph = document.createElement('div');
+                graph.innerHTML = textarea_t.value;
+                div_graph.append(graph);
+            });
+    }
 }
 
 function display_errors() {
-    if (window.error_condition == "hidden") return;
+    if (window.error_condition == 0) return;
 
     $('#error_div').remove();
     $('#error_header').remove();

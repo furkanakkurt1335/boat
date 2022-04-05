@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 class ExtendUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
+    # error_condition: True (shown), False (hidden)
+    # graph: conllu.js 1, treex 2, spacy 3, none 0
     preferences = models.JSONField(blank=True)
 
     def __str__(self):
@@ -52,7 +54,7 @@ class Sentence(models.Model):
         return self.sent_id
 
 class AnnotationManager(models.Manager):
-    def create_annotation(self, annotator, sentence, notes='', status='not'):
+    def create_annotation(self, annotator, sentence, notes='', status=0):
         annotation = self.create(annotator=annotator, sentence=sentence, notes=notes, status=status)
         return annotation
 

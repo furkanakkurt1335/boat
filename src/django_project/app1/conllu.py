@@ -32,13 +32,14 @@ def parse_file(f):
         for line in curr_sentence.split('\n'):
             if line.startswith('#'):
                 comment_found = re.match(comment_pattern, line)
-                if comment_found:
+                if comment_found and len(comment_found.groups()) == 2:
                     if comment_found.group(1).strip() not in ['sent_id', 'text']:
-                        if 'comments' in sentence.keys():
+                        if 'comments' not in sentence.keys():
                             sentence['comments'] = dict()
                         sentence['comments'][comment_found.group(1).strip()] = comment_found.group(2).strip()
                     else:
                         sentence[comment_found.group(1).strip()] = comment_found.group(2).strip()
+                else: print(curr_sentence)
             else:
                 cats_found = re.match(cats_pattern, line)
                 if cats_found:

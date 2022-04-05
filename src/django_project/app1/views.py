@@ -138,7 +138,7 @@ def login(request):
             if len(ExtendUser.objects.filter(user=user)) == 0:
                 extenduser_t = ExtendUser()
                 extenduser_t.user = user
-                extenduser_t.preferences = {'graph_preference': 'conllu.js', "error_condition": "shown", "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
+                extenduser_t.preferences = {'graph_preference': 1, "error_condition": True, "current_columns": ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
                 extenduser_t.save()
             login_f(request, user)
             return redirect('profile')
@@ -288,11 +288,12 @@ def annotate(request, treebank, order):
             data = request.POST['data']
             data_changed = request.POST['data_changed']
             current_columns = request.POST['current_columns']
-            error_condition = request.POST['error_condition']
-            graph_preference = request.POST['graph_preference']
-            print(graph_preference)
+            error_condition_t = request.POST['error_condition']
+            if error_condition_t == "true": error_condition = True
+            else: error_condition = False
+            graph_preference = int(request.POST['graph_preference'])
             notes = request.POST['notes']
-            status = request.POST['status']
+            status = int(request.POST['status'])
             word_lines = json.loads(data)
             annotation.notes = notes
             if data_changed == 'true':
@@ -337,7 +338,6 @@ def search(request):
     message = None
     if request.method == "POST":
         data = request.POST
-        print(data)
         queries = {}
         count = 1
         for key in data.keys():
