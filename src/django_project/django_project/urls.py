@@ -32,6 +32,7 @@ urlpatterns = [
     # path('', include('search.urls')),
     path('query/', views.query, name='query'),
     path('api/my_annotations/', views.my_annotations, name='my_annos'),
+    path('api/get_treebank/', views.get_treebank, name='get_treebank'),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

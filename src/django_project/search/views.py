@@ -10,6 +10,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 @api_view()
+def get_treebank(request):
+    q = request.GET
+    treebank_title = q['treebank_title']
+    sentences = Sentence.objects.filter(treebank__title=treebank_title)
+    result = {}
+    for sentence in sentences:
+        result[len(result.keys())] = {'sent_id': sentence.sent_id, 'text': sentence.text, 'order': sentence.order}
+    return Response(result)
+
+@api_view()
 def my_annotations(request):
     q = request.GET
     if 'type' not in q:
@@ -17,7 +27,8 @@ def my_annotations(request):
     if q['type'] == 'all':
         annotations = Annotation.objects.filter(annotator=request.user)
     else:
-        annotations = Annotation.objects.filter(annotator=request.user, status=q['type'])
+        type_d = {"not": 0, "half": 2, "done": 1}
+        annotations = Annotation.objects.filter(annotator=request.user, status=type_d[q['type']])
     result = {}
     for ann_t in annotations:
         sen_t = Sentence.objects.get(id=ann_t.sentence.id)

@@ -13,43 +13,71 @@
     function change_sentences() {
         let type = select.options[select.selectedIndex].text;
         if (type == "All") type = "all";
-        else if (type == "Annotated") type = "done";
-        else if (type == "Half") type = "half";
-        else if (type == "Not Annotated") type = "not";
+        else if (type == "Finished") type = "done";
+        else if (type == "Half finished") type = "half";
+        else if (type == "Not finished") type = "not";
         let url = `/api/my_annotations/?type=${type}`;
+        $('#annotation-body').find('tr').remove();
+
+        window.results = [];
 
         $.get(url,
             function (data) {
-                let ann_table = $('#annotation-table')[0];
-                ann_table.hidden = false;
-                let ann_body = $('#annotation-table')[0];
-                $('#annotation-body').find('tr').remove();
                 let keys = Object.keys(data);
                 if (keys.length == 0) {
-                    ann_table.hidden = true;
-                    $('#result_info').remove();
+                    $('#annotation-table')[0].hidden = true;
                     let info = document.createElement('div');
                     info.id = "result_info";
                     info.innerHTML = "No result found."
                     $('#space')[0].append(info);
                 }
-                else $('#result_info').remove();
-                for (let i = 0; i < keys.length; i++) {
-                    let one_result = data[keys[i]];
-                    let tr = document.createElement('tr');
-                    let td = document.createElement('td');
-                    td.innerHTML = one_result['text'];
-                    tr.append(td);
-                    td = document.createElement('td');
-                    td.innerHTML = one_result['sent_id'];
-                    tr.append(td);
-                    td = document.createElement('td');
-                    td.innerHTML = one_result['treebank_title'];
-                    tr.append(td);
-                    ann_body.append(tr);
+                else {
+                    $('#annotation-table')[0].hidden = false;
+                    for (let i = 0; i < keys.length; i++) {
+                        let one_result = {};
+                        let res_t = data[keys[i]];
+                        console.log(data);
+                        one_result['text'] = res_t['text'];
+                        one_result['sent_id'] = res_t['sent_id'];
+                        one_result['treebank'] = res_t['treebank_title'];
+                        window.results.push(JSON.parse(JSON.stringify(one_result)));
+                        if (i <= 20) create_row(one_result);
+                    }
                 }
+                $('#result_info').remove();
             }
         );
+    }
+
+    function create_row(result) {
+        let row = document.createElement("tr");
+        let row_order = $('.tr').length + 1;
+        row.id = row_order;
+        row.className = "border";
+        let fields = ["text", "sent_id", "treebank"];
+        for (let i = 0; i < fields.length; i++) {
+            let data = document.createElement("td");
+            data.innerHTML = result[fields[i]];
+            data.style = 'text-align:center';
+            row.append(data);
+        }
+        $('#annotation-body')[0].append(row);
+    }
+
+    function page_handle(type) {
+        $('#annotation-body').find('tr').remove();
+        if (type == "next") {
+            window.current_page += 1;
+            if (window.current_page > window.res_size / 20) $('a#next')[0].hidden = true;
+            $('a#previous')[0].hidden = false;
+        }
+        else if (type == "prev") {
+            window.current_page -= 1;
+            if (window.current_page <= window.res_size / 20) $('a#next')[0].hidden = false;
+            if (window.current_page == 1) $('a#previous')[0].hidden = true;
+        }
+        let new_results = window.results.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
+        for (let i = 0; i < new_results.length; i++) create_row(new_results[i]);
     }
 </script>
 {% endblock %}
@@ -60,9 +88,9 @@
     <select id="select" class="w-25 form-select">
         <option disabled selected>Select type</option>
         <option id="all">All</option>
-        <option id="annotated">Annotated</option>
-        <option id="half">Half</option>
-        <option id="not annotated">Not Annotated</option>
+        <option id="done">Finished</option>
+        <option id="half">Half finished</option>
+        <option id="not">Not finished</option>
     </select><br>
     <div id="annotations">
         <table id="annotation-table" class="table table-bordered table-striped" hidden="true">
@@ -76,5 +104,11 @@
             <tbody id="annotation-body"></tbody>
         </table>
     </div>
+    <nav id="pagination" hidden aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a id="previous" hidden class="page-link">Previous</a></li>
+            <li class="page-item"><a id="next" class="page-link">Next</a></li>
+        </ul>
+    </nav>
 </div>
 {% endblock %}

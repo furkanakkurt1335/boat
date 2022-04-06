@@ -11,14 +11,14 @@
         You need to create a treebank first. Go <a href="{% url 'create_treebank' %}">here</a>.
         {% else %}
         Choose a treebank to upload to:
-        <select id="treebank_select">
+        <select class="w-50 form-select" id="treebank_select">
             {% for treebank in treebanks %}
             <option value="{{treebank}}"> {{treebank}} </option>
             {% endfor %}
         </select>
         <input hidden="true" type="text" id="title" name="title" maxlength="50" required id="id_title"
             placeholder="Treebank Name"><br><br>
-        <input class="form-control form-control-lg" type="file" name="file" required id="id_file"><br><br>
+        <input class="w-50 form-control" type="file" name="file" required id="id_file"><br><br>
         <input type="submit" value="Upload"><br><br>
         {{message}}
         {% endif %}

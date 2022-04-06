@@ -4,35 +4,75 @@
 <title> View Treebank Page </title>
 <script>
     window.onload = function () {
-        window.current_page = parseInt({{ page }});
-    $('#previous')[0].href += (window.current_page - 1).toString();
-    $('#next')[0].href += (window.current_page + 1).toString();
-    $.get("/api/sentences/?page={{page}}&treebank__title={{treebank.title}}",
-        function (data) {
-            let results = data['results'];
-            for (let i = 0; i < results.length; i++) {
-                let p = document.createElement('p');
-                p.innerHTML = results[i].text + '&nbsp;';
-                let a = document.createElement('a');
-                a.href = "/annotate/{{treebank.title}}/" + results[i]['order'];
-                p.append(a);
-                let span = document.createElement('span');
-                span.style = "font-size: small;";
-                span.innerHTML = results[i].sent_id;
-                a.append(span);
-                $('#space').append(p);
-                let pag = document.getElementById('pagination');
-                pag.hidden = false;
-                $('#space').append(pag);
+        let treebank_title = $('div#treebank_title')[0].innerHTML;
+        window.results = [];
+        $.get(`/api/get_treebank/?treebank_title=${treebank_title}`,
+            function (data) {
+                let keys = Object.keys(data);
+                let one_result = {};
+                window.res_size = keys.length;
+                $('#pagination')[0].hidden = false;
+                window.current_page = 1;
+                $('#result-table')[0].hidden = false;
+                for (let i = 0; i < keys.length; i++) {
+                    let res_t = data[keys[i]];
+                    one_result['text'] = res_t['text'];
+                    one_result['sent_id'] = res_t['sent_id'];
+                    one_result['order'] = res_t['order'];
+                    window.results.push(JSON.parse(JSON.stringify(one_result)));
+                    if (i <= 20) create_row(one_result);
+                }
             }
-            if (data['next'] == null) {
-                $('#next')[0].remove();
-            }
-            if (data['previous'] == null) {
-                $('#previous')[0].remove();
-            }
+        );
+
+        let prev = $('a#previous')[0];
+        let next = $('a#next')[0];
+        prev.addEventListener('click', function () {
+            page_handle('prev');
         });
+        next.addEventListener('click', function () {
+            page_handle('next');
+        });
+
+        function page_handle(type) {
+            $('#result-body').find('tr').remove();
+            if (type == "next") {
+                window.current_page += 1;
+                if (window.current_page > window.res_size / 20) $('a#next')[0].hidden = true;
+                $('a#previous')[0].hidden = false;
+            }
+            else if (type == "prev") {
+                window.current_page -= 1;
+                if (window.current_page <= window.res_size / 20) $('a#next')[0].hidden = false;
+                if (window.current_page == 1) $('a#previous')[0].hidden = true;
+            }
+            let new_results = window.results.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
+            for (let i = 0; i < new_results.length; i++) create_row(new_results[i]);
+        }
+
+        function create_row(result) {
+            let row = document.createElement("tr");
+            let row_order = $('.tr').length + 1;
+            row.id = row_order;
+            row.className = "border";
+
+            let data = document.createElement("td");
+            data.innerHTML = result['text'];
+            data.style = 'text-align:center';
+            row.append(data);
+
+            data = document.createElement("td");
+            let a = document.createElement('a');
+            a.href = `/annotate/${treebank_title}/${result['order']}`;
+            a.innerHTML = result['sent_id'];
+            a.style = 'text-align:center';
+            data.append(a);
+            row.append(data);
+
+            $('#result-body')[0].append(row);
+        }
     };
+
 </script>
 {% endblock %}
 
@@ -42,13 +82,23 @@
     {% if message|length != 0 %}
     {{message}}
     {% endif %}
-
-    <nav id="pagination" hidden aria-label="Page navigation example">
+    <div id="treebank_title" hidden>{{treebank_title}}</div>
+    <div id="result">
+        <table id="result-table" class="table table-bordered table-striped" hidden="true">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>text</th>
+                    <th>sent_id</th>
+                </tr>
+            </thead>
+            <tbody id="result-body"></tbody>
+        </table>
+    </div>
+    <nav id="pagination" hidden>
         <ul class="pagination">
-            <li class="page-item"><a id="previous" class="page-link"
-                    href="/view_treebank/{{treebank.title}}/">Previous</a>
+            <li class="page-item"><a id="previous" hidden class="page-link">Previous</a>
             </li>
-            <li class="page-item"><a id="next" class="page-link" href="/view_treebank/{{treebank.title}}/">Next</a></li>
+            <li class="page-item"><a id="next" class="page-link">Next</a></li>
         </ul>
     </nav>
 </div>
