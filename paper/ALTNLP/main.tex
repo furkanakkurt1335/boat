@@ -57,7 +57,7 @@ The initial feedback and the tests done promise much for the future of the tool.
 This paper presents this new web-based tool.
 In the next section, the related work is touched upon.
 In the third section, requirements and design procedure is detailed.
-In the fourth, how the implementation proceded is explained.
+In the fourth, how the implementation proceeded is explained.
 The fifth section explains what features the tool contains.
 The sixth section contemplates what the future of the tool may entail.
 
@@ -65,10 +65,8 @@ The sixth section contemplates what the future of the tool may entail.
 
 BoAT v1~\cite{turk-etal-2019-turkish}, the initial desktop application. 
 This tool has been used to reannotate the entire BOUN Treebank.
-We try to improve on this tool in this paper.
-
-brat: an open source project for text annotation.\cite{brat}
-
+We try to improve on this tool in this paper.\newline
+brat: an open source project for text annotation.\cite{brat}\newline
 There are third-party tools presented in the UD tools webpage such as UD Annotatrix\cite{tyers-etal:2018} and DgAnnotator\cite{dgannotator}.
 
 \section{Requirements and Design}
@@ -79,18 +77,17 @@ Focus of the annotator makes out to be the first requirement.
 Annotators use the tools sometimes for hours on end.
 Software should make the work easier by reducing distractions and automating work that can be automated.
 
-One of the requirements we have gathered for not breaking the focus of the annotator is for the software to use keyboard only for all tasks.
+One of the requirements we have gathered for not breaking the focus of the annotator is for the software to use only keyboard for all tasks.
 BoAT is a keyboard-oriented application.
 User should not have to use a mouse for any type of task.
-Users lose focus after some time naturally.
-Automating the entries, checking errors and is a high priority in this respect.
+Since users lose focus after some time naturally, automating the entries and checking errors are high priorities in this respect.
 Autocomplete should be provided for parts of the annotation where it is known what values can be entered.
 
 One essential feature requested by the users is using the screen space in a compact manner and removing any clutter that's not used much.
-
+Considering this, the previous application's checkboxes have been converted into a select.
 
 A search API for the annotation database of the treebanks is another requirement.
-An annotator should be able to search the treebank they are a part of to see other annotations done for that specific sentence or go to a sentence's annotation page to start annotating.
+An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence or go to a sentence's annotation page to start annotating.
 Sometimes a user may not be sure of an annotation and would like to consult previous annotations for similar cases.
 They should be able to search the database in a complex way, by case, features or direct text, etc.
 An outsider also should be able to use the API to get the annotations of a particular treebank to use in their tasks in a systematic way.
@@ -99,13 +96,16 @@ An outsider also should be able to use the API to get the annotations of a parti
 
 The annotation page resembles the initial standalone application.
 It includes a dependency graph and an editable table, both of which in sync.
-The graph is changed from the initial version due to space considerations.
-The new graph is horizontal and linear.
+The dependency graph of the initial tool and other 2 graphs have been added to this tool.
+The user has the choice to select a type of graph or none.
+The other 2 graphs have been selected due to space considerations.
+These graphs are horizontal and linear.
 The table is responsible for changing the word lines of \textit{conllu} files.
 A user is able to upload a \textit{conllu} file and start annotating.
+The system is responsible for checking if a file uploaded obeys the format of \textit{conllu}.
 
 Errors are checked and annotations validated according to the UD framework and the language provided.
-The scripts for validation are already provided by the framework.\cite{UD-git}
+The scripts used for validation are the ones already provided by the framework.\cite{UD-git}
 
 Django\cite{django} and Django REST Framework\cite{drf} are used in this tool.
 Django is the backbone of the tool, serving the website with all its configurations.
@@ -124,8 +124,8 @@ One of the most game-changing features in this version is the ability to cross-c
 This can be helpful and a learning experience for annotators.
 
 Also one other thing the interannotator agreement allows us is the possibility to see some anomalies in the Turkish part of the UD framework.
-For example, if a sentence were annotated a way by many annotators but the UD validation script were giving errors for it, this may indicate the UD validation is lacking in this respect of the Turkish language.
-Some modifications may be done, and there could be a case for a proposal of change.
+For example, if a sentence were annotated a way by many annotators but the UD validation script were giving errors for it, this might indicate the UD validation were lacking in this respect of the Turkish language.
+Some modifications might be necessary and there could be a case for a proposal of change.
 
 \subsection{API}
 
