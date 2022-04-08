@@ -711,7 +711,8 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
-    sentence_text.className = "table-sm table-borderless mx-auto";
+    sentence_text.className = "table-sm mx-auto";
+    sentence_text.style = "border: 2px solid gray";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
