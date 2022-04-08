@@ -677,7 +677,7 @@ function init_page() {
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
-    button.setAttribute('title', 'Reset edits');
+    button.setAttribute('title', 'Save edits');
     button.append(img);
     div_col.append(button);
     div_row.append(div_col);
@@ -749,7 +749,7 @@ function inject_sentence() {
         let heading = document.createElement("th");
         if (cats_low.includes(current_columns[i])) heading.innerHTML = cats[cats_low.indexOf(current_columns[i])];
         else heading.innerHTML = features[features_low.indexOf(current_columns[i])];
-        heading.style = 'text-align:center';
+        heading.style = 'text-align:center;';
         heading.addEventListener("click", function () {
             column_click(heading.innerHTML.toLowerCase());
         });
@@ -775,7 +775,7 @@ function inject_sentence() {
             else if (cells[row_t][column_t] == undefined) data.innerHTML = "_";
             else data.innerHTML = cells[row_t][column_t];
             data.id = `${row_t} ${column_t}`;
-            data.style.textAlign = "center";
+            if (column_t != "feats") data.style.textAlign = "center";
             if (column_t != "id") data.contentEditable = true;
             data.addEventListener("focus", (event) => {
                 window.last_focus = [row_t, column_t];

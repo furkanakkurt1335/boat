@@ -8,7 +8,7 @@
         for (let i = 0; i < view_buttons.length; i++) {
             view_buttons[i].addEventListener("click", function () {
                 let treebank_title = view_buttons[i].id;
-                window.location.replace(`/view_treebank/${treebank_title}/1`);
+                window.location.replace(`/view_treebank/${treebank_title}`);
             });
         }
         let dl_buttons = document.getElementsByClassName('download');

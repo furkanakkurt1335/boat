@@ -296,7 +296,8 @@ def annotate(request, treebank, order):
             status = int(request.POST['status'])
             word_lines = json.loads(data)
             annotation.notes = notes
-            if data_changed == 'true':
+            button_type = request.POST['type']
+            if data_changed == 'true' or button_type == 'save':
                 if request.user == annotation.annotator:
                     annotation.save()
                     anno_t = annotation
@@ -317,7 +318,6 @@ def annotate(request, treebank, order):
             eu.preferences['graph_preference'] = graph_preference
             eu.save()
             current_path = request.path
-            button_type = request.POST['type']
             if button_type == 'go': number = request.POST['number']
             elif button_type == 'profile': return redirect('profile')
             else: number = None
