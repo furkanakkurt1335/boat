@@ -7,7 +7,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "Not", 2: "Half", 1: "Done" };
+    window.status_d = { 0: "Not finished", 2: "Half finished", 1: "Finished" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -249,17 +249,17 @@ function button_handle(type, number, way) {
     else if (type == "status") {
         let button = $('#status')[0];
         if (window.status == 0) {
-            button.innerHTML = "Done";
+            button.innerHTML = "Finished";
             button.className = button.className.replace('border', 'border-success');
             window.status = 1;
         }
         else if (window.status == 1) {
-            button.innerHTML = "Half";
+            button.innerHTML = "Half finished";
             button.className = button.className.replace('border-success', 'border-danger');
             window.status = 2;
         }
         else if (window.status == 2) {
-            button.innerHTML = "Not";
+            button.innerHTML = "Not finished";
             button.className = button.className.replace('border-danger', 'border');
             window.status = 0;
         }
@@ -297,10 +297,10 @@ function button_handle(type, number, way) {
             if (options[i].innerHTML == selected) options[i].style = "color: gray;";
             else options[i].style = "color: black;";
         }
-        if (selected == "None") window.graph_preference = 0;
-        else if (selected == "conllu.js") window.graph_preference = 1;
-        else if (selected == "treex") window.graph_preference = 2;
-        else if (selected == "spaCy") window.graph_preference = 3;
+        if (selected == window.graph_d[0]) window.graph_preference = 0;
+        else if (selected == window.graph_d[1]) window.graph_preference = 1;
+        else if (selected == window.graph_d[2]) window.graph_preference = 2;
+        else if (selected == window.graph_d[3]) window.graph_preference = 3;
         create_graph();
     }
 }
@@ -462,7 +462,7 @@ function init_page() {
     // reset
     button = document.createElement("button");
     button.id = "reset";
-    img = $('#backspace-fill')[0].cloneNode(true);
+    img = $('img#x')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -473,7 +473,7 @@ function init_page() {
     // undo
     button = document.createElement("button");
     button.id = "undo";
-    img = $('#backspace')[0].cloneNode(true);
+    img = $('img#arrow-counterclockwise')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -484,7 +484,7 @@ function init_page() {
     // redo
     button = document.createElement("button");
     button.id = "redo";
-    img = $('#backspace-reverse')[0].cloneNode(true);
+    img = $('img#arrow-clockwise')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -711,8 +711,9 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
+    sentence_text.style.border = "2px solid gray";
+    sentence_text.style.borderRadius = "4px"; // not working
     sentence_text.className = "table-sm mx-auto";
-    sentence_text.style = "border: 2px solid gray";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
@@ -740,7 +741,7 @@ function inject_sentence() {
     // Show table
     let word_lines = document.createElement("table");
     word_lines.id = "word_lines";
-    word_lines.className = "table";
+    word_lines.className = "table table-sm";
     let thead = document.createElement("thead");
     tbody = document.createElement("tbody");
     word_lines.append(thead);

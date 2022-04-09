@@ -31,11 +31,12 @@
             <p id="error_condition" hidden="true">{{error_condition}}</p>
             <p id="current_columns" hidden="true">{{current_columns}}</p>
 
-            <div class="container" id="buttons"></div>
-            <nav id="table1" class="navbar navbar-light sticky-top"></nav>
+            <div id="buttons"></div>
+            <nav id="table1" class="navbar bg-white sticky-top"></nav>
             <div id="table2"></div>
             <div id="graph"></div>
             <div id="error"></div>
+            <div id="bottom-buttons"></div>
             {% csrf_token %}
         {% endif %}
     {% endif %}
@@ -86,4 +87,7 @@
 <img hidden="true" id="save" src="{% static 'save.svg' %}">
 <img hidden="true" id="exclamation-square" src="{% static 'exclamation-square.svg' %}">
 <img hidden="true" id="exclamation-square-fill" src="{% static 'exclamation-square-fill.svg' %}">
+<img hidden="true" id="arrow-clockwise" src="{% static 'arrow-clockwise.svg' %}">
+<img hidden="true" id="arrow-counterclockwise" src="{% static 'arrow-counterclockwise.svg' %}">
+<img hidden="true" id="x" src="{% static 'x.svg' %}">
 {% endblock %}
