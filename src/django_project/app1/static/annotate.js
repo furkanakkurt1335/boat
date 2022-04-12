@@ -787,6 +787,10 @@ function inject_sentence() {
                 window.last_focus = [row_t, column_t];
                 window.last_focus_value = event.target.innerHTML;
             });
+            if (['aspect', 'case', 'evident', 'mood', 'number', 'number[psor]', 'numtype', 'person', 'person[psor]', 'polarity', 'prontype', 'tense', 'verbform', 'voice', 'upos', 'xpos', 'deprel'].includes(column_t)) {
+                data.classList.add("autocomplete");
+                data.classList.add(column_t);
+            }
             data.addEventListener("blur", (event) => { // potential problem with unfocusing after column removal!
                 if (window.last_focus_value != event.target.innerHTML) {
                     cell_change(row_t, column_t, event.target.innerHTML);
@@ -799,6 +803,14 @@ function inject_sentence() {
         tbody.append(row);
     }
     $('div#table2')[0].append(word_lines);
+
+    // autocomplete
+    let autocomplete_d = { 'Aspect': ['Gen', 'Hab', 'Imp', 'Perf', 'Prog', 'Prosp'], 'Case': ['Abl', 'Acc', 'Dat', 'Equ', 'Gen', 'Ins', 'Nom', 'Loc', 'Voc'], 'Evident': ['Fh', 'Nfh'], 'Mood': ['Cnd', 'Des', 'Dur', 'Gen', 'Imp', 'Ind', 'Nec', 'Opt', 'Pot', 'Rapid'], 'Number': ['Sing', 'Plur'], 'Number[psor]': ['Sing', 'Plur'], 'NumType': ['Card', 'Dist', 'Frac', 'Ord'], 'Person': ['1', '2', '3'], 'Person[psor]': ['1', '2', '3'], 'Polarity': ['Pos', 'Neg'], 'PronType': ['Dem', 'Ind', 'Int', 'Loc', 'Prs', 'Rcp', 'Rfl', 'Quant'], 'Tense': ['Past', 'Pres', 'Fut'], 'VerbForm': ['Conv', 'Part', 'Vnoun'], 'Voice': ['Cau', 'Pass', 'Rcp', 'Rfl'], 'DEPREL': ['acl', 'advcl', 'advlc:cond', 'advmod', 'advmod:emph', 'amod', 'case', 'cc', 'cc:preconj', 'compound', 'compound:lvc', 'compound:redup', 'conj', 'cop', 'csubj', 'det', 'dep', 'dep:der', 'discourse', 'discourse:q', 'discourse:tag', 'flat', 'iobj', 'nmod', 'nmod:part', 'nmod:poss', 'nsubj', 'nummod', 'obl', 'obl:cl', 'obl:comp', 'obl:tmod', 'obj', 'punct', 'root', 'xcomp'], 'UPOS': ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'VERB'], 'XPOS': ['Adj', 'ANum', 'Attr', 'Comma', 'Conv', 'Det', 'Demons', 'Exist', 'Indef', 'Inst', 'NNum', 'Noun', 'Partic', 'PCNom', 'PCDat', 'PCGen', 'Pers', 'Place', 'Ptcp', 'Punc', 'Reflex', 'Separ', 'Stop', 'Tdots', 'Topic', 'Typo', 'Ques', 'Quant', 'Verb', 'Vnoun', 'Year', 'Zero'] };
+    let ac_keys = Object.keys(autocomplete_d);
+    for (let i = 0; i < ac_keys.length; i++) {
+        let source_t = autocomplete_d[ac_keys[i]];
+        $(`.autocomplete.${ac_keys[i].toLowerCase()}`).autocomplete({ source: source_t });
+    }
 
     create_graph();
     display_errors();
@@ -905,10 +917,6 @@ function display_errors() {
 }
 
 function cell_change(key, column, cell) {
-    // autocomplete
-    if (['aspect', 'case', 'evident', 'mood', 'number', 'number[psor]', 'numtype', 'person', 'person[psor]', 'polarity', 'prontype', 'tense', 'verbform', 'voice', 'upos', 'xpos', 'deprel'].includes(column)) {
-        console.log('autocomplete');
-    }
 
     if (column == "id") window.cells[cell] = window.cells[key];
     else if (column == "feats") {
