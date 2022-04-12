@@ -46,11 +46,11 @@ The efficiency of the work is further increased by the feedback and implementati
 The automation of this work is more helpful in some languages than others.
 Turkish being an agglutinative language, the words are parsed further and further into lemmas.
 Parsing dependencies in a language like this manually is hard work.
-The automation tries to alleviate some of this work.
+Automation is used to alleviate some of this work.
 
 Listening to our annotators' experiences using the first version and other annotation tools gave us ideas to implement on the tool further and make their experiences healthier.
 Feedback have been ample for the initial desktop version regarding the user's experience.
-This led us to design a database and web-based application where interannotator agreement would be smoother and automated.
+This led us to design a web-based application with a database where interannotator agreement would be smoother and automated.
 Some parts of the tool have been removed or altered, corresponding to the feedback.
 The initial feedback and the tests done promise much for the future of the tool.
 
@@ -77,7 +77,7 @@ Focus of the annotator makes out to be the first requirement.
 Annotators use the tools sometimes for hours on end.
 Software should make the work easier by reducing distractions and automating work that can be automated.
 
-One of the requirements we have gathered for not breaking the focus of the annotator is for the software to use only keyboard for all tasks.
+One of the requirements we have gathered for not breaking the focus of the annotator is for the software to use only keyboard for every task.
 BoAT is a keyboard-oriented application.
 User should not have to use a mouse for any type of task.
 Since users lose focus after some time naturally, automating the entries and checking errors are high priorities in this respect.
@@ -94,6 +94,11 @@ An outsider also should be able to use the API to get the annotations of a parti
 
 \section{Implementation}
 
+Django\cite{django} and Django REST Framework\cite{drf} are used in this tool as the backbone, serving the website with all its configurations.
+Django REST Framework is used for the API part.
+
+A user is able to upload a \textit{conllu} file and start annotating.
+The system is responsible for checking if a file uploaded obeys the format of \textit{conllu}.
 The annotation page resembles the initial standalone application.
 It includes a dependency graph and an editable table, both of which in sync.
 The dependency graph of the initial tool and other 2 graphs have been added to this tool.
@@ -101,15 +106,9 @@ The user has the choice to select a type of graph or none.
 The other 2 graphs have been selected due to space considerations.
 These graphs are horizontal and linear.
 The table is responsible for changing the word lines of \textit{conllu} files.
-A user is able to upload a \textit{conllu} file and start annotating.
-The system is responsible for checking if a file uploaded obeys the format of \textit{conllu}.
 
 Errors are checked and annotations validated according to the UD framework and the language provided.
-The scripts used for validation are the ones already provided by the framework.\cite{UD-git}
-
-Django\cite{django} and Django REST Framework\cite{drf} are used in this tool.
-Django is the backbone of the tool, serving the website with all its configurations.
-Django REST Framework is used for the API part.
+The scripts used for validation are the latest ones already provided by the framework.\cite{UD-git}
 
 PostgreSQL\cite{psql} is used to provide a database for the server-side applications of the software.
 This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
