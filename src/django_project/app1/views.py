@@ -289,8 +289,8 @@ def annotate(request, treebank, order):
             data_changed = request.POST['data_changed']
             current_columns = request.POST['current_columns']
             error_condition_t = request.POST['error_condition']
-            if error_condition_t == "true": error_condition = True
-            else: error_condition = False
+            if error_condition_t == "1": error_condition = 1
+            else: error_condition = 0
             graph_preference = int(request.POST['graph_preference'])
             notes = request.POST['notes']
             status = int(request.POST['status'])

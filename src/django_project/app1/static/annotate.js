@@ -12,8 +12,8 @@ window.onload = function () {
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
     let error_condition_t = document.getElementById('error_condition').innerHTML;
-    if (error_condition_t == "True") window.error_condition = true;
-    else window.error_condition = false;
+    if (error_condition_t == "1") window.error_condition = 1;
+    else window.error_condition = 0;
     window.current_columns = document.getElementById('current_columns').innerHTML.split(',');
     $('#sent_id').remove();
     $('#text').remove();
@@ -593,7 +593,11 @@ function init_page() {
     option.selected = true;
     option.innerHTML = "Graphs";
     select.append(option);
-    options = ['None', 'conllu.js', 'treex', 'spaCy'];
+    options = [];
+    let graph_keys = Object.keys(window.graph_d);
+    for (let i = 0; i < graph_keys.length; i++) {
+        options.push(window.graph_d[parseInt(graph_keys[i])]);
+    }
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
