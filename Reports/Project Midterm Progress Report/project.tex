@@ -1,0 +1,126 @@
+\documentclass[a4paper,onesided,12pt]{report}
+\usepackage{styles/fbe_tez}
+\usepackage[utf8x]{inputenc} % To use Unicode (e.g. Turkish) characters
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\usepackage{amsmath, amsthm, amssymb}
+ % Some extra symbols
+\usepackage[bottom]{footmisc}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{longtable}
+\graphicspath{{figures/}} % Graphics will be here
+
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+%\pagestyle{empty}
+%\includeonly{introduction} % To only process the given file
+
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+% COVER PAGE
+\title{A Web Application for Annotating Dependency Parse Treebanks}
+\turkcebaslik{..} % TODO
+\author{Salih Furkan Akkurt}
+\program{Computer Engineering}
+\subyear{Spring 2022}
+
+% APPROVED BY PAGE
+\supervisor{Prof. Suzan Uskudarli}
+\dateofapproval{14.02.2022}
+
+\begin{document}
+
+\pagenumbering{roman}
+\makebstitle  % B.S. project
+\makeapprovalpage
+\begin{acknowledgements}
+Acknowledgements.
+\end{acknowledgements}
+\begin{abstract}
+    Abstract here.
+\end{abstract}
+\begin{ozet}
+    Turkish abstract.
+\end{ozet}
+\tableofcontents
+\listoffigures
+\listoftables
+\begin{symbols}
+
+\sym{$a$}{Just a symbol}
+
+\end{symbols}
+
+\begin{abbreviations}
+\sym{CoNLL}{Computational Natural Language Learning}
+\end{abbreviations}
+
+
+\chapter{INTRODUCTION AND MOTIVATION}
+\label{chapter:introduction}
+\pagenumbering{arabic}
+\begin{itemize}
+\item General overview about the topic. Describe the problem.
+\item Economic aspects and environmental, social and health aspects
+\end{itemize}
+
+\chapter{STATE OF THE ART}
+\label{chapter:state-of-the-art}
+\begin{itemize}
+\item General overview about research papers and tools
+\item Technical aspects and multi-disciplinary aspects
+\item Shortcomings of the state-of-the-art
+\end{itemize}
+
+
+\chapter{METHODS}
+\label{chapter:methods}
+\begin{itemize}
+\item Methods needed to develop for acquiring the desired results.
+\item How experiments designed.
+\item Ethical guidelines followed if experiments conducted with humans.
+\item Methods used to analyze and interpret the collected experimental data.
+\end{itemize}
+
+\chapter{RESULTS}
+\label{chapter:method}
+\begin{itemize}
+\item Results achieved.
+\item Compare results with the state-of-the-art.
+\end{itemize}
+
+\chapter{CONCLUSION AND DISCUSSION}
+\label{chapter:method}
+\begin{itemize}
+\item Interpret results.
+\item Potential impact in a societal context considering economic, political, environmental, and sustainability.
+\end{itemize}
+
+\chapter{FUTURE WORK}
+\label{chapter:method}
+\begin{itemize}
+\item Outlook
+\item Draw conclusions beyond project horizon
+\end{itemize}
+
+\bibliographystyle{styles/fbe_tez_v11}
+\bibliography{references}
+
+\appendix
+\chapter{DATA AVAILABILITY STATEMENT}
+\begin{itemize}
+\item How data can be accessed by others.
+\end{itemize}
+
+
+%\appendix
+\chapter{STANDARDS, LAWS, REGULATIONS AND DIRECTIVES}
+\begin{itemize}
+\item Any standards, laws, regulations and/or directives used.
+\end{itemize}
+
+\end{document}
