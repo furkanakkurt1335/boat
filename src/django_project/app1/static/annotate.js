@@ -889,18 +889,27 @@ function display_errors() {
 
     let error_div = document.createElement('div');
     error_div.id = "error_div";
-    error_div.className = "card border-danger bg-light mb-3";
+    error_div.className = "card bg-light mb-3";
     error_div.style = "max-width: 100rem;";
     let error_header = document.createElement('div');
     error_div.append(error_header);
     error_header.id = "error_header";
-    error_header.className = "card-header border-danger";
+    error_header.className = "card-header";
     error_header.innerHTML = 'Errors';
     let error_body = document.createElement('div');
     error_body.id = "error_body";
     error_body.className = "card-body";
     error_div.append(error_body);
     let errors = window.errors.split('\n');
+    console.log(errors.length);
+    if (errors[0] == "*** PASSED ***") {
+        error_div.classList.add("border-success");
+        error_header.classList.add("border-success");
+    }
+    else {
+        error_div.classList.add("border-danger");
+        error_header.classList.add("border-danger");
+    }
     for (let i = 0; i < errors.length; i++) {
         error_body.innerHTML += errors[i];
         error_body.append(document.createElement('br'));
