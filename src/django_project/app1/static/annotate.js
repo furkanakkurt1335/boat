@@ -738,9 +738,7 @@ function inject_sentence() {
     tbody.append(row2);
     sentence_text.append(tbody);
     let nav_table1 = $('nav#table1')[0];
-    nav_table1.append(document.createElement("br"));
     nav_table1.append(sentence_text);
-    nav_table1.append(document.createElement("br"));
 
     // Show table
     let word_lines = document.createElement("table");
@@ -781,7 +779,7 @@ function inject_sentence() {
             else if (cells[row_t][column_t] == undefined) data.innerHTML = "_";
             else data.innerHTML = cells[row_t][column_t];
             data.id = `${row_t} ${column_t}`;
-            if (column_t != "feats") data.style.textAlign = "center";
+            if (column_t != "feats" || data.innerHTML == "_") data.style.textAlign = "center";
             if (column_t != "id") data.contentEditable = true;
             data.addEventListener("focus", (event) => {
                 window.last_focus = [row_t, column_t];
@@ -880,7 +878,6 @@ function display_errors() {
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();
-    $('#br_error').remove();
 
     $.post("/error/",
         {
@@ -911,9 +908,6 @@ function display_errors() {
         error_body.append(document.createElement('br'));
     }
     $('div#error')[0].append(error_div);
-    let br_error = document.createElement('br');
-    br_error.id = "br_error";
-    $('div#error')[0].append(br_error);
 }
 
 function cell_change(key, column, cell) {

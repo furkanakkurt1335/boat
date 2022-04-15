@@ -1,2 +1,3 @@
 Command to produce:
-pdflatex project.tex
+
+```pdflatex project.tex```
