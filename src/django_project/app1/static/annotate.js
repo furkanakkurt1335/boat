@@ -7,7 +7,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "Not finished", 2: "Half finished", 1: "Finished" };
+    window.status_d = { 0: "Incomplete", 1: "Finished", 2: "Draft" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -249,20 +249,18 @@ function button_handle(type, number, way) {
     else if (type == "status") {
         let button = $('#status')[0];
         if (window.status == 0) {
-            button.innerHTML = "Finished";
             button.className = button.className.replace('border', 'border-success');
             window.status = 1;
         }
         else if (window.status == 1) {
-            button.innerHTML = "Half finished";
             button.className = button.className.replace('border-success', 'border-danger');
             window.status = 2;
         }
         else if (window.status == 2) {
-            button.innerHTML = "Not finished";
             button.className = button.className.replace('border-danger', 'border');
             window.status = 0;
         }
+        button.innerHTML = window.status_d[window.status];
     }
     else if (type == "profile") {
         post_to_save(type);
