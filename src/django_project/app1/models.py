@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class ExtendUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
-    # error_condition: True (shown), False (hidden)
+    # error_condition: 1 (shown), 0 (hidden)
     # graph: conllu.js 1, treex 2, spacy 3, none 0
     preferences = models.JSONField(blank=True)
 

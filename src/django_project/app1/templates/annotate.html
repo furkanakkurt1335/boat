@@ -23,15 +23,15 @@
         {% if sentence.sent_id|length == 0 %}
             There is no sentence with that ID.
         {% else %}
-            <p id="sentence.sent_id" hidden="true">{{sentence.sent_id}}</p>
-            <p id="sentence.text" hidden="true">{{sentence.text}}</p>
-            <p id="annotation.cats" hidden="true">{{cats}}</p>
-            <p id="annotation.notes" hidden="true">{{annotation.notes}}</p>
-            <p id="annotation.status" hidden="true">{{annotation.status}}</p>
-            <p id="graph_preference" hidden="true">{{graph_preference}}</p>
-            <p id="errors" hidden="true">{{errors}}</p>
-            <p id="error_condition" hidden="true">{{error_condition}}</p>
-            <p id="current_columns" hidden="true">{{current_columns}}</p>
+            <p id="sentence.sent_id" hidden>{{sentence.sent_id}}</p>
+            <p id="sentence.text" hidden>{{sentence.text}}</p>
+            <p id="annotation.cats" hidden>{{cats}}</p>
+            <p id="annotation.notes" hidden>{{annotation.notes}}</p>
+            <p id="annotation.status" hidden>{{annotation.status}}</p>
+            <p id="graph_preference" hidden>{{graph_preference}}</p>
+            <p id="errors" hidden>{{errors}}</p>
+            <p id="error_condition" hidden>{{error_condition}}</p>
+            <p id="current_columns" hidden>{{current_columns}}</p>
 
             <div id="buttons"></div>
             <nav id="table1" class="navbar bg-white sticky-top"></nav>
@@ -80,16 +80,16 @@
 </script>
 <!-- conllu.js -->
 
-<img hidden="true" id="check" src="{% static 'check.svg' %}">
-<img hidden="true" id="arrow-left" src="{% static 'arrow-left.svg' %}">
-<img hidden="true" id="arrow-right" src="{% static 'arrow-right.svg' %}">
-<img hidden="true" id="backspace" src="{% static 'backspace.svg' %}">
-<img hidden="true" id="backspace-fill" src="{% static 'backspace-fill.svg' %}">
-<img hidden="true" id="backspace-reverse" src="{% static 'backspace-reverse.svg' %}">
-<img hidden="true" id="save" src="{% static 'save.svg' %}">
-<img hidden="true" id="exclamation-square" src="{% static 'exclamation-square.svg' %}">
-<img hidden="true" id="exclamation-square-fill" src="{% static 'exclamation-square-fill.svg' %}">
-<img hidden="true" id="arrow-clockwise" src="{% static 'arrow-clockwise.svg' %}">
-<img hidden="true" id="arrow-counterclockwise" src="{% static 'arrow-counterclockwise.svg' %}">
-<img hidden="true" id="x" src="{% static 'x.svg' %}">
+<img hidden id="check" src="{% static 'check.svg' %}">
+<img hidden id="arrow-left" src="{% static 'arrow-left.svg' %}">
+<img hidden id="arrow-right" src="{% static 'arrow-right.svg' %}">
+<img hidden id="backspace" src="{% static 'backspace.svg' %}">
+<img hidden id="backspace-fill" src="{% static 'backspace-fill.svg' %}">
+<img hidden id="backspace-reverse" src="{% static 'backspace-reverse.svg' %}">
+<img hidden id="save" src="{% static 'save.svg' %}">
+<img hidden id="exclamation-square" src="{% static 'exclamation-square.svg' %}">
+<img hidden id="exclamation-square-fill" src="{% static 'exclamation-square-fill.svg' %}">
+<img hidden id="arrow-clockwise" src="{% static 'arrow-clockwise.svg' %}">
+<img hidden id="arrow-counterclockwise" src="{% static 'arrow-counterclockwise.svg' %}">
+<img hidden id="x" src="{% static 'x.svg' %}">
 {% endblock %}

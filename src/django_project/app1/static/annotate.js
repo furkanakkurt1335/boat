@@ -14,7 +14,7 @@ window.onload = function () {
     let error_condition_t = document.getElementById('error_condition').innerHTML;
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
-    window.current_columns = document.getElementById('current_columns').innerHTML.split(',');
+    window.current_columns = $('#current_columns')[0].innerHTML.replace('[', '').replace(']', '').replaceAll("'", '').split(', ');
     $('#sent_id').remove();
     $('#text').remove();
     $('#cells').remove();
@@ -749,8 +749,9 @@ function inject_sentence() {
     let row = document.createElement("tr");
     for (let i = 0; i < current_columns.length; i++) {
         let heading = document.createElement("th");
-        if (cats_low.includes(current_columns[i])) heading.innerHTML = cats[cats_low.indexOf(current_columns[i])];
-        else heading.innerHTML = features[features_low.indexOf(current_columns[i])];
+        let column_t = current_columns[i].toLowerCase();
+        if (cats_low.includes(column_t)) heading.innerHTML = cats[cats_low.indexOf(column_t)];
+        else heading.innerHTML = features[features_low.indexOf(column_t)];
         heading.style = 'text-align:center;';
         heading.addEventListener("click", function () {
             column_click(heading.innerHTML.toLowerCase());
@@ -764,13 +765,13 @@ function inject_sentence() {
         if (feats != '_') {
             for (let j = 0; j < feats.length; j++) {
                 let matches = feats[j].match(/(.+)=(.+)/);
-                let column = matches[1].toLowerCase;
+                let column = matches[1].toLowerCase();
                 cells[cells_keys[i]][column] = matches[2];
             }
         }
         let row = document.createElement("tr");
         for (let j = 0; j < current_columns.length; j++) {
-            let column_t = current_columns[j];
+            let column_t = current_columns[j].toLowerCase();
             let row_t = cells_keys[i];
             let data = document.createElement("td");
             if (column_t == "id") data.innerHTML = row_t;

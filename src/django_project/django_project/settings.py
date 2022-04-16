@@ -92,7 +92,7 @@ DATABASES = {
         'USER': os.environ.get('pg_db1_user'),
         'PASSWORD': os.environ.get('pg_db1_password'),
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 
