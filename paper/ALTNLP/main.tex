@@ -25,7 +25,19 @@ email=furkan.akkurt@boun.edu.tr
 \address[1]{ Department of Computer Engineering, Bogazici University, Bebek, 34342, İstanbul, Turkey }
 
 \begin{abstract}
-Manual annotation of sentences by dependency parsing is an important but time-consuming task. There are various tools that try to make the task easier for annotators. The focus of the annotator is one of the most important parts of the process. Thus, the tool should enhance focus and reduce distraction. Improving on and making it available on the web, we made a tool that tries to address this. One other issue is interannotator agreement. For this, we added a search functionality for annotators to check what others have done.
+Manually annotated treebanks are necessary for ever-increasing number of data-driven developments.
+Manual annotation of sentences by dependency parsing is an important but time-consuming and error-prone task.
+There are various tools that try to make the task easier for annotators.
+The focus of the annotator is one of the most important parts of the process.
+Thus, tools should enhance focus, reduce distractions and also prevent errors.
+After much feedback for our initial tool BoAT for desktop, a new software requirements specification was created.
+New features and improvements have been extracted from the feedback.
+Autocompletion of cells, searching of annotations and APIs were selected to be the most crucial improvements.
+A Web application was our obvious choice for these functionalities, rather than a local GUI.
+Accordingly, a search functionality serving to achieve interannotator agreement was implemented.
+Searching for similar annotations is a helpful addition to the tool, making treebanks more consistent.
+We also provide APIs for 3rd party usage of the annotations: searching and getting annotations.
+Thus, improving on and making it available on the web, we made a tool that tries to address and achieve these points.
 \end{abstract}
 
 \begin{keywords}
@@ -135,6 +147,20 @@ This opens up many possibilities for the use of the tool beyond the annotator's 
 \subsection{Demo}
 
 A demo will be provided on our university's NLP web page where the annotation capabilities of the tool built can be tested.
+
+\section{Annotation Procedure}
+The procedure for annotating a sentence:
+
+An annotator selects a sentence from a treebank, which has previously uploaded sentences coming from a conllu file.
+They fill the cells of the annotation table's fields.
+During the annotation, an annotator can make use of dependency graphs, error cards and the search functionality.
+Dependency graphs are visual cues for how an annotation is going, using HEADs and DEPRELs.
+They can choose 3 different graphs one at a time or select to hide.
+Different graphs show the same information with a horizontal or vertical tree.
+Errors are helpful reminders, coming from a validation script found on the UD repository.
+They can use the search functionality to search for previous annotations by other annotators or themselves, using various fields (text, FEATS, etc.) for the query.
+By checking similar annotations, an annotator can ensure consistency and don't lose focus by trying manual methods for the same information.
+When an annotation is done, they select the annotation to be "Complete".
 
 \section{Discussion}
 
