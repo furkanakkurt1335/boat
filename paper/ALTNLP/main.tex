@@ -25,14 +25,13 @@ email=suzan.uskudarli@boun.edu.tr
 \address[]{ Department of Computer Engineering, Bogazici University, Bebek, 34342, İstanbul, Turkey }
 
 \begin{abstract}
-High quality treebanks are necessary for ever-increasing number of data-driven developments.
-Manual annotation of sentences by dependency parsing is an important but time-consuming and error-prone task.
+High quality treebanks are desirable for ever-increasing number of data-driven developments.
+Manual annotation of sentences in these treebanks by dependency parsing is an important but time-consuming and error-prone task.
 There are various tools that try to make the task easier for annotators.
-The focus of the annotator is one of the most important parts of the process.
-Thus, tools should enhance focus, reduce distractions and also prevent errors.
+Maintaining the focus of the annotator during annotation sessions, reducing distractions and also preventing errors are important parts of these tools.
 After much feedback for our initial tool BoAT for desktop, a new software requirements specification was created.
 New features and improvements have been extracted from the feedback.
-Autocompletion of cells, searching of annotations and APIs were selected to be the most crucial improvements.
+Autocompletion of cells, searching of annotations and APIs were selected to be the most needed improvements.
 A Web application was our obvious choice for these functionalities, rather than a local GUI.
 Accordingly, a search functionality serving to achieve interannotator agreement was implemented.
 Searching for similar annotations is a helpful addition to the tool, making treebanks more consistent.
@@ -60,27 +59,26 @@ Universal Dependencies
 
 \section{Introduction}
 \label{sec:introduction}
-
-Manually annotating treebanks is an intense activity undertaken by annotators.
-Tools to support dependency parsing annotations have been developed. % citations from related work
+Treebanks are 
+Manually annotating these treebanks is an intense activity undertaken by annotators.
+Several tools to support dependency parsing annotations have been developed. % citations from related work
 For morphologically-rich languages like Turkish, dependency annotation tends to be much more challenging.
 Turkish being an agglutinative language, words are split into further lemmas.
 Parsing dependencies in such a language manually is hard work.
-% drag drop, flow state, disrupt interrupt
-% boat had significant improvement on efficiency
+Tools developed with drag-drop functionalities tend to disrupt the flow state of the annotator by requiring to use a mouse in the middle of a keyboard-intensive activity.
+The tool developed and used for the annotation of the BOUN Treebank had significant improvements on efficiency by making it a priority to be a keyboard-oriented application.
 
-% BoAT desktop used for BOUN Treebank
-Listening to our annotators' experiences using the first version and other annotation tools gave us ideas to implement on the tool further and make their experiences healthier.
-Feedback have been ample for the initial desktop version regarding the user's experience.
-This led us to design a web-based application with a database where interannotator agreement would be smoother and automated.
-Some parts of the tool have been removed or altered, corresponding to the feedback.
-% docker, API, accessible
+Annotator's experiences using the first version and other annotation tools have been taken into consideration to improve the tool further and make their experiences healthier.
+Feedback have been ample for the initial standalone version regarding the user's experience.
+We started to design a web-based application with a database and APIs where interannotator agreement would be smoother and automated.
+By making it a web app, we increased the accessibility of the software so that it can be used for other purposes by altering it slightly.
+We plan to dockerize it and make the API accessible to the 3rd parties.
 The initial feedback and the tests done promise much for the future of the tool.
 
 This paper presents this new web-based tool.
 In Section~\ref{sec:related}, the related work is touched upon.
 % requirements from first version
-In Section~\ref{sec:requirements}, requirements and design procedure is detailed.
+In Section~\ref{sec:requirements}, elicited and specified software requirements and design procedure is detailed.
 In Section~\ref{sec:implementation}, how the implementation proceeded is explained.
 Section~\ref{sec:features} explains what features the tool contains.
 In Section~\ref{sec:annotation}, a use case going through an annotation of a sentence is included.
