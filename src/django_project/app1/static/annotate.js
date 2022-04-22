@@ -14,7 +14,7 @@ window.onload = function () {
     let error_condition_t = document.getElementById('error_condition').innerHTML;
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
-    window.current_columns = $('#current_columns')[0].innerHTML.replace('[', '').replace(']', '').replaceAll("'", '').split(', ');
+    window.current_columns = document.getElementById('current_columns').innerHTML.replace('[', '').replace(']', '').replaceAll("'", '').split(', '); // splitting list coming from preferences
     $('#sent_id').remove();
     $('#text').remove();
     $('#cells').remove();
@@ -646,12 +646,8 @@ function init_page() {
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
-        if (current_columns.includes(options[i].toLowerCase())) {
-            option.style = "color: gray;";
-        }
-        else {
-            option.style = "color: black;";
-        }
+        if (current_columns.includes(options[i].toLowerCase())) option.style = "color: gray;"; // not working in firefox
+        else option.style = "color: black;";
         select.append(option);
     }
     input_group.append(select);
@@ -713,9 +709,7 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
-    sentence_text.style.border = "2px solid gray";
-    sentence_text.style.borderRadius = "4px"; // not working
-    sentence_text.className = "table-sm mx-auto";
+    sentence_text.className = "table-sm mx-auto border";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
@@ -741,7 +735,7 @@ function inject_sentence() {
     // Show table
     let word_lines = document.createElement("table");
     word_lines.id = "word_lines";
-    word_lines.className = "table table-sm";
+    word_lines.className = "table table-sm border";
     let thead = document.createElement("thead");
     tbody = document.createElement("tbody");
     word_lines.append(thead);
@@ -752,7 +746,6 @@ function inject_sentence() {
         let column_t = current_columns[i].toLowerCase();
         if (cats_low.includes(column_t)) heading.innerHTML = cats[cats_low.indexOf(column_t)];
         else heading.innerHTML = features[features_low.indexOf(column_t)];
-        heading.style = 'text-align:center;';
         heading.addEventListener("click", function () {
             column_click(heading.innerHTML.toLowerCase());
         });
@@ -778,7 +771,6 @@ function inject_sentence() {
             else if (cells[row_t][column_t] == undefined) data.innerHTML = "_";
             else data.innerHTML = cells[row_t][column_t];
             data.id = `${row_t} ${column_t}`;
-            if (column_t != "feats" || data.innerHTML == "_") data.style.textAlign = "center";
             if (column_t != "id") data.contentEditable = true;
             data.addEventListener("focus", (event) => {
                 window.last_focus = [row_t, column_t];
@@ -825,8 +817,11 @@ function create_graph() {
         vis.id = "vis";
         let dep_graph = document.createElement('div');
         dep_graph.className = "conllu-parse";
-        dep_graph.attributes = 'data-visid="vis" data-inputid="input" data-parsedid="parsed" data-logid="log"';
-        let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] // id & misc removed
+        dep_graph.setAttribute('data-visid', 'vis');
+        dep_graph.setAttribute('data-inputid', 'input');
+        dep_graph.setAttribute('data-parsedid', 'parsed');
+        dep_graph.setAttribute('data-logid', 'log');
+        let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps']; // id & misc removed
         let cells_keys = get_sorted_cells_keys();
         for (let i = 0; i < cells_keys.length; i++) {
             let key = cells_keys[i];
@@ -902,7 +897,6 @@ function display_errors() {
     error_body.className = "card-body";
     error_div.append(error_body);
     let errors = window.errors.split('\n');
-    console.log(errors.length);
     if (errors[0] == "*** PASSED ***") {
         error_div.classList.add("border-success");
         error_header.classList.add("border-success");
