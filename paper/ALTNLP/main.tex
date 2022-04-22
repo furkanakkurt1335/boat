@@ -17,7 +17,11 @@
 \author[]{Salih Furkan Akkurt}[%
 email=furkan.akkurt@boun.edu.tr
 ]
-% busra
+
+\author[]{Busra Marsan}[%
+email=busramarsan@gmail.com
+]
+
 \author[]{Suzan Uskudarli}[%
 email=suzan.uskudarli@boun.edu.tr
 ]
@@ -77,7 +81,6 @@ The initial feedback and the tests done promise much for the future of the tool.
 
 This paper presents this new web-based tool.
 In Section~\ref{sec:related}, the related work is touched upon.
-% requirements from first version
 In Section~\ref{sec:requirements}, elicited and specified software requirements and design procedure is detailed.
 In Section~\ref{sec:implementation}, how the implementation proceeded is explained.
 Section~\ref{sec:features} explains what features the tool contains.
@@ -140,17 +143,6 @@ Django REST Framework were used for the API part.
 % backend database
 % changed models for wordlines, helping API
 
-% features
-A user is able to upload a \textit{conllu} file and start annotating.
-The system is responsible for checking if a file uploaded obeys the format of \textit{conllu}.
-The annotation page resembles the initial standalone application.
-It includes a dependency graph and an editable table, both of which in sync.
-The dependency graph of the initial tool and other 2 graphs have been added to this tool.
-The user has the choice to select a type of graph or none.
-The other 2 graphs have been selected due to space considerations.
-These graphs are horizontal and linear.
-The table is responsible for changing the word lines of \textit{conllu} files.
-
 Errors are checked and annotations validated according to the UD framework and the language provided.
 The scripts used for validation are the latest ones already provided by the framework.\cite{UD-git}
 
@@ -166,9 +158,20 @@ The preferences of annotators may vary and giving them options in different part
 \section{Features}
 \label{sec:features}
 
+% features
+A user is able to upload a \textit{conllu} file and start annotating.
+The system is responsible for checking if a file uploaded obeys the format of \textit{conllu}.
+The annotation page resembles the initial standalone application.
+It includes a dependency graph and an editable table, both of which in sync.
+The dependency graph of the initial tool and other 2 graphs have been added to this tool.
+The user has the choice to select a type of graph or none.
+The other 2 graphs have been selected due to space considerations.
+These graphs are horizontal and linear.
+The table is responsible for changing the word lines of \textit{conllu} files.
+
 % consistent annotation
 % an annotator can struggle with a specific one; search helps
-% busra'dan ornek; kisa (ya da uzun gerekiyorsa)
+% busra'dan ornek; kisa (ya da uzun gerekiyorsa); istendi, bekleniyor
 An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
 
