@@ -14,7 +14,7 @@
 
 \title{BoAT Web Annotation Tool for Turkish Dependency Parsing}
 
-\author[]{Salih Furkan Akkurt}[%
+\author[]{Furkan Akkurt}[%
 email=furkan.akkurt@boun.edu.tr
 ]
 
@@ -28,27 +28,7 @@ email=suzan.uskudarli@boun.edu.tr
 
 \address[]{ Department of Computer Engineering, Bogazici University, Bebek, 34342, İstanbul, Turkey }
 
-\begin{abstract}
-High quality treebanks are desirable for ever-increasing number of data-driven developments.
-Manual annotation of sentences in these treebanks by dependency parsing is an important but time-consuming and error-prone task.
-There are various tools that try to make the task easier for annotators.
-Maintaining the focus of the annotator during annotation sessions, reducing distractions and also preventing errors are important parts of these tools.
-After much feedback for our initial tool BoAT for desktop, a new software requirements specification was created.
-New features and improvements have been extracted from the feedback.
-Autocompletion of cells, searching of annotations and APIs were selected to be the most needed improvements.
-A Web application was our obvious choice for these functionalities, rather than a local GUI.
-Accordingly, a search functionality serving to achieve interannotator agreement was implemented.
-Searching for similar annotations is a helpful addition to the tool, making treebanks more consistent.
-We also provide APIs for 3rd party usage of the annotations: searching and getting annotations.
-Thus, we made a tool that tries to address and achieve these points.
-% Notes from meeting
-% docker, API, accessible
-% reliant on language specific
-% often manually produced by annotators with linguistic background; highly labour-intensive task
-% annotator centric
-% Turkish, morphologically-rich language [should be in abstract]
-% UD should be in abstract; this tool serves multiple annotators
-\end{abstract}
+\input{abstract}
 
 \begin{keywords}
 natural language processing \sep
@@ -158,25 +138,28 @@ The preferences of annotators may vary and giving them options in different part
 \section{Features}
 \label{sec:features}
 
-% features
-A user is able to upload a \textit{conllu} file and start annotating.
-The system is responsible for checking if a file uploaded obeys the format of \textit{conllu}.
-The annotation page resembles the initial standalone application.
+There are many new features and improvements in this tool, as well as the functionality that already existed in BoAT v1.
+A user is able to upload a \textit{CoNLL-U} file and start annotating.
+The file is parsed and checked for its format. It's rejected if incorrectly formatted, then uploaded to the database.
+This way, other annotators working for the same treebank don't have to provide the same file.
+
+The annotation page is very similar to BoAT v1.
 It includes a dependency graph and an editable table, both of which in sync.
 The dependency graph of the initial tool and other 2 graphs have been added to this tool.
 The user has the choice to select a type of graph or none.
-The other 2 graphs have been selected due to space considerations.
-These graphs are horizontal and linear.
-The table is responsible for changing the word lines of \textit{conllu} files.
+The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
+The annotation table is for editing the word lines of \textit{CoNLL-U} files.
 
 % consistent annotation
 % an annotator can struggle with a specific one; search helps
-% busra'dan ornek; kisa (ya da uzun gerekiyorsa); istendi, bekleniyor
+% busra'dan ornek; kisa (ya da uzun gerekiyorsa); istendi, 3 ornek geldi
 An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
+For an actual example, the annotator, responsible for the BOUN Treebank's annotation, encountered two different ways nouns of Zodiac signs were annotated.
+For example, if in the sentence "Terazi rahatına düşkündür." (\textit{"Libras like comfort."}), "Terazi" was annotated
 
 Also one other thing the interannotator agreement allows us is the possibility to see some anomalies in the Turkish part of the UD framework.
-For example, if a sentence were annotated a way by many annotators but the UD validation script were giving errors for it, this might indicate the UD validation were lacking in this respect of the Turkish language.
+For example, if a sentence were annotated a way by many annotators but the UD validation script were finding it invalid, this might indicate the UD validation were lacking in this respect of the Turkish language.
 Some modifications might be necessary and there could be a case for a proposal of change.
 
 \subsection{API}
@@ -216,7 +199,7 @@ When an annotation is done, they select the annotation to be "Complete".
 \section{Discussion}
 \label{sec:discussion}
 
-What could be done further?
+% What could be done further?
 % django selection
 % interviews had influence on the work; important
 % different, educational tool
@@ -230,7 +213,6 @@ What could be done further?
 % nlp website accessible
 
 \begin{acknowledgments}
-% check code
 This work was supported by Boğaziçi University Research Fund Grant Number 16909.
 \end{acknowledgments}
 
