@@ -914,6 +914,7 @@ function display_errors() {
 
 function cell_change(key, column, cell) {
 
+    cell = cell.replace('<br>', '');
     if (column == "id") window.cells[cell] = window.cells[key];
     else if (column == "feats") {
         window.cells[key]['feats'] = cell;

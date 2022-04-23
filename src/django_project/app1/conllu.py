@@ -56,7 +56,14 @@ def get_errors(sent_id, text, content):
     input = f'# sent_id = {sent_id}\n'
     input += f'# text = {text}\n'
     order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] # id & misc removed
-    for key in content.keys():
+    con_keys = list(content.keys())
+    keys = []
+    for key in range(1, len(con_keys)*2):
+        if f'{key}-{key+1}' in con_keys:
+            keys.append(f'{key}-{key+1}')
+        if f'{key}' in con_keys:
+            keys.append(f'{key}')
+    for key in keys:
         input += f'{key}\t' # id
         for i in range(8):
             input += f'{content[key][order[i]]}\t'
