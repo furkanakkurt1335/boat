@@ -287,7 +287,9 @@ def annotate(request, treebank, order):
         if request.method == "POST":
             data = request.POST['data']
             data_changed = request.POST['data_changed']
-            current_columns = request.POST['current_columns']
+            current_columns = request.POST['current_columns'].split(',')
+            for i in range(len(current_columns)):
+                current_columns[i] = current_columns[i].lower()
             error_condition_t = request.POST['error_condition']
             if error_condition_t == "1": error_condition = 1
             else: error_condition = 0
