@@ -1,0 +1,26 @@
+\section{Features}
+\label{sec:features}
+
+There are many new features and improvements in this tool, as well as the functionality that already existed in BoAT v1.
+A user is able to upload a \textit{CoNLL-U} file and start annotating.
+The file is parsed and checked for its format. It's rejected if incorrectly formatted, then uploaded to the database.
+This way, other annotators working for the same treebank don't have to provide the same file.
+
+The annotation page is very similar to BoAT v1.
+It includes a dependency graph and an editable table, both of which in sync.
+The dependency graph of the initial tool and other 2 graphs have been added to this tool.
+The user has the choice to select a type of graph or none.
+The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
+The annotation table is for editing the word lines of \textit{CoNLL-U} files.
+
+% consistent annotation
+% an annotator can struggle with a specific one; search helps
+% busra'dan ornek; kisa (ya da uzun gerekiyorsa); istendi, 3 ornek geldi
+An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
+This can be helpful and a learning experience for annotators.
+For an actual example, the annotator, responsible for the BOUN Treebank's annotation, encountered two different ways nouns of Zodiac signs were annotated.
+For example, if in the sentence "Terazi rahatına düşkündür." (\textit{"Libras like comfort."}), "Terazi" was annotated
+
+Also one other thing the interannotator agreement allows us is the possibility to see some anomalies in the Turkish part of the UD framework.
+For example, if a sentence were annotated a way by many annotators but the UD validation script were finding it invalid, this might indicate the UD validation were lacking in this respect of the Turkish language.
+Some modifications might be necessary and there could be a case for a proposal of change.

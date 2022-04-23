@@ -1,0 +1,26 @@
+\section{Introduction}
+\label{sec:introduction}
+Treebanks are 
+Manually annotating these treebanks is an intense activity undertaken by annotators.
+Several tools to support dependency parsing annotations have been developed. % citations from related work
+For morphologically-rich languages like Turkish, dependency annotation tends to be much more challenging.
+Turkish being an agglutinative language, words are split into further lemmas.
+Parsing dependencies in such a language manually is hard work.
+Tools developed with drag-drop functionalities tend to disrupt the flow state of the annotator by requiring to use a mouse in the middle of a keyboard-intensive activity.
+The tool developed and used for the annotation of the BOUN Treebank had significant improvements on efficiency by making it a priority to be a keyboard-oriented application.
+
+Annotator's experiences using the first version and other annotation tools have been taken into consideration to improve the tool further and make their experiences healthier.
+Feedback have been ample for the initial standalone version regarding the user's experience.
+We started to design a web-based application with a database and APIs where interannotator agreement would be smoother and automated.
+By making it a web app, we increased the accessibility of the software so that it can be used for other purposes by altering it slightly.
+We plan to dockerize it and make the API accessible to the 3rd parties.
+The initial feedback and the tests done promise much for the future of the tool.
+
+This paper presents this new web-based tool.
+In Section~\ref{sec:related}, the related work is touched upon.
+In Section~\ref{sec:requirements}, elicited and specified software requirements and design procedure is detailed.
+In Section~\ref{sec:implementation}, how the implementation proceeded is explained.
+Section~\ref{sec:features} explains what features the tool contains.
+In Section~\ref{sec:annotation}, a use case going through an annotation of a sentence is included.
+Section~\ref{sec:discussion} contemplates what the future of the tool may entail.
+Section~\ref{sec:conclusion} adds the final conclusions.

@@ -1,0 +1,35 @@
+\section{Implementation}
+\label{sec:implementation}
+
+The Django\cite{django} Web application development framework and its Django REST Framework\cite{drf} were used to develop our annotation tool.
+Django REST Framework were used for the API part.
+% API
+% backend database
+% changed models for wordlines, helping API
+
+Errors are checked and annotations validated according to the UD framework and the language provided.
+The scripts used for validation are the latest ones already provided by the framework.\cite{UD-git}
+
+PostgreSQL\cite{psql} is used to provide a database for the server-side applications of the software.
+This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
+
+A Python library \textit{spaCy}\cite{spacy} is used to provide linear dependency graphs.
+Another JavaScript-based linear dependency graph\cite{spyssalo} making use of brat\cite{brat-vis} is used to provide graphs as well.
+The preferences of annotators may vary and giving them options in different parts of the screen is important.
+
+\subsection{API}
+\label{sec:api}
+
+By using our annotated treebank search API, other parties wanting to check out the capabilities of the tool can retrieve our annotated treebanks.
+Also, some parties wanting to use the treebanks in their computation tasks can easily extract information from our treebanks by using the API.
+This o
+
+% Docker
+
+
+pens up many possibilities for the use of the tool beyond the annotator's UI experience.
+
+\subsection{Demo}
+\label{sec:demo}
+
+A demo will be provided on our university's NLP web page where the annotation capabilities of the tool built can be tested.
