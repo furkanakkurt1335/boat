@@ -1,12 +1,12 @@
 \section{Features}
 \label{sec:features}
 
-There are many new features and improvements in this tool, as well as the functionality that already existed in BoAT v1.
+There are many new features and improvements in this tool, as well as the functionality that already existed in \boat{} v1.
 Instead of loading a specific file before annotating, a user is able to upload a \conllu{} file to the database and start annotating.
 The file is parsed and checked for its format. It's rejected if incorrectly formatted, then uploaded to the database.
 This way, other annotators working for the same treebank don't have to provide the same file.
 
-The annotation page is very similar to BoAT v1.
+The annotation page is very similar to \boat{} v1.
 It includes a dependency graph and an editable table, both of which in sync.
 The dependency graph of the initial tool and other 2 graphs have been added to this tool.
 The user has the choice to select a type of graph or none.
@@ -15,14 +15,14 @@ The annotation table is for editing the word lines of \conllu{} files.
 
 An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
-For an actual example, the annotator, responsible for the BOUN Treebank's annotation, was annotating a sentence that had a Zodiac sign noun.
+For an actual example, the annotator, responsible for the \bountreebank{}'s annotation, was annotating a sentence that had a Zodiac sign noun.
 Not being sure about how to annotate the noun's dependency relation, she searched for similar cases in the \conllu{} file and encountered two different ways nouns of Zodiac signs were annotated previously.
 Beside not helping how to choose a \textit{UPOS} tag, this raises a consistency issue within the treebank as well.
 For an example of a Turkish sentence with a noun for a Zodiac sign, in the sentence "Terazi rahatına düşkündür." (\textit{"Libras like comfort."}), "Terazi" was annotated as \textit{NOUN} in its \textit{UPOS} tag.
 In another sentence "Yükselen Başak düzeni sever." (\textit{"Virgo Rising likes order"}), "Başak" was annotated as \textit{PROPN} in its own \textit{UPOS} tag.
 In a similar case, the annotator searched the \conllu{} file in a text editor and decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the decision.
 This case can be handled by a simple search of the database.
-We provide a search page and its API in this tool where treebanks can be searched by \textit{sent_id}s, \textit{text}s, all the UD tags and treebank names.
+We provide a search page and its API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
 With this, an annotator can easily make the treebank more consistent.
 
 % ki example
