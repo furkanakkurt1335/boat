@@ -1,8 +1,8 @@
 \section{Implementation}
 \label{sec:implementation}
 
-The Django\cite{django} Web application development framework and the Web API toolkit for Django, Django REST Framework\cite{drf}, were used to develop our annotation tool.
-PostgreSQL\cite{psql} is used to provide a database for the server-side applications of the software.
+The Django~\cite{django} Web application development framework and the Web API toolkit for Django, Django REST Framework~\cite{drf}, were used to develop our annotation tool.
+PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
 This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
 During the implementation phase, decisions regarding models in the database have been directed towards making the tool use the API for database queries and searches.
 The models reflect the UD format of a sentence and sentences are saved as word lines at the core.
@@ -10,10 +10,10 @@ The models reflect the UD format of a sentence and sentences are saved as word l
 Annotation page has all the functionalities of \boatvone\ and more.
 Errors are included for annotators to see invalid edits in real time.
 They are checked and annotations validated according to the UD framework and the language provided.
-The scripts used for validation are the ones already provided by the framework as of 2022.\cite{UD-git}
+The scripts used for validation are the ones already provided by the framework as of 2022~\cite{UD-git}.
 
-A Python library \textit{spaCy}\cite{spacy} is used to provide linear dependency graphs.
-Another JavaScript-based linear dependency graph\cite{spyssalo} making use of brat\cite{brat-vis} is used to provide graphs as well.
+A Python library \textit{spaCy}~\cite{spacy} is used to provide linear dependency graphs.
+Another JavaScript-based linear dependency graph~\cite{spyssalo} making use of brat~\cite{brat-vis} is used to provide graphs as well.
 The preferences of annotators may vary and giving them options in different parts of the screen is important.
 
 \begin{figure}[tbh]
