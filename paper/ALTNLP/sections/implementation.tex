@@ -47,10 +47,10 @@ The other 2 graphs, which are both horizontal and linear, have been selected due
 This can be helpful and a learning experience for annotators.
 
 For an actual example, the annotator, responsible for the \bountreebank{}'s annotation, was annotating a sentence that had a Zodiac sign noun.
-Not being sure about how to annotate the noun's \textit{UPOS} tag, she searched for similar cases in the \conllu{} file and encountered two different ways nouns of Zodiac signs were annotated previously.
+Not being sure about how to annotate the noun's \textit{UPOS} tag, she searched the \conllu{} file in a text editor for similar cases and encountered two different ways nouns of Zodiac signs were annotated previously.
 Besides not helping how to choose a \textit{UPOS} tag, this raises a consistency issue within the treebank as well.
-One of the nouns was annotated as \textit{NOUN} in its \textit{UPOS} tag, the other one was as \textit{PROPN}.
-The annotator searched the \conllu{} file in a text editor and decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the current decision.
+One of the ways was annotating it as \textit{NOUN} in its \textit{UPOS} tag, the other one was as \textit{PROPN}.
+The annotator decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the current decision.
 This case can be handled by a simple search of the database.
 We provide a search page and API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
 With this, an annotator can easily make the treebank more consistent and reduce their frustration.
@@ -59,6 +59,7 @@ Another example could be given by the various -ki morphemes in Turkish.
 In the sentence "Evdeki halılar yıkandı." (\textit{"The rugs at home were washed."}), the -ki acts as an adjectivizer.
 In another sentence "Benim halılarım yün, Ayşeninkiler sentetik." (\textit{"My rugs are wool. Ayse's are synthetic."}), it is pronominal.
 An annotator might not recall how a specific -ki morpheme should be annotated and a single search would be a big help.
+These types of cases tend to occur frequently in MRLs.
 
 Also one other thing the inter-annotator agreement allows us is the possibility to see some anomalies in the Turkish part of the validation of the UD framework.
 For example, if a sentence were annotated a way by many annotators but the UD validation script were finding it invalid, this might indicate the UD validation were lacking in this respect of the Turkish language.
