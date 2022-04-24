@@ -18,11 +18,12 @@ Autocomplete should be provided for parts of the annotation where it is known wh
 Autocompletion reduces errors and increases efficiency.
 
 One feature requested by annotators is using the screen space in a compact manner and removing any clutter that's not used much.
-Considering this, the previous application's checkboxes have been converted into a select, leaving more space for the annotation table where most of the annotator focus is directed towards.
+Considering this, the previous application's checkboxes have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator focus is directed towards.
 
-% good software practices; dockerize
 A search API for the annotation database of the treebanks is another requirement.
 An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence or go to a sentence's annotation page to start annotating.
 Sometimes a user may not be sure of an annotation and would like to consult previous annotations for similar cases.
 They should be able to search the database in a complex way, by case, features or direct text, etc.
 An outsider also should be able to use the API to get the annotations of a particular treebank to use in their tasks in a systematic way.
+
+Following good software practices, this tool should be dockerized and made available as open source.
