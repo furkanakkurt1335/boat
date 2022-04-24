@@ -8,19 +8,18 @@ This section will explain the requirements elicited during the aforementioned pr
 \item[Search:]
 An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence.
 Annotators sometimes struggle with a specific sentence's annotation and want to be able to search for specific annotations linguistically similar to the one they are currently doing to make the treebank consistent within itself and reduce their cognitive load in general.
-Thus, a search functionality for annotators needs to be built with a network for annotators with the functionality to cross-check each other's work.
 They should be able to search the treebanks in a complex way, by several fields at the same time, such as UD tags, features or plain text.
 
 \item[Focus:]
-The annotation process requires a great deal of attention, therefore, the main priority is to improve the user experience for the annotator so that they can more efficiently produce accurate annotations.
+The annotation process requires a great deal of attention, therefore, the main priority is to improve the user experience for an annotator so that they can more efficiently produce accurate annotations.
 Annotators use the tools sometimes for hours on end.
 Software should make the work easier by reducing distractions and automating tasks.
 One of the requirements we have gathered for facilitating the focus of an annotator is for the software to offer keyboard input for every task.
-User should not have to use a mouse for any type of task.
+An annotator should not have to use a mouse for any type of task.
 Offering keyboard shortcuts for most or all tasks is required for a keyboard-oriented approach.
 
 \item[Autocompletion:]
-Since users lose focus after some time naturally, automating the entries and checking errors are high priorities in this respect.
+Since annotators lose focus after some time naturally, automating the entries and checking errors are high priorities in this respect.
 Autocomplete should be provided for parts of the annotation where it is known what values are allowed for a specific UD tag, reducing errors and increasing efficiency.
 
 \item[Clutter:]
@@ -28,7 +27,7 @@ Using the screen space in a compact manner is also important for focus and any c
 Considering this, the previous application's checkboxes have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator focus is directed towards.
 
 \item[API:]
-APIs for search and other functionalities is another requirement.
-An outsider also should be able to use the API to get the annotations of a particular treebank to use in their tasks in a systematic way.
+Another requirement is APIs for search and annotation functionalities.
+In addition to using APIs for the UI generation, an outsider also should be able to use the APIs to get the annotations of a particular treebank to use in their NLP tasks in a systematic way.
 Following good software practices, this tool should be dockerized and made available as open source.
 \end{itemize}
