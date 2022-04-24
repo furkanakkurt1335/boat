@@ -4,11 +4,11 @@
 Web application development framework \textit{Django}~\cite{django} and Web API toolkit \textit{Django REST Framework} (DRF)~\cite{drf} and Python~\cite{python} library \textit{django-filter}~\cite{django-filter} were used to develop our annotation tool.
 PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
 This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
-During the implementation phase, decisions regarding models in the database have been directed towards making the tool use the API for database queries and searches.
+During the implementation phase, decisions regarding models of the database have been directed towards making the tool's UI make use of the APIs for database queries and searches.
 The models reflect the UD format of a sentence and sentences are saved as word lines at the core.
 
 Annotation page has all the functionalities of \boatvone\ and more.
-Errors are included for annotators to see invalid edits in real time.
+Errors are displayed for annotators to see invalid edits in real time.
 They are checked and annotations validated according to the UD framework and the language provided.
 The scripts used for validation are the ones already provided by the framework as of 2022~\cite{UD-git}.
 
@@ -22,14 +22,6 @@ The preferences of annotators may vary and giving them options in different part
     \caption{Annotation view for the sentence "Sel sularında neler yoktu ki..."}
     \label{fig:demo-fig}
 \end{figure}
-
-\subsection{API}
-\label{sec:api}
-
-By using our annotated treebank search API, other parties wanting to see the capabilities of the tool can retrieve our annotated treebanks.
-Also, some parties wanting to use the treebanks in their computation tasks can easily extract information from our treebanks by using the API.
-This opens up many possibilities for the use of the tool beyond the annotator's UI experience.
-We plan to dockerize the tool and make it accessible, following development practices and conventions.
 
 \subsection{Features}
 \label{sec:features}
@@ -57,7 +49,7 @@ Besides not helping how to choose a \textit{UPOS} tag, this raises a consistency
 One of the nouns was annotated as \textit{NOUN} in its \textit{UPOS} tag, the other one was as \textit{PROPN}.
 The annotator searched the \conllu{} file in a text editor and decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the current decision.
 This case can be handled by a simple search of the database.
-We provide a search page and its API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
+We provide a search page and API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
 With this, an annotator can easily make the treebank more consistent and reduce their frustration.
 
 % ki example
@@ -69,7 +61,7 @@ For example, if a sentence were annotated a way by many annotators but the UD va
 Some modifications might be necessary and there could be a case for a proposal of change.
 
 \item[Annotation status:] We also provide a feature where an annotation has a status regarding it completeness.
-There are 3 different statuses and they are changed by the annotator in the annotation view.
+There are 3 different statuses and they are cycled through by the annotator in the annotation view.
 Status of an annotation is also shown in the search view, helping to select an appropriate case.
 Also there is another view where an annotator can list their completed, drafted or incomplete annotations, helping to keep track of what annotations have already been completed.
 
