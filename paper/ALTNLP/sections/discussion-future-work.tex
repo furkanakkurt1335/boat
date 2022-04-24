@@ -2,14 +2,14 @@
 \label{sec:discussion}
 
 We wanted a tool capable of the functionalities in \boatvone\ and also having a network for annotators to collaborate on the same treebank.
-We decided on a Web application and APIs for searches for this purpose.
-For the Web framework, Django and extensible search capabilities of DRF served our purpose well.
+We decided on a web application with APIs for this purpose.
+For the web framework, Django and extensible search capabilities of DRF served our purpose well.
 
-Doğal Dil İşleme Platformu ("Natural Language Processing Platform") of Bogazici University's Computer Engineering Department have various tools.
-The tools mostly have outputs when given an input with no UI.
-This is the first tool that has a UI in the platform and accordingly we needed to take some action regarding integration of a novel tool.
+Doğal Dil İşleme Platformu ("Natural Language Processing Platform") of Bogazici University's Computer Engineering Department have various NLP tools.
+The tools mostly output results based on input without a user interface.
+This is the first tool that has a UI in the platform and accordingly we needed to take some action regarding integration of this novel tool.
 Dockerizing the application will allow us to easily integrate it into the DIP platform of the department~\cite{DIP}.
 
-Interviews with and feedback from annotators that had used \boatvone\ through \bountreebank{} annotation and also had used other tools have been much helpful.
+Interviews with and feedback from annotators that had used \boatvone\ through the annotation of \bountreebank{} and also had used other tools have been much helpful.
 They shaped every part of the tool, from designing the APIs to the annotation view in the UI part.
 It is an extensible tool and can be tailored for other use cases.
