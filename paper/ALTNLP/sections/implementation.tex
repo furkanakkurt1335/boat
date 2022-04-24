@@ -1,7 +1,7 @@
 \section{Implementation}
 \label{sec:implementation}
 
-The Django~\cite{django} Web application development framework and the Web API toolkit for Django, Django REST Framework~\cite{drf}, were used to develop our annotation tool.
+Web application development framework \textit{Django}~\cite{django} and Web API toolkit \textit{Django REST Framework}~\cite{drf} and Python~\cite{python} library \textit{django-filter}~\cite{django-filter} were used to develop our annotation tool.
 PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
 This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
 During the implementation phase, decisions regarding models in the database have been directed towards making the tool use the API for database queries and searches.
@@ -39,7 +39,7 @@ There are many new features and improvements in this tool, as well as the functi
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
 \item[Loading files:] Instead of loading a specific file before annotating, a user is able to upload a \conllu{} file to the database and start annotating.
 The file is parsed and checked for its format. It's rejected if incorrectly formatted, otherwise uploaded to the database.
-This way, other annotators working for the same treebank don't have to provide the same file.
+This way, other annotators working with the same treebank don't have to provide the same file.
 
 \item[Annotation view:] The annotation page is very similar to \boatvone.
 There is an annotation table for editing the word lines of \conllu\ files.
@@ -48,7 +48,7 @@ The dependency graph of the initial tool and other 2 graphs have been added to t
 The user has the choice to select a type of graph or none.
 The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
 
-\item[Network:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can see the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
+\item[Network:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
 For an actual example, the annotator, responsible for \bountreebank{}'s annotation, was annotating a sentence that had a Zodiac sign noun.
 Not being sure about how to annotate the noun's \textit{UPOS} tag, she searched for similar cases in the \conllu{} file and encountered two different ways nouns of Zodiac signs were annotated previously.
