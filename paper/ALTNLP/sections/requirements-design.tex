@@ -19,16 +19,20 @@ An annotator should not have to use a mouse for any type of task.
 Offering keyboard shortcuts for most or all tasks is required for a keyboard-oriented approach.
 
 \item[Autocompletion:]
-Since annotators lose focus after some time naturally, automating the entries and checking errors are high priorities in this respect.
-Autocomplete should be provided for parts of the annotation where it is known what values are allowed for a specific UD tag, reducing errors and increasing efficiency.
+Since annotators lose focus after some time naturally, automating and the validation of the entries are high priorities in this respect.
+Many UD tags have predefined sets of values.
+Autocompletion should be provided for such UD tags, reducing errors and increasing efficiency.
 
 \item[Clutter:]
 Using the screen space in a compact manner is also important for focus and any clutter that's not interacted with frequently should be removed.
-Considering this, the previous application's checkboxes have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator focus is directed towards.
+Considering this, the previous application's checkboxes, responsible for toggling columns of the table, have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator focus is directed towards.
 
 \item[API:]
 Another requirement is an API for search and annotation functionalities.
 In addition to using the API for the UI generation, an outsider also should be able to use the API to get the annotations of a particular treebank to use in their NLP tasks in a systematic way.
 This opens up many possibilities for the use of the tool beyond the annotator's UI experience.
+
+\item[Docker:]
 Following good software practices, this tool should be dockerized and made available as open source.
+This means that the tool is is easily deployable and accessible.
 \end{itemize}

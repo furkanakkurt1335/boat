@@ -3,11 +3,11 @@
 
 Web application development framework \textit{Django}~\cite{django} and Web API toolkit \textit{Django REST Framework} (DRF)~\cite{drf} and Python~\cite{python} library \textit{django-filter}~\cite{django-filter} were used to develop our annotation tool.
 PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
-This database is responsible for serving the entire data needed to operate the tool, the search API, etc.
+This database is responsible for serving the entire data needed to operate the tool.
 During the implementation phase, decisions regarding models of the database have been directed towards making the tool's UI make use of the API for database queries and searches.
-The models reflect the UD format of a sentence and sentences are saved as word lines at the core.
+The models reflect the UD format of sentences and sentences are saved as word lines at the core.
 
-Annotation page has all the functionalities of \boatvone\ and more.
+The annotation page has all the functionalities of \boatvone\ and more.
 Errors are displayed for annotators to see invalid edits in real time.
 They are checked and annotations validated according to the UD framework and the language provided.
 The scripts used for validation are the ones already provided by the framework as of 2022~\cite{UD-git}.
@@ -29,7 +29,10 @@ The preferences of annotators may vary and giving them options in different part
 There are many new features and improvements in this tool, as well as the functionality that already existed in \boatvone.
 
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
-\item[Loading files:] Instead of loading a specific file before annotating, a user is able to upload a \conllu{} file to the database and start annotating.
+\item[Treebanks:] Treebanks are differentiated and each one has its own sets of sentences.
+Before uploading a \conllu{} file, a treebank must be created beforehand.
+
+\item[Loading files:] Instead of loading a specific file before every annotation session, an annotator is able to upload a \conllu{} file for a treebank to the database.
 The file is parsed and checked for its format. It's rejected if incorrectly formatted, otherwise uploaded to the database.
 This way, other annotators working with the same treebank don't have to provide the same file.
 
@@ -37,7 +40,7 @@ This way, other annotators working with the same treebank don't have to provide 
 There is an annotation table for editing the word lines of \conllu\ files.
 It includes a dependency graph and an editable table, both of which are in sync.
 The dependency graph of the initial tool and other 2 graphs have been added to this tool.
-The user has the choice to select a type of graph or none.
+The annotator has the choice to select a type of graph or none.
 The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
 
 \item[Network-enabled Search:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
