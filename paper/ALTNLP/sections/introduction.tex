@@ -10,15 +10,14 @@ In recent years, there have been significant efforts to bridge the gap in resour
 Among them is the creation of quality annotated data resources. 
 There are several tools for annotating data~\cite{brat,dgannotator}, however, they tend not to be well suited for morphologically rich languages (MRLs) like Turkish.
 The complex nature of such languages requires the annotator to perform many operations like splitting lemmas.
-Annotation tools often rely on drag-drop interfaces, which seem appealing, however, tend to disrupt the flow of an annotator. 
-This is especially true for MRLs and when  large numbers of sentences are annotated  leading to error-prone conditions that increase with passing time. 
+Annotation tools often rely on drag-drop interfaces, which seem appealing, however, they tend to disrupt the flow of an annotator. 
+This is especially true for MRLs and when large numbers of sentences are annotated leading to error-prone conditions that increase with passing time. 
 
-\boatvone~\cite{trk2020resources} was developed to support the dependency annotation of MRLs to produce treebanks .
-compliant with the Universal Dependency framework~\cite{UD}. 
-It is a standalone application developed with java.
+\boatvone~\cite{trk2020resources} was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependency framework~\cite{UD}. 
+It is a standalone application developed with Python and based on Qt.
 \boatvone\ was used to create the \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
-The efficiency of annotator with keyboard-based interactions was validated during this process. 
-However, several points of improvement were also revealed based on this experience.  
+The efficiency of the annotator with keyboard-based interactions was validated during this process. 
+However, several points of improvement were also revealed based on this experience.
 
 Given the value of the effort and time of annotators as well as the created data resources, the design of annotation tools should focus on the annotator user experience with features that support quality annotations. 
 This work presents a dependency annotation tool that has been redesigned based on the experiences with \boatvone\ and availability issues.
@@ -26,13 +25,13 @@ Several improvements have been implemented with focus on improving the user expe
 The redesign of the tool aimed to: (1) improve the user experience of the annotator, (2) reduce errors, (3) create a multi-user web-based application with a supporting API to support flexibility, and (4) create a self-contained and easily deployable tool for the benefit of researchers and educators. 
 The development of the tool was started with requirements elicitation, for which earlier experiences and in-depth interviews with an annotator who is actively annotating hundreds of annotations per week were taken into account.
 
-For this purpose, we developed a web-application that supports multiple users to enable annotation via several annotators.
-An API was designed to render the functionality accessible for programs for alternative uses.
+For this purpose, we developed a web application that supports multiple users to enable annotation via several annotators.
+An API was designed to render the functionalities accessible to programs with alternative uses.
 Several user experience improvements were implemented in order to maintain the flow state of an annotator.
 Finally, the solution is dockerized in order to make it easily accessible and deployable for others. 
 
 The current prototype is being evaluated with positive early feedback. 
-The final version will be made available as a demo on our NLP platform and made available for the scientific and educational community. 
+The final version will be made available as a demo on our NLP platform~\cite{DIP} and made available for the scientific and educational community. 
 
 The remainder of this paper is organized as follows: 
 Section~\ref{sec:related} presents related work, 
