@@ -40,7 +40,7 @@ The dependency graph of the initial tool and other 2 graphs have been added to t
 The user has the choice to select a type of graph or none.
 The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
 
-\item[Network:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
+\item[Network-enabled Search:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
 
 For an actual example, the annotator, responsible for the \bountreebank{}'s annotation, was annotating a sentence that had a Zodiac sign noun.
@@ -52,9 +52,10 @@ This case can be handled by a simple search of the database.
 We provide a search page and API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
 With this, an annotator can easily make the treebank more consistent and reduce their frustration.
 
-% ki example
-% Evdeki halılar yıkandı. -> adjectivizer ki 
-% Benim halılarım yün, Ayşeninkiler sentetik. -> pronominal 
+Another example could be given by the various -ki morphemes in Turkish.
+In the sentence "Evdeki halılar yıkandı." (\textit{"The rugs at home were washed."}), the -ki acts as an adjectivizer.
+In another sentence "Benim halılarım yün, Ayşeninkiler sentetik." (\textit{"My rugs are wool. Ayse's are synthetic."}), it is pronominal.
+An annotator might not recall how a specific -ki morpheme should be annotated and a single search would be a big help.
 
 Also one other thing the inter-annotator agreement allows us is the possibility to see some anomalies in the Turkish part of the validation of the UD framework.
 For example, if a sentence were annotated a way by many annotators but the UD validation script were finding it invalid, this might indicate the UD validation were lacking in this respect of the Turkish language.
