@@ -5,14 +5,14 @@ Web application development framework \textit{Django}~\cite{django} and Web API 
 PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
 This database is responsible for serving the entire data needed to operate the tool.
 During the implementation phase, decisions regarding models of the database have been directed towards making the tool's UI make use of the API for database queries and searches.
-The models reflect the UD format of sentences and sentences are saved as word lines at the core.
+The models reflect the UD format of sentences and annotations are saved as fields of word lines at the core.
 
 The annotation page has all the functionalities of \boatvone\ and more.
 Errors are displayed for annotators to see invalid edits in real time.
 They are checked and annotations validated according to the UD framework and the language provided.
 The scripts used for validation are the ones already provided by the framework as of 2022~\cite{UD-git}.
 
-A Python library \textit{spaCy}~\cite{spacy} is used to provide linear dependency graphs.
+Python library \textit{spaCy}~\cite{spacy} is used to provide linear dependency graphs.
 Another JavaScript-based linear dependency graph~\cite{spyssalo} making use of \textit{brat}~\cite{brat-vis} is used to provide graphs as well.
 The preferences of annotators may vary and giving them options in different parts of the screen is important.
 
@@ -38,27 +38,28 @@ This way, other annotators working with the same treebank don't have to provide 
 
 \item[Annotation view:] The annotation page is very similar to \boatvone.
 There is an annotation table for editing the word lines of \conllu\ files.
-It includes a dependency graph and an editable table, both of which are in sync.
+It also includes a dependency graph and an error card, both of which are in sync with the edits done on the table cells.
 The dependency graph of the initial tool and other 2 graphs have been added to this tool.
 The annotator has the choice to select a type of graph or none.
 The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
+The error card displays errors for the current annotation, validating it via the UD validation script.
 
-\item[Network-enabled Search:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
+\item[Network-enabled search:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
 
 For an actual example, the annotator, responsible for the \bountreebank{}'s annotation, was annotating a sentence that had a Zodiac sign noun.
 Not being sure about how to annotate the noun's \textit{UPOS} tag, she searched the \conllu{} file in a text editor for similar cases and encountered two different ways nouns of Zodiac signs were annotated previously.
 Besides not helping how to choose a \textit{UPOS} tag, this raises a consistency issue within the treebank as well.
-One of the ways was annotating it as \textit{NOUN} in its \textit{UPOS} tag, the other one was as \textit{PROPN}.
-The annotator decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the current decision.
+One of the ways had annotated it as \textit{NOUN} in its \textit{UPOS} tag, the other one had as \textit{PROPN}.
+The annotator decided to use the one with more cases of annotation and proceeded to replace the inconsistent ones with the current decision.
 This case can be handled by a simple search of the database.
 We provide a search page and API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
 With this, an annotator can easily make the treebank more consistent and reduce their frustration.
 
-Another example could be given by the various -ki morphemes in Turkish.
-In the sentence "Evdeki halılar yıkandı." (\textit{"The rugs at home were washed."}), the -ki acts as an adjectivizer.
+Another example could be given by the various \textit{-ki} morphemes in Turkish.
+In the sentence "Evdeki halılar yıkandı." (\textit{"The rugs at home were washed."}), the \textit{-ki} acts as an adjectivizer.
 In another sentence "Benim halılarım yün, Ayşeninkiler sentetik." (\textit{"My rugs are wool. Ayse's are synthetic."}), it is pronominal.
-An annotator might not recall how a specific -ki morpheme should be annotated and a single search would be a big help.
+An annotator might not recall how a specific \textit{-ki} morpheme should be annotated and a single search would be a big help.
 These types of cases tend to occur frequently in MRLs.
 
 Also one other thing the inter-annotator agreement allows us is the possibility to see some anomalies in the Turkish part of the validation of the UD framework.
