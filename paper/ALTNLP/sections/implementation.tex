@@ -43,28 +43,28 @@ This way, other annotators working with the same treebank don't have to provide 
 
 \item[Annotation view:] The annotation page is very similar to \boatvone.
 There is an annotation table for editing the word lines of \conllu\ files.
-It includes a dependency graph and an editable table, both of which in sync.
+It includes a dependency graph and an editable table, both of which are in sync.
 The dependency graph of the initial tool and other 2 graphs have been added to this tool.
 The user has the choice to select a type of graph or none.
 The other 2 graphs, which are both horizontal and linear, have been selected due to space considerations.
 
 \item[Network:] An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators and if they disagree on some parts, they can interact outside the tool.
 This can be helpful and a learning experience for annotators.
+
 For an actual example, the annotator, responsible for \bountreebank{}'s annotation, was annotating a sentence that had a Zodiac sign noun.
 Not being sure about how to annotate the noun's \textit{UPOS} tag, she searched for similar cases in the \conllu{} file and encountered two different ways nouns of Zodiac signs were annotated previously.
 Besides not helping how to choose a \textit{UPOS} tag, this raises a consistency issue within the treebank as well.
-For an example of a Turkish sentence with a noun for a Zodiac sign, in the sentence "Terazi rahatına düşkündür." (\textit{"Libras like comfort."}), "Terazi" may have been annotated as \textit{NOUN} in its \textit{UPOS} tag.
-In another sentence "Yükselen Başak düzeni sever." (\textit{"Virgo Rising likes order"}), "Başak" may have been annotated as \textit{PROPN} in its own \textit{UPOS} tag.
-In a similar case, the annotator searched the \conllu{} file in a text editor and decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the decision.
+One of the nouns was annotated as \textit{NOUN} in its \textit{UPOS} tag, the other one was as \textit{PROPN}.
+The annotator searched the \conllu{} file in a text editor and decided to use the one with the more cases of annotation and proceeded to replace the inconsistent ones with the decision.
 This case can be handled by a simple search of the database.
 We provide a search page and its API in this tool where treebanks can be searched by \textit{sent\_id}s, \textit{text}s, all the UD tags and treebank names.
 With this, an annotator can easily make the treebank more consistent and reduce their frustration.
 
 % ki example
-% Evdeki halılar -> adjectivizer ki 
+% Evdeki halılar yıkandı. -> adjectivizer ki 
 % Benim halılarım yün, Ayşeninkiler sentetik. -> pronominal 
 
-Also one other thing the interannotator agreement allows us is the possibility to see some anomalies in the Turkish part of the validation of the UD framework.
+Also one other thing the inter-annotator agreement allows us is the possibility to see some anomalies in the Turkish part of the validation of the UD framework.
 For example, if a sentence were annotated a way by many annotators but the UD validation script were finding it invalid, this might indicate the UD validation were lacking in this respect of the Turkish language.
 Some modifications might be necessary and there could be a case for a proposal of change.
 
