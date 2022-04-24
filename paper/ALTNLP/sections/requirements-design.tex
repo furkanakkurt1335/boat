@@ -3,27 +3,24 @@
 
 % Suzan, introduction sentence
 In-depth interviews and requirements elicitation with annotators that have annotated the entire \bountreebank{}, which has close to 10 thousand sentences, have been conducted to elicit the software requirements.
-Annotators may struggle with a specific annotation and want to be able to search for specific annotations similar to the one they are currently doing to make the treebank consistent within itself and reduce their cognitive load in general.
-Thus, a search functionality for annotators needs to be built with a network of annotators to allow them to cross-check each other's work.
+An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence or go to a sentence's annotation page to start annotating.
+Annotators sometimes struggle with a specific sentence's annotation and want to be able to search for specific annotations similar to the one they are currently doing to make the treebank consistent within itself and reduce their cognitive load in general.
+Thus, a search functionality for annotators needs to be built with a network for annotators with the functionality to cross-check each other's work.
+They should be able to search the database in a complex way, by case, features or direct text, etc.
 Because there was a pressing need for a network, we decided to develop a new web-based tool from scratch.
 
 The annotation process requires a great deal of attention, therefore, the main priority is to improve the user experience for the annotator so that they can more efficiently produce accurate annotations.
 Annotators use the tools sometimes for hours on end.
 Software should make the work easier by reducing distractions and automating work that can be automated.
-One of the requirements we have gathered for not breaking the focus of the annotator is for the software to use only keyboard for every task.
-\boat{} is a keyboard-oriented application.
+One of the requirements we have gathered for facilitating the focus of the annotator is for the software to use only keyboard for every task.
 User should not have to use a mouse for any type of task.
 Since users lose focus after some time naturally, automating the entries and checking errors are high priorities in this respect.
-Autocomplete should be provided for parts of the annotation where it is known what values are allowed for a \conllu{} type annotation.
-Autocompletion reduces errors and increases efficiency.
+Autocomplete should be provided for parts of the annotation where it is known what values are allowed for a \conllu{} type annotation, reducing errors and increasing efficiency.
 
-One feature requested by annotators is using the screen space in a compact manner and removing any clutter that's not used much.
+One feature requested by annotators is using the screen space in a compact manner and removing any clutter that's not interacted with frequently.
 Considering this, the previous application's checkboxes have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator focus is directed towards.
+Offering keyboard shortcuts for most or all tasks is required for a keyboard-oriented approach.
 
-A search API for the annotation database of the treebanks is another requirement.
-An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence or go to a sentence's annotation page to start annotating.
-Sometimes a user may not be sure of an annotation and would like to consult previous annotations for similar cases.
-They should be able to search the database in a complex way, by case, features or direct text, etc.
+APIs for search and other functionalities is another requirement.
 An outsider also should be able to use the API to get the annotations of a particular treebank to use in their tasks in a systematic way.
-
 Following good software practices, this tool should be dockerized and made available as open source.
