@@ -2,23 +2,22 @@
 \label{sec:introduction}
 
 Treebanks are very important resources in the development of natural language processing tools.
-For quality purposes, the treebanks that are manually annotated by linguists are very valuable. 
+For quality purposes, manually annotated treebanks by linguists are very valuable. 
 However, creation of such treebanks is highly labour-intensive and time-consuming due to the meticulous attention required.
 Therefore, tools that support the annotation process are very important. 
 
 In recent years, there have been significant efforts to bridge the gap in resources available for Turkish. 
 Among them is the creation of quality data resources. 
-There are several tools for annotating such data~\cite{brat,dgannotator}. 
-However, they tend not to be well suited for MRLs like Turkish.
-The complex nature of such languages requires the annotator to perform many operations, such as splitting lemmas.
-Many tools support drag-drop functionalities which would seem to be appealing. 
-However, when annotating numerous complicated sentences, the use of mouse and drag-drop interactions disrupt the flow and disturb the concentration of an annotator. 
-This leads to frustration and loss of focus, and increases the potential of erroneous annotations.
-Given the value of annotators' effort and time and the data that is produced, the user experience must be taken into consideration when designing tools that produce quality datasets. 
-Also, the lack of support for the Universal Dependency framework~\cite{UD} in tools was considered a major concern.
-With this in mind, \boatvone\ was developed as a standalone application, which was used to create the \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
-The efficiency and preference of keyboard-based annotations for large annotation efforts was validated during this process. 
-However, several points of improvement were also revealed.  
+There are several tools for annotating data~\cite{brat,dgannotator}, however, they tend not to be well suited for morphologically rich languages (MRLs) like Turkish.
+The complex nature of such languages requires the annotator to perform many operations like splitting lemmas.
+Annotation tools often rely on drag-drop interfaces, which seem appealing, however, tend to disrupt the flow of an annotator. 
+This is especially true when  large numbers of sentences are annotated  with the chances of making mistakes increases with the duration of the session. 
+Given the value of the effort and time of annotators as well as the created data resources, the design of annotation tools should focus on the annotator user experience as well as the features that support quality annotations. 
+With this in mind, \boatvone~\cite{trk2020resources} was developed as a standalone application.
+This tool also had a key concern of supporting the Universal Dependency framework~\cite{UD} to produce data that would be widely useful for the NLP community.
+\boatvone\ was used to create the \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
+The efficiency and annotator preference of keyboard-based annotations for large annotation efforts was validated during this process. 
+However, several points of improvement were also revealed based on this experience.  
 
 This work presents a dependency annotation tool that has been redesigned based on the experiences of annotating with \boatvone.
 Several improvements have been implemented with focus on improving the user experience and consequently the quality of the produced datasets.
