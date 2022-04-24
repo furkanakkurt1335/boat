@@ -4,6 +4,7 @@
 In-depth interviews and requirements elicitation with annotators that have annotated the \bountreebank{}, which has close to 10 thousand sentences, have been conducted to elicit the software requirements.
 This section will explain the requirements elicited during the aforementioned process and design decisions based on them.
 
+\subsection{Requirements}
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
 \item[Search:]
 An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence.
@@ -26,9 +27,12 @@ Autocompletion should be provided for such UD tags, reducing errors and increasi
 \item[Clutter:]
 Using the screen space in a compact manner is also important for focus and any part of the screen that's not interacted with frequently should be made compact.
 Considering this, the previous application's checkboxes, responsible for toggling columns of the table, have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator's focus is directed towards.
+\end{itemize}
 
+\subsection{Design}
+\begin{itemize}[before=\normalfont, font=\itshape, align=left]
 \item[API:]
-Another requirement is an API for search and annotation functionalities.
+An API for search and annotation functionalities is deemed a useful addition to the tool, which would make it possible for the tool to have greater variety of uses outside the tool's prime objective, which is a UI for annotation.
 In addition to using the API for the UI generation, a 3rd party agent also should be able to use the API to get the annotations of a particular treebank to use in their NLP tasks in a systematic way.
 This opens up many possibilities for the use of the tool beyond the annotator's UI experience.
 
