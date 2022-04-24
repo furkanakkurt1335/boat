@@ -2,42 +2,40 @@
 \label{sec:introduction}
 
 Treebanks are very important resources in the development of natural language processing tools.
-For quality purposes the treebanks that are manually annotated by linguists are very valuable. 
-However, such creations  is highly labor-intensive and time consuming due to the meticulous attention required.
+For quality purposes, the treebanks that are manually annotated by linguists are very valuable. 
+However, such creations is highly labour-intensive and time consuming due to the meticulous attention required.
 Therefore, tools that support the annotation process are very important. 
 
-In recent years there has been significant efforts to bridge the gap in resources available for Turkish. 
+In recent years, there has been significant efforts to bridge the gap in resources available for Turkish. 
 Among them is the creation of quality data resources. 
-There are several tools for annotating data \cite{brat} \cite{dgannotator}. 
-However, they tend to be not well suited for morphologically-rich languages like Turkish.
+There are several tools for annotating data~\cite{brat,dgannotator}. 
+However, they tend to be not well suited for morphologically rich languages like Turkish.
 The complex nature of such languages requires the annotator to perform many operations, such as splitting lemmas.
 Many tools support drag-drop functionalities which would seem to be appealing. 
-However, when annotating numerous complicated sentences the use of mouse and drag and drop based interactions disrupt the flow and disturb the concentration of an annotator. 
+However, when annotating numerous complicated sentences, the use of mouse and drag-drop interactions disrupt the flow and disturb the concentration of an annotator. 
 This leads to loss of focus, frustration, and increases the potentials of erroneous annotations.
 Given the value of an annotator's effort and time and the data that is produced, the user experience must be taken into consideration when designing tools that produce quality datasets. 
-Also, the lack of support for universal dependency framework~\cite{UD-main} in tools was considered a major concern.
-With this in mind \boatvone\ was developed as a standalone application, which was used to create \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761sentences.
-The efficiency and preference of keyboard based annotations for large annotation efforts was validated during this process. 
+Also, the lack of support for the Universal Dependency framework~\cite{UD-main} in tools was considered a major concern.
+With this in mind \boatvone\ was developed as a standalone application, which was used to create \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
+The efficiency and preference of keyboard-based annotations for large annotation efforts was validated during this process. 
 However, several points of improvements were also revealed.  
 
 This work presents a dependency annotation tool that has been redesigned based on the experiences of annotating with \boatvone.
 Several improvements have been implemented with focus on improving the user experience and consequently the quality of the produced datasets.
-The redesign of the tool aimed to: (1) to improve the user-experience of the annotator, (2) to reduce errors, (3) to create a multi-user web-based application with a supporting API to support flexibility, and (4) to create a self-contained and easily deployable tool for the benefit of researcher and educators. 
-%The development of the tool was revisited beginning with requirement elicitation, for which earlier experiences and in-depth interviews with an annotator that is actively annotating  hundreds of annotations per week was performed. 
+The redesign of the tool aimed to: (1) improve the user-experience of the annotator, (2) reduce errors, (3) create a multi-user web-based application with a supporting API to support flexibility, and (4) create a self-contained and easily deployable tool for the benefit of researchers and educators. 
+The development of the tool was revisited beginning with requirement elicitation, for which earlier experiences and in-depth interviews with an annotator that is actively annotating hundreds of annotations per week was performed. 
 
-For this purpose we developed a web-application that supports multi-users to enable the annotation via several annotator and compute agreements. 
+For this purpose, we developed a web-application that supports multiple users to enable annotation via several annotator and compute agreements. 
 An API was designed to render the functionality accessible via programs for alternative uses, such as educational tools. 
 Several user-experience improvements were implemented in order to maintain the flow state of an annotator.
-Finally, the solution is dockerized in order make it easily accessible and deployable for others. 
+Finally, the solution is dockerized in order to make it easily accessible and deployable for others. 
 
 The current prototype is being evaluated with positive feedback. 
 The final version will be made available as demos and downloadable resources. 
 
 The remainder of this paper is organized as follows: 
 Section~\ref{sec:related} presents related work, 
- Section~\ref{sec:requirements} describes the requirements elicitation process and design, 
- Section~\ref{sec:implementation} presents the implementation  with emphasis on the new features, 
+Section~\ref{sec:requirements} describes the requirements elicitation process and design, 
+Section~\ref{sec:implementation} presents the implementation with emphasis on the new features, 
 Section~\ref{sec:annotation} presents a use case of annotation.
-We discuss our experiences and point out some future work in Section~\ref{sec:discussion} and make our concluding remarks in
-Section~\ref{sec:conclusion}.
-
+We discuss our experiences and point out some future work in Section~\ref{sec:discussion} and make our concluding remarks in Section~\ref{sec:conclusion}.
