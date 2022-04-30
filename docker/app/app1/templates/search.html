@@ -1,0 +1,242 @@
+{% extends 'base-nav.html' %}
+
+{% block head %}
+<title> Search Page </title>
+<script>
+    {% if queries %}
+    window.onload = function () {
+        let queries = JSON.parse($('#queries')[0].innerHTML);
+        let keys = Object.keys(queries);
+        let url = '/query/?'
+        window.query_info = "";
+        for (let i = 0; i < keys.length; i++) {
+            let type = queries[keys[i]]['type'];
+            let input = queries[keys[i]]['input'];
+            if (type == "Treebank title") type_url = 'treebank_title';
+            else type_url = type.toLowerCase();
+            window.query_info += `${type_url}: ${input}`;
+            url += `${type_url}=${input}`;
+            if (i != keys.length - 1) {
+                url += '&';
+                window.query_info += ", ";
+            }
+        }
+
+        window.results = [];
+
+        $.get(url,
+            function (data) {
+                let keys = Object.keys(data);
+                let one_result = {};
+                window.res_size = keys.length;
+                $('#info')[0].innerHTML = `${window.res_size} results found.<br>Query was ${window.query_info}`;
+                $('#pagination')[0].hidden = false;
+                window.current_page = 1;
+                $('#result-table')[0].hidden = false;
+                for (let i = 0; i < keys.length; i++) {
+                    let res_t = data[keys[i]];
+                    one_result['text'] = res_t['text'];
+                    one_result['sent_id'] = res_t['sent_id'];
+                    one_result['annotator'] = res_t['annotator'];
+                    one_result['status'] = res_t['status'];
+                    one_result['treebank'] = res_t['treebank_title'];
+                    one_result['annotate-link'] = `/annotate/${res_t['treebank_title']}/${res_t['order']}`;
+                    window.results.push(JSON.parse(JSON.stringify(one_result)));
+                    if (i <= 20) create_row(one_result);
+                }
+            }
+        );
+
+        let prev = $('a#previous')[0];
+        let next = $('a#next')[0];
+        prev.addEventListener('click', function () {
+            page_handle('prev');
+        });
+        next.addEventListener('click', function () {
+            page_handle('next');
+        });
+
+        function page_handle(type) {
+            $('#result-body').find('tr').remove();
+            if (type == "next") {
+                window.current_page += 1;
+                if (window.current_page > window.res_size / 20) $('a#next')[0].hidden = true;
+                $('a#previous')[0].hidden = false;
+            }
+            else if (type == "prev") {
+                window.current_page -= 1;
+                if (window.current_page <= window.res_size / 20)  $('a#next')[0].hidden = false;
+                if (window.current_page == 1) $('a#previous')[0].hidden = true;
+            }
+            let new_results = window.results.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
+            for (let i = 0; i < new_results.length; i++) create_row(new_results[i]);
+        }
+
+        let button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-light border";
+        button.innerHTML = "Go back to search";
+        button.addEventListener('click', function () {
+            window.location.replace('/search/');
+        });
+        $('#go_back').append(button);
+
+        let info = document.createElement('div');
+        info.id = "info";
+        $('#result').prepend(document.createElement('br'));
+        $('#result').prepend(info);
+
+        function create_row(result) {
+            let row = document.createElement("tr");
+            let row_order = $('.tr').length + 1;
+            row.id = row_order;
+            row.className = "border";
+            let fields = ["text", "sent_id", "annotator", "status", "treebank"];
+            for (let i = 0; i < fields.length; i++) {
+                let data = document.createElement("td");
+                data.innerHTML = result[fields[i]];
+                data.style = 'text-align:center';
+                row.append(data);
+            }
+
+            // links
+            let data = document.createElement("td");
+            let link = document.createElement('a');
+            link.href = result['annotate-link'];
+            link.innerHTML = 'Annotate';
+            data.append(link);
+            data.style = 'text-align:center';
+            row.append(data);
+
+            // TODO, view annotation (toast, etc.)
+            // data = document.createElement("td");
+            // let button = document.createElement('button');
+            //  = result['view'];
+            // link.innerHTML = 'View';
+            // data.append(link);
+            // data.style = 'text-align:center';
+            // row.append(data);
+
+            $('#result-body')[0].append(row);
+        }
+    };
+    {% endif %}
+
+    {% if not queries %}
+    window.onload = function () {
+        create_row();
+    };
+
+    function create_row() {
+        let row_order = $('.row').length + 1;
+        let row = document.createElement('div');
+        row.id = row_order;
+        row.className = "row";
+
+        // type_select
+        let col = document.createElement('div');
+        col.className = "col";
+        let select = document.createElement('select');
+        select.id = "query_type";
+        select.className = "form-select";
+        select.form = "query";
+        select.name = `type_${row_order}`;
+        let option = document.createElement('option');
+        option.disabled = true;
+        option.selected = true;
+        option.innerHTML = "Field";
+        select.append(option);
+        let type_fields = ["sent_id", "text", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC", "Treebank title"];
+        for (let i = 0; i < type_fields.length; i++) {
+            option = document.createElement('option');
+            option.innerHTML = type_fields[i];
+            select.append(option);
+        }
+        col.append(select);
+        row.append(col);
+
+        // query_text
+        col = document.createElement('div');
+        col.className = "col";
+        let input = document.createElement('input');
+        input.type = "text";
+        input.className = "form-control";
+        input.placeholder = "Query";
+        input.name = `input_${row_order}`;
+        col.append(input);
+        row.append(col);
+
+        // plus_button
+        // $('#btn-plus').remove();
+        col = document.createElement('div');
+        col.className = "col";
+        col.id = "btn-plus";
+        let button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-light border";
+        button.innerHTML = "+";
+        button.addEventListener('click', function () {
+            button_handle(row_order);
+        });
+        col.append(button);
+        row.append(col);
+        row.append(document.createElement('br'));
+        row.append(document.createElement('br'));
+        $('#queries').append(row);
+    }
+
+    function button_handle(row_order) {
+        let button = $(`div#${row_order}`).find('button')[0];
+        if (button.innerHTML == "-") $(`div#${row_order}`).remove();
+        else {
+            $(`div#${row_order}`).find('button')[0].innerHTML = "-";
+            create_row();
+        }
+    }
+    {% endif %}
+</script>
+{% endblock %}
+
+{% block body %}
+<div id="space" class="p-5 border bg-light">
+    {% if not queries %}
+    <form id="query" method="post" action="{% url 'search' %}" enctype="multipart/form-data">{% csrf_token %}
+        <div id="queries">
+
+        </div>
+        <button class="w-25 btn btn-outline-success" type="submit" value="Search">Search</button>
+    </form>
+    {% endif %}
+
+    {% if queries %}
+    <div id="queries" hidden="true">{{queries}}</div>
+    <div id="result">
+        <table id="result-table" class="table table-bordered table-striped" hidden="true">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>text</th>
+                    <th>sent_id</th>
+                    <th>Annotator</th>
+                    <th>Status</th>
+                    <th>Treebank</th>
+                    <th>Links</th>
+                </tr>
+            </thead>
+            <tbody id="result-body"></tbody>
+        </table>
+    </div>
+    <nav id="pagination" hidden>
+        <ul class="pagination">
+            <li class="page-item"><a id="previous" hidden class="page-link">Previous</a></li>
+            <li class="page-item"><a id="next" class="page-link">Next</a></li>
+        </ul>
+    </nav>
+    <div id="go_back"></div>
+    {% endif %}
+
+    {% if message %}
+    {{message}}
+    {% endif %}
+</div>
+
+{% endblock %}
