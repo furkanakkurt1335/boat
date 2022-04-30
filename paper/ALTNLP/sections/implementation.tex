@@ -4,12 +4,12 @@
 Web application development framework \textit{Django}~\cite{django}, Web API toolkit \textit{Django REST Framework} (DRF)~\cite{drf} and Python~\cite{python} library \textit{django-filter}~\cite{django-filter} are used to operate \boatvtwo.
 PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
 During the implementation phase, decisions regarding models of the database have been directed towards the UI utilizing the API for database queries and searches.
-The models reflect the UD format of sentences and annotations are saved as fields of word lines.
+The models reflect the \ud\ format of sentences and annotations are saved as fields of word lines.
 
 The annotation page has most of the functionalities of \boatvone.
 Entries are validated and errors are displayed on the annotation page for annotators to see invalid edits in real time, according to the \ud\ framework~\cite{UD-git} and the language provided.
 
-Python library spa\textsc{C}y~\cite{spacy} is used to provide linear dependency graphs.
+Python library \textit{spa\textsc{C}y}~\cite{spacy} is used to provide linear dependency graphs.
 Another JavaScript-based linear dependency graph~\cite{spyssalo} making use of \textit{brat}~\cite{brat-vis} is used to provide graphs as well.
 An annotator's preference regarding this may vary, thus, giving them visualization options is important.
 
@@ -17,7 +17,7 @@ An annotator's preference regarding this may vary, thus, giving them visualizati
     \centering
     \frame{\includegraphics[width=1\textwidth]{figures/sample-annotation.png}}
     \caption{The annotation screen for the sentence ``Sel sularında neler yoktu ki...''.
-        The annotator is choosing an annotation for the \deprel\ tag of the form ``sularında''.
+        The annotator is choosing an annotation for the \deprel\ tag of the \form\ ``sularında''.
         The valid alternatives pop up based on the entry and can be selected via use of arrows. }
     \label{fig:anno-fig}
 \end{figure}

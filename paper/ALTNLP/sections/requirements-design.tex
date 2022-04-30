@@ -1,7 +1,7 @@
 \section{Requirements and Design}
 \label{sec:requirements}
 
-Requirements elicitation and validation meetings with annotators that have annotated the \bountreebank{}, which has close to 10 thousand sentences, have been held to specify the software requirements.
+Requirements elicitation and validation meetings with annotators that have annotated the \bountreebank, which has close to 10 thousand sentences, have been held to specify the software requirements.
 This section will explain these requirements from the aforementioned process and design decisions based on them.
 
 \subsection{Requirements}
@@ -17,14 +17,14 @@ This section will explain these requirements from the aforementioned process and
         They should be able to search the treebanks in a complex way, by several fields at the same time, such as UD tags, features or plain text.
 
     \item[Keyboard-oriented approach:]
-        Agglutinative languages require many feature entries of forms and many types of features as well, unlike analytical languages like English which tend to require much less feature entries.
+        Agglutinative languages require many feature entries of \form s and many types of features as well, unlike analytical languages like English which tend to require much less feature entries.
         A drag-and-drop approach may work well for analytical languages but annotation of MRLs ask for many entries and alternating mouse and keyboard disrupts the flow of an annotation session.
-        This requirement has been validated with the annotation of the \bountreebank with \boatvone.
+        This requirement has been validated with the annotation of the \bountreebank\ with \boatvone.
         Offering keyboard shortcuts for most tasks is a requirement of a keyboard-oriented approach.
 
     \item[Splitting lemmas:]
         Words in MRLs tend to have morphemes stacked on roots.
-        Due to such typologies of and syncretism being generally higher in MRLs, automatic parsing of such treebanks is difficult and they more often than not fail to create valid parsings of forms.
+        Due to such typologies of and syncretism being generally higher in MRLs, automatic parsing of such treebanks is difficult and they more often than not fail to create valid parsings of \form s.
         Thus, refining automatic parsing is important for agglutinative languages, which requires splitting of lemmas.
 
     \item[Autocompletion:]
