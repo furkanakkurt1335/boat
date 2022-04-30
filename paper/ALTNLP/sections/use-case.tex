@@ -1,17 +1,15 @@
 \section{Annotation Procedure}
 \label{sec:annotation}
-This section describes how an annotation is actually done for a sentence.
+This section describes how an annotation is done in practice.
 
 An annotator selects a sentence from a treebank, which has previously uploaded sentences coming from a \conllu\ formatted file.
-An annotation table appears with the sentence parsed according to the UD format.
+An annotation table appears with the sentence parsed according to the \ud\ format.
 They fill the cells of the annotation table's fields.
 During the annotation, an annotator can make use of dependency graphs, error cards, different columns and the search functionality.
 Dependency graphs are visual cues for how lemmas are dependent upon one another, using \head s and \deprel s.
-They can choose 3 different graphs one at a time or select to hide them completely.
-Different graphs show the same information with a horizontal or vertical tree.
 As for errors, they are helpful reminders, coming from a validation script published on the \ud's GitHub repository.
 Also, different columns of the annotation table can be toggled to be shown or hidden.
-Other than all the columns for every UD tag, there are extra columns for every feature for the \feats\ tag.
-They can also use the search functionality to search for previous annotations by other annotators or themselves, using various fields (\textit{text}, \feats, various tags, etc.) for the query.
-By checking similar annotations, an annotator can ensure consistency and don't lose focus by trying manual methods for the same information.
-When an annotation is done, they select the annotation to be "Complete".
+Other than all the columns for each of the 10 tags of an annotation in the \conllu\ format, there are extra columns for every valid feature of the \feats\ tag for visualization and efficiency.
+They can also use the search functionality to search for annotations by other annotators, using various fields (\textit{text}, \feats, various tags, etc.) in the query.
+By checking similar annotations, an annotator can ensure consistency and don't lose focus by trying manual methods.
+When an annotation is done, they can select the annotation to be "Complete".
