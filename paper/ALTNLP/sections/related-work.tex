@@ -2,18 +2,24 @@
 \label{sec:related}
 
 There are various tools for creating dependency annotations such as \textit{brat}~\cite{brat}, \textit{UD Annotatrix}~\cite{tyers-etal:2018} and \textit{DgAnnotator}~\cite{dgannotator}
-These tools mostly rely on mouse-based user interaction, which tend to be inefficient for annotating MRLs.
+These tools mostly rely on mouse-based user interaction, which tend to be inefficient for annotating MRLs because they require lots of entries of features of forms.
+Another tool is WebAnno~\cite{webanno} which supports multiple users and is also web-based, similar to \boatvtwo and it relies on mouse interactions. % add citation for WebAnno
+To annotate features of a form, it requires many clicks which makes it impractical, especially for MRLs.
+It does not have a dependency graph for visualization of an annotation, unlike \boatvone. Instead of a dependency graph, it shows many sentences simultaneously, which distracts the annotator.
 
 There are also tools developed specifically for Turkish.
-The ITU Treebank Annotation Tool~\cite{pamay-etal-2015-annotation} is a tool written in Java that has several versions.
+For instance, the ITU Treebank Annotation Tool~\cite{pamay-etal-2015-annotation} is a tool written in Java with several versions.
 It offers semi-automated support for annotators through analyzers for creating new datasets as well as correcting the existing Turkish treebanks.
-It mostly relies on mouse-based interactions and doesn't support \ud. 
+It mostly relies on mouse-based interactions and doesn't support the \ud framework. 
 
-\boatvone~\cite{turk-etal-2019-turkish} is a standalone application that supports keyboard-based input while displaying the annotations as a table as well as a dependency graph.
-It also supports UD~\cite{UD}. 
-This tool was used to create the \bountreebank~\cite{trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences. It also uses analyzers to process sentences. 
-The feedback received from this effort indicates that the keyboard based input is much more efficient and takes less time for creating quality treebanks.
+\boatvone~\cite{turk-etal-2019-turkish} is a standalone annotation tool for treebanks compatible with the \ud\ framework~\cite{UD} and supports keyboard-based input while displaying the annotations as a table with a corresponding dependency graph for visualization.
+Although mouse input is supported for most tasks, using only keyboard is preferred as our experiences with the tool show that it tends to be more efficient.
+This tool was used to create the \bountreebank~\cite{trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
+It also uses analyzers to process treebanks with the \conllu\ format of \ud. 
+The feedback received from this work indicates that the keyboard based input is much more efficient and takes less time for creating quality treebanks.
 
 The work presented in this paper is based on the experiences from \boatvone\ with continuous feedback from an annotator. 
-Like many tools, it supports \ud, and it also supports keyword-based input to allow the annotation process to be performed without breaking the flow. 
+Like its predecessor and many other tools, it supports \ud, and it also supports keyword-based input to allow the annotation process to be performed without breaking the flow. 
 Furthermore, the tool is developed as a web application with an API to support ease of deployment and multi-annotator scenarios. 
+Feedback indicated that big treebanks like the \bountreebank\ require many annotators collaborating and treebanks of that size are only increasing with time.
+Accordingly, supporting a multi-user experience of collaboration is a high priority of the new tool.
