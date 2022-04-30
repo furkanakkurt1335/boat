@@ -1,49 +1,52 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Treebanks are very important resources in the development of natural language processing tools.
-For quality purposes, manually annotated treebanks by linguists are very valuable. 
+Treebanks are important resources in the development of natural language processing tools.
+Quality tools need manual annotation of treebanks by experts in the field of linguistic annotation.
 However, creation of such treebanks is highly labour-intensive and time-consuming due to the meticulous attention required.
-Therefore, tools that support the annotation process are very important. 
+Therefore, tools that support the annotation process are very important.
 
-In recent years, there have been significant efforts to bridge the gap in resources available for Turkish. 
-Among them is the creation of quality annotated data resources. 
+% may need a better segue
+In recent years, there have been significant efforts to bridge the gap in resources available for Turkish.
+Among them is the creation of quality annotated data resources.
 There are several tools for annotating data~\cite{brat,dgannotator}, however, they tend not to be well suited for morphologically rich languages (MRLs) like Turkish.
-The complex nature of such languages requires the annotator to perform many operations like splitting lemmas.
-Annotation tools often rely on drag-drop interfaces, which seem appealing, however, they tend to disrupt the flow of an annotator. 
-This is especially true for MRLs and when large numbers of sentences are annotated leading to error-prone conditions that increase with passing time. 
+The complex nature of such languages requires the annotator to perform many operations, like splitting lemmas or entering many features for a single lemma.
+Many annotation tools often rely on drag-drop interfaces, which seem appealing, however, they tend to disrupt the flow of an annotator.
+This is especially true for MRLs which require lots of annotation entries and when large numbers of sentences are annotated, they create error-prone conditions. % not sure of last words
 
-\boatvone~\cite{trk2020resources} was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependency framework~\cite{UD}. 
-It is a standalone application developed with Python and based on Qt.
-\boatvone\ was used to create the \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
-The efficiency of the annotator with keyboard-based interactions was validated during this process. 
-However, several points of improvement were also revealed based on this experience.
+\boatvone~\cite{trk2020resources} is a standalone application developed with Python and based on Qt.
+It was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependency framework~\cite{UD}.
+It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,trk2020resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences.
+This treebank's annotation experience revealed several points of improvement.
+Also, efficiency of a keyboard-oriented approach over an approach of switching between mouse and keyboard was validated in the aforementioned annotation work.
 
-Given the value of the effort and time of annotators as well as the created data resources, the design of annotation tools should focus on the annotator user experience with features that support quality annotations. 
-This work presents a dependency annotation tool that has been redesigned based on the experiences with \boatvone\ and availability issues.
-Several improvements have been implemented with focus on improving the user experience and consequently the quality of the produced datasets.
-The redesign of the tool aimed to: (1) improve the user experience of the annotator, (2) reduce errors, (3) create a multi-user web-based application with a supporting API to support flexibility, and (4) create a self-contained and easily deployable tool for the benefit of researchers and educators. 
-The development of the tool was started with requirements elicitation, for which earlier experiences and in-depth interviews with an annotator who is actively annotating hundreds of annotations per week were taken into account.
+Given the value of the effort and time of annotators as well as the created data resources, the design of annotation tools should focus on the annotator user experience with features that support quality annotations.
+This work presents a dependency annotation tool that has been redesigned based on the experience with \boatvone\.
+The redesign of the tool aimed to: (1) improve the user experience of the annotator, (2) reduce errors, (3) create a multi-user web-based application with a supporting API for flexibility, and (4) create a self-contained and easily deployable tool for the benefit of researchers and educators.
+The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 
-For this purpose, we developed a web application that supports multiple users to enable annotation via several annotators.
-An API was designed to render the functionalities accessible to programs with alternative uses.
-Several user experience improvements were implemented in order to maintain the flow state of an annotator.
-Finally, the solution is dockerized in order to make it easily accessible and deployable for others. 
+% insert multi-user reason
 
-The current prototype is being evaluated with positive early feedback. 
-The final version will be made available as a demo on our NLP platform~\cite{DIP} and made available for the scientific and educational community. 
+Hence, we developed a web application that supports multiple users to enable a collaborative environment for annotations.
+An API was designed to render the functionalities accessible to various NLP applications.
+Several user experience improvements were implemented in order to facilitate the flow of an annotation session.
+Finally, the solution is dockerized in order to make it easily accessible and deployable for others.
+
+The current prototype is being evaluated with positive early feedback.
+The final version will be made available as a demo on Boğaziçi University's NLP platform~\cite{DIP} and also published as open source for the scientific and educational community.
 
 The main contributions of this work are:
 \begin{itemize}
         \item Design of a dependency annotation tool that is based on requirements elicited from experienced annotators who are linguists,
-        \item The development of a tool that takes into the account the annotator activities to improve the experience and resulting annotations,
-        \item Support for multi-users to provide indivual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration, 
-        \item The development of a web based annotation tool with a supporting API to support extensibility, and
-        \item Packaging of the tool to support easy access by virtualizing it using docker and providing the code as an open source resource. 
+        \item The development of a tool that takes into account the annotator experience to improve resulting annotations,
+        \item Support for multi-users to provide indivual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
+        % development x2, ask Suzan Hoca
+        \item The development of a web-based annotation tool based on a supporting API, and
+        \item Packaging of the tool to support easy access by virtualizing it using Docker and providing the code as an open source resource.
 \end{itemize}
-The remainder of this paper is organized as follows: 
-Section~\ref{sec:related} presents related work, 
-Section~\ref{sec:requirements} describes the requirements elicitation process and design, 
-Section~\ref{sec:implementation} presents the implementation with emphasis on the new features, 
+The remainder of this paper is organized as follows:
+Section~\ref{sec:related} presents related work,
+Section~\ref{sec:requirements} describes the requirements elicitation process and design,
+Section~\ref{sec:implementation} presents the implementation with emphasis on the new features,
 Section~\ref{sec:annotation} presents a use case of annotation.
 We discuss our experiences and point out some future work in Section~\ref{sec:discussion} and offer our conclusions  in Section~\ref{sec:conclusion}.
