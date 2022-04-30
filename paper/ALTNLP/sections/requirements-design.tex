@@ -6,37 +6,45 @@ This section will explain these requirements from the aforementioned process and
 
 \subsection{Requirements}
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
-\item[Search:]
-An annotator should be able to search the treebank they are a part of to see other annotations done for a specific sentence.
-Annotators sometimes struggle with a specific sentence's annotation and want to be able to search for specific annotations linguistically similar to the one they are currently doing to make the treebank consistent within itself and reduce their cognitive load in general.
-They should be able to search the treebanks in a complex way, by several fields at the same time, such as UD tags, features or plain text.
+    \item[Multi-user:]
+        Treebanks are increasing in size as new computer hardware makes it feasible to work with ever-bigger datasets.
+        These large treebanks need to be annotated by multiple people, to complete them in a reasonable time as well as to offer a medium where they can comment on each other's annotations.
+        Hence, the capability to collaborate with a network of annotators is a requirement.
 
-\item[Focus:]
-The annotation process requires a great deal of attention, therefore, the main priority is to improve the user experience for an annotator so that they can more efficiently produce accurate annotations.
-Annotators use the tools sometimes for hours on end.
-Software should make the work easier by reducing distractions and automating tasks.
-One of the requirements we have gathered for facilitating the focus of an annotator is for the software to offer keyboard input for every task.
-An annotator should not have to use a mouse for any type of task.
-Offering keyboard shortcuts for most tasks is required for a keyboard-oriented approach.
+    \item[Search:]
+        An annotator should be able to search a treebank to filter for linguistically similar sentences.
+        Annotators sometimes struggle with an annotation and want to be able to search for similar instances in the dataset to make the treebank consistent within itself and reduce their cognitive load in general.
+        They should be able to search the treebanks in a complex way, by several fields at the same time, such as UD tags, features or plain text.
 
-\item[Autocompletion:]
-Since annotators lose focus after some time naturally, automating and validation of entries are high priorities in this respect.
-Many UD tags have predefined sets of values.
-Autocompletion should be provided for such UD tags, reducing errors and increasing efficiency.
+    \item[Keyboard-oriented approach:]
+        Agglutinative languages require many feature entries of forms and many types of features as well, unlike analytical languages like English which tend to require much less feature entries.
+        A drag-and-drop approach may work well for analytical languages but annotation of MRLs ask for many entries and alternating mouse and keyboard disrupts the flow of an annotation session.
+        This requirement has been validated with the annotation of the \bountreebank with \boatvone.
+        Offering keyboard shortcuts for most tasks is a requirement of a keyboard-oriented approach.
 
-\item[Clutter:]
-Using the screen space in a compact manner is also important for focus and any part of the screen that's not interacted with frequently should be made compact.
-Considering this, the previous application's checkboxes, responsible for toggling columns of the table, have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator's focus is directed towards.
+    \item[Splitting lemmas:]
+        Words in MRLs tend to have morphemes stacked on roots.
+        Due to such typologies of and syncretism being generally higher in MRLs, automatic parsing of such treebanks is difficult and they more often than not fail to create valid parsings of forms.
+        Thus, refining automatic parsing is important for agglutinative languages, which requires splitting of lemmas.
+
+    \item[Autocompletion:]
+        Since annotators lose focus after some time naturally, automating and validation of entries are helpful in creating valid annotations.
+        Many UD tags have predefined sets of values.
+        Autocompletion should be provided for such UD tags, reducing errors and increasing efficiency.
+
+    \item[Space:]
+        Using the screen space in a compact manner is important for focus and any part of the screen that's not interacted with frequently should be made compact.
+        Considering this, individual checkboxes of \boatvone, responsible for toggling columns in the table, have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator's focus is directed towards.
 \end{itemize}
 
 \subsection{Design}
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
-\item[API:]
-An API for search and annotation functionalities is deemed a useful addition to the tool, which would make it possible for the tool to have greater variety of uses outside the tool's prime objective, which is a UI for annotation.
-In addition to serving the data for the UI generation, the API should also allow a 3rd party agent to use it to get the annotations of a particular treebank to use in their NLP tasks in a systematic way.
-This opens up many possibilities for the use of the tool beyond the annotator's UI experience.
+    \item[API:]
+        An API for search and annotation functionalities as a supporting base of the UI part is deemed a useful addition to the tool, which would make it possible for the tool to have greater variety of use cases outside the tool's prime objective, which is a UI for treebank annotation.
+        In addition to serving the data for the UI generation, the API should also allow a 3rd party agent to use it to get the annotations of a particular treebank to use in their NLP tasks in a systematic way.
+        This opens up many possibilities for the use of the tool beyond the annotator's UI experience.
 
-\item[Docker:]
-Following good software practices, this tool should be dockerized and made available as open source.
-This means that the tool is is easily deployable and accessible.
+    \item[Docker:]
+        Following good software practices, this tool should be dockerized and made available as open source.
+        This would make the tool easily deployable and accessible.
 \end{itemize}
