@@ -833,6 +833,7 @@ function create_graph() {
         div_graph.append(vis);
         div_graph.append(dep_graph);
         Annodoc.activate(Config.bratCollData, {});
+        $('#embedded-1-sh').remove();
     }
     else if (window.graph_preference == 2) {
         $.post("/ud_graph/",
