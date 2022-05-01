@@ -1,15 +1,19 @@
-\section{Annotation Procedure}
+\section{Using \boatvtwo}
 \label{sec:annotation}
-This section describes how an annotation is done in practice.
+
 
 An annotator selects a sentence from a treebank.
 An annotation table appears with the sentence parsed according to the \ud\ format.
-They fill the cells of the table.
-An annotator can make use of dependency graphs, error cards and search.
+Each row corresponds to a lemma and its annotations. 
+Figure~\ref{fig:anno-fig} shows the annotation view while an annotator is annotating a Turkish sentence ( ``Sel sularında neler yoktu ki...''). 
+
+An annotator can make use of dependency graphs, errors, and search during annotation.
 Dependency graphs are visual cues for how lemmas are dependent upon one another.
 Errors are helpful reminders compliant with \ud.
-Also, different columns of the table can be toggled.
-Other than all the columns for each of the 10 tags of an annotation in the \conllu\ format, there are extra columns for every valid feature.
-They can also search for annotations, using various fields (\textit{text}, \feats, etc.) in the query.
-This way, an annotator can ensure consistency and maintain focus.
-When an annotation is done, they can select the annotation to be "Complete".
+
+Annotators have different preferences as to which columns they prefer to see, which may change during different stages of the process.
+Other than all the columns for each of the 10 tags of an annotation in the \conllu\ format, there are extra columns for every valid feature. \todo[inline]{What extra columns? Please don't write things which are not bound. Either don't say it, or characterize it, or describe it}
+The annotator can search for annotations based on combinations of text and feature values to refer to previously made annotations.
+When an annotation is finished its status can be set to ``completes''.
+
+
