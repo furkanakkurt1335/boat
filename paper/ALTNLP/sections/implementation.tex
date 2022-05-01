@@ -14,6 +14,13 @@ Python library \textit{spa\textsc{C}y}~\cite{spacy} is used to provide linear de
 Another JavaScript-based linear dependency graph~\cite{spyssalo} making use of \textit{brat}~\cite{brat} is used to provide graphs as well.
 An annotator's preference regarding this may vary, thus, giving them visualization options is important.
 
+
+
+%\section{Annoations with \boatvtwo}
+%\label{sec:features}
+
+As stated in Section~\ref{sec:introduction} \boatvtwo\ aims to support the annotator experience by facilitating faster and correct annotations in a collaborative manner. The following features have been impemented towards this end:
+
 \begin{figure}[tbh]
     \centering
     \tcbox[left=0mm,right=0mm,top=0mm,bottom=0mm,boxsep=1pt,arc=0mm,boxrule=0.5pt,colframe=black,sharp corners]
@@ -22,51 +29,48 @@ An annotator's preference regarding this may vary, thus, giving them visualizati
     \label{fig:anno-fig}
 \end{figure}
 
-\subsection{Features}
-\label{sec:features}
-
-There are many new features and improvements in this tool, as well as most of the functionality of \boatvone.
-
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
     \item[Treebanks:]
-        Multiple treebanks, with each one having its own sets of sentences, can be created in a single deployment.
-        When uploading a file, a treebank is selected.
-
-    \item[Loading files:]
-        Instead of loading a dataset file before every annotation session, a \conllu\ file is uploaded to the database.
-        The file is rejected if incorrectly formatted, otherwise uploaded to the database.
-        This way, other annotators working with the same treebank don't have to provide the same file.
+        Ability to work with multiple treebanks. Users can select which treebank they work on and upload new treebanks as \conllu\ files.  
+        Treebanks and their annotations are stored in a database. 
 
     \item[Annotation view:]
-        The annotation page is very similar to the one on \boatvone~\cite{trk2020resources}, as seen in Figure~\ref{fig:anno-fig}.
-        There is an annotation table for annotating fields in word lines of sentences.
-        It also includes a dependency graph and an error card, both of which are in sync with the edits done on the table cells.
-        Three different dependency graph representations are provided in this tool.
-        Two of the graphs, which are both horizontal and linear, have been selected due to space considerations.
-        The error card displays errors for the current annotation, validating it via the UD validation script.
+    	The sentence annotation page is very similar to  \boatvone.
+    	It consists of three main parts: (1) A table with rows for every lemma in the sentence and columns correpsonding to their annotations  \todo{Explain the tags UPOS, DEPRL etc. }; (2) the dependency graph of the sentence; and (3) UD validation errors. 
+    	The dependency graph and errors are syncronized during annotation process. 
+        Several  dependency graph presentations are supported to suit the annotator preference. 
+        As horizontal graphs can consume a significant amount of screen real-estate, which can lead to loss of focus in long sentences that are common in agglutinative languages. 
+        
+        As some sentence annotations can be very complicated or an annotator may need to stop the annotation process for some reason, there is a need for capturing the state of the annotation for a given sentence by a given annotator. For this purpose, each sentence is assigned a status that may be:    ``incomplete", ``draft" and ``complete". A user can continue with an incomplete 
+       The status of an annotation is also shown in the search view to assist the user. 
+       
+       The annotator is able to perform almost all operations via keyboard action.
+       This was a strong request from annotators, which they were very please with and reported improved flow and greatly improved speed.
+       The desire for operating from the keyboard arises from the need to annotate a great many features for agglutinative languages, where most lemmas get annotated. Drag and drop interfaces force annotatators to toggle back and forth between mouse and keyboard interactions which were reported to be very frustrating in terms of concentration and speed. 
+       
+       Figure~\ref{fig:anno-fig} shows the annotation view while an annotator is annotating a Turkish sentence ( ``Sel sularında neler yoktu ki...''). 
+        
+    \item[Improved searching for reference and consistency:]
+    	Due to the complexity of some kinds of annotations it is very useful for an annotator to be able to refer to previously made annotations.
+    	Such annotations may be made by the same or other annotator. 
+    	As this applicaiton supports multiple users, annotators are able to share experiences.
 
-    \item[Network-enabled search:]
-        An important feature in this version is the ability to cross-check annotations by implementing a network for annotators where they can review the annotations done by other annotators.
-        This can be helpful and a learning experience for annotators.
+        The utility of this feature can be described with a real case during the annotation of a sentence related to a Zodiac sign (noun). \todo{Put the real Turkish example here}
+        Being unsure about how to annotate its \upos\ tag, she manually searched the \conllu\ file for similar cases and discovered that it had been  annotated in two different manners previously (inconsistency).  
 
-        For example, the annotator of the \bountreebank\ was annotating a sentence with a Zodiac sign noun.
-        Not being sure of how to annotate its \upos\ tag, she searched the \conllu\ file manually for similar cases and encountered two different values with which nouns of Zodiac signs were annotated previously.
-        Besides not helping how to choose a \upos\ tag, this raises a consistency issue within the treebank as well.
-        This task could have been handled by a search of the database.
-        We provide a search page and an API in this tool with which treebanks can be searched by \ud\ tags.
-
-        Another example could be given by the various \textit{-ki} morphemes in Turkish.
-        In the sentence ``Evdeki halılar yıkandı.'' (\textit{The rugs at home were washed.}), the \textit{-ki} acts as an adjectivizer.
+        Another example of difficult references involve the  \textit{-ki} morpheme in Turkish.
+        For example, in the sentence ``Evdeki halılar yıkandı.'' (\textit{The rugs at home were washed.}), the \textit{-ki} acts as an adjectivizer.
         However, in ``Benim halılarım yün, Ayşeninkiler sentetik.'' (\textit{My rugs are woolen. Ayşe's are synthetic.}), it is pronominal.
-        An annotator might not recall how a specific \textit{-ki} morpheme should be annotated, which can be remedied with a simple search.
-        Annotators have informed us that such cases occur frequently when annotating MRLs.
+        Searching for sentences where the  \textit{-ki} morpheme occurs for a reference would be hopeless with text search as they occur very frequently.
+        In MRLs this is a common occurrance. 
+        
+        Since manual search is difficult in \conllu\ files, even if regular expressions are used due to ambiguities, we have implemented text, regular expression, and \ud\ tag based searching.   
+        This functionality intends to support the creation of more accurate and consistently annotated treebank. 
 
-        The inter-annotator agreement allows us to see some anomalies in the Turkish part of the \ud\ framework.
-        For example, if a sentence were annotated a way by many annotators but the \ud\ validation script were finding it invalid, this might indicate the validation were lacking in this respect of the Turkish language.
+    \item[Inter-annotator agreement:]
+        The inter-annotator agreement is needed to check the consistency of annotations among annotators. 
+		Since this tool keeps track of annotations made by annotators, such computations are easily supported. 
 
-    \item[Annotation status:]
-        There are 3 annotation statuses ("Incomplete", "Draft" and "Complete") and they are cycled through by the annotator in the annotation view.
-        Status of an annotation is also shown in the search view, helping to select an appropriate case.
-        There is another view where completed, drafted or incomplete annotations can be listed.
+
 
 \end{itemize}
