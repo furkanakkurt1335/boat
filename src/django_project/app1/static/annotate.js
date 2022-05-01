@@ -709,7 +709,7 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
-    sentence_text.className = "table-sm mx-auto border";
+    sentence_text.className = "table-sm mx-auto border border-secondary";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
@@ -735,7 +735,7 @@ function inject_sentence() {
     // Show table
     let word_lines = document.createElement("table");
     word_lines.id = "word_lines";
-    word_lines.className = "table table-sm border";
+    word_lines.className = "table table-sm border border-secondary";
     let thead = document.createElement("thead");
     tbody = document.createElement("tbody");
     word_lines.append(thead);
@@ -817,7 +817,6 @@ function create_graph() {
         vis.id = "vis";
         let dep_graph = document.createElement('div');
         dep_graph.className = "conllu-parse";
-        dep_graph.setAttribute('data-visid', 'vis');
         dep_graph.setAttribute('data-inputid', 'input');
         dep_graph.setAttribute('data-parsedid', 'parsed');
         dep_graph.setAttribute('data-logid', 'log');
