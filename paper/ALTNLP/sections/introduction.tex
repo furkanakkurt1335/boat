@@ -7,12 +7,12 @@ However, creation of such treebanks is highly labour-intensive and time-consumin
 Therefore, tools that support the annotation process are very important.
 
 % may need a better segue
-In recent years, there have been significant efforts to bridge the gap in resources available for Turkish.
+In recent years, there have been significant efforts to bridge the gap in resources available for agglutinative low-resource languages.
 Among them is the creation of quality annotated data resources.
 There are several tools for annotating data~\cite{UD}, however, they tend not to be well suited for morphologically rich languages (MRLs) like Turkish.
 The complex nature of such languages requires the annotator to perform many operations, like splitting lemmas or entering many features for a single lemma.
 Many annotation tools often rely on drag-drop interfaces, which seem appealing, however, they tend to disrupt the flow of an annotator.
-This is especially true for MRLs which require lots of annotation entries and when large numbers of sentences are annotated, they create error-prone conditions. % not sure of last words
+This is especially true for MRLs which require lots of annotation entries.
 
 \boatvone~\cite{trk2020resources} is a standalone application developed with Python and based on Qt.
 It was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependency framework~\cite{UD}.
@@ -26,7 +26,7 @@ The design and implementation of the tool aimed to: (1) support the creating val
 The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 This feedback indicated that the ability to collaborate within the tool is needed to increase efficiency of multi-annotator treebank creation.
 
-Hence, we developed a web application that supports multiple users to enable a collaborative environment for annotations.
+In light of the feedback, we developed a web application that supports multiple users to enable a collaborative environment for annotations.
 An API was designed to render the functionalities accessible to various NLP applications.
 Several user experience improvements were implemented in order to facilitate the flow of an annotation session.
 Finally, the solution is dockerized in order to make it easily accessible and deployable for others.
