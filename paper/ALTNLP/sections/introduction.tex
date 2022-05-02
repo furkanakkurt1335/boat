@@ -5,12 +5,12 @@ Treebanks are important resources in the development of natural language process
 Quality tools need treebanks that are manually annotated by linguistic experts.
 This is especially true for agglutinative languages due to their complex morphologies.
 The creation of such treebanks is highly labor-intensive and time-consuming due to the meticulous attention required.
-Thus, tools that support this process are very important.
+Thus, tools that support this process are essential.
 
 In recent years, there have been significant efforts to bridge the gap in data resources available for agglutinative low-resource languages.
-Unfortunately, annotation tools developed for analytical languages~\cite{UD-tools} are not to be well suited for agglutinative languages with their complex morphology.
-The annotation of agglutinative languages requires significantly more operations, such as entering several features for each lemma and sometimes even for split lemmas.
-Annotation tools that rely on drag-drop and mouse-based interfaces, which seem appealing, are not suitable when entering numerous features is necessary since swapping between input modalities disrupts the flow of concentration.
+Unfortunately, annotation tools developed for only analytical languages in mind~\cite{UD-tools} are not to be well suited for agglutinative languages with their complex morphology.
+The annotation of agglutinative languages requires significantly more operations, such as entering several features for each lemma.
+Annotation tools that rely on drag-drop and mouse-based interfaces, which seem appealing, are not suitable when entering numerous features is necessary since swapping between input modalities disrupts the flow of a session.
 
 \boatvone~\cite{turk2021resources} is an annotation tool that was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependencies framework~\cite{UD}.
 It is a standalone application developed using Python and Qt for the user interface.
@@ -21,7 +21,7 @@ The main takeaway was a much better understanding of the time, effort, cognitive
 Improvements regarding these aspects should, consequently, produce higher quality data resources.
 
 This work presents a dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
-The design and implementation of the tool aimed to: (1) support the creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open source and easily deployable web-based annotation tool with an API to benefit the scientific community.
+The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open source and easily deployable web-based annotation tool with an API to benefit the scientific community.
 The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 
 \boatvtwo\ is a web-based collaborative dependency annotation tool that focuses on the user experience of annotators.
@@ -29,7 +29,7 @@ The current prototype is being evaluated with positive feedback.
 This feedback indicated that the ability to collaborate within the tool is needed to increase efficiency of multi-annotator treebank creation.
 In light of the feedback, we developed a web application that supports multiple users to enable a collaborative environment for annotations.
 It has an application programming interface (API) for programmatic access and extensibility.
-Several user experience improvements were implemented in order to facilitate the flow of an annotation session.
+Several user experience improvements were implemented to enhance the flow of an annotation session.
 The tool is dockerized in order to facilitate accessibility and ease of deployment.
 The final version will be made available on the Boğaziçi University's NLP platform~\cite{DIP} and provided as an open source resource.
 
@@ -40,7 +40,7 @@ The main contributions of this work are:
         \item The development of a tool that takes into account the annotator experience to improve resulting annotations,
         \item Support for multi-users to provide indivual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
         \item The development of a web-based annotation tool based on a supporting API, and
-        \item Packaging of the tool to support easy access by virtualizing it using Docker and providing the code as an open source resource.
+        \item Packaging of the tool to support easy access by virtualizing it using Docker~\cite{docker} and providing the code as an open source resource.
 \end{itemize}
 
 The remainder of this paper is organized as follows:
