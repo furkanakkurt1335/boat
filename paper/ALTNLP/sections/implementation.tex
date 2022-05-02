@@ -27,8 +27,8 @@ The following features have been implemented to support the creation of valid an
         Vertical graphs can consume a significant amount of screen real-estate, which can lead to loss of focus in long sentences that are common in agglutinative languages.
 
         An annotator may need to stop the annotation of a sentence for some reason (i.e. complexity or external interruption).
-        To capture the state of an annotation, a status is introduced for this purpose, which may take on on of these values: ``New", ``Draft" and ``Complete". 
-        An annotation that has not been annotated has the statys ``new''. 
+        To capture the state of an annotation, a status is introduced whose values may be: ``New", ``Draft" and ``Complete". 
+        The status of a sentence that has not been annotated is ``New''. 
 	An annotator can set the status to ``Draft'' or ``Complete''. 
         %The status of an annotation is also shown in the search results.
 
@@ -40,7 +40,6 @@ The following features have been implemented to support the creation of valid an
 		Without a good search feature an annotator would have to manually search the \conllu\ file for relevant cases (i.e. how to annotate some \form's \upos\ tag).
 		The \form\ might have been inconsistently annotated, alas it is unlikely that manual searched would reveal this case. 
 		In such a case the annotator would likely use the first encountered as a reference. 
-
         The situation gets more complicated for syncretic morphemes such as \textit{-ki} in Turkish.
         For example, in the sentence ``Evdeki halılar yıkandı.'' (\textit{The rugs at home were washed.}), the \textit{-ki} acts as an adjectivizer.
         However, in ``Benim halılarım yün, Ayşeninkiler sentetik.'' (\textit{My rugs are woolen. Ayşe's are synthetic.}), it is pronominal.
