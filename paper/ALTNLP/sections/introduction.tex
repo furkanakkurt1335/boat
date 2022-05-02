@@ -8,11 +8,11 @@ The creation of such treebanks is highly labor-intensive and time-consuming due 
 Thus, tools that support this process are essential.
 
 In recent years, there have been significant efforts to bridge the gap in data resources available for agglutinative low-resource languages.
-Unfortunately, annotation tools developed for only analytical languages in mind~\cite{UD-tools} are not to be well suited for agglutinative languages with their complex morphology.
-Creating a dependency annotation involves annotating each token (the most basic unit of a sentence) within a sentence with linguistically relevant values.
+Dependency annotation involves annotating each token of a sentence with linguistically relevant values.
 \conllu~\cite{UD} defines a set of linguistic tags for annotation purposes (i.e. \upos\ to annotate core part-of-speech categories).
-The annotation of agglutinative languages requires significantly more operations, such as annotating several features for each token.
-Annotation tools that rely on drag-drop and mouse-based interfaces, which seem appealing, are not suitable when annotation of numerous features of a single token is necessary since swapping between input modalities disrupts the flow of a session.
+For agglutinative languages it is common to provide annotations for most tags. Moreover, the \feats\ tag is typically annotated with multiple values. 
+The effort required to annotate agglutinative languages is significantly higher due to the complex morphology of such lanugages.
+Annotation tools with drag-drop and mouse-based interfaces, while may seem appealing, are not well suited for agglituinative languages as they require alternating among input modalities that disrupts the flow.
 
 \boatvone~\cite{turk2021resources} is an annotation tool that was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependencies framework~\cite{UD}.
 It is a standalone application developed using Python and Qt for the user interface.
