@@ -6,41 +6,38 @@ Requirements elicitation and validation meetings were held with annotators who w
 The main requirements that emerged are:
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
     \item[Collaborative annotation:]
-        The sheer size of Treebanks necessitate that they are annotated via multiple annotators. 
-	The tool must support multiple annotators working on the same treebank. 
-        The ability to share annoation experiences is vital for reference and consistency. 
-        Hence, the tool must provide means for registering multiple annotators and keep track of their respective annotations. 
+        The sheer size of treebanks necessitate that they are annotated via multiple annotators.
+        The tool must support multiple annotators working on the same treebank.
+        The ability to share annotation experiences is vital for reference and consistency.
+        Hence, the tool must provide means for registering multiple annotators and keep track of their respective annotations.
     \item[Search:]
-	While annotating a sentence annotators may need to refer to previous annotations for guidance. 
-        An annotator should be able to search a treebank according surface forms, and importantly, according to lingustic features. 
-        They should be able to perform complex searches that involve several criteria such as UD tags, features, and surface forms.
-	This features reduces the cognitive load as well as support consistency among annotations. 
+        While annotating a sentence annotators may need to refer to previous annotations for guidance.
+        An annotator should be able to search a treebank according to surface forms, and importantly, according to lingustic features.
+        They should be able to perform complex searches that involve several criteria such as \ud\ tags, features, and surface forms.
+        This feature reduces the cognitive load as well as supports consistency among annotations.
     \item[Keyboard-oriented input:]
         Annotations of agglutinative languages require entering many features for the \form s in comparison to analytical languages like English.
-        While drag-and-drop interfaces can work well for analytical languages, they don't for MRLs as they cause togling between mouse and keyboard interactions which is frustrating.
-        Keyboard based interaction must be offerred for all possible tasks.
+        While drag-and-drop interfaces can work well for analytical languages, they don't for MRLs as they require more toggles between mouse and keyboard interactions which is frustrating.
+        Keyboard-based interaction must be offered for all possible tasks.
     \item[Support for Sentence annotation:]
-	    To support the speed and accuracy annotations, \textit{autocompletion} should be supported whenever possible.  
-
-        Due to such typologies of and syncretism being generally higher in MRLs, automatic parsing of such treebanks is difficult and they more often than not fail to create valid parsings of \form s.
+        To support the speed and accurate annotations, \textit{autocompletion} should be supported whenever possible.
+        Due to typologies of and syncretism being generally higher in MRLs, automatic parsing of such treebanks is difficult and they more often than not fail to create valid parsings of \form s.
         Thus, refining automatic parsing is important for agglutinative languages, which requires splitting of lemmas.
-       Words in MRLs tend to have morphemes stacked on roots.
-		Annotators must be able to refine/correct automatically parsed entries, which for agglutinative languages includes \textit{splitting of lemmas}.
-    \item[Use of screen-realestate and customization:]
-	Annotators annotate numerous sentences every session. 
-	For agglutinative languages sentences tend to be long and complicated. 
-	The view of such sentences can cover a considerable part of the screen. 
-	The annotator must focus on the sentence being annotated, the lemmas, and all the features, which requires much concetration. 
-	The annotation process must not involve scrolling if possible. 
-	For very long sentences this may not be possible, however, the sentence being annotated should never go out of vision.  
-	Furthermore, each annotator has their unique preferences for how they annotate a sentence. 
-	They must have some control regarding showing or hiding certain information according to their preferences. 
-        An overall efficient use of the screen-realestate is important to convey the context needed to annotate long sentences. 
+        Words in MRLs tend to have morphemes stacked on roots.
+        Annotators must be able to refine/correct automatically parsed entries, which for agglutinative languages includes \textit{splitting of lemmas}.
+    \item[Use of screen real-estate and customization:]
+        Annotators annotate numerous sentences every session.
+        For agglutinative languages, sentences tend to be long and complicated.
+        The view of such sentences can cover a considerable part of the screen.
+        The annotator must focus on the sentence being annotated, the lemmas, and all the features, which requires much concentration.
+        The annotation process must not involve scrolling, if possible.
+        For very long sentences, this may not be possible; however, the sentence being annotated should never go out of vision.
+        Furthermore, each annotator has their unique preferences for how they annotate a sentence.
+        They must have some control regarding showing or hiding certain information according to their preferences.
+        An overall efficient use of the screen real-estate is important to convey the context needed to annotate long sentences.
 \end{itemize}
 
-
-Given these requirements, we decided that a web-based application that supports multiple authenticated users would support a collaborative platform for annotators. 
-The treebank and user annotations will be persisted in a database which makes managing the data and searches much more reliable and efficient.
-Also, an API is developed to support flexibilty and extensibility. 
-Finally, in addition to making the tool open source, we decided to containerize the application using docker to support its accessibility. 
-
+Given these requirements, we decided that a web-based application that supports multiple authenticated users would support a collaborative platform for annotators.
+The treebank and user annotations will persist in a database which makes managing the data and searches much more reliable and efficient.
+Also, an API is developed to support flexibilty and extensibility.
+Finally, in addition to making the tool open source, we decided to containerize the application using Docker\cite{docker} to support its accessibility.
