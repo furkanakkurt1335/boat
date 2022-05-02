@@ -1,15 +1,21 @@
-\section{Discussion}
+\section{Discussion and Conclusions}
 \label{sec:discussion}
 
-We wanted a tool capable of the functionalities of \boatvone\ and also offer a network for annotators to collaborate on the same treebank.
-We decided on a web application with an API for this purpose.
-For the web framework, Django and DRF served our purpose well.
+\boatvtwo\ aimed to  extend the functionality of \boatvone\ as a collaborative web-based application to support annotation process based on previous experiences. 
+We developed a web application that supports agglutinative languages as described in Section~\ref{sec:implementation}. 
 
-Doğal Dil İşleme Platformu ("Natural Language Processing Platform", DIP)~\cite{DIP} at Boğaziçi University have various NLP tools.
-The tools mostly output results based on input without a user interface.
-This is the first tool that has a UI in the platform and accordingly we needed to take some action regarding the integration of this novel tool.
-Dockerizing the application will allow us to easily integrate it into DIP.
+The implementation choices served our goals well. 
+We believe that having experts in linguistics and experienced annotators in agglutinative treebank creation was instrumental in understanding the requirements and design process. 
+We held numerous elicitation interviews and further meetings for clarifications and feedback requests.
 
-Interviews with and feedback from active annotators of Turkish treebanks have been very helpful.
-They shaped every part of the tool, from designing the API to the annotation view in the UI part.
-It is an extensible tool and can be tailored for other use cases.
+We used modern software development tools and management practices during the development lifecycle of this tool.
+The development of an API enables various extensions of this tool and access to the treebanks.  
+The containerization with docker has facilitates easy delivery and deployment.
+It will be made available on the Boğaziçi University's language plafform DIP~\cite{DIP} as a demo as well as an open source resource.
+The availability of the tool as a user as well as developer is valuable for future use and developments. 
+
+
+This tool is in testing phase and has had encouraging early feedback.
+We are encouraged by the early responses to this tool and anticipate its extensions.
+We plan to conduct further tests with the lingusitics department. 
+We also see potentials for customizing this tool to support the annotating of rare languages. 

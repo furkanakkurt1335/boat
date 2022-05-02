@@ -1,70 +1,58 @@
 \section{Implementation}
 \label{sec:implementation}
 
-Web application development framework \textit{Django}~\cite{django}, Web API toolkit \textit{Django REST Framework} (DRF)~\cite{drf} and Python~\cite{python} library \textit{django-filter}~\cite{django-filter} are used to operate \boatvtwo.
-PostgreSQL~\cite{psql} is used to provide a database for the server-side applications of the software.
-During the implementation phase, decisions regarding models of the database have been directed towards the UI utilizing the API for database queries and searches.
-The models reflect the \ud\ format of sentences and annotations are saved as fields of word lines.
+The annoation tool is implemented using  Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} with the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
+PostgreSQL~\cite{psql} is used as a database.
+The models reflect the \ud\ format of sentences.
+Most of the sentence annotation functionalities are similar to \boatvone.
+User input is validated according to  \ud\ and errors are reported on the annotation page. 
+Three alternative forms of dependency graph visualizations are supported, two of which are compact horizontal to reduce the required screen real estate~\cite{spacy,spyssalo,spyssalo}.
 
-All the pages of the tool have been supported by Bootstrap~\cite{bootstrap}.
-The annotation page has most of the functionalities of \boatvone.
-Entries are validated and errors are displayed on the annotation page for annotators to see invalid edits in real time, according to the \ud\ framework~\cite{UD} and the language provided.
 
-Python library \textit{spa\textsc{C}y}~\cite{spacy} is used to provide linear dependency graphs.
-Another JavaScript-based linear dependency graph~\cite{spyssalo} making use of \textit{brat}~\cite{brat} is used to provide graphs as well.
-An annotator's preference regarding this may vary, thus, giving them visualization options is important.
+The following features have been implemented to support the creation of valid annotations with increased speed in a collaborative manner:
 
-As stated in Section~\ref{sec:introduction} \boatvtwo\ aims to support the annotator experience by facilitating faster and correct annotations in a collaborative manner. The following features have been implemented towards this end:
-
-\begin{figure}[tbh]
-    \centering
-    \tcbox[left=0mm,right=0mm,top=0mm,bottom=0mm,boxsep=1pt,arc=0mm,boxrule=0.5pt,colframe=black,sharp corners]
-    {\includegraphics[width=1\textwidth]{figures/sample-annotation.png}}
-    \caption{The annotation screen captured while the sentence ``Sel sularında neler yoktu ki...'' is being annotated. The \deprel\ tag for the \form\ ``sularında'' is being annotated by selecting among the valid alternatives that appear in the pop-up. Selections can be made with use of arrow keys.}
-    \label{fig:anno-fig}
-\end{figure}
 
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
-    \item[Treebanks:]
-        Ability to work with multiple treebanks. Users can select which treebank they work on and upload new treebanks as \conllu\ files.
+    \item[Treebanks handling:]
+        Users can work on multiple treebanks.
+        The can upload new treebanks as \conllu\ files.
         Treebanks and their annotations are stored in a database.
 
-    \item[Annotation view:]
+    \item[Sentence annotation:]
+    	An annotator selects the sentence they want to annotate. 
         The sentence annotation page is very similar to \boatvone.
         It consists of three main parts: (1) A table with rows for every lemma in the sentence and columns, which represent the \ud\ tags of a sentence (\form, \lemma, \deprel, etc.), corresponding to their annotations (2) the dependency graph of the sentence; and (3) errors from validation according to the \ud\ framework.
         The dependency graph and errors are synchronized with the annotations.
         Several dependency graph presentations are supported to suit the annotator preference.
         Vertical graphs can consume a significant amount of screen real-estate, which can lead to loss of focus in long sentences that are common in agglutinative languages.
 
-        As some sentence annotations can be very complicated or an annotator may need to stop the annotation process for some reason, there is a need for capturing the state of the annotation for a given sentence by a given annotator.
-        For this purpose, each sentence is assigned a status that may be: ``Incomplete", ``Draft" and ``Complete".
-        The status of an annotation is also shown in the search view to assist the user.
+        An annotator may need to stop the annotation of a sentence for some reason (i.e. complexity or external interruption).
+        To capture the state of an annotation, a status is introduced for this purpose, which may take on on of these values: ``New", ``Draft" and ``Complete". 
+        An annotation that has not been annotated has the statys ``new''. 
+	An annotator can set the status to ``Draft'' or ``Complete''. 
+        %The status of an annotation is also shown in the search results.
 
-        The annotator is able to perform almost all operations via keyboard action.
-        This was a strong request from annotators, which they were very pleased with and reported improved flow and greatly improved speed.
-        The desire for operating from the keyboard arises from the need to annotate a great many features for agglutinative languages.
-        Drag-drop interfaces force annotatators to toggle back and forth between mouse and keyboard interactions which were reported to be very frustrating in terms of concentration and speed.
-
-        Figure~\ref{fig:anno-fig} shows the annotation view while an annotator is annotating a Turkish sentence (``Sel sularında neler yoktu ki...'').
+        The annotator is able to perform almost all operations via keyboard action, based on the demand of the annotators (see Section~\ref{sec:requirements} for details).
+        Upon the experience of annotating a Turkish treebank, the annotators have reported being very pleased with the convenience and speed resulting from keyboard-based interaction.
 
     \item[Improved searching for reference and consistency:]
-        Due to the complexity of some kinds of annotations it is very useful for an annotator to be able to refer to previously made annotations.
-        Such annotations may be made by any annotator of the treebank.
-        As this application supports multiple users, annotators are able to share experiences.
+        Users are able to search for previously annotated sentences in combinations of surface text, tags, and features. 
+		Without a good search feature an annotator would have to manually search the \conllu\ file for relevant cases (i.e. how to annotate some \form's \upos\ tag).
+		The \form\ might have been inconsistently annotated, alas it is unlikely that manual searched would reveal this case. 
+		In such a case the annotator would likely use the first encountered as a reference. 
 
-        The utility of this feature can be described with a real case during the annotation of a sentence.
-        The annotator was unsure about how to annotate a \form's \upos\ tag and manually searched the \conllu\ file for similar cases and discovered that it had been annotated with two different values previously (inconsistency).
-
-        Another example of difficult references involve the \textit{-ki} morphemes in Turkish.
+        The situation gets more complicated for syncretic morphemes such as \textit{-ki} in Turkish.
         For example, in the sentence ``Evdeki halılar yıkandı.'' (\textit{The rugs at home were washed.}), the \textit{-ki} acts as an adjectivizer.
         However, in ``Benim halılarım yün, Ayşeninkiler sentetik.'' (\textit{My rugs are woolen. Ayşe's are synthetic.}), it is pronominal.
-        Searching for sentences where the \textit{-ki} morpheme occurs for a reference would be hopeless with text search as they occur very frequently in MRLs.
+        Searching for sentences where the \textit{-ki} morpheme occurs via text search would be hopeless with as there would be too many hits since they occur very frequently.
 
-        Since manual search is difficult in \conllu\ files, we have implemented search based on text and \ud\ tags enhanced with regular expressions.
-        This functionality intends to support the creation of more accurate and consistent treebanks.
-
+        To facilitate effective searching, we have implemented search functionality based on combinations of text and \ud\ tags.
+        Regular expression based search is also supported.
+        This feature supports annotators to share experiences, which consequently is expected to result in more accurate and consistent treebanks.
+        
     \item[Inter-annotator agreement:]
-        The inter-annotator agreement is needed to check the consistency of annotations among annotators.
-        Since this tool keeps track of annotations made by annotators, such computations are easily supported.
+        The consistency of annotations among annotators is an indicator of quality of the resulting resource.
+        Inter-annotator agreement to computes the consistency among annotators.
+        Since this tool keeps track of annotator actions, such computations are straightforward.
 
 \end{itemize}
