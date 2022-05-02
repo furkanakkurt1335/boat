@@ -1,7 +1,7 @@
 \section{Implementation}
 \label{sec:implementation}
 
-The annoation tool is implemented using  Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} with the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
+The annotation tool is implemented using  Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} with the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
 PostgreSQL~\cite{psql} is used as a database.
 The models reflect the \ud\ format of sentences.
 Most of the sentence annotation functionalities are similar to \boatvone.
@@ -15,7 +15,7 @@ The following features have been implemented to support the creation of valid an
 \begin{itemize}[before=\normalfont, font=\itshape, align=left,noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,labelwidth=5cm,align=left,itemindent=5cm]
     \item[Treebanks handling:]
         Users can work on multiple treebanks.
-        The can upload new treebanks as \conllu\ files.
+        They can upload new treebanks as \conllu\ files.
         Treebanks and their annotations are stored in a database.
 
     \item[Sentence annotation:]
@@ -37,21 +37,21 @@ The following features have been implemented to support the creation of valid an
 
     \item[Improved searching for reference and consistency:]
         Users are able to search for previously annotated sentences in combinations of surface text, tags, and features. 
-		Without a good search feature an annotator would have to manually search the \conllu\ file for relevant cases (i.e. how to annotate some \form's \upos\ tag).
-		The \form\ might have been inconsistently annotated, alas it is unlikely that manual searched would reveal this case. 
-		In such a case the annotator would likely use the first encountered as a reference. 
+		Without a good search feature, an annotator would have to manually search the \conllu\ file for relevant cases (i.e. how to annotate some \form's \upos\ tag).
+		The \form\ might have been inconsistently annotated, alas it is unlikely that a manual search would reveal this case.
+		In such a case, the annotator would likely use the first encountered as a reference. 
         The situation gets more complicated for syncretic morphemes such as \textit{-ki} in Turkish.
         For example, in the sentence ``Evdeki halılar yıkandı.'' (\textit{The rugs at home were washed.}), the \textit{-ki} acts as an adjectivizer.
         However, in ``Benim halılarım yün, Ayşeninkiler sentetik.'' (\textit{My rugs are woolen. Ayşe's are synthetic.}), it is pronominal.
-        Searching for sentences where the \textit{-ki} morpheme occurs via text search would be hopeless with as there would be too many hits since they occur very frequently.
+        Searching for sentences where the \textit{-ki} morpheme occurs via text search would be hopeless as there would be too many hits since they occur very frequently.
 
         To facilitate effective searching, we have implemented search functionality based on combinations of text and \ud\ tags.
-        Regular expression based search is also supported.
+        Regular expression-based search is also supported.
         This feature supports annotators to share experiences, which consequently is expected to result in more accurate and consistent treebanks.
         
     \item[Inter-annotator agreement:]
         The consistency of annotations among annotators is an indicator of quality of the resulting resource.
-        Inter-annotator agreement to computes the consistency among annotators.
+        Inter-annotator agreement computes the consistency among annotators.
         Since this tool keeps track of annotator actions, such computations are straightforward.
 
 \end{itemize}
