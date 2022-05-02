@@ -8,7 +8,7 @@ It is an actively growing standard that intends to cover all languages.
 The support for agglutinative languages is evolving.
 
 Several dependency annotation tools have been proposed such as \textit{brat}~\cite{brat}, \textit{UD Annotatrix} and \textit{DgAnnotator}~\cite{UD-tools}.
-These tools mostly rely on mouse-based user interaction, which are inefficient for annotating agglutinative languages due to the need for annotation of numerous features for most tokens.
+These tools mostly rely on mouse-based user interaction, which is inefficient for annotating agglutinative languages due to the need for annotation of numerous features for most tokens.
 
 The ITU Treebank Annotation Tool~\cite{pamay-etal-2015-annotation} is developed for Turkish.
 It is written in Java as a standalone tool and has several versions.
@@ -16,21 +16,21 @@ It offers semi-automated support for annotators through analyzers for creating n
 It mostly relies on mouse-based interactions and doesn't support the \ud\ framework.
 
 \boatvone~\cite{turk-etal-2019-turkish} is a standalone annotation tool for treebanks compatible with the \ud\ framework~\cite{UD}.
-Although mouse based interaction is supported, for almost all functionality, keyboard input is supported in accordance with annotator demands.
-This tool was used to create the \bountreebank~\cite{turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising of nearly ten thousand sentences.
+Although mouse-based interaction is supported, for almost all functionality, keyboard input is supported in accordance with annotator demands.
+This tool was used to create the \bountreebank~\cite{turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising nearly ten thousand sentences.
 It also uses analyzers to process treebanks with the \conllu\ format of \ud.
 
-WebAnno~\cite{webanno} is a web-based annotation tool that supports multiple users. 
+WebAnno~\cite{webanno} is a web-based annotation tool that supports multiple users.
 To annotate features of a token, it requires several mouse clicks which is impractical for MRLs.
-It does not display a dependency graph like \boatvone\ and \boatvtwo. 
+It does not display a dependency graph like \boatvone\ and \boatvtwo.
 It presents several sentences simultaneously, which can be distracting.
 
 The work presented in this paper (\boatvtwo) is based on the experiences gained during the use of \boatvone.
-Like its predecessor and many other tools, it supports \ud. 
-The primary interaction modality is the keyboard to enable a flow state. 
+Like its predecessor and many other tools, it supports \ud.
+The primary interaction modality is the keyboard to enable a flow state.
 It is a web application with a backend that provides an API.
-A database is used for persisting the annotations created by various annotations for various treebanks. 
-It provides a rich search functionality that supports collaborative annotations. 
-It is an open source resource that is containerized for ease of distribution and deployment.
+A database is used for persisting the annotations created by various annotations for various treebanks.
+It provides rich search functionality that supports collaborative annotations.
+It is an open-source resource that is containerized for ease of distribution and deployment.
 % NOT RELATED WORK! Feedback indicated that big treebanks like the \bountreebank\ require many annotators collaborating and treebanks of that size are only increasing with time.
 % NOT RELATED WORK! Accordingly, supporting a multi-user experience of collaboration is a high priority of the new tool.

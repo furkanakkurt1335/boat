@@ -6,10 +6,10 @@ Requirements elicitation and validation meetings were held with annotators who w
 The main requirements that emerged are:
 \begin{itemize}[before=\normalfont, font=\itshape, align=left,noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,labelsep=3pt,align=left]
     \item[Collaborative annotation:]
-        The sheer size of treebanks necessitate that they are annotated via multiple annotators.
+        The sheer size of treebanks necessitates that they are annotated via multiple annotators.
         The tool must support multiple annotators working on the same treebank.
         The ability to share annotation experiences is vital for reference and consistency.
-        Hence, the tool must provide means for registering multiple annotators and keep track of their respective annotations.
+        Hence, the tool must provide means for registering multiple annotators and keeping track of their respective annotations.
     \item[Search:]
         While annotating a sentence, annotators may need to refer to previous annotations for guidance.
         An annotator should be able to search a treebank according to surface forms, and importantly, according to linguistic features.
@@ -34,10 +34,10 @@ The main requirements that emerged are:
         For very long sentences, this may not be possible; however, the sentence being annotated should never go out of vision.
         Furthermore, each annotator has their unique preferences for how they annotate a sentence.
         They must have some control regarding showing or hiding certain information according to their preferences.
-        An overall efficient use of the screen real estate is important to convey the context needed to annotate long sentences.
+        Overall efficient use of the screen real estate is important to convey the context needed to annotate long sentences.
 \end{itemize}
 
 Given these requirements, we decided that a web-based application that supports multiple authenticated users would support a collaborative platform for annotators.
 The treebank and user annotations will persist in a database which makes managing the data and searches much more reliable and efficient.
-Also, an API is developed to support flexibilty and extensibility.
+Also, an API is developed to support flexibility and extensibility.
 Finally, in addition to making the tool open source, we decided to containerize the application using Docker\cite{docker} to support its accessibility.

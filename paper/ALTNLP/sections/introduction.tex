@@ -16,38 +16,38 @@ Annotation tools that rely on drag-drop and mouse-based interfaces, which seem a
 
 \boatvone~\cite{turk2021resources} is an annotation tool that was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependencies framework~\cite{UD}.
 It is a standalone application developed using Python and Qt for the user interface.
-Its main input modality is via the keyboard on request of the annotators.
-It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising of thousands of sentences.
+Its main input modality is via the keyboard at the request of the annotators.
+It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising thousands of sentences.
 This experience revealed several points of improvement for such annotation tools.
 The main takeaway was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
 Improvements regarding these aspects should, consequently, produce higher quality data resources.
 
 This work presents a dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
-The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open source and easily deployable web-based annotation tool with an API to benefit the scientific community.
+The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
 The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 
 \boatvtwo\ is a web-based collaborative dependency annotation tool that focuses on the user experience of annotators.
 The current prototype is being evaluated with positive feedback.
-This feedback indicated that the ability to collaborate within the tool is needed to increase efficiency of multi-annotator treebank creation.
+This feedback indicated that the ability to collaborate within the tool is needed to increase the efficiency of multi-annotator treebank creation.
 In light of the feedback, we developed a web application that supports multiple users to enable a collaborative environment for annotations.
 It has an application programming interface (API) for programmatic access and extensibility.
 Several user experience improvements were implemented to enhance the flow of an annotation session.
-The tool is dockerized in order to facilitate accessibility and ease of deployment.
-The final version will be made available on Boğaziçi University's NLP platform~\cite{DIP} and provided as an open source resource.
+The tool is dockerized to facilitate accessibility and ease of deployment.
+The final version will be made available on Boğaziçi University's NLP platform~\cite{DIP} and provided as an open-source resource.
 
 The main contributions of this work are:
 \begin{itemize}
 \setlength\itemsep{0em}
         \item Design of a dependency annotation tool that is based on requirements elicited from experienced annotators who are linguists,
         \item The development of a tool that takes into account the annotator experience to improve resulting annotations,
-        \item Support for multi-users to provide indivual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
+        \item Support for multi-users to provide individual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
         \item The development of a web-based annotation tool based on a supporting API, and
-        \item Packaging of the tool to support easy access by virtualizing it using Docker~\cite{docker} and providing the code as an open source resource.
+        \item Packaging of the tool to support easy access by virtualizing it using Docker~\cite{docker} and providing the code as an open-source resource.
 \end{itemize}
 
 The remainder of this paper is organized as follows:
 Section~\ref{sec:related} presents related work,
 Section~\ref{sec:requirements} describes the requirements and design,
 Section~\ref{sec:implementation} presents the implementation and new features,
-Section~\ref{sec:annotation} presents a use case of annotation, and 
+Section~\ref{sec:annotation} presents a use case of annotation, and
 Section~\ref{sec:discussion} provides a discussion along with our conclusions.
