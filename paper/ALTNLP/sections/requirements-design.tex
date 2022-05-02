@@ -4,7 +4,6 @@
 Requirements elicitation and validation meetings with annotators that have annotated the \bountreebank, which has close to 10 thousand sentences, have been held to specify the software requirements.
 This section will explain these requirements from the aforementioned process and design decisions based on them.
 
-\subsection{Requirements}
 \begin{itemize}[before=\normalfont, font=\itshape, align=left]
     \item[Multi-user:]
         Treebanks are increasing in size as new computer hardware makes it feasible to work with ever-bigger datasets.
@@ -35,10 +34,7 @@ This section will explain these requirements from the aforementioned process and
     \item[Space:]
         Using the screen space in a compact manner is important for focus and any part of the screen that's not interacted with frequently should be made compact.
         Considering this, individual checkboxes of \boatvone, responsible for toggling columns in the table, have been converted into a dropdown menu, leaving more space for the annotation table where most of the annotator's focus is directed towards.
-\end{itemize}
 
-\subsection{Design}
-\begin{itemize}[before=\normalfont, font=\itshape, align=left]
     \item[API:]
         An API for search and annotation functionalities as a supporting base of the UI part is deemed a useful addition to the tool, which would make it possible for the tool to have greater variety of use cases outside the tool's prime objective, which is a UI for treebank annotation.
         In addition to serving the data for the UI generation, the API should also allow a 3rd party agent to use it to get the annotations of a particular treebank to use in their NLP tasks in a systematic way.
