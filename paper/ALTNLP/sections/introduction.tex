@@ -9,8 +9,8 @@ Thus, tools that support this process are essential.
 
 In recent years, there have been significant efforts to bridge the gap in data resources available for agglutinative low-resource languages.
 Unfortunately, annotation tools developed for only analytical languages in mind~\cite{UD-tools} are not to be well suited for agglutinative languages with their complex morphology.
-The annotation of agglutinative languages requires significantly more operations, such as entering several features for each lemma.
-Annotation tools that rely on drag-drop and mouse-based interfaces, which seem appealing, are not suitable when entering numerous features is necessary since swapping between input modalities disrupts the flow of a session.
+The annotation of agglutinative languages requires significantly more operations, such as entering several features for each token.
+Annotation tools that rely on drag-drop and mouse-based interfaces, which seem appealing, are not suitable when annotation of numerous features of a single token is necessary since swapping between input modalities disrupts the flow of a session.
 
 \boatvone~\cite{turk2021resources} is an annotation tool that was developed to support the dependency annotation of MRLs to produce treebanks compliant with the Universal Dependencies framework~\cite{UD}.
 It is a standalone application developed using Python and Qt for the user interface.
@@ -31,7 +31,7 @@ In light of the feedback, we developed a web application that supports multiple 
 It has an application programming interface (API) for programmatic access and extensibility.
 Several user experience improvements were implemented to enhance the flow of an annotation session.
 The tool is dockerized in order to facilitate accessibility and ease of deployment.
-The final version will be made available on the Boğaziçi University's NLP platform~\cite{DIP} and provided as an open source resource.
+The final version will be made available on Boğaziçi University's NLP platform~\cite{DIP} and provided as an open source resource.
 
 The main contributions of this work are:
 \begin{itemize}
