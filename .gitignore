@@ -34,7 +34,7 @@ __pycache__/
 
 # added for Django, 3/17/2022 8:15 AM
 # *.sqlite3 # using pg now, 3/18/2022 11:59 AM
-migrations
+# migrations
 
 
 					## Core latex/pdflatex auxiliary files:
