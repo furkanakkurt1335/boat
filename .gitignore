@@ -1,5 +1,9 @@
+# removed, wide wildcard
+#*.md
+#*.pdf
+#*.conllu
+
 # added 4/29
-*.md
 Things to do.txt
 Section-template.txt
 
@@ -13,7 +17,6 @@ Notes*.txt
 UD_Challenges_Paper/
 
 # added, 3/19/2022 10:41 PM
-#*.pdf
 notes*
 Archive*
 
@@ -29,13 +32,11 @@ Archive*
 # added for tex, 3/17/2022 11:05 PM
 *.abs
 *.xmpdata
-#*.conllu
 __pycache__/
 
 # added for Django, 3/17/2022 8:15 AM
 # *.sqlite3 # using pg now, 3/18/2022 11:59 AM
 # migrations
-
 
 					## Core latex/pdflatex auxiliary files:
 *.aux
