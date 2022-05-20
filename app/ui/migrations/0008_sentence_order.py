@@ -7,7 +7,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0007_alter_word_line_head'),
+        ('ui', '0007_alter_word_line_head'),
     ]
 
     operations = [

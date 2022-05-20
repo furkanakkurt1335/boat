@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0004_alter_sentence_unique_together'),
+        ('ui', '0004_alter_sentence_unique_together'),
     ]
 
     operations = [

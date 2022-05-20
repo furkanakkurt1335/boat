@@ -15,6 +15,9 @@ window.onload = function () {
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
     window.current_columns = document.getElementById('current_columns').innerHTML.replace('[', '').replace(']', '').replaceAll("'", '').split(', '); // splitting list coming from preferences
+    for (let i = 0; i < current_columns.length; i++) {
+        current_columns[i] = current_columns[i].toLowerCase();
+    }
     $('#sent_id').remove();
     $('#text').remove();
     $('#cells').remove();

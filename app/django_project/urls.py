@@ -28,7 +28,7 @@ router.register(r'wordlines', views.WordLineViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app1.urls')),
+    path('', include('ui.urls')),
     # path('', include('search.urls')),
     path('query/', views.query, name='query'),
     path('api/my_annotations/', views.my_annotations, name='my_annos'),

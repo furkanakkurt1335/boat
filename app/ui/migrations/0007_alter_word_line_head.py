@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0006_remove_annotation_cats_word_line'),
+        ('ui', '0006_remove_annotation_cats_word_line'),
     ]
 
     operations = [

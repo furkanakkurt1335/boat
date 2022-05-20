@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0011_extenduser'),
+        ('ui', '0011_extenduser'),
     ]
 
     operations = [

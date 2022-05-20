@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('app1', '0002_delete_annotator'),
+        ('ui', '0002_delete_annotator'),
     ]
 
     operations = [
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('sent_id', models.CharField(max_length=30)),
                 ('text', models.TextField()),
                 ('comments', models.JSONField(blank=True)),
-                ('treebank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app1.treebank')),
+                ('treebank', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ui.treebank')),
             ],
         ),
         migrations.CreateModel(
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('cats', models.JSONField()),
                 ('notes', models.TextField(blank=True)),
                 ('annotator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('sentence', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app1.sentence')),
+                ('sentence', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ui.sentence')),
             ],
         ),
     ]

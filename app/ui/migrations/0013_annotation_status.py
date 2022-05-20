@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app1', '0012_rename_form_f_word_line_form'),
+        ('ui', '0012_rename_form_f_word_line_form'),
     ]
 
     operations = [

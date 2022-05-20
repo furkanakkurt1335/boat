@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('app1', '0010_alter_sentence_order'),
+        ('ui', '0010_alter_sentence_order'),
     ]
 
     operations = [
