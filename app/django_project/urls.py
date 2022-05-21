@@ -26,13 +26,15 @@ router.register(r'sentences', views.SentenceViewSet)
 router.register(r'annotations', views.AnnotationViewSet)
 router.register(r'wordlines', views.WordLineViewSet)
 
+root_path = ''
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('ui.urls')),
+    path(f'{root_path}admin/', admin.site.urls),
+    path(f'{root_path}', include('ui.urls')),
     # path('', include('search.urls')),
-    path('query/', views.query, name='query'),
-    path('api/my_annotations/', views.my_annotations, name='my_annos'),
-    path('api/get_treebank/', views.get_treebank, name='get_treebank'),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path(f'{root_path}query/', views.query, name='query'),
+    path(f'{root_path}api/my_annotations/', views.my_annotations, name='my_annos'),
+    path(f'{root_path}api/get_treebank/', views.get_treebank, name='get_treebank'),
+    path(f'{root_path}api/', include(router.urls)),
+    path(f'{root_path}api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
