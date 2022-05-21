@@ -5,9 +5,9 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile.prod
-    command: gunicorn django_project.wsgi:application --bind 0.0.0.0:8000
+    command: python -m gunicorn django_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/home/app/web/staticfiles
+      - static_volume:/home/app/web/ui/static
       - media_volume:/home/app/web/mediafiles
     expose:
       - 8000
