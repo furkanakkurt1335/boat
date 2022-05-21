@@ -174,9 +174,17 @@ function button_handle(type, number, way) {
         }
     }
     else if (type == "do") {
-        let sel = document.getElementById("row_select_select");
-        let selected = sel.options[sel.selectedIndex].text;
-        let input_number = document.getElementById("row_select_input").value;
+        let input_number = "";
+        if (["up", "down"].includes(way)) {
+            if (way == "up") selected = "Add row";
+            else if (way == "down") selected = "Remove row";
+            input_number = number;
+        }
+        else {
+            let sel = document.getElementById("row_select_select");
+            let selected = sel.options[sel.selectedIndex].text;
+            input_number = document.getElementById("row_select_input").value;
+        }
         if (input_number == "") return;
         if (selected == "Go to sentence") {
             post_to_save("go", input_number);
@@ -188,38 +196,35 @@ function button_handle(type, number, way) {
                 else if (way == "up") selected = "Remove row";
             }
             let cells_keys = get_sorted_cells_keys();
-            if (cells_keys.indexOf(input_number) == -1) return;
+            if (!cells_keys.includes(input_number)) return;
             let row_place = cells_keys.indexOf(input_number);
             if (selected == "Add row") {
+                if (input_number.includes('-')) return;
                 let first_num = parseInt(input_number);
                 if (first_num == NaN) return;
-                let new_row = `${first_num}-${first_num + 1}`;
-                window.cells[new_row] = { ...window.cells[cells_keys[row_place]] };
-                window.cells[(parseInt(cells_keys[cells_keys.length - 1]) + 1).toString()] = { ...window.cells[cells_keys[cells_keys.length - 1]] };
                 for (let i = cells_keys.length - 1; i > row_place; i--) {
-                    if (cells_keys[i].indexOf('-') != -1) {
-                        let matches = cells_keys[i].match(/(\d+)-(\d+)/);
-                        let n1 = matches[1];
-                        window.cells[`${n1 + 1}-${n1 + 2}`] = window.cells[cells_keys[i]];
+                    let key_t = cells_keys[i];
+                    let key_num = parseInt(key_t);
+                    if (key_t.includes('-')) {
+                        window.cells[`${key_num + 1}-${key_num + 2}`] = { ...window.cells[key_t] };
+                        delete window.cells[key_t];
                     }
-                    else window.cells[cells_keys[i]] = window.cells[cells_keys[i - 1]];
+                    else window.cells[`${key_num + 1}`] = { ...window.cells[key_t] };
                 }
+                window.cells[`${first_num}-${first_num + 1}`] = { ...window.cells[input_number] };
+                window.cells[`${first_num + 1}`] = { ...window.cells[input_number] };
             }
             else if (selected == "Remove row") {
                 let new_key = "";
-                if (input_number.includes('-')) {
-                    delete window.cells[input_number];
-                }
+                if (input_number.includes('-')) delete window.cells[input_number];
                 else {
                     for (let i = row_place; i < cells_keys.length - 1; i++) {
                         let key = cells_keys[i + 1];
                         if (key.includes('-')) {
-                            let first_num = parseInt(key.split('-')[0]);
+                            let first_num = parseInt(key);
                             new_key = `${first_num - 1}-${first_num}`;
                         }
-                        else {
-                            new_key = `${parseInt(key) - 1}`;
-                        }
+                        else new_key = `${parseInt(key) - 1}`;
                         window.cells[new_key] = window.cells[cells_keys[i + 1]];
                         delete window.cells[cells_keys[i + 1]];
                     }
@@ -330,7 +335,7 @@ document.onkeyup = function (e) {
         button_handle("save");
     }
     else if (e.key.toLowerCase() == "t" && e.altKey) {
-        document.getElementById("word_lines").focus();
+        document.getElementById("1 form").focus();
     }
     else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
         if (!document.getElementById('word_lines').contains(document.activeElement)) return;
@@ -413,11 +418,6 @@ function init_page() {
     div_col.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // previous-next button group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
@@ -446,11 +446,6 @@ function init_page() {
     button.setAttribute('data-bs-placement', 'bottom');
     button.setAttribute('title', 'Go to the next sentence');
     btn_group.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // reset-undo-redo button group
@@ -494,11 +489,6 @@ function init_page() {
     btn_group.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // input-group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
@@ -534,11 +524,6 @@ function init_page() {
     input_group.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // status
     div_col = document.createElement('div');
     div_col.className = 'col';
@@ -546,11 +531,6 @@ function init_page() {
     button.id = "status";
     button.innerHTML = window.status_d[window.status];
     div_col.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // errors
@@ -571,11 +551,6 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     div_col.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // input-group
@@ -621,11 +596,6 @@ function init_page() {
     input_group.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // input-group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
@@ -662,11 +632,6 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     input_group.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // save
@@ -916,18 +881,20 @@ function feats_order(key) {
     let feats = window.cells[key]['feats'].split('|');
     if (feats.length == 1 && feats[0] == "_") return;
     let new_feats = "";
-    let cols_l = [];
     let cols_d = {};
     for (let j = 0; j < feats.length; j++) {
         let matches = feats[j].match(/(.+)=(.+)/);
         if (matches.length == 3) cols_d[matches[1]] = matches[2];
     }
-    d_keys = Object.keys(cols_d);
+    d_keys = Object.keys(cols_d).sort();
     for (let j = 0; j < d_keys.length; j++) {
         let col_t = d_keys[j];
-        new_feats += `${col_t}=${cols_d[col_t]}`;
-        if (j != d_keys.length-1) new_feats += "|";
+        let val_t = cols_d[col_t];
+        if (val_t == "_") continue;
+        new_feats += `${col_t}=${val_t}`;
+        if (j != d_keys.length - 1) new_feats += "|";
     }
+    if (new_feats == "") new_feats = "_";
     window.cells[key][feats] = new_feats;
     document.getElementById(`${key} feats`).innerHTML = new_feats;
 }
@@ -952,10 +919,8 @@ function cell_change(key, column, cell) {
     else if (features_low.includes(column)) {
         let new_feats = "";
         let feats = window.cells[key]['feats'].split('|');
-        if (cell != "_") {
-            if (feats.length == 1 & feats[0] == "_") new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
-            else new_feats = `${window.cells[key]['feats']}|${features[features_low.indexOf(column)]}=${cell}`;
-        }
+        if (feats.length == 1 & feats[0] == "_") new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
+        else new_feats = `${window.cells[key]['feats']}|${features[features_low.indexOf(column)]}=${cell}`;
         if (new_feats == "") new_feats = "_";
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;

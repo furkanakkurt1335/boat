@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
 from .serializers import UserSerializer, GroupSerializer, TreebankSerializer, SentenceSerializer, AnnotationSerializer, WordLineSerializer
-from app1.models import Treebank, Sentence, Annotation, Word_Line
+from ui.models import Treebank, Sentence, Annotation, Word_Line
 from django_filters import rest_framework as filters
 from django_filters import CharFilter
 

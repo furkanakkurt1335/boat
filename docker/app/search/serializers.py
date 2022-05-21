@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from app1.models import Treebank, Sentence, Annotation, Word_Line
+from ui.models import Treebank, Sentence, Annotation, Word_Line
 
 class TreebankSerializer(serializers.ModelSerializer):
     class Meta:

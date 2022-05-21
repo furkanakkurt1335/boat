@@ -7,7 +7,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "Incomplete", 1: "Finished", 2: "Draft" };
+    window.status_d = { 0: "New", 1: "Finished", 2: "Draft" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -15,6 +15,9 @@ window.onload = function () {
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
     window.current_columns = document.getElementById('current_columns').innerHTML.replace('[', '').replace(']', '').replaceAll("'", '').split(', '); // splitting list coming from preferences
+    for (let i = 0; i < current_columns.length; i++) {
+        current_columns[i] = current_columns[i].toLowerCase();
+    }
     $('#sent_id').remove();
     $('#text').remove();
     $('#cells').remove();
@@ -171,9 +174,17 @@ function button_handle(type, number, way) {
         }
     }
     else if (type == "do") {
-        let sel = document.getElementById("row_select_select");
-        let selected = sel.options[sel.selectedIndex].text;
-        let input_number = document.getElementById("row_select_input").value;
+        let input_number = "";
+        if (["up", "down"].includes(way)) {
+            if (way == "up") selected = "Add row";
+            else if (way == "down") selected = "Remove row";
+            input_number = number;
+        }
+        else {
+            let sel = document.getElementById("row_select_select");
+            let selected = sel.options[sel.selectedIndex].text;
+            input_number = document.getElementById("row_select_input").value;
+        }
         if (input_number == "") return;
         if (selected == "Go to sentence") {
             post_to_save("go", input_number);
@@ -185,38 +196,35 @@ function button_handle(type, number, way) {
                 else if (way == "up") selected = "Remove row";
             }
             let cells_keys = get_sorted_cells_keys();
-            if (cells_keys.indexOf(input_number) == -1) return;
+            if (!cells_keys.includes(input_number)) return;
             let row_place = cells_keys.indexOf(input_number);
             if (selected == "Add row") {
+                if (input_number.includes('-')) return;
                 let first_num = parseInt(input_number);
                 if (first_num == NaN) return;
-                let new_row = `${first_num}-${first_num + 1}`;
-                window.cells[new_row] = { ...window.cells[cells_keys[row_place]] };
-                window.cells[(parseInt(cells_keys[cells_keys.length - 1]) + 1).toString()] = { ...window.cells[cells_keys[cells_keys.length - 1]] };
                 for (let i = cells_keys.length - 1; i > row_place; i--) {
-                    if (cells_keys[i].indexOf('-') != -1) {
-                        let matches = cells_keys[i].match(/(\d+)-(\d+)/);
-                        let n1 = matches[1];
-                        window.cells[`${n1 + 1}-${n1 + 2}`] = window.cells[cells_keys[i]];
+                    let key_t = cells_keys[i];
+                    let key_num = parseInt(key_t);
+                    if (key_t.includes('-')) {
+                        window.cells[`${key_num + 1}-${key_num + 2}`] = { ...window.cells[key_t] };
+                        delete window.cells[key_t];
                     }
-                    else window.cells[cells_keys[i]] = window.cells[cells_keys[i - 1]];
+                    else window.cells[`${key_num + 1}`] = { ...window.cells[key_t] };
                 }
+                window.cells[`${first_num}-${first_num + 1}`] = { ...window.cells[input_number] };
+                window.cells[`${first_num + 1}`] = { ...window.cells[input_number] };
             }
             else if (selected == "Remove row") {
                 let new_key = "";
-                if (input_number.includes('-')) {
-                    delete window.cells[input_number];
-                }
+                if (input_number.includes('-')) delete window.cells[input_number];
                 else {
                     for (let i = row_place; i < cells_keys.length - 1; i++) {
                         let key = cells_keys[i + 1];
                         if (key.includes('-')) {
-                            let first_num = parseInt(key.split('-')[0]);
+                            let first_num = parseInt(key);
                             new_key = `${first_num - 1}-${first_num}`;
                         }
-                        else {
-                            new_key = `${parseInt(key) - 1}`;
-                        }
+                        else new_key = `${parseInt(key) - 1}`;
                         window.cells[new_key] = window.cells[cells_keys[i + 1]];
                         delete window.cells[cells_keys[i + 1]];
                     }
@@ -327,7 +335,7 @@ document.onkeyup = function (e) {
         button_handle("save");
     }
     else if (e.key.toLowerCase() == "t" && e.altKey) {
-        document.getElementById("word_lines").focus();
+        document.getElementById("1 form").focus();
     }
     else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
         if (!document.getElementById('word_lines').contains(document.activeElement)) return;
@@ -410,11 +418,6 @@ function init_page() {
     div_col.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // previous-next button group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
@@ -443,11 +446,6 @@ function init_page() {
     button.setAttribute('data-bs-placement', 'bottom');
     button.setAttribute('title', 'Go to the next sentence');
     btn_group.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // reset-undo-redo button group
@@ -491,11 +489,6 @@ function init_page() {
     btn_group.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // input-group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
@@ -531,11 +524,6 @@ function init_page() {
     input_group.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // status
     div_col = document.createElement('div');
     div_col.className = 'col';
@@ -543,11 +531,6 @@ function init_page() {
     button.id = "status";
     button.innerHTML = window.status_d[window.status];
     div_col.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // errors
@@ -568,11 +551,6 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     div_col.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // input-group
@@ -618,11 +596,6 @@ function init_page() {
     input_group.append(button);
     div_row.append(div_col);
 
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
-    div_row.append(div_col);
-
     // input-group
     div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
@@ -659,11 +632,6 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     input_group.append(button);
-    div_row.append(div_col);
-
-    // split
-    div_col = document.createElement('div');
-    div_col.className = 'col-md-auto';
     div_row.append(div_col);
 
     // save
@@ -709,7 +677,7 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
-    sentence_text.className = "table-sm mx-auto border";
+    sentence_text.className = "table-sm mx-auto border border-secondary";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
@@ -735,7 +703,7 @@ function inject_sentence() {
     // Show table
     let word_lines = document.createElement("table");
     word_lines.id = "word_lines";
-    word_lines.className = "table table-sm border";
+    word_lines.className = "table table-sm border border-secondary";
     let thead = document.createElement("thead");
     tbody = document.createElement("tbody");
     word_lines.append(thead);
@@ -746,9 +714,6 @@ function inject_sentence() {
         let column_t = current_columns[i].toLowerCase();
         if (cats_low.includes(column_t)) heading.innerHTML = cats[cats_low.indexOf(column_t)];
         else heading.innerHTML = features[features_low.indexOf(column_t)];
-        heading.addEventListener("click", function () {
-            column_click(heading.innerHTML.toLowerCase());
-        });
         row.append(heading);
     }
     thead.append(row);
@@ -817,7 +782,6 @@ function create_graph() {
         vis.id = "vis";
         let dep_graph = document.createElement('div');
         dep_graph.className = "conllu-parse";
-        dep_graph.setAttribute('data-visid', 'vis');
         dep_graph.setAttribute('data-inputid', 'input');
         dep_graph.setAttribute('data-parsedid', 'parsed');
         dep_graph.setAttribute('data-logid', 'log');
@@ -834,6 +798,7 @@ function create_graph() {
         div_graph.append(vis);
         div_graph.append(dep_graph);
         Annodoc.activate(Config.bratCollData, {});
+        $('#embedded-1-sh').remove();
     }
     else if (window.graph_preference == 2) {
         $.post("/ud_graph/",
@@ -912,56 +877,53 @@ function display_errors() {
     $('div#error')[0].append(error_div);
 }
 
-function cell_change(key, column, cell) {
+function feats_order(key) {
+    let feats = window.cells[key]['feats'].split('|');
+    if (feats.length == 1 && feats[0] == "_") return;
+    let new_feats = "";
+    let cols_d = {};
+    for (let j = 0; j < feats.length; j++) {
+        let matches = feats[j].match(/(.+)=(.+)/);
+        if (matches.length == 3) cols_d[matches[1]] = matches[2];
+    }
+    d_keys = Object.keys(cols_d).sort();
+    for (let j = 0; j < d_keys.length; j++) {
+        let col_t = d_keys[j];
+        let val_t = cols_d[col_t];
+        if (val_t == "_") continue;
+        new_feats += `${col_t}=${val_t}`;
+        if (j != d_keys.length - 1) new_feats += "|";
+    }
+    if (new_feats == "") new_feats = "_";
+    window.cells[key][feats] = new_feats;
+    document.getElementById(`${key} feats`).innerHTML = new_feats;
+}
 
+function cell_change(key, column, cell) {
     cell = cell.replace('<br>', '');
-    if (column == "id") window.cells[cell] = window.cells[key];
-    else if (column == "feats") {
-        window.cells[key]['feats'] = cell;
+    if (cell == '') {
+        cell = '_';
+        document.getElementById(`${key} ${column}`).innerHTML = cell;
+    }
+    window.cells[key][column] = cell;
+    if (column == "feats") {
         let feats = cell.split('|');
         for (let j = 0; j < feats.length; j++) {
             let matches = feats[j].match(/(.+)=(.+)/);
             let column = matches[1].toLowerCase();
             window.cells[key][column] = matches[2];
-            if (current_columns.indexOf(column) != -1) {
-                document.getElementById(`${key} ${column}`).innerHTML = matches[2];
-            }
+            if (current_columns.indexOf(column) != -1) document.getElementById(`${key} ${column}`).innerHTML = matches[2];
         }
+        feats_order(key);
     }
     else if (features_low.includes(column)) {
-        window.cells[key][column] = cell;
         let new_feats = "";
-        if (window.cells[key]['feats'] == "_") {
-            new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
-        }
-        else {
-            let feats = window.cells[key]['feats'].split('|');
-            for (let j = 0; j < feats.length; j++) {
-                let matches = feats[j].match(/(.+)=(.+)/);
-                let col_t = matches[1].toLowerCase();
-                if (col_t == column) {
-                    if (new_feats != "") new_feats += "|";
-                    new_feats += `${features[features_low.indexOf(column)]}=${cell}`;
-                }
-                else {
-                    if (new_feats != "") new_feats += "|";
-                    new_feats += feats[j];
-                }
-            }
-        }
+        let feats = window.cells[key]['feats'].split('|');
+        if (feats.length == 1 & feats[0] == "_") new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
+        else new_feats = `${window.cells[key]['feats']}|${features[features_low.indexOf(column)]}=${cell}`;
+        if (new_feats == "") new_feats = "_";
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;
+        feats_order(key);
     }
-    else window.cells[key][column] = cell;
-}
-
-function column_click(column_name) {
-    if (column_name == "id") return;
-    var arr_t = [];
-    let index_remove = current_columns.indexOf(column_name);
-    for (let i = 0; i < current_columns.length; i++) {
-        if (i != index_remove) arr_t = arr_t.concat(current_columns[i]);
-    }
-    current_columns = arr_t;
-    inject_sentence();
 }
