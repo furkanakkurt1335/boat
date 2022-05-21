@@ -749,9 +749,6 @@ function inject_sentence() {
         let column_t = current_columns[i].toLowerCase();
         if (cats_low.includes(column_t)) heading.innerHTML = cats[cats_low.indexOf(column_t)];
         else heading.innerHTML = features[features_low.indexOf(column_t)];
-        heading.addEventListener("click", function () {
-            column_click(heading.innerHTML.toLowerCase());
-        });
         row.append(heading);
     }
     thead.append(row);
@@ -915,56 +912,53 @@ function display_errors() {
     $('div#error')[0].append(error_div);
 }
 
-function cell_change(key, column, cell) {
+function feats_order(key) {
+    let feats = window.cells[key]['feats'].split('|');
+    if (feats.length == 1 && feats[0] == "_") return;
+    let new_feats = "";
+    let cols_l = [];
+    let cols_d = {};
+    for (let j = 0; j < feats.length; j++) {
+        let matches = feats[j].match(/(.+)=(.+)/);
+        if (matches.length == 3) cols_d[matches[1]] = matches[2];
+    }
+    d_keys = Object.keys(cols_d);
+    for (let j = 0; j < d_keys.length; j++) {
+        let col_t = d_keys[j];
+        new_feats += `${col_t}=${cols_d[col_t]}`;
+        if (j != d_keys.length-1) new_feats += "|";
+    }
+    window.cells[key][feats] = new_feats;
+    document.getElementById(`${key} feats`).innerHTML = new_feats;
+}
 
+function cell_change(key, column, cell) {
     cell = cell.replace('<br>', '');
-    if (column == "id") window.cells[cell] = window.cells[key];
-    else if (column == "feats") {
-        window.cells[key]['feats'] = cell;
+    if (cell == '') {
+        cell = '_';
+        document.getElementById(`${key} ${column}`).innerHTML = cell;
+    }
+    window.cells[key][column] = cell;
+    if (column == "feats") {
         let feats = cell.split('|');
         for (let j = 0; j < feats.length; j++) {
             let matches = feats[j].match(/(.+)=(.+)/);
             let column = matches[1].toLowerCase();
             window.cells[key][column] = matches[2];
-            if (current_columns.indexOf(column) != -1) {
-                document.getElementById(`${key} ${column}`).innerHTML = matches[2];
-            }
+            if (current_columns.indexOf(column) != -1) document.getElementById(`${key} ${column}`).innerHTML = matches[2];
         }
+        feats_order(key);
     }
     else if (features_low.includes(column)) {
-        window.cells[key][column] = cell;
         let new_feats = "";
-        if (window.cells[key]['feats'] == "_") {
-            new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
+        let feats = window.cells[key]['feats'].split('|');
+        if (cell != "_") {
+            if (feats.length == 1 & feats[0] == "_") new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
+            else new_feats = `${window.cells[key]['feats']}|${features[features_low.indexOf(column)]}=${cell}`;
         }
-        else {
-            let feats = window.cells[key]['feats'].split('|');
-            for (let j = 0; j < feats.length; j++) {
-                let matches = feats[j].match(/(.+)=(.+)/);
-                let col_t = matches[1].toLowerCase();
-                if (col_t == column) {
-                    if (new_feats != "") new_feats += "|";
-                    new_feats += `${features[features_low.indexOf(column)]}=${cell}`;
-                }
-                else {
-                    if (new_feats != "") new_feats += "|";
-                    new_feats += feats[j];
-                }
-            }
-        }
+        if (new_feats == "") new_feats = "_";
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;
+        feats_order(key);
     }
-    else window.cells[key][column] = cell;
-}
-
-function column_click(column_name) {
-    if (column_name == "id") return;
-    var arr_t = [];
-    let index_remove = current_columns.indexOf(column_name);
-    for (let i = 0; i < current_columns.length; i++) {
-        if (i != index_remove) arr_t = arr_t.concat(current_columns[i]);
-    }
-    current_columns = arr_t;
-    inject_sentence();
 }
