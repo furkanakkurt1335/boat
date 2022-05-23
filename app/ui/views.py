@@ -9,6 +9,51 @@ from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
 
+def compute_anno_agr(annos):
+    # anno_l = []
+    # for anno in annos:
+        # if 'dummy_user' not in anno.annotator.username: anno_l.append(anno)
+    agreement_score = 0
+    wordlines = []
+    for anno in annos:
+        wordlines.append(Word_Line.objects.filter(annotation=anno))
+    wl_d = {}
+    for wl_l in wordlines:
+        for wl in wl_l:
+            if wl.id_f not in wl_d.keys(): wl_d[wl.id_f] = [wl]
+            else: wl_d[wl.id_f].append(wl)
+    for key in wl_d.keys():
+        wls = wl_d[key]
+        wl_len = len(wls)
+        if wl_len <= 1: continue
+        for i in range(wl_len):
+            for j in range(i+1, wl_len):
+                if wls[i].form == wls[j].form and wls[i].lemma == wls[j].lemma:
+                    agreement_score += 1
+                    if wls[i].upos == wls[j].upos: agreement_score += 1
+                    if wls[i].xpos == wls[j].xpos: agreement_score += 1
+                    if wls[i].feats == wls[j].feats: agreement_score += 1
+                    if wls[i].head == wls[j].head: agreement_score += 1
+                    if wls[i].deprel == wls[j].deprel: agreement_score += 1
+                    if wls[i].deps == wls[j].deps: agreement_score += 1
+    return agreement_score
+        
+@login_required
+def compute_agreement(request):
+    context = {}
+    if request.method == 'POST':
+        agreement_score = 0
+        tb_name = request.POST['title']
+        sents = Sentence.objects.filter(treebank__title=tb_name)
+        for sent in sents:
+            annos = Annotation.objects.filter(sentence=sent)
+            if len(annos) > 1: agreement_score += compute_anno_agr(annos) # 2
+        context['score'] = agreement_score
+    elif request.method == 'GET':
+        tb_names = Treebank.objects.all()
+        context['tbs'] = tb_names
+    return render(request, 'compute_agreement.html', context)
+
 @login_required
 def preferences(request):
     context = {}
