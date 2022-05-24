@@ -1,0 +1,111 @@
+# sent_id = news_388
+# text = Bu yaş diliminin en az çalışanları ise Slovakya, Belçika ve Fransa'da.
+1	Bu	bu	DET	_	_	_	_	_	_
+2	yaş	yaş	NOUN	_	_	_	_	_	_
+3	diliminin	dilim	NOUN	_	_	_	_	_	_
+4	en	en	ADV	_	_	_	_	_	_
+5	az	az	ADV	_	_	_	_	_	_
+6	çalışanları	çalış	VERB	_	_	_	_	_	_
+7	ise	i	PART	_	_	_	_	_	df=i
+8	Slovakya	Slovakya	PROPN	_	_	_	_	_	SpaceAfter=No
+9	,	,	PUNCT	_	_	_	_	_	_
+10	Belçika	Belçika	PROPN	_	_	_	_	_	_
+11	ve	ve	CCONJ	_	_	_	_	_	_
+12	Fransa'da	Fransa	PROPN	_	_	_	_	_	SpaceAfter=No|nullcop=3p
+13	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ins_833
+# text = 1936 yılındayız.
+1	1936	1936	NUM	_	_	_	_	_	_
+2-3	yılındayız	_	_	_	_	_	_	_	SpaceAfter=No
+2	yılında	yıl	NOUN	_	_	_	_	_	_
+3	yız	N/A	AUX	_	_	_	_	_	_
+4	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = bio_1265
+# text = Adeta kendimden geçmiş bir haldeyim.
+1	Adeta	adeta	ADV	_	_	_	_	_	_
+2	kendimden	kendi	NOUN	_	_	_	_	_	_
+3	geçmiş	geçmiş	VERB	_	_	_	_	_	_
+4	bir	bir	DET	_	_	_	_	_	_
+5-6	haldeyim	_	_	_	_	_	_	_	SpaceAfter=No
+5	halde	hâl	NOUN	_	_	_	_	_	_
+6	yim	N/A	AUX	_	_	_	_	_	_
+7	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ins_93
+# text = Arabalarımıza kartondan garaj yaparız.
+1	Arabalarımıza	araba	NOUN	_	_	_	_	_	_
+2	kartondan	karton	NOUN	_	_	_	_	_	_
+3	garaj	garaj	NOUN	_	_	_	_	_	_
+4	yaparız	yap	VERB	_	_	_	_	_	SpaceAfter=No
+5	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ins_1267
+# text = Rüzgâr yine güçlü esiyordu.
+1	Rüzgâr	rüzgâr	NOUN	_	_	_	_	_	_
+2	yine	yine	ADV	_	_	_	_	_	_
+3	güçlü	güçlü	ADV	_	_	_	_	_	_
+4-5	esiyordu	_	_	_	_	_	_	_	SpaceAfter=No
+4	esiyor	es	VERB	_	_	_	_	_	_
+5	du	y	AUX	_	_	_	_	_	_
+6	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ins_782
+# text = Bundan sonra "çağdaş olimpiyatlar" adıyla anıldı.
+1	Bundan	bu	PRON	_	_	_	_	_	_
+2	sonra	sonra	ADV	_	_	_	_	_	_
+3	"	"	PUNCT	_	_	_	_	_	SpaceAfter=No
+4	çağdaş	çağdaş	ADJ	_	_	_	_	_	_
+5	olimpiyatlar	olimpiyat	NOUN	_	_	_	_	_	SpaceAfter=No
+6	"	"	PUNCT	_	_	_	_	_	_
+7	adıyla	ad	NOUN	_	_	_	_	_	_
+8	anıldı	an	VERB	_	_	_	_	_	SpaceAfter=No
+9	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = bio_1603
+# text = O hanımı asistan yaptılar.
+1	O	o	DET	_	_	_	_	_	_
+2	hanımı	hanım	NOUN	_	_	_	_	_	_
+3	asistan	asistan	NOUN	_	_	_	_	_	_
+4	yaptılar	yap	VERB	_	_	_	_	_	SpaceAfter=No
+5	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = pop_1181
+# text = 1 yemek kaşığı zeytinyağı
+1	1	1	NUM	_	_	_	_	_	_
+2	yemek	yemek	NOUN	_	_	_	_	_	_
+3	kaşığı	kaşık	NOUN	_	_	_	_	_	_
+4	zeytinyağı	zeytinyağı	NOUN	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = pop_187
+# text = "Müjdeler var yurdumun toprağına taşına,
+1	"	"	PUNCT	_	_	_	_	_	SpaceAfter=No
+2	Müjdeler	müjde	NOUN	_	_	_	_	_	_
+3	var	var	NOUN	_	_	_	_	_	_
+4	yurdumun	yurt	NOUN	_	_	_	_	_	_
+5	toprağına	toprak	NOUN	_	_	_	_	_	_
+6	taşına	taş	NOUN	_	_	_	_	_	SpaceAfter=No
+7	,	,	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = bio_1939
+# text = Sesleri duyan, şirkete yeni girmiş kaptan, şaşkın ve ürkek bir ifadeyle boxerını çekiştirerek tuvaletten fırladı.
+1	Sesleri	ses	NOUN	_	_	_	_	_	_
+2	duyan	duy	VERB	_	_	_	_	_	SpaceAfter=No
+3	,	,	PUNCT	_	_	_	_	_	_
+4	şirkete	şirket	NOUN	_	_	_	_	_	_
+5	yeni	yeni	ADV	_	_	_	_	_	_
+6	girmiş	gir	VERB	_	_	_	_	_	_
+7	kaptan	kaptan	NOUN	_	_	_	_	_	SpaceAfter=No
+8	,	,	PUNCT	_	_	_	_	_	_
+9	şaşkın	şaşkın	ADJ	_	_	_	_	_	_
+10	ve	ve	CCONJ	_	_	_	_	_	_
+11	ürkek	ürkek	ADJ	_	_	_	_	_	_
+12	bir	bir	DET	_	_	_	_	_	_
+13	ifadeyle	ifade	NOUN	_	_	_	_	_	_
+14	boxerını	boxer	NOUN	_	_	_	_	_	_
+15	çekiştirerek	çekiş	VERB	_	_	_	_	_	_
+16	tuvaletten	tuvalet	NOUN	_	_	_	_	_	_
+17	fırladı	fırla	VERB	_	_	_	_	_	SpaceAfter=No
+18	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+

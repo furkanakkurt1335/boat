@@ -1,0 +1,108 @@
+# sent_id = news_1344
+# text = Bu kararla polise ve savcılıklara bu yönde yapılan şikâyetlerin de azalacağı belirtildi.
+1	Bu	bu	DET	_	_	_	_	_	_
+2	kararla	karar	NOUN	_	_	_	_	_	_
+3	polise	polis	NOUN	_	_	_	_	_	_
+4	ve	ve	CCONJ	_	_	_	_	_	_
+5	savcılıklara	savcılık	NOUN	_	_	_	_	_	df=Savcı
+6	bu	bu	DET	_	_	_	_	_	_
+7	yönde	yön	NOUN	_	_	_	_	_	_
+8	yapılan	yap	VERB	_	_	_	_	_	_
+9	şikâyetlerin	şikâyet	NOUN	_	_	_	_	_	_
+10	de	de	PART	_	_	_	_	_	_
+11	azalacağı	azal	VERB	_	_	_	_	_	_
+12	belirtildi	belir	VERB	_	_	_	_	_	SpaceAfter=No
+13	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = bio_289
+# text = - Öger Prodüksiyon.
+1	-	-	PUNCT	_	_	_	_	_	_
+2	Öger	Öger	PROPN	_	_	_	_	_	_
+3	Prodüksiyon	prodüksiyon	PROPN	_	_	_	_	_	SpaceAfter=No
+4	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = bio_1510
+# text = Meşrutiyetin ilanından önceki siyasi faaliyetlere katıldı.
+1	Meşrutiyetin	meşrutiyet	PROPN	_	_	_	_	_	_
+2	ilanından	ilan	NOUN	_	_	_	_	_	_
+3	önceki	önceki	ADJ	_	_	_	_	_	_
+4	siyasi	siyasi	ADJ	_	_	_	_	_	df:siyaset
+5	faaliyetlere	faaliyet	NOUN	_	_	_	_	_	_
+6	katıldı	kat	VERB	_	_	_	_	_	SpaceAfter=No
+7	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ess_913
+# text = İkisi de Türkiye'nin sevdalısı.
+1	İkisi	iki	NUM	_	_	_	_	_	_
+2	de	de	PART	_	_	_	_	_	_
+3	Türkiye'nin	Türkiye	PROPN	_	_	_	_	_	_
+4	sevdalısı	sevdalı	NOUN	_	_	_	_	_	SpaceAfter=No|df=sevda|nullcop=3p
+5	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ess_563
+# text = Yatağan, Milas ve Akılcılık...
+1	Yatağan	Yatağan	PROPN	_	_	_	_	_	SpaceAfter=No
+2	,	,	PUNCT	_	_	_	_	_	_
+3	Milas	Milas	PROPN	_	_	_	_	_	_
+4	ve	ve	CCONJ	_	_	_	_	_	_
+5	Akılcılık	akılcılık	PROPN	_	_	_	_	_	SpaceAfter=No|df=akıl
+6	...	...	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ins_1519
+# text = Bu korkular, hayatımızın çeşitli dönemlerinde değişiklikler gösterebilir.
+1	Bu	bu	DET	_	_	_	_	_	_
+2	korkular	korku	NOUN	_	_	_	_	_	SpaceAfter=No
+3	,	,	PUNCT	_	_	_	_	_	_
+4	hayatımızın	hayat	NOUN	_	_	_	_	_	_
+5	çeşitli	çeşitli	ADJ	_	_	_	_	_	df=çeşit
+6	dönemlerinde	dönem	NOUN	_	_	_	_	_	_
+7	değişiklikler	değişiklik	NOUN	_	_	_	_	_	df=değişik
+8	gösterebilir	göster	VERB	_	_	_	_	_	SpaceAfter=No|mod=epis
+9	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = pop_1332
+# text = Dik dik yüzüne baktı.
+1	Dik	dik	ADV	_	_	_	_	_	_
+2	dik	dik	ADV	_	_	_	_	_	_
+3	yüzüne	yüz	NOUN	_	_	_	_	_	_
+4	baktı	bak	VERB	_	_	_	_	_	SpaceAfter=No
+5	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = news_499
+# text = Mini dizüstünde 3N dopingi
+1	Mini	Mini	ADJ	_	_	_	_	_	_
+2	dizüstünde	dizüstü	NOUN	_	_	_	_	_	_
+3	3N	3n	NOUN	_	_	_	_	_	_
+4	dopingi	doping	NOUN	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = bio_1097
+# text = "Neden?" diye sordum.
+1	"	"	PUNCT	_	_	_	_	_	SpaceAfter=No
+2	Neden	neden	ADV	_	_	_	_	_	SpaceAfter=No
+3	?	?	PUNCT	_	_	_	_	_	SpaceAfter=No
+4	"	"	PUNCT	_	_	_	_	_	_
+5	diye	diye	ADP	_	_	_	_	_	_
+6	sordum	sor	VERB	_	_	_	_	_	SpaceAfter=No
+7	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
+# sent_id = ess_587
+# text = Salt yargı önüne çıkarılmasın diye partisini bağlayıp, paketleyip Refah Partisi'ne rehin bırakan Bayan Çiller ödülünü alıyor.
+1	Salt	salt	ADV	_	_	_	_	_	_
+2	yargı	yargı	NOUN	_	_	_	_	_	_
+3	önüne	ön	NOUN	_	_	_	_	_	_
+4	çıkarılmasın	çık	VERB	_	_	_	_	_	_
+5	diye	diye	ADP	_	_	_	_	_	_
+6	partisini	parti	NOUN	_	_	_	_	_	_
+7	bağlayıp	bağla	VERB	_	_	_	_	_	SpaceAfter=No
+8	,	,	PUNCT	_	_	_	_	_	_
+9	paketleyip	paketle	VERB	_	_	_	_	_	_
+10	Refah	Refah	PROPN	_	_	_	_	_	_
+11	Partisi'ne	parti	NOUN	_	_	_	_	_	_
+12	rehin	rehin	NOUN	_	_	_	_	_	_
+13	bırakan	bırak	VERB	_	_	_	_	_	_
+14	Bayan	bayan	NOUN	_	_	_	_	_	_
+15	Çiller	Çiller	PROPN	_	_	_	_	_	_
+16	ödülünü	ödül	NOUN	_	_	_	_	_	_
+17	alıyor	al	VERB	_	_	_	_	_	SpaceAfter=No
+18	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+
