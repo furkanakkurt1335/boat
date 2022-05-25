@@ -1,19 +1,19 @@
 \section{Implementation}
 \label{sec:implementation}
 
-The annotation tool is implemented using  Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} with the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
+The annotation tool is implemented using  Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} and the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
 PostgreSQL~\cite{psql} is used as a database.
 The models reflect the \ud\ format of sentences.
 Most of the sentence annotation functionalities are similar to \boatvone.
 User input is validated according to  \ud\ and errors are reported on the annotation page.
-Three alternative forms of dependency graph visualizations are supported, two of which are compact horizontal to reduce the required screen real estate~\cite{spacy,spyssalo}.
+Three alternative forms of dependency graph visualizations are supported, two of which are newly added and compact horizontal to reduce the required screen real estate~\cite{spacy,spyssalo}.
 
 The following features have been implemented to support the creation of valid annotations with increased speed in a collaborative manner:
 \begin{itemize}[before=\normalfont, font=\itshape, align=left,noitemsep,topsep=0pt,parsep=3pt,partopsep=0pt,labelsep=3pt,align=left]
     \item[Treebanks handling:]
-        Users can work on multiple treebanks.
-        They can upload new treebanks as \conllu\ files.
-        Treebanks and their annotations are stored in a database.
+        The tool should support the annotation of multiple treebanks.
+        \boatvone\ supports the annotation of a single treebank at a time and the annotations are stored in a \conllu\ file, which is updated as annotations are made.
+        \boatvtwo\ uses a database to persist the annotations of multiple annotators of multiple treebanks.
 
     \item[Sentence annotation:]
     	An annotator selects the sentence they want to annotate.
@@ -21,7 +21,7 @@ The following features have been implemented to support the creation of valid an
         It consists of three main parts: (1) A table with rows for every token in the sentence and columns, which represent the \ud\ tags of a sentence (\form, \lemma, \deprel, etc.), corresponding to their annotations; (2) the dependency graph of the sentence; and (3) errors from validation according to the \ud\ framework.
         The dependency graph and errors are synchronized with the annotations.
         Several dependency graph presentations are supported to suit the annotator's preference.
-        Vertical graphs can consume a significant amount of screen real estate, which can lead to loss of focus in long sentences that are common in agglutinative languages.
+        Vertical graphs can consume a significant amount of screen real estate, which can lead to loss of focus in long sentences common in agglutinative languages.
 
         An annotator may need to stop the annotation of a sentence for some reason (i.e. complexity or external interruption).
         To capture the state of an annotation, a status is introduced whose values may be: ``New", ``Draft" and ``Complete".
@@ -33,7 +33,7 @@ The following features have been implemented to support the creation of valid an
         Upon the experience of annotating a Turkish treebank, the annotators have reported being very pleased with the convenience and speed resulting from keyboard-based interaction.
 
     \item[Improved searching for reference and consistency:]
-        Users are able to search for previously annotated sentences in combinations of surface text, tags, and features.
+        Users are able to search for previously annotated sentences in combinations of surface text, \ud\ tags, and features.
 		Without a good search feature, an annotator would have to manually search the \conllu\ file for relevant cases (e.g. how to annotate some surface form's \upos\ tag).
 		The surface form might have been inconsistently annotated, alas it is unlikely that a manual search would reveal this case.
 		In such a case, the annotator would likely use the first encountered as a reference.
@@ -50,5 +50,6 @@ The following features have been implemented to support the creation of valid an
         The consistency of annotations among annotators is an indicator of the quality of the resulting resource.
         Inter-annotator agreement computes the consistency among annotators.
         Since this tool keeps track of annotator actions, such computations are straightforward.
+        Some visualizations shall accompany these statistics.
 
 \end{itemize}
