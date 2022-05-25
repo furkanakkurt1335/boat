@@ -12,7 +12,7 @@ Dependency annotation involves annotating each token of a sentence with linguist
 \conllu\ format of \ud~\cite{UD} defines a set of linguistic tags for annotation purposes (i.e. the \upos\ tag to annotate core part-of-speech categories).
 For agglutinative languages, it is common to provide annotations for most tags of a word. Moreover, the \feats\ tag, additional lexical and grammatical properties of words not covered by the other tags, is typically annotated with multiple values.
 The effort required to annotate agglutinative languages is significantly higher due to the complex morphology of such languages.
-Annotation tools with drag-drop and mouse-based interfaces, while may seem appealing, are not well suited for agglutinative languages as they require alternating among input modalities that disrupts the flow.
+Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities, disrupting the flow.
 
 \boatvone~\cite{turk2021resources} is an annotation tool that was developed to support dependency annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the Universal Dependencies framework~\cite{UD}.
 It is a standalone application developed using Python and Qt for the user interface.
@@ -23,7 +23,7 @@ The main takeaway was a much better understanding of the time, effort, cognitive
 Improvements regarding these aspects should, consequently, produce higher quality data resources.
 
 This work presents a dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
-The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an application programming interface (API) to benefit the scientific community.
+The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
 The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 
 \boatvtwo\ is a web-based collaborative dependency annotation tool that focuses on the user experience of annotators.
