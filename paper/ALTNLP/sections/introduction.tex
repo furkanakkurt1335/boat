@@ -8,10 +8,10 @@ The creation of such treebanks is highly labor-intensive and time-consuming due 
 Thus, tools that support this process are essential.
 
 In recent years, there have been significant efforts to bridge the gap in data resources available for agglutinative low-resource languages.
-% not sure about 'linguistically relevant'
 Dependency annotation involves annotating each token of a sentence with linguistically relevant values.
-\conllu\ format of \ud~\cite{UD} defines a set of linguistic tags for annotation purposes (i.e. the \upos\ tag to annotate core part-of-speech categories).
-For agglutinative languages, it is common to provide annotations for most tags of a word. Moreover, the \feats\ tag, additional lexical and grammatical properties of words not covered by the other tags, is typically annotated with multiple values.
+The dependency annotation format of \ud~\cite{UD} titled \conll\ defines a set of linguistic tags for annotation purposes (i.e. the \upos\ tag to annotate core part-of-speech categories).
+For agglutinative languages, it is common to provide annotations for most tags of a word.
+Moreover, the \feats\ tag, used for additional lexical and grammatical properties of words not covered by the other tags, is typically annotated with multiple values.
 The effort required to annotate agglutinative languages is significantly higher due to the complex morphology of such languages.
 Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities, disrupting the flow.
 
@@ -48,6 +48,7 @@ The main contributions of this work are:
 \end{itemize}
 
 The remainder of this paper is organized as follows:
+Section~\ref{sec:boatvone} presents \boatvone,
 Section~\ref{sec:related} presents related work,
 Section~\ref{sec:requirements} describes the requirements and design,
 Section~\ref{sec:implementation} presents the implementation and new features,
