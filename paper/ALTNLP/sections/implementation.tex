@@ -1,16 +1,16 @@
 \section{Implementation}
 \label{sec:implementation}
 
-The annotation tool is implemented using  Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} and the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
-PostgreSQL~\cite{psql} is used as a database.
+The annotation tool is implemented using Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} and the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
+PostgreSQL~\cite{psql} is used as a database management system.
 The models reflect the \ud\ format of sentences.
 Most of the sentence annotation functionalities are similar to \boatvone.
-User input is validated according to  \ud\ and errors are reported on the annotation page.
+User input is validated according to \ud\ and errors are reported on the annotation page.
 Three alternative forms of dependency graph visualizations are supported, two of which are newly added and compact horizontal to reduce the required screen real estate~\cite{spacy,spyssalo}.
 
 The following features have been implemented to support the creation of valid annotations with increased speed in a collaborative manner:
 \begin{itemize}[before=\normalfont, font=\itshape, align=left,noitemsep,topsep=0pt,parsep=3pt,partopsep=0pt,labelsep=3pt,align=left]
-    \item[Treebanks handling:]
+    \item[Treebank handling:]
         The tool should support the annotation of multiple treebanks.
         \boatvone\ supports the annotation of a single treebank at a time and the annotations are stored in a \conllu\ file, which is updated as annotations are made.
         \boatvtwo\ uses a database to persist the annotations of multiple annotators of multiple treebanks.

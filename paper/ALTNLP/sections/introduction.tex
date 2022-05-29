@@ -16,25 +16,19 @@ The effort required to annotate agglutinative languages is significantly higher 
 Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities, disrupting the flow.
 
 \boatvone~\cite{turk2021resources} is an annotation tool that was developed to support dependency annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the Universal Dependencies framework~\cite{UD}.
-It is a standalone application developed using Python~\cite{python} and Qt~\cite{qt} for the user interface.
-Its main input modality is the keyboard at the request of the annotators.
-It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising thousands of sentences.
-This experience revealed several points of improvement for such annotation tools.
+The experience during the use of it revealed several points of improvement for such annotation tools.
 % not sure about 'extra information'
 The main takeaway was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
 Improvements regarding these aspects should, consequently, produce higher quality data resources.
 
-This work presents a dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
+This work presents a web-based collaborative dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
+In light of the feedback from the experience, we wanted the tool to be a web application that supports multiple users to enable a collaborative environment for annotations.
+Several user experience improvements were implemented to enhance the flow of an annotation session.
 The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
 The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 
-\boatvtwo\ is a web-based collaborative dependency annotation tool that focuses on the user experience of annotators.
 The current prototype is being evaluated with positive feedback.
 This feedback indicates that the ability to collaborate within the tool is needed to increase the efficiency of multi-annotator treebank creation.
-In light of the feedback, we developed a web application that supports multiple users to enable a collaborative environment for annotations.
-It has an API for programmatic access and extensibility.
-Several user experience improvements were implemented to enhance the flow of an annotation session.
-The tool is dockerized to facilitate accessibility and ease of deployment.
 The final version will be made available on Boğaziçi University's NLP platform~\cite{DIP} and provided as an open-source resource.
 
 The main contributions of this work are:
@@ -43,7 +37,7 @@ The main contributions of this work are:
         \item Design of a dependency annotation tool based on requirements elicited from experienced annotators who are linguists,
         \item The development of a tool that takes into account the annotator experience to improve resulting annotations,
         \item Multi-user support to provide individual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
-        \item The development of a web-based annotation tool based on a supporting API, and
+        \item The development of a web-based annotation tool based on a supporting API for programmatic access and extensibility, and
         \item Packaging of the tool to support easy access by virtualizing it using Docker~\cite{docker} and providing the code as an open-source resource.
 \end{itemize}
 
