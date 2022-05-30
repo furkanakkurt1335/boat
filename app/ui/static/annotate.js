@@ -175,6 +175,7 @@ function button_handle(type, number, way) {
     }
     else if (type == "do") {
         let input_number = "";
+        let selected = "";
         if (["up", "down"].includes(way)) {
             if (way == "up") selected = "Add row";
             else if (way == "down") selected = "Remove row";
@@ -182,14 +183,14 @@ function button_handle(type, number, way) {
         }
         else {
             let sel = document.getElementById("row_select_select");
-            let selected = sel.options[sel.selectedIndex].text;
+            selected = sel.options[sel.selectedIndex].text;
             input_number = document.getElementById("row_select_input").value;
         }
         if (input_number == "") return;
         if (selected == "Go to sentence") {
             post_to_save("go", input_number);
         }
-        else if (["Add row", "Remove row"].indexOf(selected) != -1) {
+        else if (["Add row", "Remove row"].includes(selected)) {
             if (number != undefined) {
                 input_number = number;
                 if (way == "down") selected = "Add row";
