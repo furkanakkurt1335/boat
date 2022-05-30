@@ -4,7 +4,7 @@ A Web Application for Annotating Dependency Parse Treebanks – 492 Project
 
 ## Description
 
-This project is being developed for improving the already-existing Annotation Tool [here](https://github.com/boun-tabi/BoAT) and creating a web application for it.
+This project is being developed for improving the already-existing annotation tool [here](https://github.com/boun-tabi/BoAT) called BoAT-v1 and creating a web application for it.
 
 ## Fork of original desktop GUI
 

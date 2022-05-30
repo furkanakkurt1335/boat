@@ -2,11 +2,16 @@
 \label{sec:boatvone}
 
 \boatvone~\cite{turk-etal-2019-turkish} is a standalone annotation tool for treebanks compatible with the \ud\ framework~\cite{UD}.
-It uses Python~\cite{python} and Qt~\cite{qt} for the user interface.
-Although mouse-based interaction is supported, for almost all functionality, keyboard input is supported in accordance with annotators' demands.
-It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising close to 10 thousand sentences.
 It uses analyzers to process treebanks in the dependency annotation format of \ud\ called \conllu.
 It supports the annotation of a single treebank at a time and the annotations are stored in a \conllu\ file, which is updated as annotations are made.
+It is useful in agglutinative language annotation due to its feature of splitting and joining lemmas, but it can be used for other languages as well.
+It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising close to 10 thousand sentences.
+
+It uses Python~\cite{python} and Qt~\cite{qt} for the user interface.
+In the annotation interface, only one sentence is shown with its table of annotations and a dependency graph.
+It uses a validation script developed by \ud\ to display errors of the current annotation.
+It has the advantage over other tools of parsing morphological features, thus allowing annotators to annotate morphological features distinctly and visualize them on the annotation table.
+It also allows the annotators to be able to take notes for specific annotations.
 
 The work presented in this paper (\boatvtwo) is based on the experiences gained during the use of \boatvone\ in treebank creation.
 Like its predecessor and many other tools, it supports \ud.
