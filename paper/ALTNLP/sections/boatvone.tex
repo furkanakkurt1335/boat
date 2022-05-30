@@ -4,10 +4,11 @@
 \boatvone~\cite{turk-etal-2019-turkish} is a standalone annotation tool for treebanks compatible with the \ud\ framework~\cite{UD}.
 It uses Python~\cite{python} and Qt~\cite{qt} for the user interface.
 Although mouse-based interaction is supported, for almost all functionality, keyboard input is supported in accordance with annotators' demands.
-It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising thousands of sentences.
-It uses analyzers to process treebanks with the \conllu\ format of \ud.
+It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising close to 10 thousand sentences.
+It uses analyzers to process treebanks in the dependency annotation format of \ud\ called \conllu.
+It supports the annotation of a single treebank at a time and the annotations are stored in a \conllu\ file, which is updated as annotations are made.
 
-The work presented in this paper (\boatvtwo) is based on the experiences gained during the use of \boatvone in treebank creation.
+The work presented in this paper (\boatvtwo) is based on the experiences gained during the use of \boatvone\ in treebank creation.
 Like its predecessor and many other tools, it supports \ud.
 The primary interaction modality is the keyboard to enable a flow state.
 It is a web application with a backend that provides an API.
