@@ -1,22 +1,26 @@
 \section{BoAT-v1}
 \label{sec:boatvone}
 
-\boatvone~\cite{turk-etal-2019-turkish} is a standalone annotation tool for treebanks compatible with the \ud\ framework~\cite{UD}.
-It uses analyzers to process treebanks in the dependency annotation format of \ud\ called \conllu.
-It supports the annotation of a single treebank at a time and the annotations are stored in a \conllu\ file, which is updated as annotations are made.
-It is useful in agglutinative language annotation thanks to its feature of splitting and joining lemmas, but it can be used for other languages as well.
-It was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising close to 10 thousand sentences.
+\boatvone~\cite{turk-etal-2019-turkish} is a standalone tool for annotating treebanks that is compatible with the \ud\ framework~\cite{UD}.
+It was specifically developed for annotating Turkish treebanks and is particularly suitable for agglutinative languages, however it can be used for other languages.
+It supports the annotation of a single treebank at a time.
+The annotations are stored in a file in \conllu\ format.
+The file is updated during the annotation process.
 
-It uses Python~\cite{python} and Qt~\cite{qt} for the user interface.
-In the annotation interface, only one sentence is shown with its table of annotations and a dependency graph.
-It uses a validation script developed by \ud\ to display errors of the current annotation.
-It has the advantage over other tools of parsing morphological features, thus allowing annotators to annotate morphological features distinctly and visualize them on the annotation table.
+% main features of v1
+For each sentence to be annotated, the annotator is shown a table which has a token per row with its corresponding tags (ID, FORM, LEMMA, UPOS, XPOS, FEATS, HEAD, DEPREL, DEPS, and MISC as detailed in~\cite{turk-etal-2019-turkish}).
+The annotator manually enters values for each tag of each token.
+It supports the splitting and joining of lemmas which is particularly significant for agglutinative languages.
+Tokens that are split result in additional rows for each part.
+Figure~\ref{fig:anno-fig-v1} in Appendix~\ref{sec:appendix-a} shows a sentence that is being annotated.
+The token ``yoktu'' (ID: 4-5) is split into ``yok'' (ID: 4) and ``tu'' (ID: 5). 
+Furthermore, it parses the \feats\ tag's value into individual morphological features.
+The number of morphological features are much higher in agglutinative languages, therefore the value of the \feats\ tag often consists of numerous values.
+As such, they are difficult to read.
+\boatvone\ supports viewing these features individually under their associated features (Case=Nom|Number=Sing|Person=3 can be shown in columns ``Case'', ``Number'', and ``Person'' with the values ``Nom'', ``Sing'', and ``3'').
 It also allows the annotators to be able to take notes for specific annotations.
 
-The work presented in this paper (\boatvtwo) is based on the experiences gained during the use of \boatvone\ in treebank creation.
-Like its predecessor and many other tools, it supports \ud.
-The primary interaction modality is the keyboard to enable a flow state.
-It is a web application with a backend that provides an API.
-A database is used for persisting the annotations created by various annotators for various treebanks.
-It provides rich search functionality that supports collaborative annotations.
-It is an open-source resource that is containerized for ease of distribution and deployment.
+\boatvone\ is implemented using Python~\cite{python} and Qt~\cite{qt}.
+It uses a validation script developed by \ud\ to display errors.
+
+\boatvone\ was used to create the \bountreebank~\cite{turk-etal-2019-turkish,turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising close to 10 thousand sentences.
