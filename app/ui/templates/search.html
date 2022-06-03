@@ -2,8 +2,22 @@
 
 {% block head %}
 <title> Search Page </title>
+<style>
+    tr.collapse.in {
+        display: table-row;
+    }
+</style>
 <script>
     {% if queries %}
+
+    function sentence_place(sentence) {
+        for (let i = 0; i < Object.keys(window.sentences).length; i++) {
+            let sentence_t = window.sentences[i];
+            if (sentence_t['text'] == sentence['text'] && sentence_t['sent_id'] == sentence['sent_id'] && sentence_t['treebank_title'] == sentence['treebank_title']) return i;
+        }
+        return -1;
+    }
+
     window.onload = function () {
         let queries = JSON.parse($('#queries')[0].innerHTML);
         let keys = Object.keys(queries);
@@ -22,7 +36,7 @@
             }
         }
 
-        window.results = [];
+        window.sentences = [];
 
         $.get(url,
             function (data) {
@@ -35,14 +49,22 @@
                 $('#result-table')[0].hidden = false;
                 for (let i = 0; i < keys.length; i++) {
                     let res_t = data[keys[i]];
-                    one_result['text'] = res_t['text'];
-                    one_result['sent_id'] = res_t['sent_id'];
-                    one_result['annotator'] = res_t['annotator'];
-                    one_result['status'] = res_t['status'];
-                    one_result['treebank'] = res_t['treebank_title'];
-                    one_result['annotate-link'] = `/annotate/${res_t['treebank_title']}/${res_t['order']}`;
-                    window.results.push(JSON.parse(JSON.stringify(one_result)));
-                    if (i <= 20) create_row(one_result);
+                    let annotation_t = {};
+                    let annotator_name_t = res_t['annotator_fullname'];
+                    if (annotator_name_t == "") annotation_t['annotator_fullname'] = "Upload version";
+                    else annotation_t['annotator_fullname'] = annotator_name_t;
+                    annotation_t['annotator_username'] = res_t['annotator_username'];
+                    let status_t = res_t['status'];
+                    if (status_t == "0") annotation_t['status'] = 'New';
+                    else if (status_t == "1") annotation_t['status'] = 'New';
+                    else annotation_t['status'] = 'Complete';
+                    let sentence_place_t = sentence_place(res_t);
+                    if (sentence_place_t == -1) {
+                        sentence_place_t = window.sentences.length;
+                        window.sentences[sentence_place_t] = { 'text': res_t['text'], 'sent_id': res_t['sent_id'], 'treebank_title': res_t['treebank_title'], 'order': res_t['order'], annotations: [annotation_t] };
+                    }
+                    else window.sentences[sentence_place_t]['annotations'].push(annotation_t);
+                    if (i <= 20) create_row(window.sentences[sentence_place_t]);
                 }
             }
         );
@@ -65,10 +87,10 @@
             }
             else if (type == "prev") {
                 window.current_page -= 1;
-                if (window.current_page <= window.res_size / 20)  $('a#next')[0].hidden = false;
+                if (window.current_page <= window.res_size / 20) $('a#next')[0].hidden = false;
                 if (window.current_page == 1) $('a#previous')[0].hidden = true;
             }
-            let new_results = window.results.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
+            let new_results = window.sentences.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
             for (let i = 0; i < new_results.length; i++) create_row(new_results[i]);
         }
 
@@ -86,12 +108,16 @@
         $('#result').prepend(document.createElement('br'));
         $('#result').prepend(info);
 
+
         function create_row(result) {
             let row = document.createElement("tr");
+            row.setAttribute('data-toggle', 'collapse');
+            row.setAttribute('data-target', `.order${result['order']}`);
             let row_order = $('.tr').length + 1;
             row.id = row_order;
             row.className = "border";
-            let fields = ["text", "sent_id", "annotator", "status", "treebank"];
+            let annotations = result['annotations'];
+            let fields = ["text", "sent_id", "treebank_title"];
             for (let i = 0; i < fields.length; i++) {
                 let data = document.createElement("td");
                 data.innerHTML = result[fields[i]];
@@ -102,22 +128,34 @@
             // links
             let data = document.createElement("td");
             let link = document.createElement('a');
-            link.href = result['annotate-link'];
+            link.href = `/annotate/${result['treebank_title']}/${result['order']}`;
             link.innerHTML = 'Annotate';
             data.append(link);
             data.style = 'text-align:center';
             row.append(data);
-
-            // TODO, view annotation (toast, etc.)
-            // data = document.createElement("td");
-            // let button = document.createElement('button');
-            //  = result['view'];
-            // link.innerHTML = 'View';
-            // data.append(link);
-            // data.style = 'text-align:center';
-            // row.append(data);
-
             $('#result-body')[0].append(row);
+
+            for (let i = 0; i < annotations.length; i++) {
+                row = document.createElement("tr");
+                row.classList.add('collapse');
+                row.classList.add(`order${result['order']}`);
+                let fields = ["annotator_fullname", "status"];
+                for (let i = 0; i < fields.length; i++) {
+                    let data = document.createElement("td");
+                    data.innerHTML = result[fields[i]];
+                    data.style = 'text-align:center';
+                    row.append(data);
+                }
+                let data = document.createElement("td");
+                data.style = 'text-align:center';
+                let button = document.createElement('button');
+                //  = result['view'];
+                button.innerHTML = 'View';
+                data.append(button);
+                data.style = 'text-align:center';
+                row.append(data);
+                $('#result-body')[0].append(row);
+            }
         }
     };
     {% endif %}
@@ -216,8 +254,8 @@
                 <tr style="text-align: center;">
                     <th>text</th>
                     <th>sent_id</th>
-                    <th>Annotator</th>
-                    <th>Status</th>
+                    <!-- <th>Annotator</th> -->
+                    <!-- <th>Status</th> -->
                     <th>Treebank</th>
                     <th>Links</th>
                 </tr>

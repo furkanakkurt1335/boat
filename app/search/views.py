@@ -76,7 +76,7 @@ def query(request):
         wls_d = {}
         for wl in wls:
             wls_d[wl.id_f] = {'form': wl.form, 'lemma': wl.lemma, 'upos': wl.upos, 'xpos': wl.xpos, 'feats': wl.feats, 'head': wl.head, 'deprel': wl.deprel, 'deps': wl.deps, 'misc': wl.misc}
-        d_t = {'text': sen_t.text, 'sent_id': sen_t.sent_id, 'annotator': user_t.username, 'status': ann_t.status, 'treebank_title': tb_t.title, 'order': sen_t.order, 'wordlines': wls_d}
+        d_t = {'text': sen_t.text, 'sent_id': sen_t.sent_id, 'annotator_fullname': ' '.join([user_t.first_name, user_t.last_name]), 'annotator_username': user_t.username, 'status': ann_t.status, 'treebank_title': tb_t.title, 'order': sen_t.order, 'wordlines': wls_d}
         result[wl_t.annotation_id] = d_t
     return Response(result)
 

@@ -15,7 +15,6 @@ def compute_anno_agr(annos):
     # anno_l = []
     # for anno in annos:
     # if 'dummy_user' not in anno.annotator.username: anno_l.append(anno)
-    agreement_score = 0
     wordlines = []
     for anno in annos:
         wordlines.append(Word_Line.objects.filter(annotation=anno))
@@ -26,6 +25,7 @@ def compute_anno_agr(annos):
                 wl_d[wl.id_f] = [wl]
             else:
                 wl_d[wl.id_f].append(wl)
+    score_sum, count = 0, 0
     for key in wl_d.keys():
         if '-' in key:
             return -1  # split lemmas forbidden (for now)
@@ -40,19 +40,27 @@ def compute_anno_agr(annos):
                     # agreement_score += 1
                     if wls[i].upos == wls[j].upos:
                         score_t += 1
+                    else:
+                        print('UPOS', wls[i].upos, wls[j].upos)
                     # if wls[i].xpos == wls[j].xpos:
                     #     agreement_score += 1
                     if wls[i].feats == wls[j].feats:
                         score_t += 1
+                    else:
+                        print('FEATS', wls[i].feats, wls[j].feats)
                     if wls[i].head == wls[j].head:
                         score_t += 1
+                    else:
+                        print('HEAD', wls[i].head, wls[j].head)
                     if wls[i].deprel == wls[j].deprel:
                         score_t += 1
+                    else:
+                        print('DEPREL', wls[i].deprel, wls[j].deprel)
                     # if wls[i].deps == wls[j].deps:
                     #     agreement_score += 1
-                agreement_score += score_t / 4
-        agreement_score /= (wl_len*(wl_len-1))
-    return agreement_score
+                score_sum += score_t
+                count += 1
+    return score_sum / (count * 4)
 
 
 @login_required
@@ -216,7 +224,7 @@ def register(request):
             message = 'The passwords do not match.'
     elif request.method == 'GET':
         if request.user.is_active:
-            return redirect('profile')
+            return redirect('home')
         return render(request, 'register.html')
     return render(request, 'register.html', {'message': message})
 
@@ -234,12 +242,12 @@ def login(request):
                     "ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
                 extenduser_t.save()
             login_f(request, user)
-            return redirect('profile')
+            return redirect('home')
         else:
             return redirect('login')
     elif request.method == 'GET':
         if request.user.is_active:
-            return redirect('profile')
+            return redirect('home')
     return render(request, 'login.html')
 
 
@@ -247,7 +255,7 @@ def index(request):
     if request.user == 'AnonymousUser':
         return redirect('login')
     else:
-        return redirect('profile')
+        return redirect('home')
 
 
 @login_required
@@ -260,6 +268,11 @@ def logout(request):
 @login_required
 def profile(request):
     return render(request, 'profile.html', {'user': request.user})
+
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
 
 
 @login_required
