@@ -54,11 +54,12 @@
         let row_order = $('.tr').length + 1;
         row.id = row_order;
         row.className = "border";
-        let fields = ["text", "sent_id", "treebank"];
+        let fields = ["sent_id", "text", "treebank"];
         for (let i = 0; i < fields.length; i++) {
             let data = document.createElement("td");
-            data.innerHTML = result[fields[i]];
-            data.style = 'text-align:center';
+            let field = fields[i];
+            data.innerHTML = result[field];
+            if (field != "text") data.style = 'text-align:center';
             row.append(data);
         }
         $('#annotation-body')[0].append(row);
@@ -96,8 +97,8 @@
         <table id="annotation-table" class="table table-bordered table-striped" hidden="true">
             <thead>
                 <tr style="text-align: center;">
-                    <th>text</th>
                     <th>sent_id</th>
+                    <th>text</th>
                     <th>Treebank</th>
                 </tr>
             </thead>

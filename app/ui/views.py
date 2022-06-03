@@ -213,38 +213,57 @@ def spacy(request):
 
 
 def register(request):
-    message = None
+    message, data = [], {'username': '',
+                         'first_name': '', 'last_name': '', 'email': ''}
     if request.method == 'POST':
         data = request.POST
-        if data['password1'] == data['password2']:
-            new_user = User.objects.create_user(
+        if data['username'] == '':
+            message.append('Username was not filled.')
+        if data['first_name'] == '':
+            message.append('First name was not filled.')
+        if data['last_name'] == '':
+            message.append('Last name was not filled.')
+        if data['email'] == '':
+            message.append('Email was not filled.')
+        if data['password1'] == '' or data['password2'] == '':
+            message.append('Password empty.')
+        elif data['password1'] != data['password2']:
+            message.append('The passwords do not match.')
+        if len(message) == 0:
+            User.objects.create_user(
                 username=data['username'], password=data['password1'], email=data['email'], first_name=data['first_name'], last_name=data['last_name'])
             return redirect('login')
-        else:
-            message = 'The passwords do not match.'
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('home')
         return render(request, 'register.html')
-    return render(request, 'register.html', {'message': message})
+    return render(request, 'register.html', {'message': message, 'data': data})
 
 
 def login(request):
+    message, data = [], {'username': ''}
     if request.method == 'POST':
         data = request.POST
-        user = authenticate(
-            username=data['username'], password=data['password'])
-        if user is not None:
-            if len(ExtendUser.objects.filter(user=user)) == 0:
-                extenduser_t = ExtendUser()
-                extenduser_t.user = user
-                extenduser_t.preferences = {'graph_preference': 1, "error_condition": True, "current_columns": [
-                    "ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
-                extenduser_t.save()
-            login_f(request, user)
-            return redirect('home')
-        else:
-            return redirect('login')
+        username, password = data['username'], data['password']
+        if username == '':
+            message.append('Username not filled.')
+        if password == '':
+            message.append('Password not filled.')
+        if len(message) == 0:
+            user = authenticate(
+                username=username, password=password)
+            if user is not None:
+                if len(ExtendUser.objects.filter(user=user)) == 0:
+                    extenduser_t = ExtendUser()
+                    extenduser_t.user = user
+                    extenduser_t.preferences = {'graph_preference': 1, "error_condition": True, "current_columns": [
+                        "ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"]}
+                    extenduser_t.save()
+                login_f(request, user)
+                return redirect('home')
+            else:
+                message.append('User not found with these credentials.')
+        return render(request, 'login.html', {'message': message, 'data': data})
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('home')
@@ -487,23 +506,36 @@ def annotate(request, treebank, order):
 
 @login_required
 def search(request):
-    message = None
+    message, context = None, {}
     if request.method == "POST":
         data = request.POST
-        queries = {}
-        count = 1
-        for key in data.keys():
-            if key.startswith('input_'):
-                num_str = re.search('input_(\d+)', key).group(1)
-                if data[key] != '':
-                    queries[count] = {}
-                    queries[count]['type'] = data[f'type_{num_str}']
-                    queries[count]['input'] = data[f'input_{num_str}']
-                    count += 1
-        return render(request, 'search.html', {'queries': json.dumps(queries)})
+        filled_input = False
+        if data['title'] != 'Select treebank':
+            queries = {}
+            count = 1
+            for key in data.keys():
+                if key.startswith('input_'):
+                    num_str = re.search('input_(\d+)', key).group(1)
+                    if data[key] != '':
+                        queries[count] = {}
+                        queries[count]['type'] = data[f'type_{num_str}']
+                        queries[count]['input'] = data[f'input_{num_str}']
+                        if data[f'input_{num_str}'].strip() != '': filled_input = True
+                        count += 1
+            if not filled_input:
+                message = 'No input filled.'
+                tb_names = Treebank.objects.all()
+                context['tbs'] = tb_names
+            else:
+                return render(request, 'search.html', {'queries': json.dumps(queries), 'treebank_title': data['title']})
+        else:
+            message = 'No treebank selected.'
+            tb_names = Treebank.objects.all()
+            context['tbs'] = tb_names
     elif request.method == "GET":
-        pass
-    context = {'message': message}
+        tb_names = Treebank.objects.all()
+        context['tbs'] = tb_names
+    context['message'] = message
     return render(request, 'search.html', context)
 
 
