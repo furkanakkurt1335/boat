@@ -6,21 +6,42 @@
 {% endblock %}
 
 {% block body %}
-<div id="space" class="p-5 border bg-light">
-    <form method="post" action="{% url 'login' %}">{% csrf_token %}
-        <div class="form-floating">
-            <input type="text" class="w-25 form-control" id="floatingInput" name="username" placeholder="Username"><br>
+<div id="space" class="p-5 border bg-light" align="center">
+    <h1>BoAT v2</h1>
+    <form method="post" action="{% url 'login' %}" class="form-horizontal" role="form">{% csrf_token %}
+        <div class="w-25 form-floating">
+            <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username"><br>
             <label for="floatingInput">Username</label>
         </div>
-        <div class="form-floating">
-            <input type="password" class="w-25 form-control" id="floatingPassword" name="password"
+        <div class="w-25 form-floating">
+            <input type="password" class="form-control" id="floatingPassword" name="password"
                 placeholder="Password"><br>
             <label for="floatingPassword">Password</label>
         </div>
         <button class="w-25 btn btn-lg btn-light border-dark" type="submit" value="Log in">Log in</button>
     </form>
-    <br>
+    <br> Need to register?
     <a class="btn btn-light border-dark" href={% url 'register' %} role="button">Register</a>
-</div>
+    <!-- Button trigger modal -->
+    <button type="button" id="info" class="btn btn-light border-dark" data-bs-toggle="modal"
+        data-bs-target="#infoModal"><img id="info" style="height: 25px;" src="{% static 'info.svg' %}"></button>
 
+    <!-- Info Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">BoAT v2</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Info about BoAT v2.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
