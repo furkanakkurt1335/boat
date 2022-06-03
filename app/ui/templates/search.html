@@ -111,6 +111,16 @@
         $('#result').prepend(info);
 
 
+        function get_sorted_cells_keys(dict) {
+            let cells_keys = Object.keys(dict);
+            let new_list = [];
+            for (let i = 1; i < cells_keys.length * 2; i++) {
+                if (cells_keys.indexOf(`${i}-${i + 1}`) != -1) new_list.push(`${i}-${i + 1}`);
+                if (cells_keys.indexOf(`${i}`) != -1) new_list.push(`${i}`);
+            }
+            return new_list;
+        }
+
         function create_row(result) {
             let row = document.createElement("tr");
             row.setAttribute('data-toggle', 'collapse');
@@ -152,37 +162,97 @@
             button = document.createElement("button");
             img = $('#eye')[0].cloneNode(true);
             img.hidden = false;
-            button.setAttribute('data-bs-toggle', 'tooltip');
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#annotationModal');
             button.setAttribute('data-bs-placement', 'bottom');
             button.setAttribute('title', 'See the annotations');
             button.className = "btn btn-light btn-sm border";
             button.append(img);
+            button.addEventListener('click', function () {
+                document.getElementById('modal-title').innerHTML = `Annotations for ${result['sent_id']}`;
+                let modal_body = document.getElementById('modal-body');
+                $('#modal-sentence').remove();
+                $('table')
+                    .filter(function () {
+                        return this.id.match(/word_lines\d+/);
+                    })
+                    .remove();
+                $('div')
+                    .filter(function () {
+                        return this.id.match(/name\d+/);
+                    })
+                    .remove();
+                let sentence = document.createElement('div');
+                sentence.id = 'modal-sentence';
+                sentence.innerHTML = `<strong>Text</strong>: ${result['text']}`;
+                modal_body.append(sentence);
+
+                window.modal_annotations = [];
+
+                for (let i = 0; i < annotations.length; i++) {
+                    let anno_t = annotations[i];
+                    let name = document.createElement('div');
+                    name.id = `name${i}`;
+                    let fullname = anno_t['annotator_fullname'];
+                    if (fullname.trim() == "") fullname = "Upload version";
+                    name.innerHTML = `<strong>Annotator:</strong> ${fullname}`;
+                    let anno_url = `/api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
+                    $.get(anno_url, function (data) {
+                        let keys = Object.keys(data);
+                        if (data['count'] != 0) {
+                            let wordlines_url = `/api/wordlines/?annotation__id=${data['results'][0]['id']}&size=200`;
+                            let table = document.createElement('table');
+                            table.className = 'table';
+                            let tr = document.createElement('tr');
+                            $.get(wordlines_url, function (wl_data) {
+                                modal_body.append(name);
+                                let annotation = {};
+                                let keys = Object.keys(wl_data['results']);
+                                let results_t = wl_data['results'];
+                                for (let i = 0; i < keys.length; i++) {
+                                    let result_t = results_t[keys[i]];
+                                    annotation[result_t['id_f']] = { 'form': result_t['form'], 'lemma': result_t['lemma'], 'upos': result_t['upos'], 'xpos': result_t['xpos'], 'feats': result_t['feats'], 'head': result_t['head'], 'deprel': result_t['deprel'], 'deps': result_t['deps'], 'misc': result_t['misc'] };
+                                }
+                                let cells_keys = get_sorted_cells_keys(annotation);
+                                // Show table
+                                let word_lines = document.createElement("table");
+                                word_lines.id = `word_lines${i}`;
+                                word_lines.className = "table border border-secondary";
+                                let thead = document.createElement("thead");
+                                tbody = document.createElement("tbody");
+                                word_lines.append(thead);
+                                word_lines.append(tbody);
+                                let row = document.createElement("tr");
+                                let columns = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
+                                for (let j = 0; j < columns.length; j++) {
+                                    let heading = document.createElement("th");
+                                    heading.innerHTML = columns[j];
+                                    row.append(heading);
+                                }
+                                thead.append(row);
+                                for (let i = 0; i < cells_keys.length; i++) {
+                                    let key_t = cells_keys[i];
+                                    let row = document.createElement("tr");
+                                    let row_t = annotation[key_t];
+                                    for (let j = 0; j < columns.length; j++) {
+                                        let column_t = columns[j].toLowerCase();
+                                        let data = document.createElement("td");
+                                        if (column_t == "id") data.innerHTML = key_t;
+                                        else data.innerHTML = row_t[column_t];
+                                        row.append(data);
+                                    }
+                                    tbody.append(row);
+                                }
+                                modal_body.append(word_lines);
+                            });
+                        }
+                    });
+                }
+            });
             btn_group.append(button);
             data.append(btn_group);
             row.append(data);
             $('#result-body')[0].append(row);
-
-            // for (let i = 0; i < annotations.length; i++) {
-            //     row = document.createElement("tr");
-            //     row.classList.add('collapse');
-            //     row.classList.add(`order${result['order']}`);
-            //     let fields = ["annotator_fullname", "status"];
-            //     for (let i = 0; i < fields.length; i++) {
-            //         let data = document.createElement("td");
-            //         data.innerHTML = result[fields[i]];
-            //         data.style = 'text-align:center';
-            //         row.append(data);
-            //     }
-            //     let data = document.createElement("td");
-            //     data.style = 'text-align:center';
-            //     let button = document.createElement('button');
-            //     //  = result['view'];
-            //     button.innerHTML = 'View';
-            //     data.append(button);
-            //     data.style = 'text-align:center';
-            //     row.append(data);
-            //     $('#result-body')[0].append(row);
-            // }
         }
     };
     {% endif %}
@@ -324,5 +394,23 @@
 
 <img hidden id="pencil-square" src="{% static 'pencil-square.svg' %}">
 <img hidden id="eye" src="{% static 'eye.svg' %}">
+
+<!-- Annotation Modal -->
+<div class="modal fade" id="annotationModal" tabindex="-1" aria-labelledby="annotationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

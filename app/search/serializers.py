@@ -20,7 +20,7 @@ class AnnotationSerializer(serializers.ModelSerializer):
 class WordLineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word_Line
-        fields = ['url', 'id', 'annotation', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc']
+        fields = ['url', 'id', 'id_f', 'annotation', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
