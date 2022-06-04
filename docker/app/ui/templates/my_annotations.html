@@ -13,9 +13,9 @@
     function change_sentences() {
         let type = select.options[select.selectedIndex].text;
         if (type == "All") type = "all";
-        else if (type == "Finished") type = "done";
-        else if (type == "Half finished") type = "half";
-        else if (type == "Not finished") type = "not";
+        else if (type == "New") type = "new";
+        else if (type == "Draft") type = "draft";
+        else if (type == "Finished") type = "finished";
         let url = `/api/my_annotations/?type=${type}`;
         $('#annotation-body').find('tr').remove();
 
@@ -54,11 +54,12 @@
         let row_order = $('.tr').length + 1;
         row.id = row_order;
         row.className = "border";
-        let fields = ["text", "sent_id", "treebank"];
+        let fields = ["sent_id", "text", "treebank"];
         for (let i = 0; i < fields.length; i++) {
             let data = document.createElement("td");
-            data.innerHTML = result[fields[i]];
-            data.style = 'text-align:center';
+            let field = fields[i];
+            data.innerHTML = result[field];
+            if (field != "text") data.style = 'text-align:center';
             row.append(data);
         }
         $('#annotation-body')[0].append(row);
@@ -88,16 +89,16 @@
     <select id="select" class="w-25 form-select">
         <option disabled selected>Select type</option>
         <option id="all">All</option>
-        <option id="done">Finished</option>
-        <option id="half">Half finished</option>
-        <option id="not">Not finished</option>
+        <option id="new">New</option>
+        <option id="draft">Draft</option>
+        <option id="finished">Finished</option>
     </select><br>
     <div id="annotations">
         <table id="annotation-table" class="table table-bordered table-striped" hidden="true">
             <thead>
                 <tr style="text-align: center;">
-                    <th>text</th>
                     <th>sent_id</th>
+                    <th>text</th>
                     <th>Treebank</th>
                 </tr>
             </thead>

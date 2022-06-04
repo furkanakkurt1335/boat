@@ -7,7 +7,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "New", 1: "Finished", 2: "Draft" };
+    window.status_d = { 0: "New", 1: "Complete", 2: "Draft" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -175,6 +175,7 @@ function button_handle(type, number, way) {
     }
     else if (type == "do") {
         let input_number = "";
+        let selected = "";
         if (["up", "down"].includes(way)) {
             if (way == "up") selected = "Add row";
             else if (way == "down") selected = "Remove row";
@@ -182,14 +183,14 @@ function button_handle(type, number, way) {
         }
         else {
             let sel = document.getElementById("row_select_select");
-            let selected = sel.options[sel.selectedIndex].text;
+            selected = sel.options[sel.selectedIndex].text;
             input_number = document.getElementById("row_select_input").value;
         }
         if (input_number == "") return;
         if (selected == "Go to sentence") {
             post_to_save("go", input_number);
         }
-        else if (["Add row", "Remove row"].indexOf(selected) != -1) {
+        else if (["Add row", "Remove row"].includes(selected)) {
             if (number != undefined) {
                 input_number = number;
                 if (way == "down") selected = "Add row";
@@ -759,7 +760,7 @@ function inject_sentence() {
     $('div#table2')[0].append(word_lines);
 
     // autocomplete
-    let autocomplete_d = { 'Aspect': ['Gen', 'Hab', 'Imp', 'Perf', 'Prog', 'Prosp'], 'Case': ['Abl', 'Acc', 'Dat', 'Equ', 'Gen', 'Ins', 'Nom', 'Loc', 'Voc'], 'Evident': ['Fh', 'Nfh'], 'Mood': ['Cnd', 'Des', 'Dur', 'Gen', 'Imp', 'Ind', 'Nec', 'Opt', 'Pot', 'Rapid'], 'Number': ['Sing', 'Plur'], 'Number[psor]': ['Sing', 'Plur'], 'NumType': ['Card', 'Dist', 'Frac', 'Ord'], 'Person': ['1', '2', '3'], 'Person[psor]': ['1', '2', '3'], 'Polarity': ['Pos', 'Neg'], 'PronType': ['Dem', 'Ind', 'Int', 'Loc', 'Prs', 'Rcp', 'Rfl', 'Quant'], 'Tense': ['Past', 'Pres', 'Fut'], 'VerbForm': ['Conv', 'Part', 'Vnoun'], 'Voice': ['Cau', 'Pass', 'Rcp', 'Rfl'], 'DEPREL': ['acl', 'advcl', 'advlc:cond', 'advmod', 'advmod:emph', 'amod', 'case', 'cc', 'cc:preconj', 'compound', 'compound:lvc', 'compound:redup', 'conj', 'cop', 'csubj', 'det', 'dep', 'dep:der', 'discourse', 'discourse:q', 'discourse:tag', 'flat', 'iobj', 'nmod', 'nmod:part', 'nmod:poss', 'nsubj', 'nummod', 'obl', 'obl:cl', 'obl:comp', 'obl:tmod', 'obj', 'punct', 'root', 'xcomp'], 'UPOS': ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'VERB'], 'XPOS': ['Adj', 'ANum', 'Attr', 'Comma', 'Conv', 'Det', 'Demons', 'Exist', 'Indef', 'Inst', 'NNum', 'Noun', 'Partic', 'PCNom', 'PCDat', 'PCGen', 'Pers', 'Place', 'Ptcp', 'Punc', 'Reflex', 'Separ', 'Stop', 'Tdots', 'Topic', 'Typo', 'Ques', 'Quant', 'Verb', 'Vnoun', 'Year', 'Zero'] };
+    let autocomplete_d = { 'Aspect': ['Gen', 'Hab', 'Imp', 'Perf', 'Prog', 'Prosp'], 'Case': ['Abl', 'Acc', 'Dat', 'Equ', 'Gen', 'Ins', 'Nom', 'Loc', 'Voc'], 'Evident': ['Fh', 'Nfh'], 'Mood': ['Cnd', 'Des', 'Dur', 'Gen', 'Imp', 'Ind', 'Nec', 'Opt', 'Pot', 'Rapid'], 'Number': ['Sing', 'Plur'], 'Number[psor]': ['Sing', 'Plur'], 'NumType': ['Card', 'Dist', 'Frac', 'Ord'], 'Person': ['1', '2', '3'], 'Person[psor]': ['1', '2', '3'], 'Polarity': ['Pos', 'Neg'], 'PronType': ['Dem', 'Ind', 'Int', 'Loc', 'Prs', 'Rcp', 'Rfl', 'Quant'], 'Tense': ['Past', 'Pres', 'Fut'], 'VerbForm': ['Conv', 'Part', 'Vnoun'], 'Voice': ['Cau', 'Pass', 'Rcp', 'Rfl'], 'DEPREL': ['acl', 'advcl', 'advlc:cond', 'advmod', 'advmod:emph', 'amod', 'case', 'cc', 'cc:preconj', 'compound', 'compound:lvc', 'compound:redup', 'conj', 'cop', 'csubj', 'det', 'dep', 'dep:der', 'discourse', 'discourse:q', 'discourse:tag', 'flat', 'iobj', 'nmod', 'nmod:part', 'nmod:poss', 'nsubj', 'nummod', 'obl', 'obl:cl', 'obl:comp', 'obl:tmod', 'obj', 'punct', 'root', 'xcomp'], 'UPOS': ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'VERB'], 'XPOS': ['Adj', 'ANum', 'Attr', 'Comma', 'Conv', 'Det', 'Demons', 'Exist', 'Indef', 'Inst', 'NNum', 'Noun', 'Partic', 'PCNom', 'PCDat', 'PCGen', 'Pers', 'Place', 'Ptcp', 'Punc', 'Reflex', 'Separ', 'Stop', 'TDots', 'Topic', 'Typo', 'Ques', 'Quant', 'Verb', 'Vnoun', 'Year', 'Zero'] };
     let ac_keys = Object.keys(autocomplete_d);
     for (let i = 0; i < ac_keys.length; i++) {
         let source_t = autocomplete_d[ac_keys[i]];

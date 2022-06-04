@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('accounts/login/', views.login, name='login'),
     path('accounts/register/', views.register, name='register'),
+    path('accounts/home/', views.home, name='home'),
     path('accounts/profile/', views.profile, name='profile'),
     path('accounts/logout/', views.logout, name='logout'),
     path('upload_file/', views.upload_file, name='upload_file'),
@@ -21,4 +22,5 @@ urlpatterns = [
     path('spacy/', views.spacy, name='spacy'),
     path('ud_graph/', views.ud_graph, name='ud_graph'),
     path('download_conllu/', views.download_conllu, name='download_conllu'),
+    path('compute_agreement/', views.compute_agreement, name='compute_agreement'),
 ]

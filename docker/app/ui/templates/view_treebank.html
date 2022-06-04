@@ -1,4 +1,5 @@
 {% extends 'base-nav.html' %}
+{% load static %}
 
 {% block head %}
 <title> View Treebank Page </title>
@@ -57,18 +58,27 @@
             row.className = "border";
 
             let data = document.createElement("td");
+            data.innerHTML = result['sent_id'];
+            row.append(data);
+
+            data = document.createElement("td");
             data.innerHTML = result['text'];
-            data.style = 'text-align:center';
             row.append(data);
 
             data = document.createElement("td");
             let a = document.createElement('a');
             a.href = `/annotate/${treebank_title}/${result['order']}`;
-            a.innerHTML = result['sent_id'];
-            a.style = 'text-align:center';
-            data.append(a);
+            let button = document.createElement("button");
+            let img = $('#pencil-square')[0].cloneNode(true);
+            img.hidden = false;
+            button.setAttribute('data-bs-toggle', 'tooltip');
+            button.setAttribute('data-bs-placement', 'bottom');
+            button.setAttribute('title', 'Annotate the sentence');
+            button.className = "btn btn-light btn-sm border";
+            a.append(img);
+            button.append(a);
+            data.append(button);
             row.append(data);
-
             $('#result-body')[0].append(row);
         }
     };
@@ -87,8 +97,9 @@
         <table id="result-table" class="table table-bordered table-striped" hidden="true">
             <thead>
                 <tr style="text-align: center;">
-                    <th>text</th>
                     <th>sent_id</th>
+                    <th>text</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="result-body"></tbody>
@@ -102,4 +113,7 @@
         </ul>
     </nav>
 </div>
+
+<img hidden id="pencil-square" src="{% static 'pencil-square.svg' %}">
+
 {% endblock %}

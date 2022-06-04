@@ -142,3 +142,5 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
+ROOT_PATH = ''

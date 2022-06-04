@@ -40,7 +40,7 @@ class SentenceManager(models.Manager):
 
 class Sentence(models.Model):
     class Meta:
-        unique_together = ['sent_id', 'text']
+        unique_together = ['sent_id', 'text', 'treebank']
 
     order = models.PositiveIntegerField()
     treebank = models.ForeignKey(Treebank, on_delete=models.CASCADE)

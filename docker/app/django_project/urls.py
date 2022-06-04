@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from search import views
+from .settings import ROOT_PATH
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -27,12 +28,12 @@ router.register(r'annotations', views.AnnotationViewSet)
 router.register(r'wordlines', views.WordLineViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('ui.urls')),
+    path(f'{ROOT_PATH}admin/', admin.site.urls),
+    path(f'{ROOT_PATH}', include('ui.urls')),
     # path('', include('search.urls')),
-    path('query/', views.query, name='query'),
-    path('api/my_annotations/', views.my_annotations, name='my_annos'),
-    path('api/get_treebank/', views.get_treebank, name='get_treebank'),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path(f'{ROOT_PATH}query/', views.query, name='query'),
+    path(f'{ROOT_PATH}api/my_annotations/', views.my_annotations, name='my_annos'),
+    path(f'{ROOT_PATH}api/get_treebank/', views.get_treebank, name='get_treebank'),
+    path(f'{ROOT_PATH}api/', include(router.urls)),
+    path(f'{ROOT_PATH}api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

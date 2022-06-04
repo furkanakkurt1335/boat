@@ -47,10 +47,9 @@
         {% for treebank in treebanks %}
         <tr>
             <td>{{treebank}}</td>
-            <td> <button class="btn btn-outline-success view-sentences" id="{{treebank.title}}">View Sentences</button>
+            <td> <button class="btn btn-light btn-outline-secondary view-sentences" id="{{treebank.title}}">View Sentences</button>
             </td>
-            <td> <button class="btn btn-outline-success download" value="Download"
-                    id="{{treebank.title}}">Download</button>
+            <td> <button class="btn btn-light btn-outline-secondary download" id="{{treebank.title}}">Download</button>
             </td>
         </tr>
         {% endfor %}
