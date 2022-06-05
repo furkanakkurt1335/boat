@@ -1,0 +1,19 @@
+# sent_id = ins_1281
+# text = O nasıl derse desin uğraştığı sanatın kendisine emanet olduğunu söyleyen üstadları vardı.
+1	O	o	PRON	Pers	Case=Nom|Number=Sing|Person=3|PronType=Prs	3	nsubj	_	_
+2	nasıl	nasıl	ADV	Ques	_	3	advmod	_	_
+3-4	derse	_	_	_	_	_	_	_	_
+3	der	de	VERB	Ptcp	Aspect=Hab|Polarity=Pos|Tense=Pres|VerbForm=Part	13	advcl:cond	_	_
+4	se	i	AUX	Zero	Mood=Cnd|Number=Sing|Person=3	3	cop	_	_
+5	desin	de	VERB	_	Mood=Imp|Number=Sing|Person=3|Polarity=Pos	3	compound:redup	_	_
+6	uğraştığı	uğraş	VERB	Ptcp	Aspect=Perf|Number[psor]=Sing|Person[psor]=3|Polarity=Pos|Tense=Past|VerbForm=Part	7	acl	_	_
+7	sanatın	sanat	NOUN	_	Case=Gen|Number=Sing|Person=3	10	nsubj	_	_
+8	kendisine	kendi	NOUN	Reflex	Case=Dat|Number=Sing|Number[psor]=Sing|Person=3|Person[psor]=3|Reflex=Yes	10	obl	_	_
+9	emanet	emanet	NOUN	_	Case=Nom|Number=Sing|Person=3	11	ccomp	_	_
+10	olduğunu	ol	VERB	Ptcp	Aspect=Perf|Case=Acc|Number=Sing|Number[psor]=Sing|Person=3|Person[psor]=3|Polarity=Pos|Tense=Past|VerbForm=Part	9	compound:lvc	_	_
+11	söyleyen	söyle	VERB	Ptcp	Polarity=Pos|Tense=Pres|VerbForm=Part	12	acl	_	_
+12	üstadları	üstad	NOUN	_	Case=Acc|Number=Plur|Person=3	13	nsubj	_	_
+13-14	vardı	_	_	_	_	_	_	_	SpaceAfter=No
+13	var	var	NOUN	Exist	Number=Sing|Person=3|Polarity=Pos	0	root	_	_
+14	dı	y	AUX	Zero	Aspect=Perf|Evident=Fh|Number=Sing|Person=3|Tense=Past	13	cop	_	_
+15	.	.	PUNCT	Stop	_	13	punct	_	SpacesAfter=\n
