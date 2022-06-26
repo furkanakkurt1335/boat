@@ -901,7 +901,7 @@ function feats_order(key) {
         if (j != d_keys.length - 1) new_feats += "|";
     }
     if (new_feats == "") new_feats = "_";
-    window.cells[key][feats] = new_feats;
+    window.cells[key]['feats'] = new_feats;
     document.getElementById(`${key} feats`).innerHTML = new_feats;
 }
 
@@ -916,18 +916,30 @@ function cell_change(key, column, cell) {
         let feats = cell.split('|');
         for (let j = 0; j < feats.length; j++) {
             let matches = feats[j].match(/(.+)=(.+)/);
-            let column = matches[1].toLowerCase();
-            window.cells[key][column] = matches[2];
-            if (current_columns.indexOf(column) != -1) document.getElementById(`${key} ${column}`).innerHTML = matches[2];
+            if (matches) {
+                let column_t = matches[1].toLowerCase();
+                window.cells[key][column_t] = matches[2];
+                if (current_columns.indexOf(column_t) != -1) document.getElementById(`${key} ${column_t}`).innerHTML = matches[2];
+            }
         }
         feats_order(key);
     }
     else if (features_low.includes(column)) {
         let new_feats = "";
+        let current_feats = {};
         let feats = window.cells[key]['feats'].split('|');
-        if (feats.length == 1 & feats[0] == "_") new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
-        else new_feats = `${window.cells[key]['feats']}|${features[features_low.indexOf(column)]}=${cell}`;
-        if (new_feats == "") new_feats = "_";
+        for (let j = 0; j < feats.length; j++) {
+            let matches = feats[j].match(/(.+)=(.+)/);
+            if (matches && matches[2] != "_") {
+                current_feats[matches[1]] = matches[2];
+            }
+        }
+        current_feats[features[features_low.indexOf(column)]] = cell;
+        let feats_l = Object.keys(current_feats);
+        for (let j = 0; j < feats_l.length; j++) {
+            new_feats += `${feats_l[j]}=${current_feats[feats_l[j]]}`;
+            if (j != feats_l.length - 1) new_feats += "|";
+        }
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;
         feats_order(key);
