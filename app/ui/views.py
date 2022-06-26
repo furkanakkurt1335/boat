@@ -66,9 +66,12 @@ def compute_anno_agr(annos):
 @login_required
 def compute_agreement(request):
     context = {}
+    tb_names = Treebank.objects.all()
+    context['tbs'] = tb_names
     if request.method == 'POST':
         agreement_score_sum = 0
         tb_name = request.POST['title']
+        context['tb_name'] = tb_name
         sents = Sentence.objects.filter(treebank__title=tb_name)
         anno_count = 0
         for sent in sents:
@@ -83,9 +86,7 @@ def compute_agreement(request):
             context['score'] = 0
         else:
             context['score'] = agreement_score_sum / anno_count  # b/w 0-1
-    elif request.method == 'GET':
-        tb_names = Treebank.objects.all()
-        context['tbs'] = tb_names
+    print(context['score'])
     return render(request, 'compute_agreement.html', context)
 
 
