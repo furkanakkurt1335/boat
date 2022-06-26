@@ -9,7 +9,7 @@ class UploadFileForm(forms.Form):
 class TreebankForm(ModelForm):
     class Meta:
         model = Treebank
-        fields = ['title']
+        fields = ['title', 'language']
 
 class SentenceForm(ModelForm):
     class Meta:

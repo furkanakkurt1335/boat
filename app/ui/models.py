@@ -25,6 +25,7 @@ class TreebankManager(models.Manager):
 
 class Treebank(models.Model):
     title = models.CharField(max_length=30, unique=True)
+    language = models.CharField(max_length=30)
 
     def __str__(self):
         return self.title
