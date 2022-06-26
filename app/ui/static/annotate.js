@@ -338,7 +338,7 @@ document.onkeyup = function (e) {
     else if (e.key.toLowerCase() == "t" && e.altKey) {
         document.getElementById("1 form").focus();
     }
-    else if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+    else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.shiftKey) {
         if (!document.getElementById('word_lines').contains(document.activeElement)) return;
         let matches = document.activeElement.id.match(/(.+) (.+)/);
         if (matches.length == 3) {
@@ -353,10 +353,10 @@ document.onkeyup = function (e) {
             else if (e.key == "ArrowDown" && row_id != form_count - 1) {
                 document.getElementById(`${cells_keys[row_id + 1]} ${matches[2]}`).focus();
             }
-            else if (e.key == "ArrowRight" && e.shiftKey && column_order != current_columns.length - 1) {
+            else if (e.key == "ArrowRight" && column_order != current_columns.length - 1) {
                 document.getElementById(`${matches[1]} ${current_columns[column_order + 1]}`).focus();
             }
-            else if (e.key == "ArrowLeft" && e.shiftKey && column_order != 0) {
+            else if (e.key == "ArrowLeft" && column_order != 0) {
                 document.getElementById(`${matches[1]} ${current_columns[column_order - 1]}`).focus();
             }
         }
@@ -741,7 +741,11 @@ function inject_sentence() {
             data.addEventListener("focus", (event) => {
                 window.last_focus = [row_t, column_t];
                 window.last_focus_value = event.target.innerHTML;
+                if (event.target.innerHTML == "_") event.target.innerHTML = "";
             });
+            data.addEventListener("blur", (event) => {
+
+            })
             if (['aspect', 'case', 'evident', 'mood', 'number', 'number[psor]', 'numtype', 'person', 'person[psor]', 'polarity', 'prontype', 'tense', 'verbform', 'voice', 'upos', 'xpos', 'deprel'].includes(column_t)) {
                 data.classList.add("autocomplete");
                 data.classList.add(column_t);
