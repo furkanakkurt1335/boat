@@ -10,30 +10,39 @@
         $.get(`/api/get_treebank/?treebank_title=${treebank_title}`,
             function (data) {
                 let keys = Object.keys(data);
-                let one_result = {};
-                window.res_size = keys.length;
-                $('#pagination')[0].hidden = false;
-                window.current_page = 1;
-                $('#result-table')[0].hidden = false;
-                for (let i = 0; i < keys.length; i++) {
-                    let res_t = data[keys[i]];
-                    one_result['text'] = res_t['text'];
-                    one_result['sent_id'] = res_t['sent_id'];
-                    one_result['order'] = res_t['order'];
-                    window.results.push(JSON.parse(JSON.stringify(one_result)));
-                    if (i <= 20) create_row(one_result);
+                if (keys.length != 0) {
+                    let prev = $('a#previous')[0];
+                    let next = $('a#next')[0];
+                    prev.addEventListener('click', function () {
+                        page_handle('prev');
+                    });
+                    next.addEventListener('click', function () {
+                        page_handle('next');
+                    });
+                    $('#result-table')[0].hidden = false;
+                    if (keys.length <= 20) $('#pagination')[0].hidden = true;
+                    else $('#next')[0].hidden = false;
+                    let one_result = {};
+                    window.res_size = keys.length;
+                    window.current_page = 1;
+                    $('#result-table')[0].hidden = false;
+                    for (let i = 0; i < keys.length; i++) {
+                        let res_t = data[keys[i]];
+                        one_result['text'] = res_t['text'];
+                        one_result['sent_id'] = res_t['sent_id'];
+                        one_result['order'] = res_t['order'];
+                        window.results.push(JSON.parse(JSON.stringify(one_result)));
+                        if (i <= 20) create_row(one_result);
+                    }
                 }
+                else { // no result found
+                    $('#result-table')[0].hidden = true;
+                    $('#pagination')[0].hidden = true;
+                    $('#message')[0].innerHTML = 'No sentence found.';
+                }
+                
             }
         );
-
-        let prev = $('a#previous')[0];
-        let next = $('a#next')[0];
-        prev.addEventListener('click', function () {
-            page_handle('prev');
-        });
-        next.addEventListener('click', function () {
-            page_handle('next');
-        });
 
         function page_handle(type) {
             $('#result-body').find('tr').remove();
@@ -105,11 +114,12 @@
             <tbody id="result-body"></tbody>
         </table>
     </div>
-    <nav id="pagination" hidden>
+    <div id="message"></div>
+    <nav id="pagination">
         <ul class="pagination">
             <li class="page-item"><a id="previous" hidden class="page-link">Previous</a>
             </li>
-            <li class="page-item"><a id="next" class="page-link">Next</a></li>
+            <li class="page-item"><a id="next" hidden class="page-link">Next</a></li>
         </ul>
     </nav>
 </div>
