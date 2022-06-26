@@ -1,36 +1,32 @@
-# sent_id = news_388
-# text = Bu yaş diliminin en az çalışanları ise Slovakya, Belçika ve Fransa'da.
-1	Bu	bu	DET	_	_	_	_	_	_
-2	yaş	yaş	NOUN	_	_	_	_	_	_
-3	diliminin	dilim	NOUN	_	_	_	_	_	_
-4	en	en	ADV	_	_	_	_	_	_
-5	az	az	ADV	_	_	_	_	_	_
-6	çalışanları	çalış	VERB	_	_	_	_	_	_
-7	ise	i	PART	_	_	_	_	_	df=i
-8	Slovakya	Slovakya	PROPN	_	_	_	_	_	SpaceAfter=No
-9	,	,	PUNCT	_	_	_	_	_	_
-10	Belçika	Belçika	PROPN	_	_	_	_	_	_
-11	ve	ve	CCONJ	_	_	_	_	_	_
-12	Fransa'da	Fransa	PROPN	_	_	_	_	_	SpaceAfter=No|nullcop=3p
-13	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+# sent_id = bio_1864
+# text = Tüm dostlara haber ulaştıramadım, ama kalan dostlar her şeyi halletti.
+1	Tüm	tüm	DET	_	_	_	_	_	_
+2	dostlara	dost	NOUN	_	_	_	_	_	_
+3	haber	haber	NOUN	_	_	_	_	_	_
+4	ulaştıramadım	ulaş	VERB	_	_	_	_	_	SpaceAfter=No
+5	,	,	PUNCT	_	_	_	_	_	_
+6	ama	ama	CCONJ	_	_	_	_	_	_
+7	kalan	kal	VERB	_	_	_	_	_	_
+8	dostlar	dost	NOUN	_	_	_	_	_	_
+9	her	her	DET	_	_	_	_	_	_
+10	şeyi	şey	NOUN	_	_	_	_	_	_
+11	halletti	hallet	VERB	_	_	_	_	_	SpaceAfter=No
+12	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
 
-# sent_id = ins_833
-# text = 1936 yılındayız.
-1	1936	1936	NUM	_	_	_	_	_	_
-2-3	yılındayız	_	_	_	_	_	_	_	SpaceAfter=No
-2	yılında	yıl	NOUN	_	_	_	_	_	_
-3	yız	N/A	AUX	_	_	_	_	_	_
-4	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
+# sent_id = ess_594
+# text = Bunu umuyoruz.
+1	Bunu	bu	PRON	_	_	_	_	_	_
+2	umuyoruz	um	VERB	_	_	_	_	_	SpaceAfter=No
+3	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
 
-# sent_id = bio_1265
-# text = Adeta kendimden geçmiş bir haldeyim.
-1	Adeta	adeta	ADV	_	_	_	_	_	_
-2	kendimden	kendi	NOUN	_	_	_	_	_	_
-3	geçmiş	geçmiş	VERB	_	_	_	_	_	_
-4	bir	bir	DET	_	_	_	_	_	_
-5-6	haldeyim	_	_	_	_	_	_	_	SpaceAfter=No
-5	halde	hâl	NOUN	_	_	_	_	_	_
-6	yim	N/A	AUX	_	_	_	_	_	_
+# sent_id = bio_1097
+# text = "Neden?" diye sordum.
+1	"	"	PUNCT	_	_	_	_	_	SpaceAfter=No
+2	Neden	neden	ADV	_	_	_	_	_	SpaceAfter=No
+3	?	?	PUNCT	_	_	_	_	_	SpaceAfter=No
+4	"	"	PUNCT	_	_	_	_	_	_
+5	diye	diye	ADP	_	_	_	_	_	_
+6	sordum	sor	VERB	_	_	_	_	_	SpaceAfter=No
 7	.	.	PUNCT	_	_	_	_	_	SpacesAfter=\n
 
 # sent_id = ins_93

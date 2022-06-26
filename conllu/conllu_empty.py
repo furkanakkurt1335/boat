@@ -1,5 +1,6 @@
-
-data = open(r'C:\Users\salih\Dropbox\School\Current\CMPE492 - Project\CoNLL-U\annotator-agr, Sent by Busra, Original - Copy.conllu', 'r', encoding='utf-8').readlines()
+import os, sys
+with open(f'{os.path.dirname(os.path.realpath(__file__))}/{sys.argv[1]}', 'r', encoding='utf-8') as f:
+    data = f.readlines()
 new_data = ''
 for line in data:
     if not (line.startswith('#') or line == '' or '-' in line.split('\t')[0]):
@@ -11,4 +12,5 @@ for line in data:
         new_line = '\t'.join(new_tokens)
         new_data += f'{new_line}'
     else: new_data += f'{line}'
-open('new_data.conllu', 'w', encoding='utf-8').write(new_data)
+with open('new_data.conllu', 'w', encoding='utf-8') as f:
+    f.write(new_data)
