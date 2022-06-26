@@ -338,7 +338,7 @@ document.onkeyup = function (e) {
     else if (e.key.toLowerCase() == "t" && e.altKey) {
         document.getElementById("1 form").focus();
     }
-    else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
+    else if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
         if (!document.getElementById('word_lines').contains(document.activeElement)) return;
         let matches = document.activeElement.id.match(/(.+) (.+)/);
         if (matches.length == 3) {
@@ -353,10 +353,10 @@ document.onkeyup = function (e) {
             else if (e.key == "ArrowDown" && row_id != form_count - 1) {
                 document.getElementById(`${cells_keys[row_id + 1]} ${matches[2]}`).focus();
             }
-            else if (e.key == "ArrowRight" && column_order != current_columns.length - 1) {
+            else if (e.key == "ArrowRight" && e.shiftKey && column_order != current_columns.length - 1) {
                 document.getElementById(`${matches[1]} ${current_columns[column_order + 1]}`).focus();
             }
-            else if (e.key == "ArrowLeft" && column_order != 0) {
+            else if (e.key == "ArrowLeft" && e.shiftKey && column_order != 0) {
                 document.getElementById(`${matches[1]} ${current_columns[column_order - 1]}`).focus();
             }
         }
@@ -809,10 +809,11 @@ function create_graph() {
                 text: window.text,
             },
             function (data) {
-                let graph = document.createElement('embed');
+                let graph = document.createElement('div');
                 graph.id = "ud_graph";
-                graph.type = "text/html";
-                graph.src = data;
+                let p = document.createElement('p');
+                p.innerHTML = data;
+                graph.innerHTML = p.textContent;
                 div_graph.append(graph);
                 $("#ud_graph").after($("#error_div"));
             });
