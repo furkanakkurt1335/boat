@@ -35,10 +35,11 @@
 
             <div id="buttons"></div>
             <nav id="table1" class="navbar bg-white sticky-top"></nav>
+            <div id="status"></div>
             <div id="table2"></div>
+            <div id="bottom-buttons"></div>
             <div id="graph"></div>
             <div id="error"></div>
-            <div id="bottom-buttons"></div>
             {% csrf_token %}
         {% endif %}
     {% endif %}
@@ -79,6 +80,12 @@
     ];
 </script>
 <!-- conllu.js -->
+
+<!-- treex -->
+<script src="{% static 'jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'FileSaver.min.js' %}"></script>
+<script src="{% static 'js-treex-view.js' %}"></script>
+<!-- treex -->
 
 <img hidden id="check" src="{% static 'check.svg' %}">
 <img hidden id="arrow-left" src="{% static 'arrow-left.svg' %}">

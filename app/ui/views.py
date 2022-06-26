@@ -86,7 +86,6 @@ def compute_agreement(request):
             context['score'] = 0
         else:
             context['score'] = agreement_score_sum / anno_count  # b/w 0-1
-    print(context['score'])
     return render(request, 'compute_agreement.html', context)
 
 
@@ -456,6 +455,7 @@ def annotate(request, treebank, order):
             notes = request.POST['notes']
             status = int(request.POST['status'])
             word_lines = json.loads(data)
+            annotation.status = status
             annotation.notes = notes
             button_type = request.POST['type']
             if data_changed == 'true' or button_type == 'save':
@@ -521,7 +521,8 @@ def search(request):
                         queries[count] = {}
                         queries[count]['type'] = data[f'type_{num_str}']
                         queries[count]['input'] = data[f'input_{num_str}']
-                        if data[f'input_{num_str}'].strip() != '': filled_input = True
+                        if data[f'input_{num_str}'].strip() != '':
+                            filled_input = True
                         count += 1
             if not filled_input:
                 message = 'No input filled.'

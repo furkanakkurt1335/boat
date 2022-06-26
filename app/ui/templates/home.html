@@ -1,4 +1,5 @@
 {% extends 'base-nav.html' %}
+{% load static %}
 
 {% block head %}
 <title> Home Page </title>
@@ -6,6 +7,7 @@
 
 {% block body %}
 <div id="space" class="p-5 border bg-light">
-    <h1>BoAT v2</h1>
+    <h1>BoAT - Boğaziçi University Annotation Tool</h1>
+    <img class="img-fluid rounded" src="{% static 'boat-annotation.png' %}">
 </div>
 {% endblock %}

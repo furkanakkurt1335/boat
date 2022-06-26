@@ -7,7 +7,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "New", 1: "Complete", 2: "Draft" };
+    window.status_d = { 0: "None", 1: "Draft", 2: "Complete" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -256,20 +256,16 @@ function button_handle(type, number, way) {
         inject_sentence();
     }
     else if (type == "status") {
-        let button = $('#status')[0];
-        if (window.status == 0) {
-            button.className = button.className.replace('border', 'border-success');
-            window.status = 1;
+        let select = $('select#status')[0];
+        let selected = select.options[select.selectedIndex].text;
+        let options = $('select#status').find('option');
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].innerHTML == selected) options[i].style = "color: gray;";
+            else options[i].style = "color: black;";
         }
-        else if (window.status == 1) {
-            button.className = button.className.replace('border-success', 'border-danger');
-            window.status = 2;
-        }
-        else if (window.status == 2) {
-            button.className = button.className.replace('border-danger', 'border');
-            window.status = 0;
-        }
-        button.innerHTML = window.status_d[window.status];
+        if (selected == window.status_d[0]) window.status = 0;
+        else if (selected == window.status_d[1]) window.status = 1;
+        else if (selected == window.status_d[2]) window.status = 2;
     }
     else if (type == "profile") {
         post_to_save(type);
@@ -409,6 +405,14 @@ function init_page() {
     div_cont.className = 'input-group d-flex';
     let div_row = document.createElement('div');
     div_row.className = 'row mx-auto';
+    let div_bottom_cont = document.createElement('div');
+    div_bottom_cont.className = 'input-group d-flex';
+    let div_bottom_row = document.createElement('div');
+    div_bottom_row.className = 'row';
+    let div_status_cont = document.createElement('div');
+    div_status_cont.className = 'input-group d-flex';
+    let div_status_row = document.createElement('div');
+    div_status_row.className = 'row';
 
     // create button for profile
     let div_col = document.createElement('div');
@@ -525,14 +529,48 @@ function init_page() {
     input_group.append(button);
     div_row.append(div_col);
 
-    // status
+    // input-group
     div_col = document.createElement('div');
-    div_col.className = 'col';
+    div_col.className = 'col-md-auto';
+    input_group = document.createElement('div');
+    input_group.className = 'input-group';
+    div_col.append(input_group);
+
+    // status_select
+    select = document.createElement("select");
+    select.id = "status";
+    select.className = "form-select form-select-sm";
+    option = document.createElement("option");
+    option.disabled = true;
+    option.selected = true;
+    option.innerHTML = "Status";
+    select.append(option);
+    options = [];
+    let status_keys = Object.keys(window.status_d);
+    for (let i = 0; i < status_keys.length; i++) {
+        options.push(window.status_d[parseInt(status_keys[i])]);
+    }
+    for (let i = 0; i < options.length; i++) {
+        option = document.createElement("option");
+        option.innerHTML = options[i];
+        if (window.status == i) {
+            option.style = "color: gray;";
+        }
+        else {
+            option.style = "color: black;";
+        }
+        select.append(option);
+    }
+    input_group.append(select);
+
+    // status_button
     button = document.createElement("button");
     button.id = "status";
-    button.innerHTML = window.status_d[window.status];
-    div_col.append(button);
-    div_row.append(div_col);
+    img = $('#check')[0].cloneNode(true);
+    img.hidden = false;
+    button.append(img);
+    input_group.append(button);
+    div_status_row.append(div_col);
 
     // errors
     div_col = document.createElement('div');
@@ -552,7 +590,7 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     div_col.append(button);
-    div_row.append(div_col);
+    div_bottom_row.append(div_col);
 
     // input-group
     div_col = document.createElement('div');
@@ -595,7 +633,7 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     input_group.append(button);
-    div_row.append(div_col);
+    div_bottom_row.append(div_col);
 
     // input-group
     div_col = document.createElement('div');
@@ -651,6 +689,10 @@ function init_page() {
 
     div_cont.append(div_row);
     $('div#buttons')[0].append(div_cont);
+    div_bottom_cont.append(div_bottom_row);
+    $('div#bottom-buttons')[0].append(div_bottom_cont);
+    div_status_cont.append(div_status_row);
+    $('div#status')[0].append(div_status_cont);
 
     let buttons = document.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
