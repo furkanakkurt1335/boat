@@ -1,4 +1,5 @@
 {% extends 'base-nav.html' %}
+{% load static %}
 
 {% block head %}
 <title> My Annotations Page </title>
@@ -15,7 +16,7 @@
         if (type == "All") type = "all";
         else if (type == "New") type = "new";
         else if (type == "Draft") type = "draft";
-        else if (type == "Finished") type = "finished";
+        else if (type == "Complete") type = "complete";
         let url = `/api/my_annotations/?type=${type}`;
         $('#annotation-body').find('tr').remove();
 
@@ -23,6 +24,7 @@
 
         $.get(url,
             function (data) {
+                $('#result_info').remove();
                 let keys = Object.keys(data);
                 if (keys.length == 0) {
                     $('#annotation-table')[0].hidden = true;
@@ -40,11 +42,11 @@
                         one_result['text'] = res_t['text'];
                         one_result['sent_id'] = res_t['sent_id'];
                         one_result['treebank'] = res_t['treebank_title'];
+                        one_result['url'] = res_t['url'];
                         window.results.push(JSON.parse(JSON.stringify(one_result)));
                         if (i <= 20) create_row(one_result);
                     }
                 }
-                $('#result_info').remove();
             }
         );
     }
@@ -62,6 +64,22 @@
             if (field != "text") data.style = 'text-align:center';
             row.append(data);
         }
+
+        data = document.createElement("td");
+        let a = document.createElement('a');
+        a.href = result['url'];
+        let button = document.createElement("button");
+        let img = $('#pencil-square')[0].cloneNode(true);
+        img.hidden = false;
+        button.setAttribute('data-bs-toggle', 'tooltip');
+        button.setAttribute('data-bs-placement', 'bottom');
+        button.setAttribute('title', 'Annotate the sentence');
+        button.className = "btn btn-light btn-sm border";
+        a.append(img);
+        button.append(a);
+        data.append(button);
+        row.append(data);
+
         $('#annotation-body')[0].append(row);
     }
 
@@ -91,7 +109,7 @@
         <option id="all">All</option>
         <option id="new">New</option>
         <option id="draft">Draft</option>
-        <option id="finished">Finished</option>
+        <option id="complete">Complete</option>
     </select><br>
     <div id="annotations">
         <table id="annotation-table" class="table table-bordered table-striped" hidden="true">
@@ -100,6 +118,7 @@
                     <th>sent_id</th>
                     <th>text</th>
                     <th>Treebank</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="annotation-body"></tbody>
@@ -112,4 +131,5 @@
         </ul>
     </nav>
 </div>
+<img hidden id="pencil-square" src="{% static 'pencil-square.svg' %}">
 {% endblock %}
