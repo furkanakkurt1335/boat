@@ -260,8 +260,8 @@ function button_handle(type, number, way) {
         let selected = select.options[select.selectedIndex].text;
         let options = $('select#status').find('option');
         for (let i = 0; i < options.length; i++) {
-            if (options[i].innerHTML == selected) options[i].style = "color: gray;";
-            else options[i].style = "color: black;";
+            if (options[i].innerHTML == selected) options[i].classList.add("text-muted");
+            else options[i].classList.remove("text-muted");
         }
         if (selected == window.status_d[0]) window.status = 0;
         else if (selected == window.status_d[1]) window.status = 1;
@@ -297,8 +297,8 @@ function button_handle(type, number, way) {
         let selected = select.options[select.selectedIndex].text;
         let options = $('select#graph').find('option');
         for (let i = 0; i < options.length; i++) {
-            if (options[i].innerHTML == selected) options[i].style = "color: gray;";
-            else options[i].style = "color: black;";
+            if (options[i].innerHTML == selected) options[i].classList.add("text-muted");
+            else options[i].classList.remove("text-muted");
         }
         if (selected == window.graph_d[0]) window.graph_preference = 0;
         else if (selected == window.graph_d[1]) window.graph_preference = 1;
@@ -370,13 +370,13 @@ document.onkeyup = function (e) {
 function column_change(column_option) {
     if (current_columns.includes(column_option)) {
         current_columns.splice(current_columns.indexOf(column_option), 1);
-        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: black";
-        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].style = "color: black";
+        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].classList.remove("text-muted");
+        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].classList.remove("text-muted");
     }
     else {
         current_columns = current_columns.concat(column_option);
-        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: gray";
-        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].style = "color: gray";
+        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].classList.add("text-muted");
+        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].classList.add("text-muted");
     }
     sort_columns();
     inject_sentence();
@@ -554,10 +554,10 @@ function init_page() {
         option = document.createElement("option");
         option.innerHTML = options[i];
         if (window.status == i) {
-            option.style = "color: gray;";
+            option.classList.add("text-muted");
         }
         else {
-            option.style = "color: black;";
+            option.classList.remove("text-muted");
         }
         select.append(option);
     }
@@ -617,10 +617,10 @@ function init_page() {
         option = document.createElement("option");
         option.innerHTML = options[i];
         if (window.graph_preference == i) {
-            option.style = "color: gray;";
+            option.classList.add("text-muted");
         }
         else {
-            option.style = "color: black;";
+            option.classList.remove("text-muted");
         }
         select.append(option);
     }
@@ -658,8 +658,8 @@ function init_page() {
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
-        if (current_columns.includes(options[i].toLowerCase())) option.style = "color: gray;"; // not working in firefox
-        else option.style = "color: black;";
+        if (current_columns.includes(options[i].toLowerCase())) option.classList.add("text-muted"); // not working in firefox
+        else option.classList.remove("text-muted");
         select.append(option);
     }
     input_group.append(select);
