@@ -255,18 +255,6 @@ function button_handle(type, number, way) {
         window.cells = window.initial_cells;
         inject_sentence();
     }
-    else if (type == "status") {
-        let select = $('select#status')[0];
-        let selected = select.options[select.selectedIndex].text;
-        let options = $('select#status').find('option');
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].innerHTML == selected) options[i].classList.add("text-muted");
-            else options[i].classList.remove("text-muted");
-        }
-        if (selected == window.status_d[0]) window.status = 0;
-        else if (selected == window.status_d[1]) window.status = 1;
-        else if (selected == window.status_d[2]) window.status = 2;
-    }
     else if (type == "profile") {
         post_to_save(type);
     }
@@ -536,15 +524,25 @@ function init_page() {
     input_group.className = 'input-group';
     div_col.append(input_group);
 
+    text = document.createElement('span');
+    text.innerHTML = "Status:&nbsp;";
+    input_group.append(text);
+
     // status_select
     select = document.createElement("select");
     select.id = "status";
     select.className = "form-select form-select-sm";
-    option = document.createElement("option");
-    option.disabled = true;
-    option.selected = true;
-    option.innerHTML = "Status";
-    select.append(option);
+    select.addEventListener('change', (event) => {
+        let selected = event.target.value;
+        let options = $('select#status').find('option');
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].selected) options[i].classList.add("text-success");
+            else options[i].classList.remove("text-success");
+        }
+        if (selected == window.status_d[0]) window.status = 0;
+        else if (selected == window.status_d[1]) window.status = 1;
+        else if (selected == window.status_d[2]) window.status = 2;
+    });
     options = [];
     let status_keys = Object.keys(window.status_d);
     for (let i = 0; i < status_keys.length; i++) {
@@ -554,22 +552,15 @@ function init_page() {
         option = document.createElement("option");
         option.innerHTML = options[i];
         if (window.status == i) {
-            option.classList.add("text-muted");
+            option.selected = true;
+            option.classList.add("text-success");
         }
         else {
-            option.classList.remove("text-muted");
+            option.classList.remove("text-success");
         }
         select.append(option);
     }
     input_group.append(select);
-
-    // status_button
-    button = document.createElement("button");
-    button.id = "status";
-    img = $('#check')[0].cloneNode(true);
-    img.hidden = false;
-    button.append(img);
-    input_group.append(button);
     div_status_row.append(div_col);
 
     // errors
@@ -730,7 +721,8 @@ function inject_sentence() {
         if (cells_keys[i].indexOf('-') != -1) continue;
         let heading = document.createElement("td");
         heading.innerHTML = cells_keys[i];
-        heading.style = "text-align: center; color: gray;";
+        heading.style = "text-align: center;";
+        heading.classList.add("text-muted");
         let data = document.createElement("td");
         data.innerHTML = cells[cells_keys[i]]["form"];
         data.style = "text-align: center;";
