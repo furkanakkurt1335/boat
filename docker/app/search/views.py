@@ -32,15 +32,16 @@ def my_annotations(request):
     if q['type'] == 'all':
         annotations = Annotation.objects.filter(annotator=request.user)
     else:
-        type_d = {"not": 0, "half": 2, "done": 1}
+        type_d = {"new": 0, "draft": 2, "complete": 1}
         annotations = Annotation.objects.filter(
             annotator=request.user, status=type_d[q['type']])
     result = {}
     for ann_t in annotations:
         sen_t = Sentence.objects.get(id=ann_t.sentence.id)
         tb_t = Treebank.objects.get(id=sen_t.treebank_id)
+        url_t = f'/annotate/{tb_t.title}/{sen_t.order}'
         d_t = {'sent_id': sen_t.sent_id, 'text': sen_t.text,
-               'treebank_title': tb_t.title}
+               'treebank_title': tb_t.title, 'url': url_t}
         result[len(result.keys())] = d_t
     return Response(result)
 

@@ -14,7 +14,7 @@
         <tbody>
             <tr>
                 <td>
-                    <select id="treebank_select" class="w-25 form-select">
+                    <select id="treebank_select" class="w-50 form-select">
                         <option disabled selected>Select treebank</option>
                         {%for tb in tbs%}
                             <option value={{tb}}>{{tb}}</option>
@@ -40,7 +40,9 @@
 
     <div id="result">
         {%if score%}
-            Score: {{score}}
+            Agreement score for the treebank <i>{{tb_name}}</i>: {{score}}
+        {%elif score == 0%}
+            Not enough data to compute the score for the treebank <i>{{tb_name}}</i>.
         {%endif%}
     </div>
 </div>

@@ -7,7 +7,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "New", 1: "Complete", 2: "Draft" };
+    window.status_d = { 0: "None", 1: "Draft", 2: "Complete" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -255,22 +255,6 @@ function button_handle(type, number, way) {
         window.cells = window.initial_cells;
         inject_sentence();
     }
-    else if (type == "status") {
-        let button = $('#status')[0];
-        if (window.status == 0) {
-            button.className = button.className.replace('border', 'border-success');
-            window.status = 1;
-        }
-        else if (window.status == 1) {
-            button.className = button.className.replace('border-success', 'border-danger');
-            window.status = 2;
-        }
-        else if (window.status == 2) {
-            button.className = button.className.replace('border-danger', 'border');
-            window.status = 0;
-        }
-        button.innerHTML = window.status_d[window.status];
-    }
     else if (type == "profile") {
         post_to_save(type);
     }
@@ -301,8 +285,8 @@ function button_handle(type, number, way) {
         let selected = select.options[select.selectedIndex].text;
         let options = $('select#graph').find('option');
         for (let i = 0; i < options.length; i++) {
-            if (options[i].innerHTML == selected) options[i].style = "color: gray;";
-            else options[i].style = "color: black;";
+            if (options[i].innerHTML == selected) options[i].classList.add("text-muted");
+            else options[i].classList.remove("text-muted");
         }
         if (selected == window.graph_d[0]) window.graph_preference = 0;
         else if (selected == window.graph_d[1]) window.graph_preference = 1;
@@ -338,7 +322,7 @@ document.onkeyup = function (e) {
     else if (e.key.toLowerCase() == "t" && e.altKey) {
         document.getElementById("1 form").focus();
     }
-    else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.ctrlKey) {
+    else if ((e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") && e.shiftKey) {
         if (!document.getElementById('word_lines').contains(document.activeElement)) return;
         let matches = document.activeElement.id.match(/(.+) (.+)/);
         if (matches.length == 3) {
@@ -374,13 +358,13 @@ document.onkeyup = function (e) {
 function column_change(column_option) {
     if (current_columns.includes(column_option)) {
         current_columns.splice(current_columns.indexOf(column_option), 1);
-        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: black";
-        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].style = "color: black";
+        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].classList.remove("text-muted");
+        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].classList.remove("text-muted");
     }
     else {
         current_columns = current_columns.concat(column_option);
-        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].style = "color: gray";
-        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].style = "color: gray";
+        if (cats_low.includes(column_option)) $(`option:contains('${cats[cats_low.indexOf(column_option)]}')`)[0].classList.add("text-muted");
+        else $(`option:contains('${features[features_low.indexOf(column_option)]}')`)[0].classList.add("text-muted");
     }
     sort_columns();
     inject_sentence();
@@ -409,6 +393,14 @@ function init_page() {
     div_cont.className = 'input-group d-flex';
     let div_row = document.createElement('div');
     div_row.className = 'row mx-auto';
+    let div_bottom_cont = document.createElement('div');
+    div_bottom_cont.className = 'input-group d-flex';
+    let div_bottom_row = document.createElement('div');
+    div_bottom_row.className = 'row';
+    let div_status_cont = document.createElement('div');
+    div_status_cont.className = 'input-group d-flex';
+    let div_status_row = document.createElement('div');
+    div_status_row.className = 'row';
 
     // create button for profile
     let div_col = document.createElement('div');
@@ -525,14 +517,51 @@ function init_page() {
     input_group.append(button);
     div_row.append(div_col);
 
-    // status
+    // input-group
     div_col = document.createElement('div');
-    div_col.className = 'col';
-    button = document.createElement("button");
-    button.id = "status";
-    button.innerHTML = window.status_d[window.status];
-    div_col.append(button);
-    div_row.append(div_col);
+    div_col.className = 'col-md-auto';
+    input_group = document.createElement('div');
+    input_group.className = 'input-group';
+    div_col.append(input_group);
+
+    text = document.createElement('span');
+    text.innerHTML = "Status:&nbsp;";
+    input_group.append(text);
+
+    // status_select
+    select = document.createElement("select");
+    select.id = "status";
+    select.className = "form-select form-select-sm";
+    select.addEventListener('change', (event) => {
+        let selected = event.target.value;
+        let options = $('select#status').find('option');
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].selected) options[i].classList.add("text-success");
+            else options[i].classList.remove("text-success");
+        }
+        if (selected == window.status_d[0]) window.status = 0;
+        else if (selected == window.status_d[1]) window.status = 1;
+        else if (selected == window.status_d[2]) window.status = 2;
+    });
+    options = [];
+    let status_keys = Object.keys(window.status_d);
+    for (let i = 0; i < status_keys.length; i++) {
+        options.push(window.status_d[parseInt(status_keys[i])]);
+    }
+    for (let i = 0; i < options.length; i++) {
+        option = document.createElement("option");
+        option.innerHTML = options[i];
+        if (window.status == i) {
+            option.selected = true;
+            option.classList.add("text-success");
+        }
+        else {
+            option.classList.remove("text-success");
+        }
+        select.append(option);
+    }
+    input_group.append(select);
+    div_status_row.append(div_col);
 
     // errors
     div_col = document.createElement('div');
@@ -552,7 +581,7 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     div_col.append(button);
-    div_row.append(div_col);
+    div_bottom_row.append(div_col);
 
     // input-group
     div_col = document.createElement('div');
@@ -579,10 +608,10 @@ function init_page() {
         option = document.createElement("option");
         option.innerHTML = options[i];
         if (window.graph_preference == i) {
-            option.style = "color: gray;";
+            option.classList.add("text-muted");
         }
         else {
-            option.style = "color: black;";
+            option.classList.remove("text-muted");
         }
         select.append(option);
     }
@@ -595,7 +624,7 @@ function init_page() {
     img.hidden = false;
     button.append(img);
     input_group.append(button);
-    div_row.append(div_col);
+    div_bottom_row.append(div_col);
 
     // input-group
     div_col = document.createElement('div');
@@ -620,8 +649,8 @@ function init_page() {
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
-        if (current_columns.includes(options[i].toLowerCase())) option.style = "color: gray;"; // not working in firefox
-        else option.style = "color: black;";
+        if (current_columns.includes(options[i].toLowerCase())) option.classList.add("text-muted"); // not working in firefox
+        else option.classList.remove("text-muted");
         select.append(option);
     }
     input_group.append(select);
@@ -651,6 +680,10 @@ function init_page() {
 
     div_cont.append(div_row);
     $('div#buttons')[0].append(div_cont);
+    div_bottom_cont.append(div_bottom_row);
+    $('div#bottom-buttons')[0].append(div_bottom_cont);
+    div_status_cont.append(div_status_row);
+    $('div#status')[0].append(div_status_cont);
 
     let buttons = document.getElementsByTagName("button");
     for (let i = 0; i < buttons.length; i++) {
@@ -664,9 +697,15 @@ function init_page() {
 }
 
 var cats = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
-var cats_low = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
+var cats_low = [];
+cats.forEach(function (item) {
+    cats_low.push(item.toLowerCase());
+});
 var features = ["Abbr", "Animacy", "Aspect", "Case", "Clusivity", "Definite", "Degree", "Evident", "Foreign", "Gender", "Mood", "NounClass", "Number", "NumType", "Person", "Polarity", "Polite", "Poss", "PronType", "Reflex", "Tense", "Typo", "VerbForm", "Voice"];
-var features_low = ["abbr", "animacy", "aspect", "case", "clusivity", "definite", "degree", "evident", "foreign", "gender", "mood", "nounclass", "number", "numtype", "person", "polarity", "polite", "poss", "prontype", "reflex", "tense", "typo", "verbform", "voice"];
+var features_low = [];
+features.forEach(function (item) {
+    features_low.push(item.toLowerCase());
+});
 const all_column_count = cats.length + features.length;
 
 function inject_sentence() {
@@ -678,7 +717,7 @@ function inject_sentence() {
     // Show sentence in table form with indices
     let sentence_text = document.createElement("table");
     sentence_text.id = "sentence_text";
-    sentence_text.className = "table-sm mx-auto border border-secondary";
+    sentence_text.className = "table-sm border border-secondary";
     let tbody = document.createElement("tbody");
     let row1 = document.createElement("tr");
     let row2 = document.createElement("tr");
@@ -688,7 +727,8 @@ function inject_sentence() {
         if (cells_keys[i].indexOf('-') != -1) continue;
         let heading = document.createElement("td");
         heading.innerHTML = cells_keys[i];
-        heading.style = "text-align: center; color: gray;";
+        heading.style = "text-align: center;";
+        heading.classList.add("text-muted");
         let data = document.createElement("td");
         data.innerHTML = cells[cells_keys[i]]["form"];
         data.style = "text-align: center;";
@@ -741,7 +781,11 @@ function inject_sentence() {
             data.addEventListener("focus", (event) => {
                 window.last_focus = [row_t, column_t];
                 window.last_focus_value = event.target.innerHTML;
+                if (event.target.innerHTML == "_") event.target.innerHTML = "";
             });
+            data.addEventListener("blur", (event) => {
+
+            })
             if (['aspect', 'case', 'evident', 'mood', 'number', 'number[psor]', 'numtype', 'person', 'person[psor]', 'polarity', 'prontype', 'tense', 'verbform', 'voice', 'upos', 'xpos', 'deprel'].includes(column_t)) {
                 data.classList.add("autocomplete");
                 data.classList.add(column_t);
@@ -809,10 +853,11 @@ function create_graph() {
                 text: window.text,
             },
             function (data) {
-                let graph = document.createElement('embed');
+                let graph = document.createElement('div');
                 graph.id = "ud_graph";
-                graph.type = "text/html";
-                graph.src = data;
+                let p = document.createElement('p');
+                p.innerHTML = data;
+                graph.innerHTML = p.textContent;
                 div_graph.append(graph);
                 $("#ud_graph").after($("#error_div"));
             });
@@ -896,7 +941,7 @@ function feats_order(key) {
         if (j != d_keys.length - 1) new_feats += "|";
     }
     if (new_feats == "") new_feats = "_";
-    window.cells[key][feats] = new_feats;
+    window.cells[key]['feats'] = new_feats;
     document.getElementById(`${key} feats`).innerHTML = new_feats;
 }
 
@@ -911,18 +956,30 @@ function cell_change(key, column, cell) {
         let feats = cell.split('|');
         for (let j = 0; j < feats.length; j++) {
             let matches = feats[j].match(/(.+)=(.+)/);
-            let column = matches[1].toLowerCase();
-            window.cells[key][column] = matches[2];
-            if (current_columns.indexOf(column) != -1) document.getElementById(`${key} ${column}`).innerHTML = matches[2];
+            if (matches) {
+                let column_t = matches[1].toLowerCase();
+                window.cells[key][column_t] = matches[2];
+                if (current_columns.indexOf(column_t) != -1) document.getElementById(`${key} ${column_t}`).innerHTML = matches[2];
+            }
         }
         feats_order(key);
     }
     else if (features_low.includes(column)) {
         let new_feats = "";
+        let current_feats = {};
         let feats = window.cells[key]['feats'].split('|');
-        if (feats.length == 1 & feats[0] == "_") new_feats = `${features[features_low.indexOf(column)]}=${cell}`;
-        else new_feats = `${window.cells[key]['feats']}|${features[features_low.indexOf(column)]}=${cell}`;
-        if (new_feats == "") new_feats = "_";
+        for (let j = 0; j < feats.length; j++) {
+            let matches = feats[j].match(/(.+)=(.+)/);
+            if (matches && matches[2] != "_") {
+                current_feats[matches[1]] = matches[2];
+            }
+        }
+        current_feats[features[features_low.indexOf(column)]] = cell;
+        let feats_l = Object.keys(current_feats);
+        for (let j = 0; j < feats_l.length; j++) {
+            new_feats += `${feats_l[j]}=${current_feats[feats_l[j]]}`;
+            if (j != feats_l.length - 1) new_feats += "|";
+        }
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;
         feats_order(key);

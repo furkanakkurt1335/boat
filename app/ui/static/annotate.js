@@ -697,9 +697,15 @@ function init_page() {
 }
 
 var cats = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
-var cats_low = ["id", "form", "lemma", "upos", "xpos", "feats", "head", "deprel", "deps", "misc"];
+var cats_low = [];
+cats.forEach(function (item) {
+    cats_low.push(item.toLowerCase());
+});
 var features = ["Abbr", "Animacy", "Aspect", "Case", "Clusivity", "Definite", "Degree", "Evident", "Foreign", "Gender", "Mood", "NounClass", "Number", "NumType", "Person", "Polarity", "Polite", "Poss", "PronType", "Reflex", "Tense", "Typo", "VerbForm", "Voice"];
-var features_low = ["abbr", "animacy", "aspect", "case", "clusivity", "definite", "degree", "evident", "foreign", "gender", "mood", "nounclass", "number", "numtype", "person", "polarity", "polite", "poss", "prontype", "reflex", "tense", "typo", "verbform", "voice"];
+var features_low = [];
+features.forEach(function (item) {
+    features_low.push(item.toLowerCase());
+});
 const all_column_count = cats.length + features.length;
 
 function inject_sentence() {

@@ -50,9 +50,9 @@ class Word:
 		return self.sent_add + '-' + self.id
 
 def get_ud_graph(sentence):
-    jquery = 'https://code.jquery.com/jquery-2.1.4.min.js'
-    fsaver = 'https://cdn.rawgit.com/eligrey/FileSaver.js/1.3.4/FileSaver.min.js'
-    js_t_v = 'https://cdn.rawgit.com/ufal/js-treex-view/gh-pages/js-treex-view.js'
+    # jquery = 'jquery-2.1.4.min.js'
+    # fsaver = 'FileSaver.min.js'
+    # js_t_v = 'js-treex-view.js'
     output = """
             <style>
             .center {
@@ -64,8 +64,8 @@ def get_ud_graph(sentence):
             }
             </style>
             """
-    for js_file in (jquery, fsaver, js_t_v):
-        output += ('<script src="%s"></script>' % js_file)+"\n"
+    # for js_file in (jquery, fsaver, js_t_v):
+    #     output += ('<script src="%s"></script>' % js_file)+"\n"
     
     output += ('<div id="treex-view" class="center"></div><script>\n')
     output += 'data=[\n'
@@ -100,7 +100,7 @@ def get_ud_graph(sentence):
     output += ("$('#treex-view').treexView(data);\n")
     output += ('</script>')
     
-    return output
+    return output.replace('\n', ' ')
 
 def _esc(string):
     if string is None:
