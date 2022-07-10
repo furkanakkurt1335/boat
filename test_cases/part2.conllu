@@ -1,0 +1,130 @@
+# sent_id = n01002042
+# text = Yeni bütçe Clinton'un kabarık banka hesabından sağlanıyor.
+# text_en = The new spending is fueled by Clinton’s large bank account.
+1	Yeni	yeni	ADJ	_	_	_	_	_	_
+2	bütçe	bütçe	NOUN	_	_	_	_	_	_
+3	Clinton'un	Clinton	PROPN	_	_	_	_	_	Proper=True
+4	kabarık	kabarık	ADJ	_	_	_	_	_	_
+5	banka	banka	NOUN	_	_	_	_	_	_
+6	hesabından	hesab	NOUN	_	_	_	_	_	_
+7	sağlanıyor	sağla	VERB	_	_	_	_	_	SpaceAfter=No
+8	.	.	PUNCT	_	_	_	_	_	_
+
+# sent_id = n01002058
+# text = Söylediği ve yaptığı şeyler gerçekten inanılmaz.
+# text_en = What she’s saying and what she’s doing, it — actually, it’s unbelievable.
+1	Söylediği	söyle	ADJ	_	_	_	_	_	_
+2	ve	ve	CCONJ	_	_	_	_	_	_
+3	yaptığı	yap	ADJ	_	_	_	_	_	_
+4	şeyler	şey	NOUN	_	_	_	_	_	_
+5	gerçekten	gerçekten	ADV	_	_	_	_	_	_
+6	inanılmaz	inan	VERB	_	_	_	_	_	SpaceAfter=No
+7	.	.	PUNCT	_	_	_	_	_	_
+
+# newdoc id = n01003
+# sent_id = n01003007
+# text = Maksimum miktar kişi başı 5.000 dolardır.
+# text_en = $5,000 per person, the maximum allowed.
+1	Maksimum	Maksimum	ADJ	_	_	_	_	_	_
+2	miktar	miktar	NOUN	_	_	_	_	_	_
+3	kişi	kişi	NOUN	_	_	_	_	_	_
+4	başı	baş	NOUN	_	_	_	_	_	_
+5	5.000	5.000	NUM	_	_	_	_	_	_
+6	dolardır	NOUN	_	_	_	_	_	_	SpaceAfter=No
+7	.	.	PUNCT	_	_	_	_	_	_
+
+# sent_id = n01003013
+# text = Belki de kıyafet yönetmeliği çok sıkıcıydı.
+# text_en = Maybe the dress code was too stuffy.
+1	Belki	belki	ADV	_	_	_	_	_	_
+2	de	de	ADV	_	_	_	_	_	_
+3	kıyafet	kıyafet	NOUN	_	_	_	_	_	_
+4	yönetmeliği	yönetmelik	NOUN	_	_	_	_	_	_
+5	çok	çok	ADV	_	_	_	_	_	_
+6-7	sıkıcıydı	_	_	_	_	_	_	_	SpaceAfter=No
+6	sıkıcı	sıkıcı	NOUN	_	_	_	_	_	_
+7	ydı	i	AUX	_	_	_	_	_	_
+8	.	.	PUNCT	_	_	_	_	_	_
+
+# newdoc id = n01006
+# sent_id = n01006011
+# text = Görgü tanığı, mağdurun Nisan'da şüpheliye saldırdığını polise söyledi.
+# text_en = A witness told police that the victim had attacked the suspect in April.
+1	Görgü	görgü	NOUN	_	_	_	_	_	_
+2	tanığı	tanık	NOUN	_	_	_	_	_	SpaceAfter=No
+3	,	,	PUNCT	_	_	_	_	_	_
+4	mağdurun	mağdurun	NOUN	_	_	_	_	_	_
+5	Nisan'da	Nisan	NOUN	_	_	_	_	_	_
+6	şüpheliye	şüpheliye	NOUN	_	_	_	_	_	_
+7	saldırdığını	saldır	NOUN	_	_	_	_	_	_
+8	polise	polise	NOUN	_	_	_	_	_	_
+9	söyledi	söyle	VERB	_	_	_	_	_	SpaceAfter=No
+10	.	.	PUNCT	_	_	_	_	_	_
+
+# newdoc id = n01007
+# sent_id = n01007012
+# text = Bu noktada, oyunlar ile günlük yaşamımız arasında bazı benzerlikler kurulabilir.
+# text_en = There are parallels to draw here between games and our everyday lives.
+1	Bu	bu	DET	_	_	_	_	_	_
+2	noktada	nokta	NOUN	_	_	_	_	_	SpaceAfter=No
+3	,	,	PUNCT	_	_	_	_	_	_
+4	oyunlar	oyun	NOUN	_	_	_	_	_	_
+5	ile	ile	CCONJ	_	_	_	_	_	_
+6	günlük	günlük	ADJ	_	_	_	_	_	_
+7	yaşamımız	yaşam	NOUN	_	_	_	_	_	_
+8	arasında	ara	NOUN	_	_	_	_	_	_
+9	bazı	bazı	DET	_	_	_	_	_	_
+10	benzerlikler	benzerlik	NOUN	_	_	_	_	_	_
+11	kurulabilir	kurulab	VERB	_	_	_	_	_	SpaceAfter=No
+12	.	.	PUNCT	_	_	_	_	_	_
+
+# sent_id = n01018040
+# text = Program, sponsorluk ve reklam yoluyla para kazanıyor.
+# text_en = The scheme makes money through sponsorship and advertising.
+1	Program	program	NOUN	_	_	_	_	_	SpaceAfter=No
+2	,	,	PUNCT	_	_	_	_	_	_
+3	sponsorluk	sponsorluk	NOUN	_	_	_	_	_	_
+4	ve	ve	CCONJ	_	_	_	_	_	_
+5	reklam	reklam	NOUN	_	_	_	_	_	_
+6	yoluyla	yol	NOUN	_	_	_	_	_	_
+7	para	para	NOUN	_	_	_	_	_	_
+8	kazanıyor	kazan	VERB	_	_	_	_	_	SpaceAfter=No
+9	.	.	PUNCT	_	_	_	_	_	_
+
+# newdoc id = n01020
+# sent_id = n01020004
+# text = Daha önceleri jetler sadece blog yazarları tarafından görülürdü.
+# text_en = Previously the jets had only been seen by bloggers.
+1	Daha	daha	ADV	_	_	_	_	_	_
+2	önceleri	önce	ADV	_	_	_	_	_	_
+3	jetler	jet	NOUN	_	_	_	_	_	_
+4	sadece	sadece	ADV	_	_	_	_	_	_
+5	blog	blog	NOUN	_	_	_	_	_	_
+6	yazarları	yazar	NOUN	_	_	_	_	_	_
+7	tarafından	taraf	NOUN	_	_	_	_	_	_
+8	görülürdü	görülür	VERB	_	_	_	_	_	SpaceAfter=No
+9	.	.	PUNCT	_	_	_	_	_	_
+
+# newdoc id = n01023
+# sent_id = n01023020
+# text = Nisan-Haziran ayları arasında Meksika kıyılarında yapıldı.
+# text_en = It was conducted just off the Mexican coast from April to June.
+1	Nisan	Nisan	NOUN	_	_	_	_	_	SpaceAfter=No
+2	-	-	PUNCT	_	_	_	_	_	SpaceAfter=No
+3	Haziran	Haziran	NOUN	_	_	_	_	_	_
+4	ayları	ay	NOUN	_	_	_	_	_	_
+5	arasında	ara	NOUN	_	_	_	_	_	_
+6	Meksika	Meksika	PROPN	_	_	_	_	_	Proper=True
+7	kıyılarında	kıyı	NOUN	_	_	_	_	_	_
+8	yapıldı	yap	VERB	_	_	_	_	_	SpaceAfter=No
+9	.	.	PUNCT	_	_	_	_	_	_
+
+# newdoc id = n01027
+# sent_id = n01027007
+# text = Kim bu insanlar?
+# text_en = Who are they?
+1	Kim	kim	PRON	_	_	_	_	_	_
+2	bu	bu	DET	_	_	_	_	_	_
+3	insanlar	insan	NOUN	_	_	_	_	_	SpaceAfter=No
+4	?	?	PUNCT	_	_	_	_	_	_
+
