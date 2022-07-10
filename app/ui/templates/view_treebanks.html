@@ -8,14 +8,14 @@
         for (let i = 0; i < view_buttons.length; i++) {
             view_buttons[i].addEventListener("click", function () {
                 let treebank_title = view_buttons[i].id;
-                window.location.replace(`/view_treebank/${treebank_title}`);
+                window.location.replace(`/{{root_path}}view_treebank/${treebank_title}`);
             });
         }
         let dl_buttons = document.getElementsByClassName('download');
         for (let i = 0; i < dl_buttons.length; i++) {
             dl_buttons[i].addEventListener("click", function () {
                 let treebank_title = dl_buttons[i].id;
-                $.post("/download_conllu/",
+                $.post("/{{root_path}}download_conllu/",
                     {
                         treebank_title: treebank_title
                     },

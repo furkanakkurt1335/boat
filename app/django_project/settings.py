@@ -143,4 +143,4 @@ REST_FRAMEWORK = {
     ),
 }
 
-ROOT_PATH = ''
+ROOT_PATH = 'boat/'

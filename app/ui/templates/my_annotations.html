@@ -17,7 +17,7 @@
         else if (type == "New") type = "new";
         else if (type == "Draft") type = "draft";
         else if (type == "Complete") type = "complete";
-        let url = `/api/my_annotations/?type=${type}`;
+        let url = `/{{root_path}}api/my_annotations/?type=${type}`;
         $('#annotation-body').find('tr').remove();
 
         window.results = [];

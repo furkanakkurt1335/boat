@@ -9,7 +9,7 @@ from .models import Treebank, Sentence, Annotation, Word_Line, ExtendUser
 from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
-
+from django_project.settings import ROOT_PATH
 
 def compute_anno_agr(annos):
     # anno_l = []
@@ -388,7 +388,7 @@ def test(request):
 @login_required
 def view_treebanks(request):
     treebanks = Treebank.objects.all()
-    context = {'treebanks': treebanks}
+    context = {'treebanks': treebanks, 'root_path': ROOT_PATH}
     return render(request, 'view_treebanks.html', context)
 
 
@@ -398,7 +398,7 @@ def view_treebank(request, treebank):
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
     if treebank_selected == None:
         message = 'There is no treebank with that title.'
-    context = {'message': message, 'treebank_title': treebank_selected}
+    context = {'message': message, 'treebank_title': treebank_selected, 'root_path': ROOT_PATH}
     return render(request, 'view_treebank.html', context)
 
 
@@ -501,13 +501,13 @@ def annotate(request, treebank, order):
             errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
             cats = json.dumps(cats)
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference':
-               eu.preferences['graph_preference'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns']}
+               eu.preferences['graph_preference'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns'], 'root_path': ROOT_PATH}
     return render(request, 'annotate.html', context)
 
 
 @login_required
 def search(request):
-    message, context = None, {}
+    message, context = None, {'root_path': ROOT_PATH}
     if request.method == "POST":
         data = request.POST
         filled_input = False
@@ -529,7 +529,7 @@ def search(request):
                 tb_names = Treebank.objects.all()
                 context['tbs'] = tb_names
             else:
-                return render(request, 'search.html', {'queries': json.dumps(queries), 'treebank_title': data['title']})
+                return render(request, 'search.html', {'queries': json.dumps(queries), 'treebank_title': data['title'], 'root_path': ROOT_PATH})
         else:
             message = 'No treebank selected.'
             tb_names = Treebank.objects.all()
@@ -548,5 +548,5 @@ def my_annotations(request):
         pass
     elif request.method == "GET":
         pass
-    context = {'message': message, 'username': request.user.id}
+    context = {'message': message, 'username': request.user.id, 'root_path': ROOT_PATH}
     return render(request, 'my_annotations.html', context)
