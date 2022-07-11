@@ -7,7 +7,7 @@
     window.onload = function () {
         let treebank_title = $('div#treebank_title')[0].innerHTML;
         window.results = [];
-        $.get(`/api/get_treebank/?treebank_title=${treebank_title}`,
+        $.get(`/{{root_path}}api/get_treebank/?treebank_title=${treebank_title}`,
             function (data) {
                 let keys = Object.keys(data);
                 if (keys.length != 0) {
@@ -76,7 +76,7 @@
 
             data = document.createElement("td");
             let a = document.createElement('a');
-            a.href = `/annotate/${treebank_title}/${result['order']}`;
+            a.href = `/{{root_path}}annotate/${treebank_title}/${result['order']}`;
             let button = document.createElement("button");
             let img = $('#pencil-square')[0].cloneNode(true);
             img.hidden = false;
