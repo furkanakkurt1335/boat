@@ -146,3 +146,4 @@ REST_FRAMEWORK = {
 }
 
 ROOT_PATH = 'boat/'
+LOGIN_URL = '/boat/accounts/login/'
