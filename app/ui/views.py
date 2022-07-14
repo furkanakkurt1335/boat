@@ -404,7 +404,7 @@ def view_treebank(request, treebank):
 
 def replace_path(current_path, type, number=None):
     path_split = current_path.split('/')
-    new_path = '/'.join(path_split[:3]) + '/'
+    new_path = '/'.join(path_split[:-1]) + '/'
     current_number = int(path_split[-1])
     number_to_go = current_number
     if type == 'previous':
