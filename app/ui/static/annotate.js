@@ -356,8 +356,6 @@ document.onkeyup = function (e) {
 		}
 	}
     }
-    else if (e.shiftKey && e.altKey) {
-   }
 };
 
 function column_change(column_option) {
