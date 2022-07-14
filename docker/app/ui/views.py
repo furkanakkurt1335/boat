@@ -236,8 +236,8 @@ def register(request):
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('home')
-        return render(request, 'register.html')
-    return render(request, 'register.html', {'message': message, 'data': data})
+        return render(request, 'register.html', {'root_path': ROOT_PATH})
+    return render(request, 'register.html', {'message': message, 'data': data, 'root_path': ROOT_PATH})
 
 
 def login(request):
@@ -263,11 +263,11 @@ def login(request):
                 return redirect('home')
             else:
                 message.append('User not found with these credentials.')
-        return render(request, 'login.html', {'message': message, 'data': data})
+        return render(request, 'login.html', {'message': message, 'data': data, 'root_path': ROOT_PATH})
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('home')
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'root_path': ROOT_PATH})
 
 
 def index(request):
@@ -404,7 +404,7 @@ def view_treebank(request, treebank):
 
 def replace_path(current_path, type, number=None):
     path_split = current_path.split('/')
-    new_path = '/'.join(path_split[:3]) + '/'
+    new_path = '/'.join(path_split[:-1]) + '/'
     current_number = int(path_split[-1])
     number_to_go = current_number
     if type == 'previous':
