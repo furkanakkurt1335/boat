@@ -9,6 +9,7 @@
 
 {% block body %}
 <div id="space" class="p-5 border bg-light">
+    <h1>Compute Agreement</h1>
     <form method="post" action="{% url 'compute_agreement' %}" enctype="multipart/form-data">{% csrf_token %}
         <table class="table">
         <tbody>

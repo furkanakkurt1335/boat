@@ -6,6 +6,7 @@
 
 {% block body %}
 <div id="space" class="p-5 border bg-light">
+    <h1>Upload a File</h1>
     <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
         {% if treebanks|length == 0 %}
         You need to create a treebank first. Go <a href="{% url 'create_treebank' %}">here</a>.

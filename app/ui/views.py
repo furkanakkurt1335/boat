@@ -270,6 +270,12 @@ def login(request):
     return render(request, 'login.html', {'root_path': ROOT_PATH})
 
 
+def about(request):
+    if request.user == 'AnonymousUser':
+        return redirect('login')
+    else:
+        return render(request, 'about.html')
+
 def index(request):
     if request.user == 'AnonymousUser':
         return redirect('login')
@@ -388,7 +394,17 @@ def test(request):
 @login_required
 def view_treebanks(request):
     treebanks = Treebank.objects.all()
-    context = {'treebanks': treebanks, 'root_path': ROOT_PATH}
+    tb_title_l = []
+    tb_d = {}
+    for tb in treebanks:
+        tb_title_l.append(tb.title)
+        tb_d[tb.title] = tb
+    tb_title_l.sort()
+    tb_ct_d = []
+    for tb in tb_title_l:
+        sent_l = Sentence.objects.filter(treebank=tb_d[tb])
+        tb_ct_d.append({'title': tb, 'size': len(sent_l)})
+    context = {'tbs': tb_ct_d, 'root_path': ROOT_PATH}
     return render(request, 'view_treebanks.html', context)
 
 
