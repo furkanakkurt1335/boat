@@ -403,7 +403,12 @@ def view_treebanks(request):
     tb_ct_d = []
     for tb in tb_title_l:
         sent_l = Sentence.objects.filter(treebank=tb_d[tb])
-        tb_ct_d.append({'title': tb, 'size': len(sent_l)})
+        progress = 0
+        for sent_t in sent_l:
+            if len(Annotation.objects.filter(sentence=sent_t, status=2)) != 0: progress += 1
+        if len(sent_l) == 0: progress = 0.0
+        else: progress = round(progress / len(sent_l) * 100, 2)
+        tb_ct_d.append({'title': tb, 'size': len(sent_l), 'progress': progress})
     context = {'tbs': tb_ct_d, 'root_path': ROOT_PATH}
     return render(request, 'view_treebanks.html', context)
 
