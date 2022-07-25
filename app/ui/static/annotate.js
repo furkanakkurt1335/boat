@@ -1,6 +1,9 @@
 
 // On document load
 window.onload = function () {
+    // paste as plain text
+    document.addEventListener('paste', function(e) { e.preventDefault(); document.activeElement.innerHTML = e.clipboardData.getData('text/plain'); });
+
     window.CSRF_TOKEN = document.getElementsByName('csrfmiddlewaretoken')[0];
     window.sent_id = document.getElementById('sentence.sent_id').innerHTML;
     window.text = document.getElementById('sentence.text').innerHTML;
