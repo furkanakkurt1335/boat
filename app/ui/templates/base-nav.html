@@ -41,12 +41,17 @@
                                 <li><a class="dropdown-item" href={% url 'upload_file' %}>Upload File</a></li>
                             </ul>
                         </div>
-                        <li class="nav-item">
-                            <a class="nav-link" href={% url 'my_annotations' %}> My Annotations </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href={% url 'compute_agreement' %}> Compute Agreement </a>
-                        </li>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Annotations
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" href={% url 'my_annotations' %}> My Annotations </a></li>
+                                <li><a class="dropdown-item" href={% url 'compute_agreement' %}> Compute Agreement </a>
+                                </li>
+                            </ul>
+                        </div>
                         <li class="nav-item">
                             <a class="nav-link" href={% url 'search' %}> Search </a>
                         </li>
