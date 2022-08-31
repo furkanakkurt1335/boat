@@ -302,8 +302,53 @@ def home(request):
     return render(request, 'home.html')
 
 
+def parse_save_file(request, file):
+    sentences = conllu.parse_file(file)
+    treebanks_filtered = Treebank.objects.filter(
+        title=request.POST['title'])
+    treebank_t = treebanks_filtered[0]
+    for sentence in sentences:
+        # Saving Sentence objects
+        sent_id_t = sentence['sent_id']
+        text_t = sentence['text']
+        if 'comments' in sentence.keys():
+            comments_t = sentence['comments']
+        else:
+            comments_t = {}
+        try:
+            sent_t = Sentence.objects.create_sentence(
+                treebank_t, sent_id_t, text_t, comments_t)
+            sent_t.save()
+        except:
+            continue  # duplicate
+
+        # Saving Annotation objects
+        user_selected = User.objects.filter(
+            username=DUMMY_USER_NAME)
+        if len(user_selected) == 0:
+            user = User()
+            user.username = DUMMY_USER_NAME
+            user.password = DUMMY_USER_PW
+            user.save()
+        else:
+            user = user_selected[0]
+        cats = {}
+        for key in sentence.keys():
+            if key not in ['sent_id', 'text', 'comments']:
+                cats[key] = sentence[key]
+        anno_t = Annotation.objects.create_annotation(
+            user, sent_t)
+        anno_t.save()
+        for key in cats.keys():
+            line_t = cats[key]
+            id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t[
+                'upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
+            word_line_t = Word_Line.objects.create_word_line(
+                anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
+
+
 @login_required
-def upload_file(request):
+async def upload_file(request):
     treebanks = Treebank.objects.all()
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -313,48 +358,7 @@ def upload_file(request):
             if is_valid_format:
                 form.save()
                 error = False
-                sentences = conllu.parse_file(file)
-                treebanks_filtered = Treebank.objects.filter(
-                    title=request.POST['title'])
-                treebank_t = treebanks_filtered[0]
-                for sentence in sentences:
-                    # Saving Sentence objects
-                    sent_id_t = sentence['sent_id']
-                    text_t = sentence['text']
-                    if 'comments' in sentence.keys():
-                        comments_t = sentence['comments']
-                    else:
-                        comments_t = {}
-                    try:
-                        sent_t = Sentence.objects.create_sentence(
-                            treebank_t, sent_id_t, text_t, comments_t)
-                        sent_t.save()
-                    except:
-                        continue  # duplicate
-
-                    # Saving Annotation objects
-                    user_selected = User.objects.filter(
-                        username=DUMMY_USER_NAME)
-                    if len(user_selected) == 0:
-                        user = User()
-                        user.username = DUMMY_USER_NAME
-                        user.password = DUMMY_USER_PW
-                        user.save()
-                    else:
-                        user = user_selected[0]
-                    cats = {}
-                    for key in sentence.keys():
-                        if key not in ['sent_id', 'text', 'comments']:
-                            cats[key] = sentence[key]
-                    anno_t = Annotation.objects.create_annotation(
-                        user, sent_t)
-                    anno_t.save()
-                    for key in cats.keys():
-                        line_t = cats[key]
-                        id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t[
-                            'upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
-                        word_line_t = Word_Line.objects.create_word_line(
-                            anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
+                await parse_save_file(request, file)
                 if not error:
                     message = 'You have uploaded a file successfully.'
             else:
@@ -363,6 +367,16 @@ def upload_file(request):
     else:
         form = UploadFileForm()
     return render(request, 'upload_file.html', {'form': form, 'treebanks': treebanks})
+
+
+@csrf_exempt
+def delete_treebank(request):
+    if request.method == 'POST':
+        tb_title = request.POST['treebank_title']
+        Treebank.objects.get(title=tb_title).delete()
+        return render(request, 'delete_treebank.html', {'treebank_title': tb_title})
+    else:
+        return render(request, 'delete_treebank.html', {'treebank_title': ''})
 
 
 @login_required
