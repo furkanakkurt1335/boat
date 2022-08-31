@@ -302,7 +302,10 @@ def home(request):
     return render(request, 'home.html')
 
 
-def parse_save_file(request, file):
+@csrf_exempt
+def parse_save_file(request):
+    file_path = request.POST['file_path']
+    file = open(file_path, 'r', encoding='utf-8')
     sentences = conllu.parse_file(file)
     treebanks_filtered = Treebank.objects.filter(
         title=request.POST['title'])
@@ -345,28 +348,26 @@ def parse_save_file(request, file):
                 'upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
             word_line_t = Word_Line.objects.create_word_line(
                 anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
-
+    return render(request, 'parse_save_file.html')
 
 @login_required
-async def upload_file(request):
+def upload_file(request):
     treebanks = Treebank.objects.all()
+    context = {'form': UploadFileForm(), 'treebanks': treebanks, 'root_path': ROOT_PATH}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             file = request.FILES['file']
             is_valid_format = conllu.validate_uploaded_file(file)
             if is_valid_format:
-                form.save()
+                file = form.save()
                 error = False
-                await parse_save_file(request, file)
                 if not error:
                     message = 'You have uploaded a file successfully.'
             else:
                 message = 'The file was not in the correct conllu format.'
-            return render(request, 'upload_file.html', {'form': UploadFileForm(), 'message': message, 'treebanks': treebanks})
-    else:
-        form = UploadFileForm()
-    return render(request, 'upload_file.html', {'form': form, 'treebanks': treebanks})
+            context['message'], context['path'] = message, file.file.path.replace('\\', '/')
+    return render(request, 'upload_file.html', context)
 
 
 @csrf_exempt

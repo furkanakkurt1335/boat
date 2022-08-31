@@ -25,6 +25,16 @@
         {% endif %}
     </form>
 </div>
+{% if path %}
+<script>
+    $.post("/{{root_path}}parse_save_file/",
+        {
+            file_path: "{{path}}",
+            title: treebank_select.options[treebank_select.selectedIndex].text
+        }
+    );
+</script>
+{% endif %}
 
 <script>
     title_input = document.getElementById('title');
