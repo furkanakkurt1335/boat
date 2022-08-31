@@ -4,7 +4,7 @@ import datetime
 
 def user_directory_path(_, filename):
     filename_parts = filename.split('.')
-    if len(filename_parts) > 1: extension = '.' + filename_parts[-1]
+    if len(filename_parts) > 1: extension = '.' + filename_parts[-1]; filename = filename_parts[:-1]
     else: extension = ''
     return '{0}_{1}{2}'.format(filename, datetime.datetime.now().strftime('%Y%m%d%H%M%S'), extension)
 
