@@ -140,8 +140,15 @@ REST_FRAMEWORK = {
 
 ROOT_PATH = 'boat/'
 LOGIN_URL = f'/{ROOT_PATH}accounts/login/'
+# LOGIN_URL = f'/accounts/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = f'{ROOT_PATH}static/'
+# STATIC_URL = f'static/'
+
+# FORCE_SCRIPT_NAME = '/boat'
+
+STATIC_ROOT = None
+MEDIA_ROOT = ''
