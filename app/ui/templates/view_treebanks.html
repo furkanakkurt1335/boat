@@ -68,7 +68,7 @@
         </thead>
         <tbody>
             {% for tb in tbs %}
-            <tr>
+            <tr id="{{tb.title}}">
                 <td>{{tb.title}}</td>
                 <td>{{tb.size}} sentences</td>
                 <td> <button class="btn btn-light btn-outline-secondary view-sentences" id="{{tb.title}}"><img id="eye"
