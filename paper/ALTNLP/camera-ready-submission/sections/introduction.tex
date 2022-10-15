@@ -1,0 +1,51 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Treebanks are important resources in the development of natural language processing (NLP) tools.
+Quality NLP tools need treebanks that are manually annotated by linguistic experts.
+This is especially true for agglutinative languages due to their complex morphologies.
+The creation of such treebanks is highly labor-intensive and time-consuming due to the meticulous attention required.
+Thus, annotation tools that support this process are essential.
+
+In recent years, there have been significant efforts to bridge the gap in data resources available for agglutinative low-resource languages.
+Dependency annotation involves annotating each token of a sentence with linguistically relevant values.
+Universal Dependencies (UD)~\cite{UD} is the most widely accepted standard for dependency annotations.
+The dependency annotation format of \ud\ called \conllu\ (Computational Natural Language Learning) defines a set of linguistic tags for annotation purposes.
+For example, Universal part-of-speech (\upos) tag is used for annotating the part-of-speech of a token.
+The tag for morphological features (\feats) is used for annotating additional lexical and grammatical properties of tokens which are not covered by other tags.
+Specifically for agglutinative languages, the \feats\ tag is very frequently annotated with multiple values due to the complex morphology of such languages.
+Thus, the effort required to annotate agglutinative languages is significantly higher.
+Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities, disrupting the flow.
+
+\boatvone~\cite{turk2021resources} is an annotation tool that was developed to support dependency annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the \ud\ framework~\cite{UD}.
+The experience during the use of it revealed several points of improvement for such annotation tools.
+The main takeaway was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
+Improvements regarding these aspects should, consequently, produce higher quality data resources.
+
+This work presents a web-based collaborative dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
+In light of the feedback from the experience, we wanted the tool to be a web application that supports multiple users to enable a collaborative environment for annotations.
+Several user experience improvements were implemented to enhance the flow of an annotation session.
+The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
+The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
+
+The current prototype is being evaluated with positive feedback.
+This feedback indicates that the ability to collaborate within the tool is needed to increase the efficiency of multi-annotator treebank creation.
+The final version will be made available on Boğaziçi University's NLP platform~\cite{DIP} and provided as an open-source resource.
+
+The main contributions of this work are:
+\begin{itemize}
+\setlength\itemsep{0em}
+        \item Design of a dependency annotation tool based on requirements elicited from experienced annotators who are linguists,
+        \item The development of a tool that takes into account the annotator experience to improve resulting annotations,
+        \item Multi-user support to provide individual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
+        \item The development of a web-based annotation tool based on a supporting API for programmatic access and extensibility, and
+        \item Packaging of the tool to support easy access by virtualizing it using Docker~\cite{docker} and providing the code as an open-source resource.
+\end{itemize}
+
+The remainder of this paper is organized as follows:
+Section~\ref{sec:boatvone} presents \boatvone,
+Section~\ref{sec:related} presents related work,
+Section~\ref{sec:requirements} describes the requirements and design,
+Section~\ref{sec:implementation} presents the implementation and new features,
+Section~\ref{sec:annotation} presents a use case of annotation, and
+Section~\ref{sec:discussion} provides a discussion along with our conclusions.
