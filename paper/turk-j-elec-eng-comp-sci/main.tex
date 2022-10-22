@@ -1,0 +1,60 @@
+\documentclass{elektr}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+urlcolor=blue,
+citecolor=blue}
+\usepackage[all]{xy,xypic}
+\usepackage{amsfonts,amssymb,amsmath,amsgen,amsopn,amsbsy,theorem,graphicx,epsfig}
+\usepackage{eufrak,amscd,bezier,latexsym,mathrsfs,eurosym,enumerate}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{cleveref,multirow}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[pagewise]{lineno}
+\linenumbers
+
+\yil{}
+\vol{}
+\fpage{}
+\lpage{}
+\doi{}
+
+\title{Manuscript template: full title must be in sentence case}
+
+\author[AUTHOR and AUTHOR]{
+\textbf{First AUTHOR$^{1}$\thanks{elektrik@tubitak.gov.tr}~, Second AUTHOR$^{1,2}$}\\
+$^{1}$First Department, First Faculty, First University, First City, First Country, \\ ORCID iD: https://orcid.org/XXXX-XXXX-XXXX-XXXX\\
+$^{2}$Second Department With a Long Name, Second Faculty With a Long Name, Second University,\\ Second City, Second Country, ORCID iD: https://orcid.org/0000-0012-3456-789X
+\\ [1.8em]
+
+\rec{.202}
+\acc{.202}
+\finv{..202}
+}
+
+\input{elksty.tex}
+
+\setcounter{page}{1}
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/introduction}
+\input{sections/boatvone}
+\input{sections/related-work}
+\input{sections/requirements-design}
+\input{sections/implementation}
+\input{sections/use-case}
+\input{sections/discussion-future-work}
+
+% need to mentioned this is extended from ALTNLP
+
+\section*{Acknowledgment}
+This work was supported by Boğaziçi University Research Fund Grant Number 16909.
+
+\bibliography{main}
+
+\end{document}
