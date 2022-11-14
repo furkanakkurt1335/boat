@@ -2,22 +2,22 @@
 \label{sec:boatvone}
 
 \boatvone~\cite{turk-etal-2019-turkish} is a standalone tool for annotating treebanks that are compatible with the \ud\ framework~\cite{UD}, implemented using Python~\cite{python} and Qt~\cite{qt}.
-It was specifically developed for annotating Turkish treebanks and is particularly suitable for agglutinative languages; however, it can be used for other languages.
-It supports the annotation of a single treebank at a time.
-The annotations are stored in a file in \conllu\ format.
+It was specifically developed for annotating Turkish treebanks and is particularly suitable for agglutinative languages; however, it can be used for other languages as well.
+It supports annotation of a single treebank at a time.
+Annotations are stored in a file in \conllu\ format.
 The file is updated during the annotation process.
-It uses a validation script developed by \ud\ to display errors.
-\boatvone\ was used to create the \bountreebank~\cite{turk2021resources,UD-Boun-Treebank} -- a manually annotated Turkish dependency treebank comprising close to 10 thousand sentences.
+It uses a validation script developed by \ud\ to dynamically display errors to the annotator as they annotate.
+\boatvone\ was used to create the \bountreebank~\cite{turk2021resources} -- a manually annotated Turkish dependency treebank comprising 9,761 sentences from 5 different domains: essays, national newspapers, instructional texts, popular culture articles and biographical texts.
 
 % main features of v1
-For each sentence to be annotated, the annotator is shown a table which has a token per row with its corresponding tags (\id, \form, \udlemma, \upos, \xpos, \feats, \head, \deprel, \deps, and \misc\ as detailed in~\cite{turk-etal-2019-turkish}).
+For annotation of any sentence, an annotator is shown a table which has a token per row with its corresponding tags (\id, \form, \udlemma, \upos, \xpos, \feats, \head, \deprel, \deps, and \misc\ as detailed in~\cite{turk-etal-2019-turkish}).
 The annotator manually enters values for each tag of each token.
-It supports the splitting and joining of lemmas which is particularly significant for agglutinative languages.
-Tokens that are split result in additional rows for each part.
-Figure~\ref{fig:anno-fig-v1} in Appendix~\ref{sec:appendix-a} shows a sentence that is being annotated.
+It supports splitting and joining of lemmas which is particularly significant for agglutinative languages, since tokens in agglutinative languages are comprised of many affixes whose annotations require distinct lemmas.
+Tokens that are split result in additional two rows whose lemmas are then manually adjusted by an annotator such that they become distinct parts of a token.
+Figure~\ref{fig:anno-fig-v1} in Appendix~\ref{sec:appendix-a} shows annotation of a sentence.
 The token ``yoktu'' (ID: 4-5) is split into ``yok'' (ID: 4) and ``tu'' (ID: 5). 
 Furthermore, it parses the \feats\ tag's value into individual morphological features.
-The number of morphological features are much higher in agglutinative languages, therefore the value of the \feats\ tag often consists of numerous values.
+The number of morphological features are much higher in agglutinative languages, therefore the \feats\ tag often consists of numerous distinct features.
 As such, they are difficult to read.
-\boatvone\ supports viewing these features individually under their associated features (Case=Nom|Number=Sing|Person=3 can be shown in columns ``Case'', ``Number'', and ``Person'' with the values ``Nom'', ``Sing'', and ``3'').
+\boatvone\ supports viewing these features individually under their corresponding columns (e.g. Case=Nom|Number=Sing|Person=3 can be shown in columns ``Case'', ``Number'', and ``Person'' with the values ``Nom'', ``Sing'', and ``3'').
 It also allows the annotators to be able to take notes for specific annotations.
