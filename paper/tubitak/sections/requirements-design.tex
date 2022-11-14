@@ -1,30 +1,29 @@
 \section{Requirements and Design}
 \label{sec:requirements}
 
-
 Requirements elicitation and validation meetings were held with annotators who worked on the \bountreebank\ involving thousands of sentences to identify the software requirements.
 The main requirements that emerged are:
 \begin{itemize}[before=\normalfont, font=\itshape, align=left,noitemsep,topsep=0pt,parsep=3pt,partopsep=0pt,labelsep=3pt,align=left]
     \item[Collaborative annotation:]
-        The sheer size of treebanks necessitates that they are annotated via multiple annotators.
+        The sheer sizes of treebanks necessitate that they are annotated by multiple annotators.
         The tool must support multiple annotators working on the same treebank.
         The ability to share annotation experiences is vital for reference and consistency.
         Hence, the tool must provide means for registering multiple annotators and keeping track of their respective annotations.
     \item[Search:]
-        While annotating a sentence, annotators may need to refer to previous annotations for guidance.
+        During the annotation of a sentence, annotators sometimes need to refer to previous annotations for guidance.
         An annotator should be able to search a treebank according to surface forms, and importantly, according to linguistic features.
-        They should be able to perform complex searches that involve several criteria such as \ud\ tags, individual features of the \feats\ tag, and surface forms.
-        This requirement reduces the cognitive load as well as supports consistency among annotations.
+        They should be able to perform complex searches that involve several criteria such as \ud\ tags, individual morphological features of the \feats\ tag, and surface forms.
+        This requirement reduces cognitive load as well as facilitates consistency among annotations.
     \item[Keyboard-oriented input:]
-        Annotations of agglutinative languages require annotation of several features for individual tokens in comparison to analytical languages like English.
-        While drag-and-drop interfaces can work well for analytical languages, they don't for MRLs as they require more toggles between mouse and keyboard interactions which is frustrating.
+        Annotations of agglutinative languages require annotation of several morphological features for many tokens of a sentence in comparison to analytical languages like English.
+        While drag-and-drop interfaces can work well for analytical languages, they don't for MRLs as they require more toggles between mouse and keyboard interactions which becomes frustrating.
         Keyboard-based interaction must be offered for all possible tasks.
-    \item[Support for Sentence annotation:]
-        To support the speed and accurate annotations, \textit{autocompletion} should be supported whenever possible.
+    \item[Support for sentence annotation:]
+        To support speedy and accurate annotations, \textit{autocompletion} should be supported whenever possible.
         Due to typologies of and syncretism being generally higher in MRLs, automatic parsing of such treebanks is difficult and they more often than not fail to create valid parsings of tokens.
-        Thus, refining automatic parsing is important for agglutinative languages, which requires splitting of lemmas.
+        Thus, refining automatic parsing becomes an important task for agglutinative languages.
         Words in MRLs tend to have morphemes stacked on roots.
-        Annotators must be able to refine/correct automatically parsed entries, which for agglutinative languages includes \textit{splitting of lemmas}.
+        Annotators must be able to refine or correct automatically parsed entries, which for agglutinative languages includes splitting or joining of lemmas.
     \item[Use of screen real estate and customization:]
         Annotators annotate numerous sentences every session.
         For agglutinative languages, sentences tend to be long and complicated.
