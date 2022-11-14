@@ -17,26 +17,26 @@ Specifically for agglutinative languages, the \feats\ tag is very frequently ann
 This makes the effort required to annotate agglutinative languages significantly higher.
 Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities frequently, disrupting the flow.
 
-\boatvone~\cite{turk2021resources} is an annotation tool that was developed to support dependency annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the \ud\ framework~\cite{UD}.
+\boatvone~\cite{turk2021resources} is an annotation tool that was developed to support annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the \ud\ framework~\cite{UD}.
 The experience during the use of it revealed several points of improvement for such annotation tools.
 The main takeaway was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
 Improvements regarding these aspects should, consequently, produce higher quality data resources.
 
-This work presents a web-based collaborative dependency annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
-In light of the feedback from the experience, we wanted the tool to be a web application that supports multiple users to enable a collaborative environment for annotations.
+This work presents a web-based collaborative grammar annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
+In light of the feedback from this experience, we wanted the tool to be a web application that supports multiple users to enable a collaborative environment for annotators.
 Several user experience improvements were implemented to enhance the flow of an annotation session.
-The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of the annotator, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
+The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of annotators, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
 The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
 
-The current prototype is being evaluated with positive feedback.
+The resultant tool has been evaluated with positive feedback.
 This feedback indicates that the ability to collaborate within the tool is needed to increase the efficiency of multi-annotator treebank creation.
-The final version will be made available on Boğaziçi University's NLP platform~\cite{DIP} and provided as an open-source resource.
+The final version is available on Boğaziçi University's NLP platform~\cite{TULAP} and provided as an open-source resource.
 
 The main contributions of this work are:
 \begin{itemize}
 \setlength\itemsep{0em}
-        \item Design of a dependency annotation tool based on requirements elicited from experienced annotators who are linguists,
-        \item The development of a tool that takes into account the annotator experience to improve resulting annotations,
+        \item Design of a grammar annotation tool based on requirements elicited from experienced annotators who are linguists,
+        \item The development of a tool that takes into account annotators' experience to improve resulting annotations,
         \item Multi-user support to provide individual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration,
         \item The development of a web-based annotation tool based on a supporting API for programmatic access and extensibility, and
         \item Packaging of the tool to support easy access by virtualizing it using Docker~\cite{docker} and providing the code as an open-source resource.
