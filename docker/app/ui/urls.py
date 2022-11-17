@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('about/', views.about, name='about'),
     path('accounts/login/', views.login, name='login'),
     path('accounts/register/', views.register, name='register'),
     path('accounts/home/', views.home, name='home'),
@@ -23,4 +24,6 @@ urlpatterns = [
     path('ud_graph/', views.ud_graph, name='ud_graph'),
     path('download_conllu/', views.download_conllu, name='download_conllu'),
     path('compute_agreement/', views.compute_agreement, name='compute_agreement'),
+    path('delete_treebank/', views.delete_treebank, name='delete_treebank'),
+    path('parse_save_file/', views.parse_save_file, name='parse_save_file'),
 ]

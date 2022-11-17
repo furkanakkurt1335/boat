@@ -16,11 +16,11 @@ def validate_uploaded_file(f):
     else: return False
 
 def parse_file(f):
-    file_text = None
-    for chunk in f.chunks():
-        if file_text == None: file_text = chunk
-        else: file_text += chunk
-    file_text = file_text.decode('utf-8')
+    file_text = f.read()
+    # for chunk in f.chunks():
+    #     if file_text == None: file_text = chunk
+    #     else: file_text += chunk
+    # file_text = file_text.decode('utf-8')
     sentence_pattern = r'(?:#.+=.+\n)+(?:(?:.+\t){9}.+\n)+'
     sentences_found = re.findall(sentence_pattern, file_text)
     sentences = []
