@@ -24,19 +24,19 @@ The main requirements that emerged are:
         Thus, refining automatic parsing becomes an important task for agglutinative languages.
         Words in MRLs tend to have morphemes stacked on roots.
         Annotators must be able to refine or correct automatically parsed entries, which for agglutinative languages includes splitting or joining of lemmas.
-    \item[Use of screen real estate and customization:]
-        Annotators annotate numerous sentences every session.
+    \item[Use of screen real estate and customization:] % continue
+        Annotators annotate many sentences each session.
         For agglutinative languages, sentences tend to be long and complicated.
         The view of such sentences can cover a considerable part of the screen.
         The annotator must focus on the sentence being annotated, the lemmas, and all the features, which requires much concentration.
         The annotation process must not involve scrolling, if possible.
         For very long sentences, this may not be possible; however, the sentence being annotated should never go out of vision.
-        Furthermore, each annotator has their unique preferences for how they annotate a sentence.
+        Furthermore, every annotator has their unique preferences as to how they do annotation.
         They must have some control regarding showing or hiding certain information according to their preferences.
-        Overall efficient use of the screen real estate is important to convey the context needed to annotate long sentences.
+        Overall efficient use of the screen real estate is important to provide the context needed to annotate long sentences.
 \end{itemize}
 
 Given these requirements, we decided that a web-based application that supports multiple authenticated users would support a collaborative platform for annotators.
 The treebank and user annotations will persist in a database which makes managing the data and searches much more reliable and efficient.
 Also, an API is developed to support flexibility and extensibility.
-Finally, in addition to making the tool open-source, we containerized the application using Docker\cite{docker} to support its accessibility.
+Finally, in addition to making the tool open-source, we containerized the application using Docker~\cite{docker} to support its accessibility.
