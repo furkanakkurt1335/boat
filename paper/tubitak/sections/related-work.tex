@@ -5,10 +5,17 @@ Annotation tools may be characterized in terms of their accessibility and the su
 Adherence to standards is recommended to get the most benefit from the annotated data sources.
 Universal Dependencies~\cite{UD} is an actively growing standard for annotation of treebanks that intends to cover all human languages and its support for agglutinative languages is evolving.
 
-Several dependency annotation tools have been proposed such as \textit{brat}~\cite{brat}, \textit{UD Annotatrix}~\cite{ud-annotatrix} and \textit{DgAnnotator}~\cite{dgannotator,ud-tools}.
+Several dependency annotation tools have been proposed with many of them being UD-compliant, such as \brat~\cite{brat}, \textit{UD Annotatrix}~\cite{ud-annotatrix} and \textit{DgAnnotator}~\cite{dgannotator}.
+% dgannotator has not been updated for the last 8 years with not much documentation
 These tools are not developed for a specific language and can be used with a variety of languages.
 They mostly rely on mouse-based user interactions, which is inefficient for annotation of agglutinative languages due to the need for extensive annotation for most tokens.
 They are able to produce UD-compliant treebanks.
+
+\brat is a web-based \textit{text} annotation tool which provides a collaborative annotation environment. As such, it is not restricted to dependency annotation.
+
+\textit{UD-Annotatrix} aims to be a simpler and cleaner dependency annotation tool than \brat.
+
+The Dependency Grammar Annotator (DGA or DgAnnotator) is written in Java. It enables its users to annotate POS and dependency relation tags, using clicks.
 
 ITU Treebank Annotation Tool~\cite{itu-annotation-tool} was developed for Turkish.
 It was written in Java as an open-source standalone tool and has several versions.
