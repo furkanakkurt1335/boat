@@ -21,7 +21,7 @@ To annotate features of a token, it requires several mouse clicks which is impra
 The sentences to be annotated are displayed vertically in a single screen, unlike many tools that focus on a single sentence at a time.
 
 % olcay paper
-StarDust~\cite{stardust} is a standalone dependency annotation tool.
+StarDust~\cite{stardust} is a standalone dependency annotation tool. It uses 2 layers: morphological disambiguation and dependency annotation layers, sequentially. In the dependency annotation layer, annotators are expected to click on a dependeny word and drag the cursor to the head word. It stores each sentence's annotation in a different file. For backups of the annotations, it uses Dropbox~\cite{dropbox}, which is a proprietary cloud storage platform. There were many treebanks annotated with this tool: 5 Turkish and 1 English treebank.
 
 \boatvtwo\ is the second iteration of \boatvone.
 It improves on it by including a search functionality, a database to represent sentences in a more essential way rather than a plaintext file and an accessible web interface with an API for flexibility.
