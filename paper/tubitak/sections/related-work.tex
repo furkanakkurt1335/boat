@@ -5,35 +5,57 @@ Annotation tools may be characterized in terms of their accessibility and the su
 Adherence to standards is recommended to get the most benefit from the annotated data sources.
 Universal Dependencies~\cite{UD} is an actively growing standard for annotation of treebanks that intends to cover all human languages and its support for agglutinative languages is evolving.
 
-Several dependency annotation tools have been proposed with many of them being UD-compliant, such as \brat~\cite{brat}, \textit{UD Annotatrix}~\cite{ud-annotatrix} and \textit{DgAnnotator}~\cite{dgannotator}.
-% dgannotator has not been updated for the last 8 years with not much documentation
+Several dependency annotation tools have been proposed with many of them being UD-compliant, such as \textit{brat}~\cite{brat}, \textit{UD Annotatrix}~\cite{ud-annotatrix} and \textit{DgAnnotator}~\cite{dgannotator}.
 These tools are not developed for a specific language and can be used with a variety of languages.
 They mostly rely on mouse-based user interactions, which is inefficient for annotation of agglutinative languages due to the need for extensive annotation for most tokens.
 They are able to produce UD-compliant treebanks.
 
-\brat is a web-based \textit{text} annotation tool which provides a collaborative annotation environment. As such, it is not restricted to dependency annotation.
+\textbf{brat} is a web-based \textit{text} annotation tool which provides a collaborative annotation environment. As such, it is not restricted to dependency annotation.
 
-\textit{UD-Annotatrix} aims to be a simpler and cleaner dependency annotation tool than \brat.
+\textbf{UD-Annotatrix} aims to be a simpler and cleaner dependency annotation tool than brat.
 
-The Dependency Grammar Annotator (DGA or DgAnnotator) is written in Java. It enables its users to annotate POS and dependency relation tags, using clicks.
+\textbf{The Dependency Grammar Annotator} (DGA or DgAnnotator) is another dependency annotation tool, written in Java. It enables its users to annotate POS and dependency relation tags via mouse clicks.
 
-ITU Treebank Annotation Tool~\cite{itu-annotation-tool} was developed for Turkish.
+\textbf{ITU Treebank Annotation Tool}~\cite{itu-annotation-tool} was developed for Turkish.
 It was written in Java as an open-source standalone tool and has several versions.
 It has three stages of annotation: morphological analysis, morphological disambiguation and syntax analysis.
 It offers semi-automated support for annotators through analyzers for creating new datasets as well as correcting already existing Turkish treebanks.
 It mostly relies on mouse-based interactions and doesn't support the \ud\ framework.
 This tool has been used to annotate the ITU Web Treebank~\cite{itu-web-tb}.
 
-WebAnno~\cite{webanno} is a web-based open-source annotation tool, that is not restricted to dependency annotations but has support for morphological, syntactical, and semantic annotations also, with multi-user support.
+\textbf{WebAnno}~\cite{webanno} is a web-based open-source annotation tool, that is not restricted to dependency annotations but has support for morphological, syntactical, and semantic annotations also, with multi-user support.
 To annotate features of a token, it requires several mouse clicks which is impractical for MRLs.
 The sentences to be annotated are displayed vertically in a single screen, unlike many tools that focus on a single sentence at a time.
 
 % olcay paper
-StarDust~\cite{stardust} is a standalone dependency annotation tool. It uses 2 layers: morphological disambiguation and dependency annotation layers, sequentially. In the dependency annotation layer, annotators are expected to click on a dependeny word and drag the cursor to the head word. It stores each sentence's annotation in a different file. For backups of the annotations, it uses Dropbox~\cite{dropbox}, which is a proprietary cloud storage platform. There were many treebanks annotated with this tool: 5 Turkish and 1 English treebank.
+\textbf{StarDust}~\cite{stardust} is a standalone dependency annotation tool.
+It uses 2 layers: morphological disambiguation and dependency annotation layers, sequentially.
+In the dependency annotation layer, annotators are expected to click on a dependeny word and drag the cursor to the head word.
+It stores each sentence's annotation in a different file.
+For backups of the annotations, it uses Dropbox~\cite{dropbox}, which is a proprietary cloud storage platform.
+There were many treebanks annotated with this tool: 5 Turkish and 1 English treebank.
 
-\boatvtwo\ is the second iteration of \boatvone.
+\textbf{BoAT-v2} is the second iteration of \boatvone.
 It improves on it by including a search functionality, a database to represent sentences in a more essential way rather than a plaintext file and an accessible web interface with an API for flexibility.
-\boatvtwo\ has been developed to reduce clutter that \boatvone\ was found to have in parts of the screen by the feedback coming from the previous \boatvone usage.
+\boatvtwo\ has been developed to reduce clutter that \boatvone\ was found to have in parts of the screen by the feedback coming from the previous \boatvone\ usage.
+
+% summary table, if possible: this exists, this not
+\begin{table}[ht!]
+    \label{table:rel-work}
+    \centering
+    \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+        \hline
+        \multicolumn{5}{|c|}{\textbf{Comparison of Annotation Tools}} \\ \hline\hline
+        \textbf{Tool} & \textbf{Multi-language} & \textbf{Modality} & \textbf{Standards} & \textbf{Multi-annotator} \\\hline
+        brat &  &  &  &  \\\hline
+        UD Annotatrix &  &  &  &  \\\hline
+        DgAnnotator &  &  &  &  \\\hline
+        ITU &  &  &  &  \\\hline
+        WebAnno &  &  &  &  \\\hline
+        StarDust &  &  &  &  \\\hline
+        \boatvtwo\ & \checkmark & Mouse \& keyboard & UD & \checkmark \\\hline
+    \end{tabular}
+    \caption{Properties of various annotation tools}
+\end{table}
 
 % need to detail a lot
-% summary table, if possible: this exists, this not
