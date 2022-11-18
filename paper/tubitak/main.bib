@@ -53,7 +53,6 @@
   note   = {[Online; last accessed 24 April 2022]}
 }
 
-
 @misc{docker,
   author = {{Docker Inc.}},
   title  = {{Home - Docker}},
@@ -78,16 +77,7 @@
   note   = {[Online; last accessed 18 November 2022]}
 }
 
-@inproceedings{itu-web-tb,
-  author = {Torunoğlu-Selamet, Dilara and Pamay, Tuğba and Sulubacak, Umut and Eryiğit, Gülşen},
-  year   = {2015},
-  month  = {01},
-  pages  = {},
-  title  = {The Annotation Process of the ITU Web Treebank},
-  doi    = {10.3115/v1/W15-1610}
-}
-
-@inproceedings{pamay-etal-2015-annotation,
+@inproceedings{itu-annotation-tool,
   title     = {The Annotation Process of the {ITU} Web Treebank},
   author    = {Pamay, Tu{\u{g}}ba  and
                Sulubacak, Umut  and
@@ -101,6 +91,15 @@
   url       = {https://aclanthology.org/W15-1610},
   doi       = {10.3115/v1/W15-1610},
   pages     = {95--101}
+}
+
+@inproceedings{itu-web-tb,
+  author = {Torunoğlu-Selamet, Dilara and Pamay, Tuğba and Sulubacak, Umut and Eryiğit, Gülşen},
+  year   = {2015},
+  month  = {01},
+  pages  = {},
+  title  = {The Annotation Process of the ITU Web Treebank},
+  doi    = {10.3115/v1/W15-1610}
 }
 
 @misc{psql,
@@ -159,23 +158,6 @@
   abstract  = {This paper aims to introduce StarDust, a new, open-source annotation tool designed for NLP studies. StarDust is designed specifically to be intuitive and simple for the annotators while also supporting the annotation of multiple languages with different morphological typologies, e.g. Turkish and English. This demonstration will mainly focus on our UD-based annotation tool for dependency syntax. Linked to a morphological analyzer, the tool can detect certain annotator mistakes and limit undesired dependency relations as well as offering annotators a quick and effective annotation process thanks to its new simple interface. Our tool can be downloaded from the Github.}
 }
 
-@misc{trk2020resources,
-  title         = {Resources for Turkish Dependency Parsing: Introducing the BOUN Treebank and the BoAT Annotation Tool},
-  author        = {Utku T{\"{u}}rk and
-                   Furkan Atmaca and
-                   {\c{S}aziye Bet{\"{u}}l {\"{O}}zate{\c{s}} and
-                   G{\"{o}}zde Berk and
-                   Seyyit Talha Bedir and
-                   Abdullatif K{\"{o}}ksal and
-                   Balk{\i}z {\"{O}}zt{\"{u}}rk Ba{\c{s}}aran and
-                   Tunga G{\"{u}}ng{\"{o}}r and
-                   Arzucan {\"{O}}zg{\"{u}}r}},
-  year          = {2020},
-  eprint        = {2002.10416},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CL}
-}
-
 @misc{TULAP,
   author = {{Boğaziçi University}},
   title  = {{TABILAB Repository Home}},
@@ -184,20 +166,7 @@
   note   = {[Online; last accessed 24 April 2022]}
 }
 
-@inproceedings{turk-etal-2019-turkish,
-  title     = {{T}urkish Treebanking: Unifying and Constructing Efforts},
-  author    = {T{\"u}rk, Utku and Atmaca, Furkan and {\"O}zate{\c{s}}, {\c{S}}aziye Bet{\"u}l and K{\"o}ksal, Abdullatif and Ozturk Basaran, Balkiz and Gungor, Tunga and {\"O}zg{\"u}r, Arzucan},
-  booktitle = {Proceedings of the 13th Linguistic Annotation Workshop},
-  month     = aug,
-  year      = {2019},
-  address   = {Florence, Italy},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://www.aclweb.org/anthology/W19-4019},
-  doi       = {10.18653/v1/W19-4019},
-  pages     = {166--177}
-}
-
-@article{turk2021resources,
+@article{turk-2021-boat,
   title     = {Resources for Turkish dependency parsing: Introducing the BOUN treebank and the BoAT annotation tool},
   author    = {T{\"u}rk, Utku and Atmaca, Furkan and {\"O}zate{\c{s}}, {\c{S}}aziye Bet{\"u}l and Berk, G{\"o}zde and Bedir, Seyyit Talha and K{\"o}ksal, Abdullatif and Ba{\c{s}}aran, Balk{\i}z {\"O}zt{\"u}rk and G{\"u}ng{\"o}r, Tunga and {\"O}zg{\"u}r, Arzucan},
   journal   = {Language Resources and Evaluation},
@@ -205,15 +174,6 @@
   year      = {2021},
   publisher = {Springer}
 }
-
-@inproceedings{tyers-etal:2018,
-  author    = {Francis M. Tyers and Mariya Sheyanova and Jonathan North Washington},
-  title     = {{UD Annotatrix: An annotation tool for Universal Dependencies}},
-  booktitle = {Proceedings of the 16th International Workshop on Treebanks and Linguistic Theories (TLT16)},
-  pages     = {10--17},
-  year      = 2018
-}
-
 
 @misc{UD,
   author = {{Universal Dependencies}},
@@ -223,8 +183,15 @@
   note   = {[Online; last accessed 2 May 2022]}
 }
 
+@inproceedings{ud-annotatrix,
+  author    = {Francis M. Tyers and Mariya Sheyanova and Jonathan North Washington},
+  title     = {{UD Annotatrix: An annotation tool for Universal Dependencies}},
+  booktitle = {Proceedings of the 16th International Workshop on Treebanks and Linguistic Theories (TLT16)},
+  pages     = {10--17},
+  year      = 2018
+}
 
-@misc{UD-Boun-Treebank,
+@misc{ud-boun-treebank,
   author = {Utku T{\"{u}}rk and
             Furkan Atmaca and
             {\c{S}aziye Bet{\"{u}}l {\"{O}}zate{\c{s}} and
@@ -236,11 +203,11 @@
             Arzucan {\"{O}}zg{\"{u}}r}},
   title  = {{UD Turkish BOUN}},
   year   = {2020},
-  url    = {https://universaldependencies.org/tr},
+  url    = {https://universaldependencies.org/treebanks/tr_boun/index.html},
   note   = {[Online; last accessed 27 March 2022]}
 }
 
-@misc{UD-tools,
+@misc{ud-tools,
   author = {{Universal Dependencies}},
   title  = {{UD tools}},
   year   = {2022},

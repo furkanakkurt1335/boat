@@ -3,13 +3,14 @@
 
 Annotation tools may be characterized in terms of their accessibility and the support they provide for different languages, various annotation categories, user interface modalities, annotation related standards, and multiple annotators.
 Adherence to standards is recommended to get the most benefit from the annotated data sources.
-Universal Dependencies~\cite{UD} is an actively growing standard that intends to cover all human languages and its support for agglutinative languages is evolving.
+Universal Dependencies~\cite{UD} is an actively growing standard for annotation of treebanks that intends to cover all human languages and its support for agglutinative languages is evolving.
 
-Several dependency annotation tools have been proposed such as \textit{brat}~\cite{brat}, \textit{UD Annotatrix}~\cite{tyers-etal:2018} and \textit{DgAnnotator}~\cite{dgannotator,UD-tools}.
+Several dependency annotation tools have been proposed such as \textit{brat}~\cite{brat}, \textit{UD Annotatrix}~\cite{ud-annotatrix} and \textit{DgAnnotator}~\cite{dgannotator,ud-tools}.
 These tools are not developed for a specific language and can be used with a variety of languages.
 They mostly rely on mouse-based user interactions, which is inefficient for annotation of agglutinative languages due to the need for extensive annotation for most tokens.
+They are able to produce UD-compliant treebanks.
 
-ITU Treebank Annotation Tool~\cite{pamay-etal-2015-annotation} was developed for Turkish.
+ITU Treebank Annotation Tool~\cite{itu-annotation-tool} was developed for Turkish.
 It was written in Java as an open-source standalone tool and has several versions.
 It has three stages of annotation: morphological analysis, morphological disambiguation and syntax analysis.
 It offers semi-automated support for annotators through analyzers for creating new datasets as well as correcting already existing Turkish treebanks.
