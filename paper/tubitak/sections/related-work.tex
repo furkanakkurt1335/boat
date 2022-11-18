@@ -1,7 +1,7 @@
 \section{Related Work}
 \label{sec:related}
 
-Annotation tools may be characterized in terms of their accessibility and the support they provide for different languages, various annotation categories, user interface modalities, annotation related standards, and multiple annotators.
+Annotation tools may be characterized in terms of their accessibility and the support they provide for different languages, various annotation categories, user interface modalities, annotation related standards, multiple annotators, and automation.
 Adherence to standards is recommended to get the most benefit from the annotated data sources.
 Universal Dependencies~\cite{UD} is an actively growing standard for annotation of treebanks that intends to cover all human languages and its support for agglutinative languages is evolving.
 
@@ -45,17 +45,18 @@ It improves on it by including a search functionality, a database to represent s
 \begin{table}[ht!]
     \label{table:rel-work}
     \centering
-    \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+    \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
         \hline
-        \multicolumn{5}{|c|}{\textbf{Comparison of Annotation Tools}} \\ \hline\hline
-        \textbf{Tool} & \textbf{Multi-language} & \textbf{Modality} & \textbf{Standards} & \textbf{Multi-annotator} \\\hline
-        brat &  & Mouse \& Keyboard &  &  \\\hline
-        UD Annotatrix &  & Mouse \& Keyboard & UD \& CG3~\cite{cg3} &  \\\hline
-        DgAnnotator &  & Mouse &  &  \\\hline
+        \multicolumn{4}{|c|}{\textbf{Comparison of Annotation Tools}} \\ \hline\hline
+        \textbf{Tool} & \textbf{Modality} & \textbf{Standards} & \textbf{Multi-annotator} & \textbf{Automation} \\\hline
+        brat & Mouse \& Keyboard &  &  &  \\\hline
+        UD Annotatrix & Mouse \& Keyboard & UD \& CG3~\cite{cg3} &  &  \\\hline
+        DgAnnotator & Mouse &  &  &  \\\hline
+        CoNLL-U Editor & Mouse \& Keyboard &  &  &  \\\hline
         ITU &  &  &  &  \\\hline
-        WebAnno &  &  &  &  \\\hline
+        WebAnno &  &  &   & \\\hline
         StarDust &  &  &  &  \\\hline
-        \boatvtwo\ & \checkmark & Keyboard & UD & \checkmark \\\hline
+        \boatvtwo\ & Keyboard & UD & \checkmark  & \\\hline
     \end{tabular}
     \caption{Properties of various annotation tools}
 \end{table}
