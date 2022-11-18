@@ -1,7 +1,7 @@
 \section{Related Work}
 \label{sec:related}
 
-Annotation tools may be characterized in terms of their accessibility and the support they provide for different languages, various annotation categories, user interface modalities, annotation related standards, multiple annotators, and automation.
+Annotation tools may be characterized in terms of their accessibility and the support they provide for different languages, various annotation categories, user interface modalities, annotation related standards, multiple annotators, searching of annotations, and automation.
 Adherence to standards is recommended to get the most benefit from the annotated data sources.
 Universal Dependencies~\cite{UD} is an actively growing standard for annotation of treebanks that intends to cover all human languages and its support for agglutinative languages is evolving.
 
@@ -41,22 +41,23 @@ There were many treebanks annotated with this tool: 5 Turkish and 1 English tree
 It improves on it by including a search functionality, a database to represent sentences in a more essential way rather than a plaintext file and an accessible web interface with an API for flexibility.
 \boatvtwo\ has been developed to reduce clutter that \boatvone\ was found to have in parts of the screen by the feedback coming from the previous \boatvone\ usage.
 
-% summary table, if possible: this exists, this not
+\newcolumntype{s}{>{\columncolor[HTML]{FFFAF0}} p{2.8cm}}
+% FFFAF0 : floral white
 \begin{table}[ht!]
     \label{table:rel-work}
     \centering
-    \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
-        \hline
-        \multicolumn{4}{|c|}{\textbf{Comparison of Annotation Tools}} \\ \hline\hline
-        \textbf{Tool} & \textbf{Modality} & \textbf{Standards} & \textbf{Multi-annotator} & \textbf{Automation} \\\hline
-        brat & Mouse \& Keyboard &  &  &  \\\hline
-        UD Annotatrix & Mouse \& Keyboard & UD \& CG3~\cite{cg3} &  &  \\\hline
-        DgAnnotator & Mouse &  &  &  \\\hline
-        CoNLL-U Editor & Mouse \& Keyboard &  &  &  \\\hline
-        ITU &  &  &  &  \\\hline
-        WebAnno &  &  &   & \\\hline
-        StarDust &  &  &  &  \\\hline
-        \boatvtwo\ & Keyboard & UD & \checkmark  & \\\hline
+    \begin{tabular}{|s|>{\centering\arraybackslash} p{2.8cm}|>{\centering\arraybackslash} p{3cm}|>{\centering\arraybackslash} p{2.4cm}|>{\centering\arraybackslash} p{1.9cm}|>{\centering\arraybackslash} p{1.2cm}|>{\centering\arraybackslash} p{2cm}|}
+       \hline
+        \rowcolor[HTML]{FFFAF0} \multicolumn{7}{|c|}{\textbf{Comparison of Annotation Tools}} \\ \hline\hline
+        \multicolumn{1}{|c|}{\cellcolor[HTML]{FFFAF0} \textbf{Tool}} & \textbf{Multi-language} & \textbf{Modality} & \textbf{Standards} & \textbf{Multi-user} & \textbf{Search} & \textbf{Automation} \\\hline
+        brat & + & Mouse \& Keyboard &  &  &  &  \\\hline
+        UD Annotatrix & + & Mouse \& Keyboard & UD \& CG3~\cite{cg3} &  &  &  \\\hline
+        DgAnnotator & + & Mouse &  &  &  &  \\\hline
+        CoNLL-U Editor & + & Mouse \& Keyboard &  &  &  &  \\\hline
+        ITU & + &  &  &  &  &  \\\hline
+        WebAnno & + &  &  &   &  &  \\\hline
+        StarDust & + &  &  &  &  &  \\\hline
+        \boatvtwo\ & + & Keyboard & UD & + & + & - \\\hline
     \end{tabular}
     \caption{Properties of various annotation tools}
 \end{table}
