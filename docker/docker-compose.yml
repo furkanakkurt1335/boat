@@ -2,6 +2,7 @@ version: '3.3'
 
 services:
   web:
+    container_name: boat_web
     build: ./app
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -13,13 +14,14 @@ services:
     depends_on:
       - db
   db:
+    container_name: boat_db
     image: postgres:13.0-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - boat_postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=django_project
       - POSTGRES_PASSWORD=django_project
       - POSTGRES_DB=django_project_dev
 
 volumes:
-  postgres_data:
+  boat_postgres_data:
