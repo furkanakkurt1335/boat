@@ -152,3 +152,36 @@ STATIC_URL = f'{ROOT_PATH}static/'
 
 STATIC_ROOT = None
 MEDIA_ROOT = ''
+
+LOGGING = {
+    'version': 1,                       # the dictConfig format version
+    'disable_existing_loggers': False,  # retain the default loggers
+    'handlers': {
+        'search.views': {
+            'class': 'logging.FileHandler',
+            'filename': 'general-info.log',
+            'formatter': 'search.views'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'search.views': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[{server_time}] {message}',
+            'style': '{',
+        }
+    },
+    'loggers': {
+        'search.views': {
+            'handlers': ['search.views'],
+            'level': 'INFO',
+        },
+    }
+}

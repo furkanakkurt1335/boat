@@ -11,6 +11,9 @@ from rest_framework.response import Response
 
 from rest_framework.pagination import PageNumberPagination
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 @api_view()
 def get_treebank(request):
@@ -49,6 +52,7 @@ def my_annotations(request):
 @api_view()
 def query(request):
     q = request.GET
+    logger.info(str(q))
     wordlines = Word_Line.objects.all()
     if 'form' in q:
         wordlines = wordlines.filter(form__contains=q['form'])
