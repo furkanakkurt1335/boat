@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ui',
+    'corsheaders',
     'rest_framework',
     'search',
     'django_filters',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project.urls'
@@ -148,3 +150,36 @@ REST_FRAMEWORK = {
 
 ROOT_PATH = 'boat/'
 LOGIN_URL = '/boat/accounts/login/'
+
+LOGGING = {
+    'version': 1,                       # the dictConfig format version
+    'disable_existing_loggers': False,  # retain the default loggers
+    'handlers': {
+        'search.views': {
+            'class': 'logging.FileHandler',
+            'filename': 'general-info.log',
+            'formatter': 'search.views'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'search.views': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[{server_time}] {message}',
+            'style': '{',
+        }
+    },
+    'loggers': {
+        'search.views': {
+            'handlers': ['search.views'],
+            'level': 'INFO',
+        },
+    }
+}

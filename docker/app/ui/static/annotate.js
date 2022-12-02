@@ -531,7 +531,7 @@ function init_page() {
     div_col.append(input_group);
 
     text = document.createElement('span');
-    text.innerHTML = "Status:&nbsp;";
+    text.innerHTML = "Status:";
     input_group.append(text);
 
     // status_select
@@ -680,6 +680,21 @@ function init_page() {
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
     button.setAttribute('title', 'Save edits');
+    button.append(img);
+    div_col.append(button);
+    div_row.append(div_col);
+
+    // info
+    div_col = document.createElement('div');
+    div_col.className = 'col';
+    button = document.createElement("button");
+    img = $('#info')[0].cloneNode(true);
+    img.hidden = false;
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#infoModal');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('title', 'Info');
+    button.className = "btn btn-light btn-sm border";
     button.append(img);
     div_col.append(button);
     div_row.append(div_col);
