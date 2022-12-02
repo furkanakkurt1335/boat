@@ -102,7 +102,7 @@
         button.className = "btn btn-light border";
         button.innerHTML = "Go back to search";
         button.addEventListener('click', function () {
-            window.location.replace('/search/');
+            window.location.replace('/{{root_path}}search/');
         });
         $('#go_back').append(button);
 
@@ -348,6 +348,7 @@
         <div id="queries">
 
         </div>
+        <br>
         <input hidden="true" type="text" id="title" name="title" maxlength="50" required id="id_title">
         <button class="btn btn-xs btn-light border-secondary" type="submit">Search</button>
         {% else %}
