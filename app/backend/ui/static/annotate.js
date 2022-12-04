@@ -10,7 +10,7 @@ window.onload = function () {
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
     window.status = parseInt(document.getElementById('annotation.status').innerHTML);
-    window.status_d = { 0: "None", 1: "Draft", 2: "Complete" };
+    window.status_d = { 0: "New", 1: "Draft", 2: "Complete" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
@@ -530,7 +530,7 @@ function init_page() {
     input_group.className = 'input-group';
     div_col.append(input_group);
 
-    text = document.createElement('span');
+    let text = document.createElement('span');
     text.innerHTML = "Status:";
     input_group.append(text);
 
@@ -905,7 +905,8 @@ function display_errors() {
     $('#error_header').remove();
     $('#error_body').remove();
 
-    $.post(`/${root_path}error/`,
+    console.log();
+    $.post(`/${window.root_path}error/`,
         {
             cells: JSON.stringify(window.cells),
             sent_id: window.sent_id,
