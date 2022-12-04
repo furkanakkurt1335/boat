@@ -42,8 +42,9 @@
                     $.post("/{{root_path}}delete_treebank/",
                         {
                             treebank_title: treebank_title
+                        }, function() {
+                            window.location.replace('/{{root_path}}view_treebanks');
                         });
-                    window.location.replace('/{{root_path}}view_treebanks');
                 });
             });
         }
