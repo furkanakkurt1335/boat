@@ -305,6 +305,7 @@ def home(request):
 @csrf_exempt
 def parse_save_file(request):
     file_path = request.POST['file_path']
+    print(request.POST)
     file = open(file_path, 'r', encoding='utf-8')
     sentences = conllu.parse_file(file)
     treebanks_filtered = Treebank.objects.filter(
@@ -366,7 +367,7 @@ def upload_file(request):
                     message = 'You have uploaded a file successfully.'
             else:
                 message = 'The file was not in the correct conllu format.'
-            context['message'], context['path'] = message, file.file.path.replace('\\', '/')
+            context['message'], context['path'], context['treebank_title'] = message, file.file.path.replace('\\', '/'), request.POST['title']
     return render(request, 'upload_file.html', context)
 
 
