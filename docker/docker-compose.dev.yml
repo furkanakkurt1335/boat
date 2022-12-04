@@ -3,7 +3,9 @@ version: '3.3'
 services:
   web:
     container_name: boat_web
-    build: ./app
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./app/:/usr/src/app/
