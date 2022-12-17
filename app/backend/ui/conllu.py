@@ -69,4 +69,14 @@ def get_errors(sent_id, text, content):
             input += f'{content[key][order[i]]}\t'
         input += f'{content[key]["misc"]}\n' # misc
     input += '\n'
-    return subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=input, encoding='utf-8', capture_output=True).stderr
+    val_str = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=input, encoding='utf-8', capture_output=True).stderr
+    new_val_str = str()
+    error_pattern = '\[Line (\d+) Sent .+\]: \[L\d .+\] (.*)$'
+    for line in val_str.split('\n'):
+        error_search = re.search(error_pattern, line)
+        if error_search:
+            node_t, error_t = error_search.group(1), error_search.group(2)
+            new_val_str += 'Row {n}: {err}\n'.format(n=int(node_t)-2, err=error_t)
+        else:
+            break
+    return new_val_str

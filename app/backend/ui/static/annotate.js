@@ -905,7 +905,6 @@ function display_errors() {
     $('#error_header').remove();
     $('#error_body').remove();
 
-    console.log();
     $.post(`/${window.root_path}error/`,
         {
             cells: JSON.stringify(window.cells),
@@ -930,9 +929,10 @@ function display_errors() {
     error_body.className = "card-body";
     error_div.append(error_body);
     let errors = window.errors.split('\n');
-    if (errors[0] == "*** PASSED ***") {
+    if (errors[0] == "") {
         error_div.classList.add("border-success");
         error_header.classList.add("border-success");
+        errors[0] = 'Without error!';
     }
     else {
         error_div.classList.add("border-danger");
