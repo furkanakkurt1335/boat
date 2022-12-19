@@ -1,3 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%% TO DOs %%%%%%%%%%%%%%%%%%%%%%
+% fix overflowing figures
+% add a comparison of old & new interfaces next to one another
+% add subsections
+% 
+
+%% büşra
+% abstracte bak
+% introductiona bak
+% requirement
+% deneylerden bahset
+% eval
+% disc
+% tr-ing treebank feature counts
+
+
+
+
+
+
+
+
 \documentclass{elektr}
 \usepackage{hyperref}
 \hypersetup{
@@ -16,9 +38,9 @@ citecolor=blue}
 \usepackage[most]{tcolorbox}
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \usepackage[numbers,sort&compress]{natbib}
-\usepackage{bbding} % added for checkmark, 11/18/22 4 PM
+% \usepackage{bbding} % added for checkmark, 11/18/22 4 PM
 
-\linenumbers
+% \linenumbers
 
 \yil{}
 \vol{}
@@ -27,7 +49,7 @@ citecolor=blue}
 \doi{}
 
 % sentence case used in title
-\title{BoAT v2 - A Web-based dependency annotation tool with focus on agglutinative languages}
+\title{A collaborative grammar annotation tool for agglutinative languages}
 
 % 3 persons were written like this in some previous papers
 \author[AKKURT et al.]{
@@ -46,7 +68,7 @@ $^{2}$Department of Linguistics, The Faculty of Arts and Sciences, Boğaziçi Un
 }
 
 \input{elksty.tex}
-\input{sections/commands}
+\input{commands}
 
 \setcounter{page}{1}
 \begin{document}
@@ -56,11 +78,13 @@ $^{2}$Department of Linguistics, The Faculty of Arts and Sciences, Boğaziçi Un
 \input{sections/abstract}
 
 \input{sections/introduction}
+\input{sections/background}
 \input{sections/boatvone}
 \input{sections/related-work}
 \input{sections/requirements-design}
 \input{sections/implementation}
 \input{sections/use-case}
+\input{sections/evaluation}
 \input{sections/discussion-future-work}
 
 \section*{Acknowledgment}

@@ -17,12 +17,13 @@ Specifically for agglutinative languages, the \feats\ tag is very frequently ann
 This makes the effort required to annotate agglutinative languages significantly higher.
 Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities frequently, disrupting the flow.
 
-\boatvone~\cite{turk2021resources} is an annotation tool that was developed to support annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the \ud\ framework~\cite{UD}.
+\boatvone~\cite{turk-2021-boat} is an annotation tool that was developed to support annotation of morphologically rich languages (MRLs) to produce treebanks compliant with the \ud\ framework~\cite{UD}.
 The experience during the use of it revealed several points of improvement for such annotation tools.
 The main takeaway was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
 Improvements regarding these aspects should, consequently, produce higher quality data resources.
 
-This work presents a web-based collaborative grammatical annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.\footnote{This paper has been extended from a conference paper that was presented at ALTNLP2022~\cite{ALTNLP}.}
+This work presents a web-based collaborative grammatical annotation tool (\boatvtwo) that has been designed based on the experience with \boatvone.
+\footnote{An earlier version of this paper was presented at the The International Conference on Agglutinative Language Technologies as a challenge of Natural Language Processing (ALTNLP)~\cite{ALTNLP} in 2022.}
 In light of the feedback from this experience, we wanted the tool to be a web application that supports multiple users to enable a collaborative environment for annotators.
 Several user experience improvements were implemented to enhance the flow of an annotation session.
 The design and implementation of the tool aimed to: (1) support creating valid and consistent annotations with increased speed, (2) significantly improve the user experience of annotators, (3) allow collaboration among annotators during the annotation process, and (4) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
@@ -43,7 +44,7 @@ The main contributions of this work are:
 \end{itemize}
 
 The remainder of this paper is organized as follows:
-Section~\ref{sec:boatvone} presents \boatvone,
+Section~\ref{sec:background} lays the background of the proposed tool,
 Section~\ref{sec:related} presents related work,
 Section~\ref{sec:requirements} describes the requirements and design,
 Section~\ref{sec:implementation} presents the implementation and new features,

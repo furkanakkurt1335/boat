@@ -1,9 +1,6 @@
 \section{Discussion and Conclusions}
 \label{sec:discussion}
 
-% subsections are needed ; for example, for testing
-\todo[inline]{subsections are needed ; for example, for testing}
-
 \boatvtwo\ aims to extend the functionality of \boatvone\ as a collaborative web-based application to support the annotation process based on previous experiences.
 We developed a web application that supports agglutinative languages as described in Section~\ref{sec:implementation}.
 
@@ -17,24 +14,11 @@ The containerization with Docker~\cite{docker} has facilitated easy delivery and
 It is available on Boğaziçi University's NLP platform~\cite{TULAP} as an open-source resource.
 The availability of the tool as a user as well as a developer is valuable for future use and developments.
 
-% we've done some testing ; more testing and documentation here would be useful
-This tool is in the testing phase and has had encouraging early feedback.
-We compared the annotation of several sentences with the same number of tokens using \boatvone\ and \boatvtwo.
-While we kept the number of words in a sentence constant, we did not use the same sentences since having previously annotated a sentence would impact the annotation on another version.
-Keeping the number of words the same provides a somewhat comparable experience.
-There was a noticeable speedup (approximately 30\%) using \boatvtwo.
-% above testing need not be mentioned in this paper
-Among the new features that are most appreciated are autocompletion, condensed dependency tree representation, significant reduction on scrolling, keyword search, and search by morphological features.
-The non-search related features are instrumental to retaining focus.
-
-We are encouraged by the early responses to this tool and anticipate its extensions.
+We are encouraged by the evaluation performed on this tool and anticipate its extensions.
 In fact, our implementation of \boatvtwo\ resulted in a revision request for \boatvone\ to include the focus enhancing features.
-This also resulted in significant speedup and improved user experience, which was reported as a qualitative observation by an annotator.
-Presently, our testing is focused on more extensive cases (annotation of sentences with varying degrees of complexity) and, importantly, the multi-user functionalities.
-For this purpose, we are in the process of recruiting several annotators with a background in linguistics.
+This resulted in significant speedup and improved annotator experience, which was reported as a qualitative observation by an experienced annotator.
 
-% notes from whiteboard
-% other languages
-% tools to preprocess sentences (NLP, etc)
-% specific communication with annotators, question answer
-% rules, automated support to relieve annotator from labor intensive manual tasks
+The feedback coming from the evaluation presents many ways that the tool can be improved.
+For the tool's future, we plan on maintaining the current functionality, implementing annotation-centric new features, such as automated annotation of certain tags based on rules input by annotators of a treebank, or creating notes on annotations to communicate with other annotators through the application.
+We also plan to implement support for various languages regarding autocompletion and annotation validation.
+% annotation outside dep ann?
