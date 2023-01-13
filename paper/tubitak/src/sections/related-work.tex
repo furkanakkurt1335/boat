@@ -1,0 +1,95 @@
+\section{Related Work}
+\label{sec:related}
+
+Annotation tools can be categorized in terms of their accessibility, and the support they provide for different languages, various annotation frameworks, user interface modalities, annotation-related standards, multiple annotators, searching of annotations, and automation.
+Adherence to standards is recommended to get the most benefit from the annotated language resources.
+Universal Dependencies~\cite{ud} (\ud) is an actively growing standard for the annotation of treebanks that intends to cover all languages and its support for agglutinative languages is evolving.
+
+Numerous dependency annotation tools have been developed with many of them being UD-compliant, such as brat~\cite{brat}, UD Annotatrix~\cite{ud-annotatrix}, and DGA~\cite{dgannotator}.
+Most of these tools are capable of annotating a variety of languages and all the tools that are detailed below do so.
+Most tools require mouse-based user interactions, which is inefficient for the annotation of agglutinative languages due to several reasons, including the need for extensive annotation for most tokens.
+
+% 2011
+ITU Treebank Annotation Tool~\cite{itu-annotation-tool} is an open-source standalone tool with 3 versions.
+It was developed specifically for Turkish.
+It has three stages of annotation: morphological analysis, morphological disambiguation, and syntax analysis.
+It offers semi-automated support for annotators through analyzers for creating new datasets as well as correcting already existing Turkish treebanks.
+It mostly relies on mouse-based interactions and doesn't have support for the \ud\ framework.
+This tool has been used to annotate the ITU Web Treebank~\cite{itu-annotation-tool}. % same ref with tool
+Its latest version (3) was written in Java, requiring Java to be installed on the system used for annotations.
+
+% 2012
+brat~\cite{brat} is a web-based \textit{text} annotation tool which provides a collaborative annotation environment.
+Being web-based, it's usable across different platforms.
+It's very flexible in its annotation types and has support for many annotation tasks such as dependency, entity, or coreference annotation.
+This tool is also used for the visualization of annotations.
+Annotators use a mouse and keyboard together to annotate.
+Annotators are able to transfer their annotations in a file format called \textit{standoff} specific to brat.
+It is configurable to support annotations compliant with \ud\ and is used for visualization in \ud's own documentation system.
+brat supports real-time collaboration, even allowing annotators to edit the same annotation.
+It supports searching the documents or their annotations through using various filters.
+
+% 2015
+The Dependency Grammar Annotator~\cite{dgannotator} (also known as DGA or DgAnnotator) is a dependency annotation tool.
+It enables its users to annotate POS and dependency relation tags via mouse clicks.
+It supports the transfer of annotations in UD-compliant formats.
+It doesn't support multiple annotators to work on the same treebank.
+There is no search functionality.
+It was written in Java~\cite{java} and consequently requires Java.
+
+% 2016
+WebAnno~\cite{webanno} is a web-based open-source annotation tool, that is not restricted to dependency annotations but has support for morphological, syntactical, and semantic annotations also, with multi-user support.
+To annotate the morphological features of a token, it requires several mouse clicks which is impractical for MRLs.
+The sentences to be annotated are displayed vertically on a single screen, unlike many tools that focus on a single sentence at a time.
+It supports the curation of annotations created by multiple annotators.
+It has two installment options, standalone and server.
+The standalone version requires Java, while the server version requires a Tomcat~\cite{tomcat} server with a MySQL~\cite{mysql} database.
+% may want to add inception as improvement over this
+
+% 2018
+UD-Annotatrix~\cite{ud-annotatrix} is a \ud-specific dependency annotation tool that aims to be simpler than brat.
+Mouse usage is necessary, in addition to keyboard entries, for annotation.
+It also supports real-time collaboration if the tool is deployed in a server.
+It employs annotation standards of \ud\ and CG3~\cite{cg3}.
+It doesn't have a search functionality.
+
+% 2019
+CoNLL-U Editor~\cite{conll-u_editor} is a web-based annotation tool, specific to the \conllu~\cite{conll} format of \ud.
+It saves every edit of annotations by version control.
+If specific lists of part-of-speech tags are provided by the annotators, it supports auto-completion during annotation.
+Multiple annotators are able to annotate the same treebank if they don't work on the same sentence at a time.
+Annotators can search using any combination of linguistic tags of \ud\ using the tool.
+It requires a Java-based server.
+
+% Olcay's paper, 2022
+StarDust~\cite{stardust} is a standalone dependency annotation tool.
+It uses 2 layers: morphological disambiguation and dependency annotation layers, sequentially.
+In the dependency annotation layer, annotators are expected to click on a dependent and drag the cursor to its head.
+It stores each sentence's annotation in a different file.
+For backups of the annotations, it uses Dropbox~\cite{dropbox}, which is a proprietary cloud storage platform.
+There were several treebanks annotated using this tool: 1 English and 5 Turkish treebanks.
+
+BoAT-v2 is the second iteration of \boatvone.
+It improves on it by including a search functionality, an auto-completion feature, a database to represent sentences in a more essential way rather than a plaintext file, multiple dependency graph visualization options, and a web interface with an API for flexibility and accessibility.
+\boatvtwo\ has been developed to reduce the clutter that \boatvone\ was reported to have in parts of the screen in the feedback of the previous \boatvone\ usage.
+
+% \newcolumntype{s}{>{\columncolor[HTML]{FFFAF0}} p{2.8cm}}
+% FFFAF0 : floral white
+\begin{table}[ht]
+    \label{table:rel-work}
+    \centering
+    \begin{tabular}{|s|>{\centering\arraybackslash} p{1.1cm}|>{\centering\arraybackslash} p{1.6cm}|>{\centering\arraybackslash} p{2.4cm}|>{\centering\arraybackslash} p{1.9cm}|>{\centering\arraybackslash} p{1.2cm}|}
+       \hline
+        \rowcolor[HTML]{FFFAF0} \multicolumn{6}{|c|}{\textbf{Comparison of Annotation Tools}} \\ \hline\hline
+        \multicolumn{1}{|c|}{\cellcolor[HTML]{FFFAF0} \textbf{Tool}} & \textbf{Mouse} & \textbf{Keyboard} & \textbf{Standards} & \textbf{Multi-user} & \textbf{Search} \\\hline
+        brat & + & + & Extendable & + & + \\\hline
+        UD Annotatrix & + & + & \ud\ \& CG3 & + & - \\\hline
+        DgAnnotator & + & - & \ud\ & - & - \\\hline
+        CoNLL-U Editor & + & + & \ud\ & + & + \\\hline
+        ITU & + & + & \ud\ & - & - \\\hline
+        WebAnno & + & + & \ud\ & + & - \\\hline
+        StarDust & + & + & - & - & - \\\hline
+        \boatvtwo\ & + & + & \ud\ & + & + \\\hline
+    \end{tabular}
+    \caption{Properties of the above-mentioned annotation tools, namely whether they support mouse or keyboard usage, what standards they abide by, and whether they support multi-annotator treebanks or a search functionality.}
+\end{table}

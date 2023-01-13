@@ -1,0 +1,57 @@
+\section{Implementation}
+\label{sec:implementation}
+
+% may mention architectural difference b/w v1 vs v2
+% database modeling ; figure?
+
+The annotation tool is implemented using Python~\cite{python}, the web application development framework \textit{Django}~\cite{django} and the API framework \textit{Django REST Framework} (DRF)~\cite{drf}. The webpages use Bootstrap~\cite{bootstrap}.
+PostgreSQL~\cite{psql} is used as the database management system.
+The database models is in line with the \ud\ format of sentences.
+Annotations are validated according to the \ud\ guidelines and errors are reported on the annotation page.
+Three alternative forms of dependency graph visualizations are supported, two of which are newly added, compact and horizontal to reduce the required screen real estate~\cite{spacy,spyssalo}.
+
+The following features have been implemented in order to support the creation of valid annotations with increased speed in a collaborative manner:
+\begin{itemize}[before=\normalfont, font=\itshape, align=left,noitemsep,topsep=0pt,parsep=3pt,partopsep=0pt,labelsep=3pt,align=left]
+    \item[Treebank handling:]
+        The tool should support the annotation of multiple treebanks.
+        \boatvtwo\ uses a database to persist the annotations of multiple annotators of multiple treebanks.
+        After annotations are done, annotators can export their annotations as an annotation file in the \conllu\ format of \ud.
+
+    \item[Sentence annotation:]
+    	A sentence is selected by a user in order to annotate.
+        The annotation page consists of three main parts: (1) A table with rows for each token of a sentence and columns, which represent the \ud\ tags of a sentence, corresponding to their annotations; (2) the dependency graph of the sentence; and (3) validation results according to the \ud\ guidelines.
+        The dependency graph and errors are updated with the annotations.
+        Several dependency graph presentations are supported to serve the annotator's preference.
+        Two horizontal dependency graphs are supported since vertical graphs can consume a significant amount of screen real estate, which leads to loss of focus in long sentences commonly found in agglutinative languages.
+        One vertical tree-like dependency graph is also supported in case the annotator would like to see the tree structure of the annotation.
+
+        An annotator may need to stop the annotation of a sentence due to sentence complexity or external interruptions.
+        To capture the state of an annotation, status is used with values of ``New", ``Draft" and ``Complete".
+        The status of a sentence that has not yet been annotated is ``New''.
+	    Annotators set their annotation statuses to ``Draft'' or ``Complete''.
+
+        The annotator is able to perform most operations via keyboard action, based on the demand of the annotators (see Section~\ref{sec:requirements} for details).
+        Upon the experience of annotating a Turkish treebank with \boatvone, the annotators were pleased with the convenience and speed keyboard-based interaction provided them with.
+
+    \item[Searching for reference and consistency:]
+        There is a search functionality in \boatvtwo.
+        Users are able to search for previously annotated sentences based on combinations of surface text and \ud\ tags (e.g. morphological features).
+		Without a search feature, an annotator would have to manually search their annotation files for relevant cases (e.g. how to annotate a certain surface form's \upos\ tag).
+		The form might have been annotated in various ways throughout the treebank, alas it is highly unlikely that a manual search would reveal this inconsistency.
+		In this case, the annotator would likely use the first usage they come across as their reference.
+        This problem gets more complicated for syncretic morphemes such as \textit{-ki} in Turkish.
+        For instance, in the sentence ``Evdeki halılar yıkandı.'' (\textit{The rugs at home were washed.}), the \textit{-ki} acts as an adjectivizer.
+        However, in ``Benim halılarım yün, Ayşeninkiler sentetik.'' (\textit{My rugs are woolen. Ayşe's are synthetic.}), it becomes pronominal.
+        Searching for sentences where the morpheme \textit{-ki} occurs with basic text search of an annotation file would be unfruitful as there would be too many occurrences, owing to its role in the Turkish language's grammar and also brevity as a word.
+
+        To facilitate effective searching, a search functionality has been implemented based on combinations of text and \ud\ tags.
+        Regular expression-based search is also supported.
+        This feature supports annotators to share their annotations, which consequently is expected to result in more valid and consistent treebanks.
+
+    \item[Inter-annotator agreement:]
+        The annotator consistency of a treebank is an indicator of the quality of the resulting resource.
+        Inter-annotator agreement is done by computing the consistency among annotators.
+        Since this tool keeps track of annotator actions, such computations are straightforward.
+        Some visualizations shall accompany these statistics.
+
+\end{itemize}
