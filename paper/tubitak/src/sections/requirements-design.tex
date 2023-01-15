@@ -19,9 +19,13 @@ The main requirements that emerged are:
         The annotator must focus on the sentence being annotated, the lemmas, and all the features, which require lots of concentration.
         The annotation process must require little to no scrolling.
         For particularly long sentences, no scrolling may not be possible; however, the sentence being annotated should always be in sight of the annotator.
-        Furthermore, every annotator has their unique preferences regarding how they'd like to annotate.
+        Furthermore, every annotator has their unique preferences regarding how they would like to annotate.
         They must have some control on showing or hiding certain information according to their preferences.
         Overall, efficient use of screen real estate is important to provide the context needed to annotate long sentences.
+    \item[Keyboard-oriented input:]
+        Annotations of agglutinative languages require annotation of several morphological features for many tokens of a sentence in comparison to analytic languages like English.
+        While drag-drop interfaces can work well for analytic languages, they don't for MRLs as they require more toggles between mouse and keyboard interactions which becomes frustrating.
+        Keyboard-based interaction must be offered for all possible tasks so that the annotator can work without needing to switch between the keyboard and the mouse.
     \item[Collaborative annotation:]
         The large sizes of treebanks necessitate that they be annotated by multiple annotators.
         The tool must support multiple annotators working simultaneously on the same treebank.
@@ -31,14 +35,10 @@ The main requirements that emerged are:
         During the annotation of a sentence, annotators sometimes need to refer to previous annotations for guidance.
         An annotator should be able to search a treebank according to surface forms, and importantly, according to linguistic features.
         They should be able to perform complex searches that involve several criteria such as \ud\ tags, individual morphological features, and surface forms.
-        This requirement reduces cognitive load as well as facilitates consistency among annotations.
-    \item[Keyboard-oriented input:]
-        Annotations of agglutinative languages require annotation of several morphological features for many tokens of a sentence in comparison to analytical languages like English.
-        While drag-and-drop interfaces can work well for analytical languages, they don't for MRLs as they require more toggles between mouse and keyboard interactions which becomes frustrating.
-        Keyboard-based interaction must be offered for all possible tasks so that the annotator can work without needing to switch between the keyboard and the mouse.
+        This requirement reduces cognitive load and facilitates consistency among annotations.
 \end{itemize}
 
-Given these requirements, we decided that a web-based application that supports multiple authenticated users would support a collaborative platform for annotators.
-The treebank and user annotations will persist in a database which makes managing the data and searches much more reliable and efficient.
+Given these requirements, we decided that a web-based application that supports multiple authenticated users would be able to provide a collaborative platform for annotators.
+The treebank and user annotations persists in a database which makes managing the data and searches much more reliable and efficient.
 Also, an API is developed to support flexibility and extensibility.
 Finally, in addition to making the tool open-source, we containerized the application using Docker~\cite{docker} to support its accessibility.
