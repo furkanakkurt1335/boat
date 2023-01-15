@@ -27,7 +27,7 @@ The annotator manually enters values for each column of each token.
 It supports the splitting and joining of lemmas which are particularly significant for agglutinative languages since their tokens are often comprised of multiple morphemes whose accurate annotations sometimes require adjusting lemma boundaries by splitting or merging.
 Tokens that are split result in additional two rows whose lemmas are then manually adjusted by an annotator such that they become distinct parts of a token.
 Figure~\ref{fig:anno-fig-v1} shows annotation of a sentence.
-The token ``yoktu'' (ID: 4-5) is split into ``yok'' (ID: 4) and ``tu'' (ID: 5). 
+The token ``yoktu'' (ID: 4-5) is split into ``yok'' (ID: 4) and ``tu'' (ID: 5).
 Furthermore, it parses the \feats\ column's value into individual morphological features.
 
 \begin{figure}[th!]
@@ -37,13 +37,16 @@ Furthermore, it parses the \feats\ column's value into individual morphological 
         \label{fig:anno-fig-v1}
 \end{figure}
 
-\boatvone\ supports viewing features and their values individually under their corresponding columns (e.g. Case=Nom|Number=Sing|Person=3 can be shown in columns ``Case'', ``Number'', and ``Person'' with the values ``Nom'', ``Sing'', and ``3''). It also allows the annotators to be able to take notes for specific annotations.
+\boatvone\ supports viewing features and their values individually under their corresponding columns (e.g. Case=Nom|Number=Sing|Person=3 can be shown in columns ``Case'', ``Number'', and ``Person'' with the values ``Nom'', ``Sing'', and ``3'').
+It also allows the annotators to be able to take notes for specific annotations.
 
 \subsection{Challenges of Agglutinative Languages}
 \label{sec:challenges}
-Agglutinative languages allow stacking multiple morphemes on a single root or stem to convey a wide range of linguistic information such as tense, aspect, number, person, possessor, and more. Isolating or analytic languages, on the other hand, convey the same information through often free-standing function words.
+Agglutinative languages allow stacking multiple morphemes on a single root or stem to convey a wide range of linguistic information such as tense, aspect, number, person, possessor, and more.
+Analytic languages, on the other hand, convey the same information through often free-standing function words.
 
-A clear illustration of this contrast can be observed in \hyperref[trex]{Sentence (1)}: Each lemma of the Turkish sentence stacks at least two inflectional or derivational morphemes that carry out the function of free-standing morphemes in the corresponding English sentence. Hence Turkish sentence has only 3 lemmas \textit{(masadaki, kitaplarını, görmüştüm)} while its English translation has 10 lemmas \textit{(I, had, seen, your, books, that, were, on, the, table)}. 
+A clear illustration of this contrast can be observed in \hyperref[trex]{Sentence (1)}: Each lemma of the Turkish sentence stacks at least two inflectional or derivational morphemes that carry out the function of free-standing morphemes in the corresponding English sentence.
+Hence Turkish sentence has only 3 lemmas \textit{(masadaki, kitaplarını, görmüştüm)} while its English translation has 10 lemmas \textit{(I, had, seen, your, books, that, were, on, the, table)}.
 
 \ex.
 \label{trex}
@@ -51,9 +54,12 @@ Masa-da-ki \hspace*{.573cm}kitap-lar-ın-ı \hspace*{1.8cm}gör-müş-tü-m.\\
 table-{\sc \Loc-\Der} book-{\sc \Pl-\Poss.\Second\Sg-\Acc} see-{\sc \Ant-\Pst-\First\Sg}\footnote{\printglossaries}\\
 \textit{`I had seen your books that were on the table.'}
 
-As a result of this contrast, lemmas in agglutinative languages like Turkish bear more features in the \feats\ column compared to isolating or analytic languages like English. In addition to a higher feature-per-token count, agglutinative languages often have higher non-unique feature counts as well due to their rich repository of derivational and inflectional morphemes. 
+As a result of this contrast, lemmas in agglutinative languages like Turkish bear more features in the \feats\ column compared to isolating or analytic languages like English.
+In addition to a higher feature-per-token count, agglutinative languages often have higher non-unique feature counts as well due to their rich repository of derivational and inflectional morphemes.
 
-In order to offer an empirical example of this contrast, we compared non-unique features, total tokens, and features-per-token counts of multilingual \ud\ treebanks (ATIS and PUD)~\cite{atis-tr, atis-en, pud-tr, pud-en}. Despite following different annotation customs, both Turkish treebanks have significantly higher non-unique features and lower token counts than their English counterparts (see \hyperref[table:feat-comp]{Table 1}). As a result, both Turkish treebanks have more features per token, in fact, ATIS Turkish treebank has more than two times more features per token than ATIS English.
+In order to offer an empirical example of this contrast, we compared non-unique features, total tokens, and features-per-token counts of multilingual \ud\ treebanks (ATIS and PUD)~\cite{atis-tr, atis-en, pud-tr, pud-en}.
+Despite following different annotation customs, both Turkish treebanks have significantly higher non-unique features and lower token counts than their English counterparts (see \hyperref[table:feat-comp]{Table 1}).
+As a result, both Turkish treebanks have more features per token, in fact, ATIS Turkish treebank has more than two times more features per token than ATIS English.
 
 \newcolumntype{s}{>{\columncolor[HTML]{FFFAF0}} p{2.8cm}}
 \begin{table}[h]
@@ -71,7 +77,9 @@ In order to offer an empirical example of this contrast, we compared non-unique 
     \caption{Comparison of morphological feature annotations of Turkish and English \ud\ treebanks with equivalent sets of sentences in terms of meaning.}
 \end{table}
 
-In addition to having a higher feature count, being a free word order language makes annotating Turkish treebanks substantially challenging. As Turkish allows scrambling and topicalization, the average dependency length per token in Turkish sentences is much higher than in fixed word order languages like English. Moreover, such word order changing operations also affect headedness and the dependency arc direction while changing dependency lengths: The order of a dependent and its head can vary within or across the sentences (compare \hyperref[dep1]{Sentence 1} and \hyperref[dep2]{Sentence 2}).
+In addition to having a higher feature count, being a free word order language makes annotating Turkish treebanks substantially challenging.
+As Turkish allows scrambling and topicalization, the average dependency length per token in Turkish sentences is much higher than in fixed word order languages like English.
+Moreover, such word order changing operations also affect headedness and the dependency arc direction while changing dependency lengths: The order of a dependent and its head can vary within or across the sentences (compare \hyperref[dep1]{Sentence 1} and \hyperref[dep2]{Sentence 2}).
 
 \begin{multicols}{2}
 \vspace*{\fill} 
@@ -113,11 +121,16 @@ Lit. Saw on the street the black cat I. \\
 
 \end{multicols}
 
-As a result, an annotation interface designed for agglutinative languages must facilitate the annotator's job despite the changes in dependency length and arc direction. 
+As a result, an annotation interface designed for agglutinative languages must facilitate the annotator's job despite the changes in dependency length and arc direction.
 
-As the dependency length increases, drag-drop interfaces become impractical since they require the annotator to drag lemmas for longer distances, thus decreasing the annotation speed and increasing the effort. Moreover, the need to annotate more features per token also makes drag-drop interfaces very difficult to use for annotating agglutinative languages. Thus, opting for an interface that utilizes the keyboard and allows typing is more practical for such languages.
+As the dependency length increases, drag-drop interfaces become impractical since they require the annotator to drag lemmas for longer distances, thus decreasing the annotation speed and increasing the effort.
+Moreover, the need to annotate more features per token also makes drag-drop interfaces very difficult to use for annotating agglutinative languages.
+Thus, opting for an interface that utilizes the keyboard and allows typing is more practical for such languages.
 
-In addition to the data entry method (the mouse vs the keyboard), feature-per-token counts, and changes in the dependency length and arc direction also require some adjustments in the interface. For instance, the annotation interface must display the entire sentence and all lemma ids at all times. This way, the annotator can see the head and/or dependent of the lemma that is being annotated even though they are dealing with a very verbose sentence or a very high dependency length. Moreover, the annotation interface must be able to display large numbers of tags in the features column in an easy-to-read way so that the annotator can keep track of the annotation even when they are dealing with particularly packed lemmas.
+In addition to the data entry method (the mouse vs the keyboard), feature-per-token counts, and changes in the dependency length and arc direction also require some adjustments in the interface.
+For instance, the annotation interface must display the entire sentence and all lemma ids at all times.
+This way, the annotator can see the head and/or dependent of the lemma that is being annotated even though they are dealing with a very verbose sentence or a very high dependency length.
+Moreover, the annotation interface must be able to display large numbers of tags in the features column in an easy-to-read way so that the annotator can keep track of the annotation even when they are dealing with particularly packed lemmas.
 
 % UD_English-ATIS/stats.xml:
 % Non-unique feats: 63434

@@ -6,19 +6,20 @@ This is particularly true for agglutinative languages due to their complex morph
 The creation of quality treebanks in morphologically rich languages (MRL) is highly labor-intensive and time-consuming due to the sheer amount of meticulous attention and effort required.
 Thus, annotation tools that support this process are essential.
 In recent years, there have been major efforts in increasing the data resources available for low-resource agglutinative languages --such as introducing new datasets and re-annotating existing treebanks.
-Naturally, all these efforts require grammatical annotation by native speakers and/or linguistic experts.
+All these efforts require grammatical annotation by native speakers and/or linguistic experts.
 
 Grammatical annotation involves marking each token of a sentence with corresponding linguistic values.
 Universal Dependencies~\cite{ud} (\ud) is one of the most widely accepted frameworks for morphosyntactic grammar annotations as it offers the flexibility and coherency needed to cover typologically very different languages in a unified way.
-The annotation format of \ud\ called \conllu~\cite{conll} (Computational Natural Language Learning) defines a set of linguistic tags to express syntactic category and morphological features of each token as well as the relationship between them.
+The annotation format of \ud\ called \conllu~\cite{conll} (Computational Natural Language Learning) defines a set of linguistic tags to express syntactic category (e.g. noun, verb, adjective) and morphological features of each token as well as the relationship between them.
 The \conllu\ format has 10 columns for each token of a sentence where the annotator can mark down word form, lemma form, syntactic category, dependency relation, and more, following predetermined rules and tags.
-For example, the universal part of speech (\upos) column is used to denote the syntactic category (e.g. noun, verb, adjective) of a token while the features (\feats) column allows marking morphosyntactic features such as case, number, or tense.
-Since agglutinative languages allow stacking multiple morphemes on roots and stems for inflection, the \feats\ column is heavily used in their annotation to mark several values for each token.
+For example, the universal part of speech (\upos) column is used to denote the syntactic category of a token while the features (\feats) column allows marking morphosyntactic features such as case, number, or tense.
+Since agglutinative languages allow stacking multiple morphemes on roots and stems for inflection, the \feats\ column is heavily used in their annotations to mark several values for each token.
 This makes the effort required to annotate agglutinative languages significantly higher than analytic languages.
 Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities frequently, disrupting the flow and slowing down the annotator.
 
-% Aware of this issue, \boatvone~\cite{turk-2021-boat} was developed to support the annotation of morphologically rich languages to produce treebanks compliant with the \ud\ framework~\cite{ud}. \boatvone\ allowed making the annotations only using the keyboard yet the user experience revealed several points of improvement.
-Aware of this issue, \boatvone~\cite{anon} was developed to support the annotation of morphologically rich languages to produce treebanks compliant with the \ud\ framework~\cite{ud}. \boatvone\ allowed annotations via using only the keyboard, yet the user experience revealed several points of improvement.
+% Aware of this issue, \boatvone~\cite{turk-2021-boat} was developed to support the annotation of morphologically rich languages to produce treebanks compliant with the \ud\ framework~\cite{ud}.
+Aware of this issue, \boatvone~\cite{anon} was developed to support the annotation of morphologically rich languages to produce treebanks compliant with the \ud\ framework~\cite{ud}.
+\boatvone\ allowed annotations via using only the keyboard, yet the user experience revealed several points of improvement.
 The main takeaway from the feedback provided by the annotators that had used \boatvone\ was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
 Improvements regarding these aspects should improve the performance of annotators, and consequently, produce higher-quality NLP resources.
 
@@ -43,7 +44,7 @@ The feedback provided by the participants following the test rounds was overwhel
 % The final version is available on Boğaziçi University's NLP platform~\cite{tulap} and provided as an open-source resource.
 The tool's final version has been made available~\cite{anon} as an open-source resource.
 
-The main contributions of this work are to:
+The main contributions of this work are:
 \begin{itemize}
 \setlength\itemsep{0em}
         \item Design and implementation of a grammatical annotation tool that supports the intensive cognitive effort expended by linguistic annotators based on requirements elicited from experienced annotators,
@@ -57,5 +58,6 @@ Section~\ref{sec:background} lays the background of the proposed tool,
 Section~\ref{sec:related} presents related work,
 Section~\ref{sec:requirements} describes the requirements and design,
 Section~\ref{sec:implementation} presents the implementation and features,
-Section~\ref{sec:annotation} illustrates a use case of annotation, and
+Section~\ref{sec:annotation} illustrates a use case of annotation,
+Section~\ref{sec:evaluation} explains 4 sets of usability evaluations and
 Section~\ref{sec:discussion} provides a discussion along with our conclusions.
