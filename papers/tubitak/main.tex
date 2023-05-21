@@ -1,0 +1,100 @@
+%%%%%%%%%%%%%%%%%%%%%% TO DOs %%%%%%%%%%%%%%%%%%%%%%
+% fix overflowing figures
+% add a comparison of old & new interfaces next to one another
+% add subsections
+% 
+
+%% büşra
+% abstracte bak
+% introductiona bak
+% requirement
+% deneylerden bahset
+% eval
+% disc
+% tr-ing treebank feature counts
+
+
+
+
+
+
+
+
+\documentclass{elektr}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+urlcolor=blue,
+citecolor=blue}
+\usepackage[all]{xy,xypic}
+\usepackage{amsfonts,amssymb,amsmath,amsgen,amsopn,amsbsy,theorem,graphicx,epsfig}
+\usepackage{eufrak,amscd,bezier,latexsym,mathrsfs,eurosym,enumerate}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{cleveref,multirow}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[pagewise]{lineno}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage[numbers,sort&compress]{natbib}
+% \usepackage{bbding} % added for checkmark, 11/18/22 4 PM
+
+% \linenumbers
+
+\yil{}
+\vol{}
+\fpage{}
+\lpage{}
+\doi{}
+
+% sentence case used in title
+\title{A collaborative grammar annotation tool for agglutinative languages}
+
+% 3 persons were written like this in some previous papers
+\author[AKKURT et al.]{
+\textbf{Salih Furkan Akkurt$^{1,}$\thanks{furkan.akkurt@boun.edu.tr}~, Büşra Marşan$^{2}$, Susan Uskudarli$^{1}$}\\
+% ORCID iD's are shown as links beside names in previous papers ; need to make them so
+% busra ORCID: needed
+% furkan ORCID: 0000-0002-8411-654X
+% suzan ORCID: 0000-0002-0106-0182
+$^{1}$Department of Computer Engineering, The Faculty of Engineering, Boğaziçi University, Istanbul, Turkey\\
+$^{2}$Department of Linguistics, The Faculty of Arts and Sciences, Boğaziçi University, Istanbul, Turkey
+\\ [1.8em]
+
+\rec{.202}
+\acc{.202}
+\finv{..202}
+}
+
+\input{elksty.tex}
+\input{commands}
+
+\setcounter{page}{1}
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/boatvone}
+\input{sections/related-work}
+\input{sections/requirements-design}
+\input{sections/implementation}
+\input{sections/use-case}
+\input{sections/evaluation}
+\input{sections/discussion-future-work}
+
+\section*{Acknowledgment}
+This work was supported by Boğaziçi University Research Fund Grant Number 16909.
+
+\bibliographystyle{plainnat}
+\bibliography{main}
+
+\newpage
+\appendix
+\input{sections/appendix}
+
+\end{document}

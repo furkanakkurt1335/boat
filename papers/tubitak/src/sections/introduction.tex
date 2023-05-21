@@ -1,0 +1,63 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Treebanks are significant resources in the development of natural language processing (NLP) tools and resources, and quality NLP resources need quality treebanks, manually annotated by linguistic experts.
+This is particularly true for agglutinative languages due to their complex morphologies.
+The creation of quality treebanks in morphologically rich languages (MRL) is highly labor-intensive and time-consuming due to the sheer amount of meticulous attention and effort required.
+Thus, annotation tools that support this process are essential.
+In recent years, there have been major efforts in increasing the data resources available for low-resource agglutinative languages --such as introducing new datasets and re-annotating existing treebanks.
+All these efforts require grammatical annotation by native speakers and/or linguistic experts.
+
+Grammatical annotation involves marking each token of a sentence with corresponding linguistic values.
+Universal Dependencies~\cite{ud} (\ud) is one of the most widely accepted frameworks for morphosyntactic grammar annotations as it offers the flexibility and coherency needed to cover typologically very different languages in a unified way.
+The annotation format of \ud\ called \conllu~\cite{conll} (Computational Natural Language Learning) defines a set of linguistic tags to express syntactic category (e.g. noun, verb, adjective) and morphological features of each token as well as the relationship between them.
+The \conllu\ format has 10 columns for each token of a sentence where the annotator can mark down word form, lemma form, syntactic category, dependency relation, and more, following predetermined rules and tags.
+For example, the universal part of speech (\upos) column is used to denote the syntactic category of a token while the features (\feats) column allows marking morphosyntactic features such as case, number, or tense.
+Since agglutinative languages allow stacking multiple morphemes on roots and stems for inflection, the \feats\ column is heavily used in their annotations to mark several values for each token.
+This makes the effort required to annotate agglutinative languages significantly higher than analytic languages.
+Annotation tools with drag-drop and mouse-based interfaces, although appealing, are not well suited for agglutinative languages as they require alternating among input modalities frequently, disrupting the flow and slowing down the annotator.
+
+% Aware of this issue, \boatvone~\cite{turk-2021-boat} was developed to support the annotation of morphologically rich languages to produce treebanks compliant with the \ud\ framework~\cite{ud}.
+Aware of this issue, \boatvone~\cite{anon} was developed to support the annotation of morphologically rich languages to produce treebanks compliant with the \ud\ framework~\cite{ud}.
+\boatvone\ allowed annotations via using only the keyboard, yet the user experience revealed several points of improvement.
+The main takeaway from the feedback provided by the annotators that had used \boatvone\ was a much better understanding of the time, effort, cognitive load, and extra information requirements of the annotation process.
+Improvements regarding these aspects should improve the performance of annotators, and consequently, produce higher-quality NLP resources.
+
+This work presents a web-based collaborative grammatical annotation tool (\boatvtwo) that has been designed based on earlier experiences and requirement elicitation sessions with experienced annotators~\footnote{An earlier version of this paper was presented at the The International Conference on Agglutinative Language Technologies as a challenge of Natural Language Processing (ALTNLP)~\cite{altnlp} in 2022.}.
+In light of the feedback from this experience, several user experience improvements were implemented to enhance the flow and consistency of the annotators.
+Additionally, this tool was designed as a web application that supports multiple users to enable a collaborative environment for annotators.
+The design and implementation of the tool aimed to: (1) support the creation of valid and consistent annotations, (2) increase the speed of the annotation process, (3) improve the user experience of annotators, (4) support collaboration among annotators, and (5) provide an open-source and easily deployable web-based annotation tool with an API to benefit the scientific community.
+The development started with requirements elicitation, for which earlier experiences and in-depth interviews with an experienced annotator were taken into account.
+The main issues identified during the requirement analysis phase are:
+\begin{itemize}
+\setlength\itemsep{0em}
+\item The interface must be free of clutter and intuitive so that the annotator can focus on the task better.
+\item New features like auto-completion should be introduced to increase the speed of the annotator.
+\item Problems detected after extensive use of \boatvone\ must be addressed.
+\item Support for collaboration has become significant since the increase in the effort to annotate large treebanks has led to the need for multiple annotators.
+\end{itemize}
+
+Considering the key points above, \boatvtwo\ was designed in line with the typological particularities of agglutinative languages and the needs of annotators with experience in grammatical annotation.
+The resultant tool has been evaluated through several test rounds participated by both experienced and novice annotators.
+The aim of the test rounds was to assess how well \boatvtwo\ was able to answer the requirements detected prior to the design and implementation phases, and whether newly introduced features and design choices improved the user experience.
+The feedback provided by the participants following the test rounds was overwhelmingly positive, which indicates that the ability to collaborate within the tool is essential to increasing the efficiency of multi-annotator treebank creation.
+% The final version is available on Boğaziçi University's NLP platform~\cite{tulap} and provided as an open-source resource.
+The tool's final version has been made available~\cite{anon} as an open-source resource.
+
+The main contributions of this work are:
+\begin{itemize}
+\setlength\itemsep{0em}
+        \item Design and implementation of a grammatical annotation tool that supports the intensive cognitive effort expended by linguistic annotators based on requirements elicited from experienced annotators,
+        \item Development of a web-based annotation tool based on a supporting API for programmatic access and extensibility,
+        \item Multi-user support to provide individual spaces for annotations, computation of inter-annotator agreements, and other potential collaboration, and
+        \item Release of an accessible tool that is an open-source resource, virtualized via Docker~\cite{docker} for easy deployment.
+\end{itemize}
+
+The remainder of this paper is organized as follows:
+Section~\ref{sec:background} lays the background of the proposed tool,
+Section~\ref{sec:related} presents related work,
+Section~\ref{sec:requirements} describes the requirements and design,
+Section~\ref{sec:implementation} presents the implementation and features,
+Section~\ref{sec:annotation} illustrates a use case of annotation,
+Section~\ref{sec:evaluation} explains 4 different usability evaluations performed on the tool and
+Section~\ref{sec:discussion} provides a discussion along with our conclusions.

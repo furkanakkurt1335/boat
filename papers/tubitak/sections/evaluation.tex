@@ -1,0 +1,29 @@
+\section{Evaluation}
+\label{sec:evaluation}
+
+% earlier test
+We compared the annotation of several sentences with the same number of tokens using \boatvone\ and \boatvtwo.
+While we kept the number of words in a sentence constant, we did not use the same sentences since having previously annotated a sentence would impact the annotation on another version.
+Keeping the number of words the same provides a somewhat comparable experience.
+There was a noticeable speedup (approximately 30\%) using \boatvtwo.
+Among the new features that are most appreciated are autocompletion, condensed dependency tree representation, significant reduction on scrolling, keyword search, and search by morphological features.
+The non-search related features are instrumental to retaining focus.
+
+We designed a test case for user testing in July 2022.
+This test case included testing various functionalities of the tool, such as creating treebanks, annotation of both simple and complex sentences and searching annotations previously created.
+Simple sentence annotation refers to sentences with less than 10 tokens.
+Complex sentence annotation included long sentences which also required splitting lemmas.
+We have performed this test case with 3 linguists and gathered their feedback afterwards.
+The test results were mostly matching what the expected results were.
+We have worked on improving the tool further and making it more robust, according to the feedback.
+
+We did testing with several test cases via Selenium in September 2022.
+In these tests, we aimed to test if the tool's interface works as expected in various use cases, leveraging assertions in the tests.
+These use cases included logging in, creating and deleting treebanks, and searching sentences.
+The actual results of these tests were matching the expected results.
+
+We designed another test with several test cases for testing the intuitiveness of the tool and its usefulness in educating new annotators in December 2022.
+We executed this test with 2 graduates of the Linguistics Department at Boğaziçi University in Istanbul, Turkey.
+These 2 testers had not had any experience in annotation.
+We gathered feedback after they have done the test cases we have given them.
+

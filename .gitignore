@@ -1,4 +1,10 @@
 __pycache__/
-*.log
 .DS_Store
 treebank_uploads/
+*.aux
+*.bbl
+*.blg
+*.glo
+*.ist
+*.log
+*.out

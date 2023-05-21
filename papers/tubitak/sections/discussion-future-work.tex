@@ -1,0 +1,24 @@
+\section{Discussion and Conclusions}
+\label{sec:discussion}
+
+\boatvtwo\ aims to extend the functionality of \boatvone\ as a collaborative web-based application to support the annotation process based on previous experiences.
+We developed a web application that supports agglutinative languages as described in Section~\ref{sec:implementation}.
+
+The implementation choices served our goals well.
+We believe that having experts in linguistics and experienced annotators in agglutinative treebank creation was instrumental in understanding the requirements and the design process.
+We held numerous elicitation interviews and further meetings for clarifications and feedback requests.
+
+We used modern software development tools and management practices during the development lifecycle of this tool.
+The development of an API enables various extensions of this tool and access to the treebanks.
+The containerization with Docker~\cite{docker} has facilitated easy delivery and deployment.
+It is available on Boğaziçi University's NLP platform~\cite{TULAP} as an open-source resource.
+The availability of the tool as a user as well as a developer is valuable for future use and developments.
+
+We are encouraged by the evaluation performed on this tool and anticipate its extensions.
+In fact, our implementation of \boatvtwo\ resulted in a revision request for \boatvone\ to include the focus enhancing features.
+This resulted in significant speedup and improved annotator experience, which was reported as a qualitative observation by an experienced annotator.
+
+The feedback coming from the evaluation presents many ways that the tool can be improved.
+For the tool's future, we plan on maintaining the current functionality, implementing annotation-centric new features, such as automated annotation of certain tags based on rules input by annotators of a treebank, or creating notes on annotations to communicate with other annotators through the application.
+We also plan to implement support for various languages regarding autocompletion and annotation validation.
+% annotation outside dep ann?
