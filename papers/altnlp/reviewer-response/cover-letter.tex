@@ -1,0 +1,135 @@
+\documentclass[final,2p]{article}
+%\documentclass[global,twocolumn,referee]{svjour}
+% Remove option referee for final version
+%
+% Remove any % below to load the required packages
+\usepackage{latexsym}
+\usepackage{graphics}
+\usepackage{graphicx,times,amsmath}
+\usepackage{algorithm}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{color}
+
+\usepackage{amssymb,amsmath}
+\usepackage{bbm}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}  % access \textquotedbl
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{hhline}
+\usepackage{url}
+\usepackage{rotating}
+\usepackage{hhline,multirow}
+\usepackage{algpseudocode}
+\usepackage[english]{babel}
+\usepackage{hyphenat}
+\usepackage{qtree}
+\usepackage {tikz}
+\usepackage{listings}
+\usepackage{graphicx}
+
+\usepackage[utf8]{inputenc}
+
+
+
+\newlength{\marg}
+\setlength{\marg}{60mm}
+\newlength{\margv}
+\setlength{\margv}{50mm}
+
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-\marg}
+
+\setlength{\oddsidemargin}{0.50\marg}
+\setlength{\evensidemargin}{0.50\marg}
+
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\evensidemargin}{-1in}
+
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-\margv}
+
+\setlength{\topmargin}{0.50\margv}
+\addtolength{\topmargin}{-1in}
+\addtolength{\topmargin}{-\headsep}
+\addtolength{\topmargin}{-\headheight}
+
+
+\newcommand{\todo}[1]{\noindent\colorbox{cyan}{\parbox{\columnwidth}{#1}}}
+
+
+\newcommand{\smallcapsfont}[1]{\begin{small}\textsc{\texttt{#1}}\end{small}}
+\newcommand{\comment}{\emph}
+\newcommand{\response}{\noindent \textbf}
+
+\setlength{\parindent}{0pt} \setlength{\parskip}{5pt}
+
+%\input{commands}
+
+\begin{document}
+%
+\title{BoAT v2 - A Web-Based Dependency Annotation Tool with Focus on Agglutinative Languages}%\medskip
+\author{Salih Furkan Akkurt, Büşra Marşan and Susan Uskudarli}
+\date{30 May 2022}
+
+\maketitle
+
+\textbf{Point-to-Point responses to the reviewers' comments}\\\\
+
+% \section{Authors' Comments for the Reviewers}
+
+Dear Committee and Reviewers,
+
+We thank you for your encouraging comments.
+We have tried our best to address all the issues and suggestions raised by our reviewers.
+Upon reviewing our manuscript in light of our reviewers' comments we have made a few corrections and modifications to improve the readability and clarity of our paper.
+The revisions that are not directly in response to our reviewers' recommendations do not introduce anything beyond the scope of our original submission.
+% Towards this end, we have:
+
+The following details our Point-to-Point responses to the issues identified by our reviewers, followed by general improvements.
+
+Authors
+
+\section*{\fbox{Review 1}}
+
+\comment{With the Turkish language as test case, the authors present the design and development of an open-source web-based annotation tool that is based on an earlier toolkit (BoAT v1).}
+
+\comment{The toolkit is beneficial to researchers. However, as mentioned in the paper, it is still in the testing phase.}
+
+\comment{It would be helpful if the authors can also present initial results of any user acceptance test conducted. This is important since once of the objectives mentioned in the abstract is "significantly improve the user experience of the annotator".}
+
+\response{Thank you for your comment. We are in the process of conducting user acceptance tests. We have early results which we are happy to share. We are seeking quantitative and qualitative (user experience, e.g. speedup) feedback from annotators. We have reported our preliminary results in the last paragraph of Section 7. Discussion and Conclusions.}
+
+\comment{Another suggestion: Since the toolkit was based on the experiences from BoAT v1, allotting a separate section to discuss BoAT v1 is recommended. Briefly discussing it in the Related Work section is insufficient.}
+
+\response{Thank you for your comment. We totally agree. For this purpose, we have written a new section (Section 2) dedicated to explaining BoAT-v1. Here, we explain how this tool is used to annotate morphologically rich sentences, specifically Turkish sentences. We have also added an Appendix with a figure that shows the annotation of the same Turkish sentence that was used to describe BoAT-v2 (Section 6). We have consolidated the explanations related to BoAT-v1 that was previously distributed in various parts of our original manuscript.}
+
+\section*{\fbox{Review 2}}
+
+\comment{The paper presents the second version of the BoAT tool. It is a collaborative dependency annotation tool designed and implemented to work with agglutinative languages. For that, the authors have taken into account experts' feedback and experience. It is an interesting paper that presents the progress done in relation to the previous version of the tool.}
+
+\comment{As it is the second version of the tool, it is not clear if all the functionalities described in the paper are new or some of them already were part of the first version. This aspect should be clarified a little bit more.}
+
+\response{Thank you for your comment. We totally agree. For this purpose, we have written a new section (Section 2) dedicated to explaining BoAT-v1. Here, we explain how this tool is used to annotate morphologically rich sentences, specifically Turkish sentences. We have also added an Appendix with a figure that shows the annotation of the same Turkish sentence that was used to describe BoAT-v2 (Section 6). We have consolidated the explanations related to BoAT-v1 that was previously distributed in various parts of our original manuscript.}
+
+\comment{Some parts of the paper needs a little bit of rephrasing. I have noticed for instance minor edition needs such as:}
+
+\comment{In the introduction concepts/terms such as "UPOS" or "FEATS" are mentioned before properly introducing the universal dependencies framework or tags.}
+
+\response{Thank you for your comment. We have introduced the UD framework and have elaborated the UPOS and FEATS tags as examples in Paragraph 2 of Section 1. The citation to the official UD framework is provided.}
+
+\comment{The API acronym is "explained" in the sentence: It has an application programming interface (API) for programmatic access and extensibility. But the acronyms is introduced in the previous paragraph.}
+
+\response{Thank you for your comment. We have provided the full name of API (Application Programming Interface) in the abstract.}
+
+\comment{What does "MRL" refer to? etc.}
+
+\response{Thank you for your comment. We have corrected this oversight. "Morphologically rich language" is written in the first sentence of the third paragraph.}
+
+\comment{All in all an interesting paper that needs a little bit of rewriting.}
+
+\end{document}

@@ -1,0 +1,67 @@
+\documentclass[ ]{ceurart} 
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+
+\input{sections/commands}
+\begin{document}
+
+\copyrightyear{2022}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0
+  International (CC BY 4.0).}
+
+\conference{ALTNLP2022: The International Conference on Agglutinative Language Technologies as a challenge of Natural Language Processing, June 6-8, 2022, Koper, Slovenia}
+
+\title{BoAT v2 - A Web-Based Dependency Annotation Tool with Focus on Agglutinative Languages}
+
+\author[1]{Salih Furkan Akkurt}[%
+email=furkan.akkurt@boun.edu.tr
+]
+
+\author[2]{Büşra Marşan}[%
+email=busra.marsan@boun.edu.tr
+]
+
+\author[1]{Susan Uskudarli}[%
+email=suzan.uskudarli@boun.edu.tr
+]
+
+\address[1]{ Department of Computer Engineering, Boğaziçi University, İstanbul, Turkey }
+\address[2]{ Department of Linguistics, Boğaziçi University, İstanbul, Turkey }
+
+\input{sections/abstract}
+
+\begin{keywords}
+natural language processing \sep
+linguistic annotation \sep
+annotation tool \sep
+web application \sep
+dependency parsing \sep
+Universal Dependencies
+\end{keywords}
+
+\maketitle
+
+
+\input{sections/introduction}
+\input{sections/boatvone}
+\input{sections/related-work}
+\input{sections/requirements-design}
+\input{sections/implementation}
+\input{sections/use-case}
+\input{sections/discussion-future-work}
+
+\begin{acknowledgments}
+This work was supported by Boğaziçi University Research Fund Grant Number 16909.
+\end{acknowledgments}
+
+\bibliography{main}
+
+\newpage
+\appendix
+\input{sections/appendix}
+
+\end{document}

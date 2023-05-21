@@ -1,0 +1,29 @@
+\section{Discussion and Conclusions}
+\label{sec:discussion}
+
+\boatvtwo\ aims to extend the functionality of \boatvone\ as a collaborative web-based application to support the annotation process based on previous experiences.
+We developed a web application that supports agglutinative languages as described in Section~\ref{sec:implementation}.
+
+The implementation choices served our goals well.
+We believe that having experts in linguistics and experienced annotators in agglutinative treebank creation was instrumental in understanding the requirements and the design process.
+We held numerous elicitation interviews and further meetings for clarifications and feedback requests.
+
+We used modern software development tools and management practices during the development lifecycle of this tool.
+The development of an API enables various extensions of this tool and access to the treebanks.
+The containerization with Docker~\cite{docker} has facilitated easy delivery and deployment.
+It will be made available on Boğaziçi University's NLP platform~\cite{DIP} as a demo as well as an open-source resource.
+The availability of the tool as a user as well as a developer is valuable for future use and developments.
+
+This tool is in the testing phase and has had encouraging early feedback.
+We compared the annotation of several sentences with the same number of tokens using \boatvone\ and \boatvtwo.
+While we kept the number of words in a sentence constant, we did not use the same sentences since having previously annotated a sentence would impact the annotation on another version.
+Keeping the number of words the same provides a somewhat comparable experience.
+There was a noticeable speedup (approximately 30\%) using \boatvtwo.
+Among the new features that are most appreciated are autocompletion, condensed dependency tree representation, significant reduction on scrolling, keyword search, and search by morphological features.
+The non-search related features are instrumental to retaining focus.
+
+We are encouraged by the early responses to this tool and anticipate its extensions.
+In fact, our implementation of \boatvtwo\ resulted in a revision request for \boatvone\ to include the focus enhancing features.
+This also resulted in significant speedup and improved user experience, which was reported as a qualitative observation by an annotator.
+Presently, our testing is focused on more extensive cases (annotation of sentences with varying degrees of complexity) and, importantly, the multi-user functionalities.
+For this purpose, we are in the process of recruiting several annotators with a background in linguistics.
