@@ -1,1 +1,0 @@
-move nginx statements to nlp-tools-platform after Busra screenshots
