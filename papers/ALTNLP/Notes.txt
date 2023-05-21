@@ -1,1 +1,0 @@
-`pdflatex main.tex` works to produce the expected PDF; 17 Oct 2022 8 PM
