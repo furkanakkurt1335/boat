@@ -37,8 +37,10 @@ window.onload = function () {
             feats = feats.split('|');
             for (let j = 0; j < feats.length; j++) {
                 let matches = feats[j].match(/(.+)=(.+)/);
-                let column = matches[1].toLowerCase();
-                window.cells[cells_keys[i]][column] = matches[2];
+                if (matches != null) {
+                    let column = matches[1].toLowerCase();
+                    window.cells[cells_keys[i]][column] = matches[2];
+                }
             }
         }
     }
@@ -785,6 +787,7 @@ function inject_sentence() {
         if (feats != '_') {
             for (let j = 0; j < feats.length; j++) {
                 let matches = feats[j].match(/(.+)=(.+)/);
+                if (matches == null) continue;
                 let column = matches[1].toLowerCase();
                 cells[cells_keys[i]][column] = matches[2];
             }
@@ -998,12 +1001,12 @@ function cell_change(key, column, cell) {
         }
         current_feats[features[features_low.indexOf(column)]] = cell;
         let feats_l = Object.keys(current_feats);
-        for (let j = 0; j < feats_l.length; j++) {
-            new_feats += `${feats_l[j]}=${current_feats[feats_l[j]]}`;
-            if (j != feats_l.length - 1) new_feats += "|";
-        }
+        let new_feats_l = [];
+        for (let j = 0; j < feats_l.length; j++)
+            if (current_feats[feats_l[j]] != "_") new_feats_l.push(feats_l[j]);
+        new_feats = new_feats_l.sort().map(function (x) { return `${x}=${current_feats[x]}`; }).join('|');
+        if (new_feats == "") new_feats = "_";
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;
-        feats_order(key);
     }
 }

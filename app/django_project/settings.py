@@ -144,7 +144,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-ROOT_PATH = 'boat/'
+ROOT_PATH = ''
 LOGIN_URL = f'/{ROOT_PATH}accounts/login/'
 # LOGIN_URL = f'/accounts/login/'
 
