@@ -11,11 +11,11 @@ from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
 from django_project.settings import ROOT_PATH
 from datetime import datetime
-from spacy.lang.en import English
-from spacy import displacy
+# from spacy.lang.en import English
+# from spacy import displacy
 
-nlp = English()
-tokenizer = nlp.tokenizer
+# nlp = English()
+# tokenizer = nlp.tokenizer
 
 def compute_anno_agr(annos):
     # anno_l = []
@@ -401,7 +401,8 @@ def add_sentence(request):
             else:
                 user = user_selected[0]
             cats = {}
-            tokens = [str(i) for i in tokenizer(sentence)]
+            # tokens = [str(i) for i in tokenizer(sentence)]
+            tokens = [str(i) for i in sentence.split()]
             anno_t = Annotation.objects.create_annotation(
                 user, sent_t)
             anno_t.save()

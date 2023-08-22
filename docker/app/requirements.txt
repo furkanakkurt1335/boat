@@ -2,6 +2,6 @@ Django
 django-cors-headers
 djangorestframework
 django-filter
+gunicorn
 psycopg2
 regex
-spacy
