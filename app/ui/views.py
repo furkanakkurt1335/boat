@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django_project.settings import ROOT_PATH
 from datetime import datetime
 from spacy.lang.en import English
+from spacy import displacy
 
 nlp = English()
 tokenizer = nlp.tokenizer
@@ -185,7 +186,6 @@ def ud_graph(request):
 def spacy(request):
     graph = None
     if request.method == 'POST':
-        from spacy import displacy
         data = request.POST
         cells = json.loads(data['cells'])
         manual = {"words": [], "arcs": [], "lemmas": []}

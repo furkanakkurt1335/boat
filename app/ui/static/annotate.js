@@ -9,11 +9,12 @@ window.onload = function () {
     window.text = document.getElementById('sentence.text').innerHTML;
     window.cells = JSON.parse(document.getElementById('annotation.cats').innerHTML);
     window.notes = document.getElementById('annotation.notes').innerHTML;
-    window.status = parseInt(document.getElementById('annotation.status').innerHTML);
+    window.annotation_status = parseInt(document.getElementById('annotation.status').innerHTML);
     window.status_d = { 0: "New", 1: "Draft", 2: "Complete" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
-    window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
+    // window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
+    window.graph_d = { 0: "None", 1: "conllu.js" };
     window.root_path = document.getElementById('root_path').innerHTML;
     let error_condition_t = document.getElementById('error_condition').innerHTML;
     if (error_condition_t == "1") window.error_condition = 1;
@@ -121,7 +122,7 @@ function post_to_save(type, number) {
     input = document.createElement('input');
     input.type = 'hidden';
     input.name = "status";
-    input.value = window.status;
+    input.value = window.annotation_status;
     form.append(input);
     document.body.append(form);
 
@@ -573,9 +574,9 @@ function init_page() {
             if (options[i].selected) options[i].classList.add("text-success");
             else options[i].classList.remove("text-success");
         }
-        if (selected == window.status_d[0]) window.status = 0;
-        else if (selected == window.status_d[1]) window.status = 1;
-        else if (selected == window.status_d[2]) window.status = 2;
+        if (selected == window.status_d[0]) window.annotation_status = 0;
+        else if (selected == window.status_d[1]) window.annotation_status = 1;
+        else if (selected == window.status_d[2]) window.annotation_status = 2;
     });
     options = [];
     let status_keys = Object.keys(window.status_d);
@@ -585,7 +586,7 @@ function init_page() {
     for (let i = 0; i < options.length; i++) {
         option = document.createElement("option");
         option.innerHTML = options[i];
-        if (window.status == i) {
+        if (window.annotation_status == i) {
             option.selected = true;
             option.classList.add("text-success");
         }
@@ -935,7 +936,6 @@ function display_errors() {
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();
-
     $.post(`/${window.root_path}error/`,
         {
             cells: JSON.stringify(window.cells),
@@ -1007,12 +1007,23 @@ function cell_change(key, column, cell) {
     window.cells[key][column] = cell;
     if (column == "feats") {
         let feats = cell.split('|');
+        let feat_d = {};
         for (let j = 0; j < feats.length; j++) {
             let matches = feats[j].match(/(.+)=(.+)/);
             if (matches) {
                 let column_t = matches[1].toLowerCase();
                 window.cells[key][column_t] = matches[2];
-                if (current_columns.indexOf(column_t) != -1) document.getElementById(`${key} ${column_t}`).innerHTML = matches[2];
+                feat_d[column_t] = matches[2];
+            }
+        }
+        let feat_keys = Object.keys(feat_d);
+        for (let j = 0; j < current_columns.length; j++) {
+            let column_t = current_columns[j].toLowerCase();
+            if (feat_keys.includes(column_t)) {
+                document.getElementById(`${key} ${column_t}`).innerHTML = feat_d[column_t];
+            }
+            else if (!cats_low.includes(column_t)) {
+                document.getElementById(`${key} ${column_t}`).innerHTML = "_";
             }
         }
         feats_order(key);
@@ -1037,4 +1048,6 @@ function cell_change(key, column, cell) {
         document.getElementById(`${key} feats`).innerHTML = new_feats;
         window.cells[key]['feats'] = new_feats;
     }
+    create_graph();
+    display_errors();
 }
