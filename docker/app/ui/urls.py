@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/profile/', views.profile, name='profile'),
     path('accounts/logout/', views.logout, name='logout'),
     path('upload_file/', views.upload_file, name='upload_file'),
+    path('add_sentence/', views.add_sentence, name='add_sentence'),
     path('test/', views.test, name='test'),
     path('create_treebank/', views.create_treebank, name='create_treebank'),
     path('view_treebanks/', views.view_treebanks, name='view_treebanks'),

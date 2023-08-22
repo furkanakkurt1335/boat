@@ -10,7 +10,12 @@ from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
 from django_project.settings import ROOT_PATH
+from datetime import datetime
+from spacy.lang.en import English
+from spacy import displacy
 
+nlp = English()
+tokenizer = nlp.tokenizer
 
 def compute_anno_agr(annos):
     # anno_l = []
@@ -181,7 +186,6 @@ def ud_graph(request):
 def spacy(request):
     graph = None
     if request.method == 'POST':
-        from spacy import displacy
         data = request.POST
         cells = json.loads(data['cells'])
         manual = {"words": [], "arcs": [], "lemmas": []}
@@ -369,6 +373,47 @@ def upload_file(request):
                 message = 'The file was not in the correct conllu format.'
             context['message'], context['path'], context['treebank_title'] = message, file.file.path.replace('\\', '/'), request.POST['title']
     return render(request, 'upload_file.html', context)
+
+
+@login_required
+def add_sentence(request):
+    treebanks = Treebank.objects.all()
+    context = {'treebanks': treebanks, 'root_path': ROOT_PATH}
+    if request.method == 'POST':
+        now = datetime.now().strftime("%Y%m%d%H%M%S")
+        sent_id = now
+        sentence = request.POST['sentence']
+        treebank_title = request.POST['title']
+        treebank = Treebank.objects.get_treebank_from_title(treebank_title)
+        if treebank == None:
+            message = 'There is no treebank with that title.'
+        else:
+            sent_t = Sentence.objects.create_sentence(
+                treebank, sent_id, sentence, {})
+            # Saving Annotation objects
+            user_selected = User.objects.filter(
+                username=DUMMY_USER_NAME)
+            if len(user_selected) == 0:
+                user = User()
+                user.username = DUMMY_USER_NAME
+                user.password = DUMMY_USER_PW
+                user.save()
+            else:
+                user = user_selected[0]
+            cats = {}
+            tokens = [str(i) for i in tokenizer(sentence)]
+            anno_t = Annotation.objects.create_annotation(
+                user, sent_t)
+            anno_t.save()
+            id_t = 1
+            for token in tokens:
+                id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = id_t, token, token, '_', '_', '_', '_', '_', '_', '_'
+                word_line_t = Word_Line.objects.create_word_line(
+                    anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
+                id_t += 1
+            message = 'You have added a sentence successfully.'
+        context['message'] = message
+    return render(request, 'add_sentence.html', context)
 
 
 @csrf_exempt
