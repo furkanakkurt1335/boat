@@ -168,6 +168,8 @@ function get_sorted_cells_keys() {
     return new_list;
 }
 
+const split_editable_list = ["form", "misc"];
+
 function button_handle(type, number, way) {
     if (["previous", "next", "save"].includes(type)) {
         post_to_save(type);
@@ -209,6 +211,17 @@ function button_handle(type, number, way) {
                 if (input_number.includes('-')) return;
                 let first_num = parseInt(input_number);
                 if (first_num == NaN) return;
+                for (let i = 0; i <= row_place; i++) {
+                    let key_t = cells_keys[i];
+                    let key_num = parseInt(key_t);
+                    if (!key_t.includes('-')) {
+                        let head_t = window.cells[`${key_num}`]['head'];
+                        if (head_t != '_') {
+                            let head_num = parseInt(head_t);
+                            if (head_num > first_num) window.cells[`${key_num}`]['head'] = `${head_num + 1}`;
+                        }
+                    }
+                }
                 for (let i = cells_keys.length - 1; i > row_place; i--) {
                     let key_t = cells_keys[i];
                     let key_num = parseInt(key_t);
@@ -216,9 +229,22 @@ function button_handle(type, number, way) {
                         window.cells[`${key_num + 1}-${key_num + 2}`] = { ...window.cells[key_t] };
                         delete window.cells[key_t];
                     }
-                    else window.cells[`${key_num + 1}`] = { ...window.cells[key_t] };
+                    else {
+                        window.cells[`${key_num + 1}`] = { ...window.cells[key_t] };
+                        let head_t = window.cells[`${key_num + 1}`]['head'];
+                        if (head_t != '_') {
+                            let head_num = parseInt(head_t);
+                            if (head_num >= first_num) window.cells[`${key_num + 1}`]['head'] = `${head_num + 1}`;
+                        }
+                    }
                 }
                 window.cells[`${first_num}-${first_num + 1}`] = { ...window.cells[input_number] };
+                new_row_keys = Object.keys(window.cells[`${first_num}-${first_num + 1}`]);
+                for (let i = 0; i < new_row_keys.length; i++) {
+                    if (!split_editable_list.includes(new_row_keys[i])) {
+                        window.cells[`${first_num}-${first_num + 1}`][new_row_keys[i]] = '_';
+                    }
+                }
                 window.cells[`${first_num + 1}`] = { ...window.cells[input_number] };
             }
             else if (selected == "Remove row") {
@@ -801,7 +827,9 @@ function inject_sentence() {
             else if (cells[row_t][column_t] == undefined) data.innerHTML = "_";
             else data.innerHTML = cells[row_t][column_t];
             data.id = `${row_t} ${column_t}`;
-            if (column_t != "id") data.contentEditable = true;
+            data.contentEditable = true;
+            if (column_t == "id") data.contentEditable = false;
+            else if (row_t.indexOf('-') != -1 && !split_editable_list.includes(column_t)) data.contentEditable = false;
             data.addEventListener("focus", (event) => {
                 window.last_focus = [row_t, column_t];
                 window.last_focus_value = event.target.innerHTML;

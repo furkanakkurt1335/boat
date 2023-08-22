@@ -3,3 +3,4 @@ django-cors-headers
 djangorestframework
 django-filter
 psycopg2
+spacy
