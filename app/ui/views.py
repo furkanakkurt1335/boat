@@ -376,6 +376,7 @@ def upload_file(request):
 
 
 @login_required
+@csrf_exempt
 def add_sentence(request):
     treebanks = Treebank.objects.all()
     context = {'treebanks': treebanks, 'root_path': ROOT_PATH}

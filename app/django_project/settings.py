@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'search',
     'django_filters',
+    'django_bootstrap_icons'
 ]
 
 MIDDLEWARE = [

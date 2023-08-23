@@ -1,4 +1,5 @@
 Django
+django-bootstrap-icons
 django-cors-headers
 djangorestframework
 django-filter
