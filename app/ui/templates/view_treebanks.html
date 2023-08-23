@@ -71,7 +71,15 @@
             {% for tb in tbs %}
             <tr id="{{tb.title}}">
                 <td>{{tb.title}}</td>
-                <td>{{tb.size}} sentences</td>
+                <td>
+                    {% if tb.size == 0 %}
+                        None
+                    {% elif tb.size == 1 %}
+                        1 sentence
+                    {% else %}
+                        {{tb.size}} sentences
+                    {% endif %}
+                </td>
                 <td> <button class="btn btn-light btn-outline-secondary view-sentences" id="{{tb.title}}"><img id="eye"
                             src="{% static 'eye.svg' %}"></button>
                 </td>
