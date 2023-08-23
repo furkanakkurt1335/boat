@@ -79,6 +79,7 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Number of sentences</th>
+                    <th scope="col">Progress</th>
                     <th scope="col">Add</th>
                     <th scope="col">View</th>
                     <th scope="col">Download</th>
@@ -97,6 +98,11 @@
                         {% else %}
                             {{tb.size}} sentences
                         {% endif %}
+                    </td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{tb.progress}}%;" aria-valuenow="{{tb.progress}}" aria-valuemin="0" aria-valuemax="100">{{tb.progress}}%</div>
+                        </div>
                     </td>
                     <td>
                         <button class="btn btn-light btn-outline-secondary add-sentence" id="{{tb.title}}" data-bs-toggle="modal" data-bs-target="#addModal" data-bs-placement="bottom" title="Add a sentence">
