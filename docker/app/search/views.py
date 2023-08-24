@@ -28,6 +28,25 @@ def get_treebank(request):
             'sent_id': sentence.sent_id, 'text': sentence.text, 'order': sentence.order}
     return Response(result)
 
+@api_view()
+def get_annotations(request):
+    q = request.GET
+    sent_id = q['sent_id']
+    sentence = Sentence.objects.get(sent_id=sent_id)
+    result = {}
+    annotations = Annotation.objects.filter(sentence=sentence)
+    for annotation in annotations:
+        user_t = User.objects.get(id=annotation.annotator_id)
+        word_lines = Word_Line.objects.filter(annotation=annotation)
+        word_lines_d = {}
+        for word_line in word_lines:
+            word_lines_d[word_line.id_f] = {'form': word_line.form, 'lemma': word_line.lemma, 'upos': word_line.upos, 'xpos': word_line.xpos,
+                                            'feats': word_line.feats, 'head': word_line.head, 'deprel': word_line.deprel, 'deps': word_line.deps, 'misc': word_line.misc}
+        result[len(result.keys())] = {'sent_id': sentence.sent_id, 'text': sentence.text, 'order': sentence.order,
+                                        'annotator': annotation.annotator.username, 'status': annotation.status, 'word_lines': word_lines_d, 'annotator_fullname': ' '.join(
+            [user_t.first_name, user_t.last_name])}
+    return Response(result)
+
 
 @api_view()
 def my_annotations(request):
