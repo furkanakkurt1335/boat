@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div id="space" class="p-5 border bg-light">
+<div id="space" class="p-5 border">
     <h1>Add a sentence</h1>
     <form method="post" action="{% url 'add_sentence' %}" enctype="multipart/form-data">{% csrf_token %}
         {% if treebanks|length == 0 %}
@@ -18,11 +18,10 @@
             {% endfor %}
         </select>
         <input hidden="true" type="text" id="title" name="title" maxlength="50" required
-            placeholder="Treebank Name"><br><br>
+            placeholder="Treebank Name"><br>
         <input class="w-50 form-control" type="text" name="sentence" required id="id_sentence"
-            placeholder="Sentence"><br><br>
-        <br><br>
-        <button type="submit" class="btn btn-xs btn-light border-secondary" id="addSentenceButton"> Add </button><br><br>
+            placeholder="Sentence"><br>
+        <button type="submit" class="btn border-secondary" id="addSentenceButton"> Add </button><br>
         {{message}}
         {% endif %}
     </form>

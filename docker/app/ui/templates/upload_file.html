@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div id="space" class="p-5 border bg-light">
+<div id="space" class="p-5 border">
     <h1>Upload a File</h1>
     <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">{% csrf_token %}
         {% if treebanks|length == 0 %}
@@ -18,16 +18,16 @@
             {% endfor %}
         </select>
         <input hidden="true" type="text" id="title" name="title" maxlength="50" required
-            placeholder="Treebank Name"><br><br>
-        <input class="w-50 form-control" type="file" name="file" required id="id_file"><br><br>
-        <button type="submit" class="btn btn-xs btn-light border-secondary" id="uploadButton"> Upload </button><br><br>
+            placeholder="Treebank Name"><br>
+        <input class="w-50 form-control" type="file" name="file" required id="id_file"><br>
+        <button type="submit" class="btn border-secondary" id="uploadButton"> Upload </button><br>
         {{message}}
         {% endif %}
     </form>
 </div>
 {% if path %}
 <script>
-    $.post("/{{root_path}}parse_save_file/",
+    $.post("/parse_save_file/",
         {
             file_path: "{{path}}",
             title: '{{treebank_title}}'

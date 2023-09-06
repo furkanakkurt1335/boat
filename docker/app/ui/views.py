@@ -9,7 +9,6 @@ from .models import Treebank, Sentence, Annotation, Word_Line, ExtendUser, Treeb
 from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
-from django_project.settings import ROOT_PATH
 from datetime import datetime
 # from spacy.lang.en import English
 # from spacy import displacy
@@ -241,8 +240,8 @@ def register(request):
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('home')
-        return render(request, 'register.html', {'root_path': ROOT_PATH})
-    return render(request, 'register.html', {'message': message, 'data': data, 'root_path': ROOT_PATH})
+        return render(request, 'register.html', {})
+    return render(request, 'register.html', {'message': message, 'data': data})
 
 
 def login(request):
@@ -268,11 +267,11 @@ def login(request):
                 return redirect('home')
             else:
                 message.append('User not found with these credentials.')
-        return render(request, 'login.html', {'message': message, 'data': data, 'root_path': ROOT_PATH})
+        return render(request, 'login.html', {'message': message, 'data': data})
     elif request.method == 'GET':
         if request.user.is_active:
             return redirect('home')
-    return render(request, 'login.html', {'root_path': ROOT_PATH})
+    return render(request, 'login.html', {})
 
 
 def about(request):
@@ -358,7 +357,7 @@ def parse_save_file(request):
 @login_required
 def upload_file(request):
     treebanks = Treebank.objects.all()
-    context = {'form': UploadFileForm(), 'treebanks': treebanks, 'root_path': ROOT_PATH}
+    context = {'form': UploadFileForm(), 'treebanks': treebanks}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -379,7 +378,7 @@ def upload_file(request):
 @csrf_exempt
 def add_sentence(request):
     treebanks = Treebank.objects.all()
-    context = {'treebanks': treebanks, 'root_path': ROOT_PATH}
+    context = {'treebanks': treebanks}
     if request.method == 'POST':
         now = datetime.now().strftime("%Y%m%d%H%M%S")
         sent_id = now
@@ -475,7 +474,7 @@ def view_treebanks(request):
             progress = round(progress / len(sent_l) * 100, 2)
         tb_ct_d.append(
             {'title': tb, 'size': len(sent_l), 'progress': progress})
-    context = {'tbs': tb_ct_d, 'root_path': ROOT_PATH}
+    context = {'tbs': tb_ct_d}
     return render(request, 'view_treebanks.html', context)
 
 
@@ -486,7 +485,7 @@ def view_treebank(request, treebank):
     if treebank_selected == None:
         message = 'There is no treebank with that title.'
     context = {'message': message,
-               'treebank_title': treebank_selected, 'root_path': ROOT_PATH}
+               'treebank_title': treebank_selected}
     return render(request, 'view_treebank.html', context)
 
 
@@ -589,13 +588,13 @@ def annotate(request, treebank, order):
             errors = conllu.get_errors(sentence.sent_id, sentence.text, cats)
             cats = json.dumps(cats)
     context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference':
-               eu.preferences['graph_preference'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns'], 'root_path': ROOT_PATH}
+               eu.preferences['graph_preference'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns']}
     return render(request, 'annotate.html', context)
 
 
 @login_required
 def search(request):
-    message, context = None, {'root_path': ROOT_PATH}
+    message, context = None, {}
     if request.method == "POST":
         data = request.POST
         filled_input = False
@@ -617,7 +616,7 @@ def search(request):
                 tb_names = Treebank.objects.all()
                 context['tbs'] = tb_names
             else:
-                return render(request, 'search.html', {'queries': json.dumps(queries), 'treebank_title': data['title'], 'root_path': ROOT_PATH})
+                return render(request, 'search.html', {'queries': json.dumps(queries), 'treebank_title': data['title']})
         else:
             message = 'No treebank selected.'
             tb_names = Treebank.objects.all()
@@ -637,5 +636,5 @@ def my_annotations(request):
     elif request.method == "GET":
         pass
     context = {'message': message,
-               'username': request.user.id, 'root_path': ROOT_PATH}
+               'username': request.user.id}
     return render(request, 'my_annotations.html', context)

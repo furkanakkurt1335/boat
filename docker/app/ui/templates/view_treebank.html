@@ -1,5 +1,6 @@
 {% extends 'base-nav.html' %}
 {% load static %}
+{% load bootstrap_icons %}
 
 {% block head %}
 <title> View Treebank Page </title>
@@ -7,7 +8,7 @@
     window.onload = function () {
         let treebank_title = $('div#treebank_title')[0].innerHTML;
         window.results = [];
-        $.get(`/{{root_path}}api/get_treebank/?treebank_title=${treebank_title}`,
+        $.get(`/api/get_treebank/?treebank_title=${treebank_title}`,
             function (data) {
                 let keys = Object.keys(data);
                 if (keys.length != 0) {
@@ -66,7 +67,7 @@
             row.id = row_order;
             row.className = "border";
             // window.annotations = [];
-            // $.get(`/{{root_path}}api/get_annotations/?sent_id=${result['sent_id']}`,
+            // $.get(`/api/get_annotations/?sent_id=${result['sent_id']}`,
             //     function (data) {
             //         let keys = Object.keys(data);
             //         if (keys.length != 0) {
@@ -89,14 +90,14 @@
             data = document.createElement("td");
             data.className = "text-center";
             let a = document.createElement('a');
-            a.href = `/{{root_path}}annotate/${treebank_title}/${result['order']}`;
+            a.href = `/annotate/${treebank_title}/${result['order']}`;
             let button = document.createElement("button");
-            let img = $('#pencil-square')[0].cloneNode(true);
+            let img = $('.bi-pencil-square')[0].cloneNode(true);
             img.hidden = false;
             button.setAttribute('data-bs-toggle', 'tooltip');
             button.setAttribute('data-bs-placement', 'bottom');
             button.setAttribute('title', 'Annotate the sentence');
-            button.className = "btn btn-light btn-sm border";
+            button.className = "btn border";
             a.append(img);
             button.append(a);
             data.append(button);
@@ -105,13 +106,13 @@
             // data = document.createElement("td");
             // data.style = 'text-align:center';
             // button = document.createElement("button");
-            // img = $('#eye')[0].cloneNode(true);
+            // img = $('.bi-eye')[0].cloneNode(true);
             // img.hidden = false;
             // button.setAttribute('data-bs-toggle', 'modal');
             // button.setAttribute('data-bs-target', '#annotationModal');
             // button.setAttribute('data-bs-placement', 'bottom');
             // button.setAttribute('title', 'See the annotations');
-            // button.className = "btn btn-light btn-sm border";
+            // button.className = "btn border";
             // button.append(img);
             // button.addEventListener('click', function () {
             //     document.getElementById('modal-title').innerHTML = `Annotations for ${result['sent_id']}`;
@@ -141,11 +142,11 @@
             //         let fullname = anno_t['annotator_fullname'];
             //         if (fullname.trim() == "") fullname = "Upload version";
             //         name.innerHTML = `<strong>Annotator:</strong> ${fullname}`;
-            //         let anno_url = `/{{root_path}}api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
+            //         let anno_url = `/api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
             //         $.get(anno_url, function (data) {
             //             let keys = Object.keys(data);
             //             if (data['count'] != 0) {
-            //                 let wordlines_url = `/{{root_path}}api/wordlines/?annotation__id=${data['results'][0]['id']}&size=200`;
+            //                 let wordlines_url = `/api/wordlines/?annotation__id=${data['results'][0]['id']}&size=200`;
             //                 let table = document.createElement('table');
             //                 table.className = 'table';
             //                 let tr = document.createElement('tr');
@@ -204,7 +205,7 @@
 {% endblock %}
 
 {% block body %}
-<div id="space" class="p-5 border bg-light">
+<div id="space" class="p-5 border">
 
     {% if message|length != 0 %}
     {{message}}
@@ -233,8 +234,10 @@
     </nav>
 </div>
 
-<img hidden id="pencil-square" src="{% static 'pencil-square.svg' %}">
-<!-- <img hidden id="eye" src="{% static 'eye.svg' %}"> -->
+<span hidden>
+    {% bs_icon 'pencil-square' %}
+    {% bs_icon 'eye' %}
+</span>
 
 <!-- Annotation Modal -->
 <!-- <div class="modal fade" id="annotationModal" tabindex="-1" aria-labelledby="annotationModalLabel" aria-hidden="true">

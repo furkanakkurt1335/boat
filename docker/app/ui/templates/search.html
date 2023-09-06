@@ -22,7 +22,7 @@
     window.onload = function () {
         let queries = JSON.parse($('#queries')[0].innerHTML);
         let keys = Object.keys(queries);
-        let url = `/{{root_path}}query/?`
+        let url = `/query/?`
         console.log(url);
         window.query_info = "";
         for (let i = 0; i < keys.length; i++) {
@@ -99,10 +99,10 @@
 
         let button = document.createElement('button');
         button.type = "button";
-        button.className = "btn btn-light border";
+        button.className = "btn border";
         button.innerHTML = "Go back to search";
         button.addEventListener('click', function () {
-            window.location.replace('/{{root_path}}search/');
+            window.location.replace('/search/');
         });
         $('#go_back').append(button);
 
@@ -143,14 +143,14 @@
             let data = document.createElement("td");
             data.style = 'text-align:center';
             let link = document.createElement('a');
-            link.href = `/{{root_path}}annotate/${result['treebank_title']}/${result['order']}`;
+            link.href = `/annotate/${result['treebank_title']}/${result['order']}`;
             let button = document.createElement("button");
             let img = $('#pencil-square')[0].cloneNode(true);
             img.hidden = false;
             button.setAttribute('data-bs-toggle', 'tooltip');
             button.setAttribute('data-bs-placement', 'bottom');
             button.setAttribute('title', 'Annotate the sentence');
-            button.className = "btn btn-light btn-sm border";
+            button.className = "btn border";
             link.append(img);
             button.append(link);
             data.append(button);
@@ -165,7 +165,7 @@
             button.setAttribute('data-bs-target', '#annotationModal');
             button.setAttribute('data-bs-placement', 'bottom');
             button.setAttribute('title', 'See the annotations');
-            button.className = "btn btn-light btn-sm border";
+            button.className = "btn border";
             button.append(img);
             button.addEventListener('click', function () {
                 document.getElementById('modal-title').innerHTML = `Annotations for ${result['sent_id']}`;
@@ -195,11 +195,11 @@
                     let fullname = anno_t['annotator_fullname'];
                     if (fullname.trim() == "") fullname = "Upload version";
                     name.innerHTML = `<strong>Annotator:</strong> ${fullname}`;
-                    let anno_url = `/{{root_path}}api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
+                    let anno_url = `/api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
                     $.get(anno_url, function (data) {
                         let keys = Object.keys(data);
                         if (data['count'] != 0) {
-                            let wordlines_url = `/{{root_path}}api/wordlines/?annotation__id=${data['results'][0]['id']}&size=200`;
+                            let wordlines_url = `/api/wordlines/?annotation__id=${data['results'][0]['id']}&size=200`;
                             let table = document.createElement('table');
                             table.className = 'table';
                             let tr = document.createElement('tr');
@@ -306,7 +306,7 @@
         col.id = "btn-plus";
         let button = document.createElement('button');
         button.type = "button";
-        button.className = "btn btn-light border";
+        button.className = "btn border";
         button.innerHTML = "+";
         button.addEventListener('click', function () {
             button_handle(row_order);
@@ -331,7 +331,7 @@
 {% endblock %}
 
 {% block body %}
-<div id="space" class="p-5 border bg-light">
+<div id="space" class="p-5 border">
     <h1>Search</h1>
     {% if not queries %}
     <form id="query" method="post" action="{% url 'search' %}" enctype="multipart/form-data">{% csrf_token %}
@@ -347,7 +347,7 @@
         </div>
         <br>
         <input hidden="true" type="text" id="title" name="title" maxlength="50" required id="id_title">
-        <button class="btn btn-xs btn-light border-secondary" type="submit">Search</button>
+        <button class="btn border-secondary" type="submit">Search</button>
         {% else %}
         <span>No treebank created yet. <a href={% url 'create_treebank' %}>Create here.</a></span>
         {% endif %}

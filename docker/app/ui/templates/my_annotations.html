@@ -13,7 +13,7 @@
 
     function change_sentences() {
         let type = select.options[select.selectedIndex].text;
-        let url = `/{{root_path}}api/my_annotations/?type=${type.toLowerCase()}`;
+        let url = `/api/my_annotations/?type=${type.toLowerCase()}`;
         $('#annotation-body').find('tr').remove();
 
         window.results = [];
@@ -69,7 +69,7 @@
         button.setAttribute('data-bs-toggle', 'tooltip');
         button.setAttribute('data-bs-placement', 'bottom');
         button.setAttribute('title', 'Annotate the sentence');
-        button.className = "btn btn-light btn-sm border";
+        button.className = "btn btn-sm border";
         a.append(img);
         button.append(a);
         data.append(button);
@@ -98,7 +98,7 @@
 
 {% block body %}
 <div id="username" hidden="true">{{username}}</div>
-<div id="space" class="p-5 border bg-light">
+<div id="space" class="p-5 border">
     <h1>My Annotations</h1>
     <select id="select" class="w-25 form-select">
         <option disabled selected>Select type</option>

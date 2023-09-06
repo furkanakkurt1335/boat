@@ -15,7 +15,6 @@ window.onload = function () {
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     // window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
     window.graph_d = { 0: "None", 1: "conllu.js" };
-    window.root_path = document.getElementById('root_path').innerHTML;
     let error_condition_t = document.getElementById('error_condition').innerHTML;
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
@@ -899,7 +898,7 @@ function create_graph() {
         $('#embedded-1-sh').remove();
     }
     else if (window.graph_preference == 2) {
-        $.post(`/${root_path}ud_graph/`,
+        $.post(`/ud_graph/`,
             {
                 cells: JSON.stringify(window.cells),
                 sent_id: window.sent_id,
@@ -916,7 +915,7 @@ function create_graph() {
             });
     }
     else if (window.graph_preference == 3) {
-        $.post(`/${root_path}spacy/`,
+        $.post(`/spacy/`,
             {
                 cells: JSON.stringify(window.cells)
             },
@@ -936,7 +935,7 @@ function display_errors() {
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();
-    $.post(`/${window.root_path}error/`,
+    $.post(`/error/`,
         {
             cells: JSON.stringify(window.cells),
             sent_id: window.sent_id,

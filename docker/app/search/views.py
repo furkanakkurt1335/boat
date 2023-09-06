@@ -11,8 +11,6 @@ from rest_framework.response import Response
 
 from rest_framework.pagination import PageNumberPagination
 
-from django_project.settings import ROOT_PATH
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -63,7 +61,7 @@ def my_annotations(request):
     for ann_t in annotations:
         sen_t = Sentence.objects.get(id=ann_t.sentence.id)
         tb_t = Treebank.objects.get(id=sen_t.treebank_id)
-        url_t = f'/{ROOT_PATH}annotate/{tb_t.title}/{sen_t.order}'
+        url_t = f'/annotate/{tb_t.title}/{sen_t.order}'
         d_t = {'sent_id': sen_t.sent_id, 'text': sen_t.text,
                'treebank_title': tb_t.title, 'url': url_t}
         result[len(result.keys())] = d_t
