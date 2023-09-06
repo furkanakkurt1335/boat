@@ -287,7 +287,7 @@ function button_handle(type, number, way) {
         window.cells = window.initial_cells;
         inject_sentence();
     }
-    else if (type == "profile") {
+    else if (type == "home") {
         post_to_save(type);
     }
     else if (type == "errors") {
@@ -436,12 +436,12 @@ function init_page() {
     let div_status_row = document.createElement('div');
     div_status_row.className = 'row';
 
-    // create button for profile
+    // create button for home
     let div_col = document.createElement('div');
     div_col.className = 'col-md-auto';
     let button = document.createElement("button");
-    button.id = "profile";
-    button.innerHTML = "Profile";
+    button.id = "home";
+    button.innerHTML = "Home";
     div_col.append(button);
     div_row.append(div_col);
 

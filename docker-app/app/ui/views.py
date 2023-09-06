@@ -572,8 +572,8 @@ def annotate(request, treebank, order):
             current_path = request.path
             if button_type == 'go':
                 number = request.POST['number']
-            elif button_type == 'profile':
-                return redirect('profile')
+            elif button_type == 'home':
+                return redirect('home')
             else:
                 number = None
             return redirect(replace_path(current_path, button_type, number))
