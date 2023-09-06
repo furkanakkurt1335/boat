@@ -13,8 +13,7 @@ window.onload = function () {
     window.status_d = { 0: "New", 1: "Draft", 2: "Complete" };
     window.errors = document.getElementById('errors').innerHTML;
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
-    // window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
-    window.graph_d = { 0: "None", 1: "conllu.js" };
+    window.graph_d = { 0: "None", 1: "spaCy" };
     let error_condition_t = document.getElementById('error_condition').innerHTML;
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
@@ -322,8 +321,6 @@ function button_handle(type, number, way) {
         }
         if (selected == window.graph_d[0]) window.graph_preference = 0;
         else if (selected == window.graph_d[1]) window.graph_preference = 1;
-        else if (selected == window.graph_d[2]) window.graph_preference = 2;
-        else if (selected == window.graph_d[3]) window.graph_preference = 3;
         create_graph();
     }
 }
@@ -722,7 +719,7 @@ function init_page() {
     button.setAttribute('data-bs-target', '#infoModal');
     button.setAttribute('data-bs-placement', 'bottom');
     button.setAttribute('title', 'Info');
-    button.className = "btn btn-light btn-sm border";
+    button.className = "btn border";
     button.append(img);
     div_col.append(button);
     div_row.append(div_col);
@@ -739,7 +736,7 @@ function init_page() {
         buttons[i].addEventListener("click", function () {
             button_handle(buttons[i].id);
         });
-        buttons[i].className = "btn btn-light btn-sm border";
+        buttons[i].className = "btn border";
     }
 
     inject_sentence();
@@ -872,49 +869,6 @@ function create_graph() {
     let div_graph = $('div#graph')[0];
     if (window.graph_preference == 0) return;
     else if (window.graph_preference == 1) {
-        $('#vis').remove();
-        $('#dep_graph').remove();
-        let cells = window.cells;
-        let vis = document.createElement('div');
-        vis.id = "vis";
-        let dep_graph = document.createElement('div');
-        dep_graph.className = "conllu-parse";
-        dep_graph.setAttribute('data-inputid', 'input');
-        dep_graph.setAttribute('data-parsedid', 'parsed');
-        dep_graph.setAttribute('data-logid', 'log');
-        let order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps']; // id & misc removed
-        let cells_keys = get_sorted_cells_keys();
-        for (let i = 0; i < cells_keys.length; i++) {
-            let key = cells_keys[i];
-            dep_graph.innerHTML += key + "\t";
-            for (let j = 0; j < 8; j++) {
-                dep_graph.innerHTML += cells[key][order[j]] + "\t";
-            }
-            dep_graph.innerHTML += cells[key]["misc"] + "\n"; // misc
-        }
-        div_graph.append(vis);
-        div_graph.append(dep_graph);
-        Annodoc.activate(Config.bratCollData, {});
-        $('#embedded-1-sh').remove();
-    }
-    else if (window.graph_preference == 2) {
-        $.post(`/ud_graph/`,
-            {
-                cells: JSON.stringify(window.cells),
-                sent_id: window.sent_id,
-                text: window.text,
-            },
-            function (data) {
-                let graph = document.createElement('div');
-                graph.id = "ud_graph";
-                let p = document.createElement('p');
-                p.innerHTML = data;
-                graph.innerHTML = p.textContent;
-                div_graph.append(graph);
-                $("#ud_graph").after($("#error_div"));
-            });
-    }
-    else if (window.graph_preference == 3) {
         $.post(`/spacy/`,
             {
                 cells: JSON.stringify(window.cells)
@@ -947,7 +901,7 @@ function display_errors() {
 
     let error_div = document.createElement('div');
     error_div.id = "error_div";
-    error_div.className = "card bg-light mb-3";
+    error_div.className = "card mb-3";
     error_div.style = "max-width: 100rem;";
     let error_header = document.createElement('div');
     error_div.append(error_header);
@@ -972,6 +926,7 @@ function display_errors() {
         error_body.innerHTML += errors[i];
         error_body.append(document.createElement('br'));
     }
+    $('div#error')[0].append(document.createElement('br'));
     $('div#error')[0].append(error_div);
 }
 
@@ -1049,4 +1004,5 @@ function cell_change(key, column, cell) {
     }
     create_graph();
     display_errors();
+    $('.ui-helper-hidden-accessible').remove();
 }

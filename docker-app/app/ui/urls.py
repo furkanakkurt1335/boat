@@ -22,7 +22,6 @@ urlpatterns = [
     path('accounts/preferences/', views.preferences, name='preferences'),
     path('error/', views.error, name='error'),
     path('spacy/', views.spacy, name='spacy'),
-    path('ud_graph/', views.ud_graph, name='ud_graph'),
     path('download_conllu/', views.download_conllu, name='download_conllu'),
     path('compute_agreement/', views.compute_agreement, name='compute_agreement'),
     path('delete_treebank/', views.delete_treebank, name='delete_treebank'),
