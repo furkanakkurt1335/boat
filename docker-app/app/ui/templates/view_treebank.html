@@ -1,0 +1,260 @@
+{% extends 'base-nav.html' %}
+{% load static %}
+{% load bootstrap_icons %}
+
+{% block head %}
+<title> View Treebank Page </title>
+<script>
+    window.onload = function () {
+        let treebank_title = $('div#treebank_title')[0].innerHTML;
+        window.results = [];
+        $.get(`/api/get_treebank/?treebank_title=${treebank_title}`,
+            function (data) {
+                let keys = Object.keys(data);
+                if (keys.length != 0) {
+                    let prev = $('a#previous')[0];
+                    let next = $('a#next')[0];
+                    prev.addEventListener('click', function () {
+                        page_handle('prev');
+                    });
+                    next.addEventListener('click', function () {
+                        page_handle('next');
+                    });
+                    $('#result-table')[0].hidden = false;
+                    if (keys.length <= 20) $('#pagination')[0].hidden = true;
+                    else $('#next')[0].hidden = false;
+                    let one_result = {};
+                    window.res_size = keys.length;
+                    window.current_page = 1;
+                    $('#result-table')[0].hidden = false;
+                    for (let i = 0; i < keys.length; i++) {
+                        let res_t = data[keys[i]];
+                        one_result['text'] = res_t['text'];
+                        one_result['sent_id'] = res_t['sent_id'];
+                        one_result['order'] = res_t['order'];
+                        window.results.push(JSON.parse(JSON.stringify(one_result)));
+                        if (i <= 20) create_row(one_result);
+                    }
+                }
+                else { // no result found
+                    $('#result-table')[0].hidden = true;
+                    $('#pagination')[0].hidden = true;
+                    $('#message')[0].innerHTML = 'No sentence found.';
+                }
+                
+            }
+        );
+
+        function page_handle(type) {
+            $('#result-body').find('tr').remove();
+            if (type == "next") {
+                window.current_page += 1;
+                if (window.current_page > window.res_size / 20) $('a#next')[0].hidden = true;
+                $('a#previous')[0].hidden = false;
+            }
+            else if (type == "prev") {
+                window.current_page -= 1;
+                if (window.current_page <= window.res_size / 20) $('a#next')[0].hidden = false;
+                if (window.current_page == 1) $('a#previous')[0].hidden = true;
+            }
+            let new_results = window.results.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
+            for (let i = 0; i < new_results.length; i++) create_row(new_results[i]);
+        }
+
+        function create_row(result) {
+            let row = document.createElement("tr");
+            let row_order = $('.tr').length + 1;
+            row.id = row_order;
+            row.className = "border";
+            // window.annotations = [];
+            // $.get(`/api/get_annotations/?sent_id=${result['sent_id']}`,
+            //     function (data) {
+            //         let keys = Object.keys(data);
+            //         if (keys.length != 0) {
+            //             for (let i = 0; i < keys.length; i++) {
+            //                 let anno_t = data[keys[i]];
+            //                 window.annotations.push(JSON.parse(JSON.stringify(anno_t)));
+            //             }
+            //         }
+            //     }
+            // );
+
+            let data = document.createElement("td");
+            data.innerHTML = result['sent_id'];
+            row.append(data);
+
+            data = document.createElement("td");
+            data.innerHTML = result['text'];
+            row.append(data);
+
+            data = document.createElement("td");
+            data.className = "text-center";
+            let a = document.createElement('a');
+            a.href = `/annotate/${treebank_title}/${result['order']}`;
+            let button = document.createElement("button");
+            let img = $('.bi-pencil-square')[0].cloneNode(true);
+            img.hidden = false;
+            button.setAttribute('data-bs-toggle', 'tooltip');
+            button.setAttribute('data-bs-placement', 'bottom');
+            button.setAttribute('title', 'Annotate the sentence');
+            button.className = "btn border";
+            a.append(img);
+            button.append(a);
+            data.append(button);
+            row.append(data);
+
+            // data = document.createElement("td");
+            // data.style = 'text-align:center';
+            // button = document.createElement("button");
+            // img = $('.bi-eye')[0].cloneNode(true);
+            // img.hidden = false;
+            // button.setAttribute('data-bs-toggle', 'modal');
+            // button.setAttribute('data-bs-target', '#annotationModal');
+            // button.setAttribute('data-bs-placement', 'bottom');
+            // button.setAttribute('title', 'See the annotations');
+            // button.className = "btn border";
+            // button.append(img);
+            // button.addEventListener('click', function () {
+            //     document.getElementById('modal-title').innerHTML = `Annotations for ${result['sent_id']}`;
+            //     let modal_body = document.getElementById('modal-body');
+            //     $('#modal-sentence').remove();
+            //     $('table')
+            //         .filter(function () {
+            //             return this.id.match(/word_lines\d+/);
+            //         })
+            //         .remove();
+            //     $('div')
+            //         .filter(function () {
+            //             return this.id.match(/name\d+/);
+            //         })
+            //         .remove();
+            //     let sentence = document.createElement('div');
+            //     sentence.id = 'modal-sentence';
+            //     sentence.innerHTML = `<strong>Text</strong>: ${result['text']}`;
+            //     modal_body.append(sentence);
+
+            //     window.modal_annotations = [];
+
+            //     for (let i = 0; i < window.annotations.length; i++) {
+            //         let anno_t = window.annotations[i];
+            //         let name = document.createElement('div');
+            //         name.id = `name${i}`;
+            //         let fullname = anno_t['annotator_fullname'];
+            //         if (fullname.trim() == "") fullname = "Upload version";
+            //         name.innerHTML = `<strong>Annotator:</strong> ${fullname}`;
+            //         let anno_url = `/api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
+            //         $.get(anno_url, function (data) {
+            //             let keys = Object.keys(data);
+            //             if (data['count'] != 0) {
+            //                 let wordlines_url = `/api/wordlines/?annotation__id=${data['results'][0]['id']}&size=200`;
+            //                 let table = document.createElement('table');
+            //                 table.className = 'table';
+            //                 let tr = document.createElement('tr');
+            //                 $.get(wordlines_url, function (wl_data) {
+            //                     modal_body.append(name);
+            //                     let annotation = {};
+            //                     let keys = Object.keys(wl_data['results']);
+            //                     let results_t = wl_data['results'];
+            //                     for (let i = 0; i < keys.length; i++) {
+            //                         let result_t = results_t[keys[i]];
+            //                         annotation[result_t['id_f']] = { 'form': result_t['form'], 'lemma': result_t['lemma'], 'upos': result_t['upos'], 'xpos': result_t['xpos'], 'feats': result_t['feats'], 'head': result_t['head'], 'deprel': result_t['deprel'], 'deps': result_t['deps'], 'misc': result_t['misc'] };
+            //                     }
+            //                     let cells_keys = get_sorted_cells_keys(annotation);
+            //                     // Show table
+            //                     let word_lines = document.createElement("table");
+            //                     word_lines.id = `word_lines${i}`;
+            //                     word_lines.className = "table border border-secondary";
+            //                     let thead = document.createElement("thead");
+            //                     tbody = document.createElement("tbody");
+            //                     word_lines.append(thead);
+            //                     word_lines.append(tbody);
+            //                     let row = document.createElement("tr");
+            //                     let columns = ["ID", "FORM", "LEMMA", "UPOS", "XPOS", "FEATS", "HEAD", "DEPREL", "DEPS", "MISC"];
+            //                     for (let j = 0; j < columns.length; j++) {
+            //                         let heading = document.createElement("th");
+            //                         heading.innerHTML = columns[j];
+            //                         row.append(heading);
+            //                     }
+            //                     thead.append(row);
+            //                     for (let i = 0; i < cells_keys.length; i++) {
+            //                         let key_t = cells_keys[i];
+            //                         let row = document.createElement("tr");
+            //                         let row_t = annotation[key_t];
+            //                         for (let j = 0; j < columns.length; j++) {
+            //                             let column_t = columns[j].toLowerCase();
+            //                             let data = document.createElement("td");
+            //                             if (column_t == "id") data.innerHTML = key_t;
+            //                             else data.innerHTML = row_t[column_t];
+            //                             row.append(data);
+            //                         }
+            //                         tbody.append(row);
+            //                     }
+            //                     modal_body.append(word_lines);
+            //                 });
+            //             }
+            //         });
+            //     }
+            // });
+            // data.append(button);
+            // row.append(data);
+            $('#result-body')[0].append(row);
+        }
+    };
+
+</script>
+{% endblock %}
+
+{% block body %}
+<div id="space" class="p-5 border">
+
+    {% if message|length != 0 %}
+    {{message}}
+    {% endif %}
+    <div id="treebank_title" hidden>{{treebank_title}}</div>
+    <div id="result">
+        <table id="result-table" class="table table-bordered table-striped" hidden="true">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>sent_id</th>
+                    <th>text</th>
+                    <th>Annotate</th>
+                    <!-- <th>See annotations</th> -->
+                </tr>
+            </thead>
+            <tbody id="result-body"></tbody>
+        </table>
+    </div>
+    <div id="message"></div>
+    <nav id="pagination">
+        <ul class="pagination">
+            <li class="page-item"><a id="previous" hidden class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a id="next" hidden class="page-link">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+<span hidden>
+    {% bs_icon 'pencil-square' %}
+    {% bs_icon 'eye' %}
+</span>
+
+<!-- Annotation Modal -->
+<!-- <div class="modal fade" id="annotationModal" tabindex="-1" aria-labelledby="annotationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}

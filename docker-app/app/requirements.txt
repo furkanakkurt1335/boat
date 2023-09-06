@@ -1,0 +1,8 @@
+Django
+django-cors-headers
+djangorestframework
+django-filter
+django-bootstrap-icons
+gunicorn
+psycopg2
+regex
