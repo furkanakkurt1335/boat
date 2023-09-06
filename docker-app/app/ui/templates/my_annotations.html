@@ -64,7 +64,7 @@
         let a = document.createElement('a');
         a.href = result['url'];
         let button = document.createElement("button");
-        let img = $('#pencil-square')[0].cloneNode(true);
+        let img = $('.bi-pencil-square')[0].cloneNode(true);
         img.hidden = false;
         button.setAttribute('data-bs-toggle', 'tooltip');
         button.setAttribute('data-bs-placement', 'bottom');
@@ -127,5 +127,5 @@
         </ul>
     </nav>
 </div>
-<img hidden id="pencil-square" src="{% static 'pencil-square.svg' %}">
+{% bs_icon 'pencil-square' %}
 {% endblock %}

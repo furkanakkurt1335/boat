@@ -145,7 +145,7 @@
             let link = document.createElement('a');
             link.href = `/annotate/${result['treebank_title']}/${result['order']}`;
             let button = document.createElement("button");
-            let img = $('#pencil-square')[0].cloneNode(true);
+            let img = $('.bi-pencil-square')[0].cloneNode(true);
             img.hidden = false;
             button.setAttribute('data-bs-toggle', 'tooltip');
             button.setAttribute('data-bs-placement', 'bottom');
@@ -159,7 +159,7 @@
             data = document.createElement("td");
             data.style = 'text-align:center';
             button = document.createElement("button");
-            img = $('#eye')[0].cloneNode(true);
+            img = $('.bi-eye')[0].cloneNode(true);
             img.hidden = false;
             button.setAttribute('data-bs-toggle', 'modal');
             button.setAttribute('data-bs-target', '#annotationModal');
@@ -393,8 +393,8 @@
     {% endif %}
 </div>
 
-<img hidden id="pencil-square" src="{% static 'pencil-square.svg' %}">
-<img hidden id="eye" src="{% static 'eye.svg' %}">
+{% bs_icon 'pencil-square' %}
+{% bs_icon 'eye' %}
 
 <!-- Annotation Modal -->
 <div class="modal fade" id="annotationModal" tabindex="-1" aria-labelledby="annotationModalLabel" aria-hidden="true">

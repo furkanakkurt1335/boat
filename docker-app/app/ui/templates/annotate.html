@@ -48,7 +48,7 @@
 
 {% block conllu-js %}
 <!-- conllu.js -->
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     head.js(
         // External libraries
         '{% static 'lib/ext/jquery.min.js' %}',
@@ -79,7 +79,7 @@
         '{% static 'static/fonts/PT_Sans-Caption-Web-Regular.ttf' %}',
         '{% static 'static/fonts/Liberation_Sans-Regular.ttf' %}'
     ];
-</script> -->
+</script>
 <!-- conllu.js -->
 
 <!-- treex -->
@@ -89,19 +89,18 @@
 <!-- treex -->
 
 <span hidden>
-    {% bs_icon 'check' }
     {% bs_icon 'arrow-left' %}
     {% bs_icon 'arrow-right' %}
     {% bs_icon 'backspace' %}
     {% bs_icon 'backspace-fill' %}
     {% bs_icon 'backspace-reverse' %}
-    {% bs_icon 'save' %}
-    {% bs_icon 'exclamation-square' %}
-    {% bs_icon 'exclamation-square-fill' %}
     {% bs_icon 'arrow-clockwise' %}
     {% bs_icon 'arrow-counterclockwise' %}
-    {% bs_icon 'x' %}
+    {% bs_icon 'exclamation-square' %}
+    {% bs_icon 'exclamation-square-fill' %}
     {% bs_icon 'info' %}
+    {% bs_icon 'save' %}
+    {% bs_icon 'x' %}
 </span>
 
 <!-- Info Modal -->

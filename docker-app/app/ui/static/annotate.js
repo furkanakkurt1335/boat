@@ -296,7 +296,7 @@ function button_handle(type, number, way) {
             window.error_condition = 1;
             display_errors();
             $('#error_div')[0].hidden = false;
-            let img = $('#exclamation-square-fill')[0].cloneNode(true);
+            let img = $('.bi-exclamation-square-fill')[0].cloneNode(true);
             img.hidden = false;
             $('button#errors').find('img')[0].remove();
             button.append(img);
@@ -304,7 +304,7 @@ function button_handle(type, number, way) {
         }
         else if (window.error_condition == 1) {
             $('#error_div')[0].hidden = true;
-            let img = $('#exclamation-square')[0].cloneNode(true);
+            let img = $('.bi-exclamation-square')[0].cloneNode(true);
             img.hidden = false;
             $('button#errors').find('img')[0].remove();
             button.append(img);
@@ -455,7 +455,7 @@ function init_page() {
     // previous
     button = document.createElement("button");
     button.id = "previous";
-    let img = $('#arrow-left')[0].cloneNode(true);
+    let img = $('.bi-arrow-left')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -466,7 +466,7 @@ function init_page() {
     // next
     button = document.createElement("button");
     button.id = "next";
-    img = $('#arrow-right')[0].cloneNode(true);
+    img = $('.bi-arrow-right')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     button.setAttribute('data-bs-toggle', 'tooltip');
@@ -485,7 +485,7 @@ function init_page() {
     // reset
     button = document.createElement("button");
     button.id = "reset";
-    img = $('img#x')[0].cloneNode(true);
+    img = $('.bi-x')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -496,7 +496,7 @@ function init_page() {
     // undo
     button = document.createElement("button");
     button.id = "undo";
-    img = $('img#arrow-counterclockwise')[0].cloneNode(true);
+    img = $('.bi-arrow-counterclockwise')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -507,7 +507,7 @@ function init_page() {
     // redo
     button = document.createElement("button");
     button.id = "redo";
-    img = $('img#arrow-clockwise')[0].cloneNode(true);
+    img = $('.bi-arrow-clockwise')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -545,7 +545,7 @@ function init_page() {
     // do_button
     button = document.createElement("button");
     button.id = "do";
-    img = $('#check')[0].cloneNode(true);
+    img = $('.bi-save')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     input_group.append(button);
@@ -605,11 +605,11 @@ function init_page() {
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
     if (window.error_condition == 1) {
-        img = $('#exclamation-square-fill')[0].cloneNode(true);
+        img = $('.bi-exclamation-square-fill')[0].cloneNode(true);
         button.setAttribute('title', 'Hide errors');
     }
     else if (window.error_condition == 0) {
-        img = $('#exclamation-square')[0].cloneNode(true);
+        img = $('.bi-exclamation-square')[0].cloneNode(true);
         button.setAttribute('title', 'Show errors');
     }
     img.hidden = false;
@@ -654,7 +654,7 @@ function init_page() {
     // graph_button
     button = document.createElement("button");
     button.id = "graph";
-    img = $('#check')[0].cloneNode(true);
+    img = $('.bi-save')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     input_group.append(button);
@@ -692,7 +692,7 @@ function init_page() {
     // column_button
     button = document.createElement("button");
     button.id = "col_add_rm_button";
-    img = $('#check')[0].cloneNode(true);
+    img = $('.bi-save')[0].cloneNode(true);
     img.hidden = false;
     button.append(img);
     input_group.append(button);
@@ -703,7 +703,7 @@ function init_page() {
     div_col.className = 'col';
     button = document.createElement("button");
     button.id = "save";
-    img = $('#save')[0].cloneNode(true);
+    img = $('.bi-save')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'tooltip');
     button.setAttribute('data-bs-placement', 'bottom');
@@ -716,7 +716,7 @@ function init_page() {
     div_col = document.createElement('div');
     div_col.className = 'col';
     button = document.createElement("button");
-    img = $('#info')[0].cloneNode(true);
+    img = $('.bi-info')[0].cloneNode(true);
     img.hidden = false;
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#infoModal');

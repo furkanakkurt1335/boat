@@ -51,7 +51,9 @@
     <a class="btn btn-light border-dark" href={% url 'login' %} role="button">Log in</a>
     <!-- Button trigger modal -->
     <button type="button" id="info" class="btn btn-light border-dark" data-bs-toggle="modal"
-        data-bs-target="#infoModal"><img id="info" style="height: 25px;" src="{% static 'info.svg' %}"></button>
+        data-bs-target="#infoModal"><img id="info" style="height: 25px;">
+        {% bs_icon 'info' %}
+    </button>
     {% for m in message %}
         <br><span>{{m}}</span>
     {% endfor %}

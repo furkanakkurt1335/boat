@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap_icons %}
 
 {% block head %}
 <title> Login Page </title>
@@ -25,7 +26,9 @@
     <a class="btn btn-light border-dark" href={% url 'register' %} role="button">Register</a>
     <!-- Button trigger modal -->
     <button type="button" id="info" class="btn btn-light border-dark" data-bs-toggle="modal"
-        data-bs-target="#infoModal"><img id="info" style="height: 25px;" src="{% static 'info.svg' %}"></button>
+        data-bs-target="#infoModal"><img id="info" style="height: 25px;">
+        {% bs_icon 'info' %}
+    </button>
     {% for m in message %}
     <br><span>{{m}}</span>
     {% endfor %}
