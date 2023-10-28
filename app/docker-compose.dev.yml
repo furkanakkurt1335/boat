@@ -4,11 +4,11 @@ services:
   web:
     container_name: boat_web
     build:
-      context: ./app
+      context: ./django_project
       dockerfile: Dockerfile.dev
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./app/:/usr/src/app/
+      - ./django_project/:/usr/src/app/
     ports:
       - 8000:8000
     env_file:

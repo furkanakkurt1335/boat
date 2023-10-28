@@ -3,7 +3,7 @@ version: '3.8'
 services:
   web:
     container_name: boat_web
-    build: ./app
+    build: ./django_project
     command: python -m gunicorn django_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/ui/static
