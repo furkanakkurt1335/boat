@@ -10,8 +10,12 @@
     <form method="post" action="{% url 'create_treebank' %}" enctype="multipart/form-data">{% csrf_token %}
         <input type="text" name="title" class="w-25 form-control" maxlength="30" required id="title"
             placeholder="Treebank Name, Unique"><br>
-        <input type="text" name="language" class="w-25 form-control" maxlength="30" required id="language"
-            placeholder="Treebank Language (in English)"><br>
+        <select name="language" class="w-25 form-control" required id="language">
+            <option value="" disabled selected>Select Language</option>
+            {% for language in languages %}
+            <option value="{{language}}">{{language}}</option>
+            {% endfor %}
+        </select><br>
         <input id="create" type="submit" class="btn btn-light border-secondary" value="Create"><br>
         {{message}}
     </form>

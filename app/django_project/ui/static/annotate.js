@@ -15,7 +15,7 @@ window.onload = function () {
     window.graph_preference = parseInt(document.getElementById('graph_preference').innerHTML);
     // window.graph_d = { 0: "None", 1: "conllu.js", 2: "treex", 3: "spacy" };
     window.graph_d = { 0: "None", 1: "conllu.js" };
-    window.root_path = document.getElementById('root_path').innerHTML;
+    window.autocomplete_d = JSON.parse(document.getElementById('autocomplete_d').innerHTML);
     let error_condition_t = document.getElementById('error_condition').innerHTML;
     if (error_condition_t == "1") window.error_condition = 1;
     else window.error_condition = 0;
@@ -857,10 +857,10 @@ function inject_sentence() {
     $('div#table2')[0].append(word_lines);
 
     // autocomplete
-    let autocomplete_d = { 'Aspect': ['Gen', 'Hab', 'Imp', 'Perf', 'Prog', 'Prosp'], 'Case': ['Abl', 'Acc', 'Dat', 'Equ', 'Gen', 'Ins', 'Nom', 'Loc', 'Voc'], 'Evident': ['Fh', 'Nfh'], 'Mood': ['Cnd', 'Des', 'Dur', 'Gen', 'Imp', 'Ind', 'Nec', 'Opt', 'Pot', 'Rapid'], 'Number': ['Sing', 'Plur'], 'Number[psor]': ['Sing', 'Plur'], 'NumType': ['Card', 'Dist', 'Frac', 'Ord'], 'Person': ['1', '2', '3'], 'Person[psor]': ['1', '2', '3'], 'Polarity': ['Pos', 'Neg'], 'PronType': ['Dem', 'Ind', 'Int', 'Loc', 'Prs', 'Rcp', 'Rfl', 'Quant'], 'Tense': ['Past', 'Pres', 'Fut'], 'VerbForm': ['Conv', 'Part', 'Vnoun'], 'Voice': ['Cau', 'Pass', 'Rcp', 'Rfl'], 'DEPREL': ['acl', 'advcl', 'advlc:cond', 'advmod', 'advmod:emph', 'amod', 'case', 'cc', 'cc:preconj', 'compound', 'compound:lvc', 'compound:redup', 'conj', 'cop', 'csubj', 'det', 'dep', 'dep:der', 'discourse', 'discourse:q', 'discourse:tag', 'flat', 'iobj', 'nmod', 'nmod:part', 'nmod:poss', 'nsubj', 'nummod', 'obl', 'obl:cl', 'obl:comp', 'obl:tmod', 'obj', 'punct', 'root', 'xcomp'], 'UPOS': ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'VERB'], 'XPOS': ['Adj', 'ANum', 'Attr', 'Comma', 'Conv', 'Det', 'Demons', 'Exist', 'Indef', 'Inst', 'NNum', 'Noun', 'Partic', 'PCNom', 'PCDat', 'PCGen', 'Pers', 'Place', 'Ptcp', 'Punc', 'Reflex', 'Separ', 'Stop', 'TDots', 'Topic', 'Typo', 'Ques', 'Quant', 'Verb', 'Vnoun', 'Year', 'Zero'] };
-    let ac_keys = Object.keys(autocomplete_d);
+    window.autocomplete_d['UPOS'] = ['ADJ', 'ADP', 'ADV', 'AUX', 'CCONJ', 'DET', 'INTJ', 'NOUN', 'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X'];
+    let ac_keys = Object.keys(window.autocomplete_d);
     for (let i = 0; i < ac_keys.length; i++) {
-        let source_t = autocomplete_d[ac_keys[i]];
+        let source_t = window.autocomplete_d[ac_keys[i]];
         $(`.autocomplete.${ac_keys[i].toLowerCase()}`).autocomplete({ source: source_t });
     }
 
@@ -899,7 +899,7 @@ function create_graph() {
         $('#embedded-1-sh').remove();
     }
     else if (window.graph_preference == 2) {
-        $.post(`/${root_path}ud_graph/`,
+        $.post(`/ud_graph/`,
             {
                 cells: JSON.stringify(window.cells),
                 sent_id: window.sent_id,
@@ -916,7 +916,7 @@ function create_graph() {
             });
     }
     else if (window.graph_preference == 3) {
-        $.post(`/${root_path}spacy/`,
+        $.post(`/spacy/`,
             {
                 cells: JSON.stringify(window.cells)
             },
@@ -936,7 +936,7 @@ function display_errors() {
     $('#error_div').remove();
     $('#error_header').remove();
     $('#error_body').remove();
-    $.post(`/${window.root_path}error/`,
+    $.post(`/error/`,
         {
             cells: JSON.stringify(window.cells),
             sent_id: window.sent_id,

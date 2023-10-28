@@ -130,8 +130,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-ROOT_PATH = ''
-STATIC_URL = f'{ROOT_PATH}static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
@@ -150,7 +149,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-LOGIN_URL = f'/{ROOT_PATH}accounts/login/'
+LOGIN_URL = f'/accounts/login/'
 
 LOGGING = {
     'version': 1,                       # the dictConfig format version

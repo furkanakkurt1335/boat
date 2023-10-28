@@ -13,7 +13,7 @@
 
     function change_sentences() {
         let type = select.options[select.selectedIndex].text;
-        let url = `/{{root_path}}api/my_annotations/?type=${type.toLowerCase()}`;
+        let url = `/api/my_annotations/?type=${type.toLowerCase()}`;
         $('#annotation-body').find('tr').remove();
 
         window.results = [];

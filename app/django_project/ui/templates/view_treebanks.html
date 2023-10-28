@@ -10,14 +10,14 @@
         for (let i = 0; i < view_buttons.length; i++) {
             view_buttons[i].addEventListener("click", function () {
                 let treebank_title = view_buttons[i].id;
-                window.location.replace(`/{{root_path}}view_treebank/${treebank_title}`);
+                window.location.replace(`/view_treebank/${treebank_title}`);
             });
         }
         let download_buttons = document.getElementsByClassName('download');
         for (let i = 0; i < download_buttons.length; i++) {
             download_buttons[i].addEventListener("click", function () {
                 let treebank_title = download_buttons[i].id;
-                $.post("/{{root_path}}download_conllu/",
+                $.post("/download_conllu/",
                     {
                         treebank_title: treebank_title
                     },
@@ -40,11 +40,11 @@
                 let treebank_title = delete_buttons[i].id;
                 document.getElementById('delete-modal-body').innerHTML = `Do you want to delete the treebank with the name <i>${treebank_title}</i> with all its annotations?`;
                 document.getElementById('modalDeleteButton').addEventListener('click', function() {
-                    $.post("/{{root_path}}delete_treebank/",
+                    $.post("/delete_treebank/",
                         {
                             treebank_title: treebank_title
                         }, function() {
-                            window.location.replace('/{{root_path}}view_treebanks');
+                            window.location.replace('/view_treebanks');
                         });
                 });
             });
@@ -55,12 +55,12 @@
                 let treebank_title = add_buttons[i].id;
                 document.getElementById('add-message').innerHTML = 'Add a sentence to the treebank <i>' + treebank_title + '</i>:';
                 document.getElementById('modalAddButton').addEventListener('click', function() {
-                    $.post("/{{root_path}}add_sentence/",
+                    $.post("/add_sentence/",
                         {
                             title: treebank_title,
                             sentence: document.getElementById('sentence').value
                         }, function() {
-                            window.location.replace('/{{root_path}}view_treebanks');
+                            window.location.replace('/view_treebanks');
                         });
                 });
             });

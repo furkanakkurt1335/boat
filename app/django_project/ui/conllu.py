@@ -1,6 +1,9 @@
-import re, subprocess, os, sys
+import re, subprocess, os, sys, json
 
 THISDIR = os.path.dirname(os.path.realpath(__file__))
+
+with open(os.path.join(THISDIR, 'language_ids.json'), 'r', encoding='utf-8') as f:
+    LANGUAGES = json.load(f)
 
 def validate_uploaded_file(f):
     file_text = None
@@ -52,7 +55,7 @@ def parse_file(f):
         sentences.append(sentence)
     return sentences
 
-def get_errors(sent_id, text, content):
+def get_errors(sent_id, text, content, language):
     input_str = f'# sent_id = {sent_id}\n'
     input_str += f'# text = {text}\n'
     order = ['form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps'] # id & misc removed
@@ -69,7 +72,8 @@ def get_errors(sent_id, text, content):
             input_str += f'{content[key][order[i]]}\t'
         input_str += f'{content[key]["misc"]}\n' # misc
     input_str += '\n'
-    val_str = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=input_str, encoding='utf-8', capture_output=True).stderr
+    val_str = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', LANGUAGES[language]], 
+                             input=input_str, encoding='utf-8', capture_output=True).stderr
     new_val_str = str()
     error_pattern = '\[Line (\d+) Sent .+\]: \[L\d .+\] (.*)$'
     for line in val_str.split('\n'):
