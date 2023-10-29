@@ -22,8 +22,12 @@ def get_treebank(request):
     sentences = Sentence.objects.filter(treebank__title=treebank_title)
     result = {}
     for sentence in sentences:
-        result[len(result.keys())] = {
-            'sent_id': sentence.sent_id, 'text': sentence.text, 'order': sentence.order}
+        if sentence.comments:
+            result[len(result.keys())] = {
+                'sent_id': sentence.sent_id, 'text': sentence.text, 'order': sentence.order, 'comments': sentence.comments}
+        else:
+            result[len(result.keys())] = {
+                'sent_id': sentence.sent_id, 'text': sentence.text, 'order': sentence.order}
     return Response(result)
 
 @api_view()

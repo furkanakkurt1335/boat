@@ -23,7 +23,6 @@
         let queries = JSON.parse($('#queries')[0].innerHTML);
         let keys = Object.keys(queries);
         let url = `/query/?`
-        console.log(url);
         window.query_info = "";
         for (let i = 0; i < keys.length; i++) {
             let type = queries[keys[i]]['type'];
@@ -370,8 +369,8 @@
         <table id="result-table" class="table table-bordered table-striped" hidden="true">
             <thead>
                 <tr style="text-align: center;">
-                    <th>sent_id</th>
-                    <th>text</th>
+                    <th>Sentence ID</th>
+                    <th>Text</th>
                     <th>Annotate</th>
                     <th>See annotations</th>
                 </tr>

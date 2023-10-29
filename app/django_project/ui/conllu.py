@@ -42,7 +42,6 @@ def parse_file(f):
                         sentence['comments'][comment_found.group(1).strip()] = comment_found.group(2).strip()
                     else:
                         sentence[comment_found.group(1).strip()] = comment_found.group(2).strip()
-                else: print(curr_sentence)
             else:
                 cats_found = re.match(cats_pattern, line)
                 if cats_found:

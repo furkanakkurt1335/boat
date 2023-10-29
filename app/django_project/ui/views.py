@@ -313,7 +313,6 @@ def home(request):
 @csrf_exempt
 def parse_save_file(request):
     file_path = request.POST['file_path']
-    print(request.POST)
     file = open(file_path, 'r', encoding='utf-8')
     sentences = conllu.parse_file(file)
     treebanks_filtered = Treebank.objects.filter(
@@ -622,7 +621,7 @@ def annotate(request, treebank, order):
 
 @login_required
 def search(request):
-    message, context = None
+    message, context = None, {}
     if request.method == "POST":
         data = request.POST
         filled_input = False

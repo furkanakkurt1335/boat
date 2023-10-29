@@ -31,6 +31,10 @@
                         one_result['text'] = res_t['text'];
                         one_result['sent_id'] = res_t['sent_id'];
                         one_result['order'] = res_t['order'];
+                        if (Object.keys(res_t).includes('comments')) {
+                            one_result['comments'] = res_t['comments'];
+                        }
+                        else one_result['comments'] = "";
                         window.results.push(JSON.parse(JSON.stringify(one_result)));
                         if (i <= 20) create_row(one_result);
                     }
@@ -108,14 +112,32 @@
             // img = $('#eye')[0].cloneNode(true);
             // img.hidden = false;
             // button.setAttribute('data-bs-toggle', 'modal');
+            // button.setAttribute('data-bs-target', '#metadataModal');
+            // button.setAttribute('data-bs-placement', 'bottom');
+            // button.setAttribute('title', 'See the metadata');
+            // button.className = "btn btn-light btn-sm border";
+            // button.append(img);
+            // button.addEventListener('click', function () {
+            //     document.getElementById('md-modal-title').innerHTML = `Metadata for ${result['sent_id']}`;
+            //     let modal_body = document.getElementById('md-modal-body');
+            // });
+            // data.append(button);
+            // row.append(data);
+
+            // data = document.createElement("td");
+            // data.style = 'text-align:center';
+            // button = document.createElement("button");
+            // img = $('#eye')[0].cloneNode(true);
+            // img.hidden = false;
+            // button.setAttribute('data-bs-toggle', 'modal');
             // button.setAttribute('data-bs-target', '#annotationModal');
             // button.setAttribute('data-bs-placement', 'bottom');
             // button.setAttribute('title', 'See the annotations');
             // button.className = "btn btn-light btn-sm border";
             // button.append(img);
             // button.addEventListener('click', function () {
-            //     document.getElementById('modal-title').innerHTML = `Annotations for ${result['sent_id']}`;
-            //     let modal_body = document.getElementById('modal-body');
+            //     document.getElementById('annotation-modal-title').innerHTML = `Annotations for ${result['sent_id']}`;
+            //     let modal_body = document.getElementById('annotation-modal-body');
             //     $('#modal-sentence').remove();
             //     $('table')
             //         .filter(function () {
@@ -214,9 +236,10 @@
         <table id="result-table" class="table table-bordered table-striped" hidden="true">
             <thead>
                 <tr style="text-align: center;">
-                    <th>sent_id</th>
-                    <th>text</th>
+                    <th>Sentence ID</th>
+                    <th>Text</th>
                     <th>Annotate</th>
+                    <!-- <th>Metadata</th> -->
                     <!-- <th>See annotations</th> -->
                 </tr>
             </thead>
@@ -241,10 +264,28 @@
     <div class="modal-dialog modal-dialog-centered modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-title"></h5>
+                <h5 class="modal-title" id="annotation-modal-title"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="modal-body">
+            <div class="modal-body" id="annotation-modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- Metadata Modal -->
+<!-- <div class="modal fade" id="metadataModal" tabindex="-1" aria-labelledby="metadataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="md-modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="md-modal-body">
 
             </div>
             <div class="modal-footer">
