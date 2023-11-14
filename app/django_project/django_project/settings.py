@@ -149,7 +149,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-LOGIN_URL = f'/accounts/login/'
+LOGIN_URL = '/accounts/login/'
 
 LOGGING = {
     'version': 1,                       # the dictConfig format version
