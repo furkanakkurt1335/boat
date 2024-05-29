@@ -1,8 +1,12 @@
 import re, subprocess, os, sys, json
+from pathlib import Path
 
+
+script_dir = Path(__file__).parent
 THISDIR = os.path.dirname(os.path.realpath(__file__))
 
-with open(os.path.join(THISDIR, 'language_ids.json'), 'r', encoding='utf-8') as f:
+language_ids_path = script_dir / 'language_ids.json'
+with language_ids_path.open('r', encoding='utf-8') as f:
     LANGUAGES = json.load(f)
 
 def validate_uploaded_file(f):
@@ -71,7 +75,15 @@ def get_errors(sent_id, text, content, language):
             input_str += f'{content[key][order[i]]}\t'
         input_str += f'{content[key]["misc"]}\n' # misc
     input_str += '\n'
-    val_str = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', LANGUAGES[language]], 
+    # get validation script if not exists, otherwise update it
+    tools_dir = script_dir / 'tools'
+    tools_url = 'https://github.com/UniversalDependencies/tools.git'
+    if not tools_dir.exists():
+        subprocess.run(['git', 'clone', tools_url, tools_dir])
+    else:
+        subprocess.run(['git', '-C', tools_dir, 'pull'])
+    validation_script = tools_dir / 'validate.py'
+    val_str = subprocess.run([sys.executable, validation_script, '--lang', LANGUAGES[language]], 
                              input=input_str, encoding='utf-8', capture_output=True).stderr
     new_val_str = str()
     error_pattern = '\[Line (\d+) Sent .+\]: \[L\d .+\] (.*)$'
