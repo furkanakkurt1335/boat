@@ -14,8 +14,11 @@ RUN apk update \
 
 # install dependencies
 RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install pipenv
+COPY ./Pipfile .
+COPY ./Pipfile.lock .
+RUN pipenv install
+RUN pipenv shell
 
 # copy entrypoint.dev.sh
 COPY ./entrypoint.dev.sh .
