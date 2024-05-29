@@ -93,7 +93,8 @@
             data = document.createElement("td");
             data.className = "text-center";
             let a = document.createElement('a');
-            a.href = `/annotate/${treebank_title}/${result['order']}`;
+            let treebank_title_in_url = treebank_title.replace(/ /g, '-');
+            a.href = `/annotate/${treebank_title_in_url}/${result['order']}`;
             let button = document.createElement("button");
             let img = $('#pencil-square')[0].cloneNode(true);
             img.hidden = false;

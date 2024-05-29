@@ -8,16 +8,17 @@
     window.onload = function () {
         let view_buttons = document.getElementsByClassName('view-sentences');
         for (let i = 0; i < view_buttons.length; i++) {
-            view_buttons[i].addEventListener("click", function () {
+            view_buttons[i].addEventListener('click', function () {
                 let treebank_title = view_buttons[i].id;
+                treebank_title = treebank_title.replace(/ /g, '-'); // replace space with - in url
                 window.location.replace(`/view_treebank/${treebank_title}`);
             });
         }
         let download_buttons = document.getElementsByClassName('download');
         for (let i = 0; i < download_buttons.length; i++) {
-            download_buttons[i].addEventListener("click", function () {
+            download_buttons[i].addEventListener('click', function () {
                 let treebank_title = download_buttons[i].id;
-                $.post("/download_conllu/",
+                $.post('/download_conllu/',
                     {
                         treebank_title: treebank_title
                     },

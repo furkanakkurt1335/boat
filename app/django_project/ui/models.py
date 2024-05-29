@@ -30,7 +30,8 @@ class TreebankManager(models.Manager):
     def get_treebank_from_url(self, url):
         treebanks = Treebank.objects.all()
         for treebank_t in treebanks:
-            if treebank_t.title.replace(' ', '-') == url: return treebank_t
+            if treebank_t.title.replace(' ', '-') == url:
+                return treebank_t
         return None
 
 class Treebank(models.Model):

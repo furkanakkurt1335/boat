@@ -1,4 +1,4 @@
-version: '3.3'
+name: boat_dev
 
 services:
   web:

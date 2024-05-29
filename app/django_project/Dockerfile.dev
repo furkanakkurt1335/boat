@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.9.6-alpine
+FROM python:3.11.9-alpine
 
 # set work directory
 WORKDIR /usr/src/app
@@ -10,23 +10,25 @@ ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+    && apk add postgresql-dev gcc python3-dev musl-dev git
 
-# install dependencies
+# install pip and pipenv
 RUN pip install --upgrade pip
 RUN pip install pipenv
-COPY ./Pipfile .
-COPY ./Pipfile.lock .
-RUN pipenv install
-RUN pipenv shell
+
+# copy Pipfile and Pipfile.lock first to leverage Docker cache
+COPY Pipfile Pipfile.lock /usr/src/app/
+
+# install dependencies
+RUN pipenv install --system --deploy
 
 # copy entrypoint.dev.sh
-COPY ./entrypoint.dev.sh .
+COPY entrypoint.dev.sh /usr/src/app/
 RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.dev.sh
 RUN chmod +x /usr/src/app/entrypoint.dev.sh
 
-# copy project
-COPY . .
+# copy the rest of the application
+COPY . /usr/src/app/
 
 # run entrypoint.dev.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.dev.sh"]

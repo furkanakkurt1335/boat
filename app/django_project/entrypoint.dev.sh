@@ -1,18 +1,16 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "postgres" ]
-then
-    echo "Waiting for postgres..."
+# Wait for the PostgreSQL server to start
+echo "Waiting for postgres..."
+while ! nc -z db 5432; do
+  sleep 0.1
+done
+echo "PostgreSQL started"
 
-    while ! nc -z $SQL_HOST $SQL_PORT; do
-      sleep 0.1
-    done
+# Debug: Print PYTHONPATH and check if Django is available
+echo "PYTHONPATH: $PYTHONPATH"
+python -c "import django; print(django.__file__)" || echo "Django not found"
 
-    echo "PostgreSQL started"
-fi
-
-python manage.py flush --no-input
+# Run database migrations and start the development server
 python manage.py migrate
-
-exec "$@"
-
+python manage.py runserver 0.0.0.0:8000

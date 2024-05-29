@@ -1,4 +1,5 @@
 import json, re, os
+from pathlib import Path
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
@@ -20,6 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+script_dir = Path(__file__).parent
 
 def compute_anno_agr(annos):
     # anno_l = []
@@ -434,7 +436,6 @@ def delete_treebank(request):
 @login_required
 def create_treebank(request):
     if request.method == 'POST':
-        print(request.POST)
         form = TreebankForm(request.POST)
         if form.is_valid():
             form.save()
@@ -444,7 +445,8 @@ def create_treebank(request):
         return render(request, 'create_treebank.html', {'form': TreebankForm(), 'message': message})
     else:
         form = TreebankForm()
-    with open(os.path.join(THIS_DIR, 'language_ids.json'), 'r', encoding='utf-8') as f:
+    language_ids_path = script_dir / 'language_ids.json'
+    with language_ids_path.open('r', encoding='utf-8') as f:
         languages = json.load(f)
     language_l = list(languages.keys())
     return render(request, 'create_treebank.html', {'form': form, 'languages': language_l})
@@ -490,7 +492,7 @@ def view_treebanks(request):
 def view_treebank(request, treebank):
     message = ''
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
-    if treebank_selected == None:
+    if not treebank_selected:
         message = 'There is no treebank with that title.'
     context = {'message': message,
                'treebank_title': treebank_selected}
@@ -516,14 +518,22 @@ def replace_path(current_path, type, number=None):
 def annotate(request, treebank, order):
     sentence, message, annotation, errors, cats, language = None, None, None, None, None, None
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
-    if treebank_selected == None:
+    if not treebank_selected:
         message = 'There is no treebank with that title.'
+        return render(request, 'annotate.html', {'message': message})
     else:
         language = treebank_selected.language
+        sentence_count = len(Sentence.objects.filter(treebank=treebank_selected))
         sentences_filtered = Sentence.objects.filter(
             treebank=treebank_selected, order=order)
         if len(sentences_filtered) == 0:
-            message = 'There is no sentence with that ID.'
+            if sentence_count == 0:
+                message = 'There are no sentences in this treebank.'
+            elif sentence_count == 1:
+                message = 'There is only one sentence in this treebank.'
+            else:
+                message = 'There are only ' + str(sentence_count) + ' sentences in this treebank.'
+            return render(request, 'annotate.html', {'message': message})
         else:
             sentence = sentences_filtered[0]
             annotations_filtered = Annotation.objects.filter(
@@ -536,7 +546,7 @@ def annotate(request, treebank, order):
                     annotator=dummy_user, sentence=sentence)
     if not message:
         eu = ExtendUser.objects.get(user=request.user)
-        if request.method == "POST":
+        if request.method == 'POST':
             data = request.POST['data']
             data_changed = request.POST['data_changed']
             current_columns = request.POST['current_columns'].split(',')
@@ -586,7 +596,7 @@ def annotate(request, treebank, order):
             else:
                 number = None
             return redirect(replace_path(current_path, button_type, number))
-        elif request.method == "GET":
+        elif request.method == 'GET':
             word_lines_selected = Word_Line.objects.filter(
                 annotation=annotation)
             cats = {}
@@ -598,14 +608,17 @@ def annotate(request, treebank, order):
             cats = json.dumps(cats)
     autocomplete_d = {}
     if language:
-        with open(os.path.join(THIS_DIR, 'language_ids.json'), 'r', encoding='utf-8') as f:
+        language_ids_path = script_dir / 'language_ids.json'
+        with language_ids_path.open('r', encoding='utf-8') as f:
             languages = json.load(f)
         language_id = languages[language]
-        data_dir = os.path.join(THIS_DIR, 'data')
-        with open(os.path.join(data_dir, 'deprels.json'), 'r', encoding='utf-8') as f:
+        data_dir = script_dir / 'tools/data'
+        deprels_path = data_dir / 'deprels.json'
+        with deprels_path.open('r', encoding='utf-8') as f:
             deprels = json.load(f)['deprels']
         autocomplete_d['DEPREL'] = list(deprels[language_id].keys())
-        with open(os.path.join(data_dir, 'feats.json'), 'r', encoding='utf-8') as f:
+        feats_path = data_dir / 'feats.json'
+        with feats_path.open('r', encoding='utf-8') as f:
             feats = json.load(f)['features']
         lang_feats = feats[language_id]
         for key in lang_feats.keys():
@@ -614,8 +627,18 @@ def annotate(request, treebank, order):
             for l in ['uvalues', 'lvalues', 'unused_uvalues', 'unused_lvalues', 'evalues']:
                 value_l.extend(feat_t[l])
             autocomplete_d[key] = value_l
-    context = {'sentence': sentence, 'message': message, 'annotation': annotation, 'cats': cats, 'errors': errors, 'graph_preference':
-               eu.preferences['graph_preference'], 'error_condition': eu.preferences['error_condition'], 'current_columns': eu.preferences['current_columns'], 'autocomplete_d': json.dumps(autocomplete_d), 'language': language}
+    context = {
+        'sentence': sentence,
+        'message': message,
+        'annotation': annotation,
+        'cats': cats,
+        'errors': errors,
+        'graph_preference': eu.preferences['graph_preference'],
+        'error_condition': eu.preferences['error_condition'],
+        'current_columns': eu.preferences['current_columns'],
+        'autocomplete_d': json.dumps(autocomplete_d),
+        'language': language
+    }
     return render(request, 'annotate.html', context)
 
 
