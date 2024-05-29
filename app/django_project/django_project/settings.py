@@ -83,15 +83,21 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+sql_engine = os.environ.get("SQL_ENGINE", default="django.db.backends.sqlite3")
+sql_database = os.environ.get("SQL_DATABASE", default=BASE_DIR / "db.sqlite3")
+sql_user = os.environ.get("SQL_USER", default="user")
+sql_password = os.environ.get("SQL_PASSWORD", default="password")
+sql_host = os.environ.get("SQL_HOST", default="localhost")
+sql_port = os.environ.get("SQL_PORT", default="5432")
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
+        "ENGINE": sql_engine,
+        "NAME": sql_database,
+        "USER": sql_user,
+        "PASSWORD": sql_password,
+        "HOST": sql_host,
+        "PORT": sql_port,
     }
 }
 
