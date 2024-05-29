@@ -422,6 +422,17 @@ def add_sentence(request):
         context['message'] = message
     return render(request, 'add_sentence.html', context)
 
+@csrf_exempt
+def delete_sentence(request):
+    if request.method == 'POST':
+        sent_id = request.POST['sent_id']
+        treebank_title = request.POST['title']
+        treebank = Treebank.objects.get_treebank_from_title(treebank_title)
+        sentence = Sentence.objects.get(sent_id=sent_id, treebank=treebank)
+        sentence.delete()
+        return render(request, 'delete_sentence.html', {'sent_id': sent_id, 'treebank_title': treebank_title})
+    else:
+        return render(request, 'delete_sentence.html', {'sent_id': ''})
 
 @csrf_exempt
 def delete_treebank(request):
@@ -527,12 +538,7 @@ def annotate(request, treebank, order):
         sentences_filtered = Sentence.objects.filter(
             treebank=treebank_selected, order=order)
         if len(sentences_filtered) == 0:
-            if sentence_count == 0:
-                message = 'There are no sentences in this treebank.'
-            elif sentence_count == 1:
-                message = 'There is only one sentence in this treebank.'
-            else:
-                message = 'There are only ' + str(sentence_count) + ' sentences in this treebank.'
+            message = 'There is no sentence with that order in this treebank.'
             return render(request, 'annotate.html', {'message': message})
         else:
             sentence = sentences_filtered[0]

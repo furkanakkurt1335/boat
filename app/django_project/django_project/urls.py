@@ -19,12 +19,12 @@ from rest_framework import routers
 from search import views
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-router.register(r'treebanks', views.TreebankViewSet)
-router.register(r'sentences', views.SentenceViewSet)
-router.register(r'annotations', views.AnnotationViewSet)
-router.register(r'wordlines', views.WordLineViewSet)
+router.register('users', views.UserViewSet)
+router.register('groups', views.GroupViewSet)
+router.register('treebanks', views.TreebankViewSet)
+router.register('sentences', views.SentenceViewSet)
+router.register('annotations', views.AnnotationViewSet)
+router.register('wordlines', views.WordLineViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

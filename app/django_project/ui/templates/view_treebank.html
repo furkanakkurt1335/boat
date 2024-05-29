@@ -107,6 +107,35 @@
             data.append(button);
             row.append(data);
 
+            // <button class="btn btn-light btn-outline-secondary delete" id="{{tb.title}}" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-placement="bottom" title="Delete the treebank">
+            data = document.createElement("td");
+            data.className = "text-center";
+            button = document.createElement("button");
+            img = $('#pencil-square')[0].cloneNode(true);
+            img.hidden = false;
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#deleteModal');
+            button.setAttribute('data-bs-placement', 'bottom');
+            button.setAttribute('title', 'Delete the sentence');
+            button.className = "btn btn-light btn-sm border";
+            let sent_id = result['sent_id'];
+            button.addEventListener('click', function () {
+                document.getElementById('delete-message').innerHTML = 'Delete the sentence <i>' + sent_id + '</i> from the treebank <i>' + treebank_title + '</i>?';
+                document.getElementById('modalDeleteButton').addEventListener('click', function () {
+                    $.post("/delete_sentence/",
+                        {
+                            title: treebank_title,
+                            sent_id: sent_id
+                        },
+                        function () {
+                            window.location.replace('/view_treebank/' + treebank_title_in_url);
+                        });
+                });
+            });
+            button.append(img);
+            data.append(button);
+            row.append(data);
+
             // data = document.createElement("td");
             // data.style = 'text-align:center';
             // button = document.createElement("button");
@@ -240,6 +269,7 @@
                     <th>Sentence ID</th>
                     <th>Text</th>
                     <th>Annotate</th>
+                    <th>Delete</th>
                     <!-- <th>Metadata</th> -->
                     <!-- <th>See annotations</th> -->
                 </tr>
@@ -277,6 +307,25 @@
         </div>
     </div>
 </div> -->
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Delete the sentence</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="delete-modal-body">
+                <div id="delete-message"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="modalDeleteButton" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Metadata Modal -->
 <!-- <div class="modal fade" id="metadataModal" tabindex="-1" aria-labelledby="metadataModalLabel" aria-hidden="true">

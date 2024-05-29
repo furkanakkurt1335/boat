@@ -22,11 +22,11 @@ class ExtendUser(models.Model):
 
 class TreebankManager(models.Manager):
     def get_treebank_from_title(self, title):
-        treebanks = Treebank.objects.all()
-        for treebank_t in treebanks:
-            if treebank_t.title == title: return treebank_t
+        treebanks = Treebank.objects.filter(title=title)
+        if len(treebanks) == 1:
+            return treebanks[0]
         return None
-    
+
     def get_treebank_from_url(self, url):
         treebanks = Treebank.objects.all()
         for treebank_t in treebanks:
