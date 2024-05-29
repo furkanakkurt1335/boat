@@ -1,4 +1,4 @@
-import sys, os, copy, re, subprocess
+import sys, os, copy, re, subprocess, requests
 from PySide6.QtWidgets import (QWidget, QApplication, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QHBoxLayout, QTextEdit, QCheckBox, QWidgetItem, QSplitter, QMessageBox, QLabel)
 from PySide6.QtGui import QKeySequence, QShortcut, QIcon
 from PySide6.QtCore import Qt, SIGNAL
@@ -6,6 +6,7 @@ from Doc import *
 from spacy import displacy
 import argparse
 from PySide6.QtWebEngineWidgets import QWebEngineView
+from pathlib import Path
 
 THISDIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -21,6 +22,17 @@ def validate_file_format(filepath):
 class QDataViewer(QWidget):
     def __init__(self):
         super().__init__()
+
+        script_dir = Path(__file__).parent
+
+        # get validation script if not exists, otherwise update it
+        tools_dir = script_dir / 'tools'
+        tools_url = 'https://github.com/UniversalDependencies/tools.git'
+        if not tools_dir.exists():
+            subprocess.run(['git', 'clone', tools_url, tools_dir])
+        else:
+            subprocess.run(['git', '-C', tools_dir, 'pull'])
+        self.validation_script = tools_dir / 'validate.py'
 
         self.edit_saved = True
         self.shortcutExit = QShortcut(QKeySequence('Ctrl+Q'), self)
@@ -585,7 +597,7 @@ class QDataViewer(QWidget):
         for word in self.sentence.words:
             content += '\t'.join(word.get_list()) + '\n'
         content += '\n'
-        p = subprocess.run([sys.executable, os.path.join(THISDIR, 'validate.py'), '--lang', 'tr'], input=content, encoding='utf-8', capture_output=True)
+        p = subprocess.run([sys.executable, self.validation_script, '--lang', 'tr'], input=content, encoding='utf-8', capture_output=True)
         self.qTextEditError.setText(p.stderr)
 
     def cb_change(self):
