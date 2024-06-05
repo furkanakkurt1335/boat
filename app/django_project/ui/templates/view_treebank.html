@@ -1,5 +1,6 @@
 {% extends 'base-nav.html' %}
 {% load static %}
+{% load bootstrap_icons %}
 
 {% block head %}
 <title> View Treebank Page </title>
@@ -111,7 +112,9 @@
             data = document.createElement("td");
             data.className = "text-center";
             button = document.createElement("button");
-            img = $('#pencil-square')[0].cloneNode(true);
+            // get the trash icon
+            trash_icon = $('#trash')[0].cloneNode(true);
+            img = trash_icon.children[0];
             img.hidden = false;
             button.setAttribute('data-bs-toggle', 'modal');
             button.setAttribute('data-bs-target', '#deleteModal');
@@ -344,5 +347,9 @@
         </div>
     </div>
 </div> -->
+
+<span hidden id="trash">
+    {% bs_icon 'trash' color='black' %}
+</span>
 
 {% endblock %}

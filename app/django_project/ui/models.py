@@ -37,6 +37,7 @@ class TreebankManager(models.Manager):
 class Treebank(models.Model):
     title = models.CharField(max_length=30, unique=True)
     language = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -59,6 +60,7 @@ class Sentence(models.Model):
     sent_id = models.CharField(max_length=30)
     text = models.TextField()
     comments = models.JSONField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     objects = SentenceManager()
 
@@ -75,6 +77,7 @@ class Annotation(models.Model):
     sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
     notes = models.TextField()
     status = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     objects = AnnotationManager()
 

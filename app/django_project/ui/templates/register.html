@@ -16,7 +16,7 @@
 
 {% block body %}
 <div id="space" class="p-5 border bg-light" align="center">
-    <h1>BoAT - Boğaziçi University Annotation Tool</h1>
+    <h1>Boğaziçi University Annotation Tool <span style="color: rgba(0, 0, 0, 0.2); font-style: italic;">BoAT</span></h1>
     <form method="post" action="{% url 'register' %}">{% csrf_token %}
         <div class="form-floating">
             <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username" value="{{data.username}}"><br>

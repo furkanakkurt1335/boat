@@ -1,6 +1,8 @@
 __pycache__/
 .DS_Store
 treebank_uploads/
+
+# LaTeX
 *.abs
 *.aux
 *.bbl
@@ -10,3 +12,10 @@ treebank_uploads/
 *.log
 *.out
 *.xmpdata
+
+node_modules/
+build/
+
+# app-qt
+app-qt/notes-*.txt
+app-qt/tools/

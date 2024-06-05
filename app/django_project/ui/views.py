@@ -386,11 +386,11 @@ def add_sentence(request):
     treebanks = Treebank.objects.all()
     context = {'treebanks': treebanks}
     if request.method == 'POST':
-        now = datetime.now().strftime("%Y%m%d%H%M%S")
-        sent_id = now
-        sentence = request.POST['sentence']
         treebank_title = request.POST['title']
         treebank = Treebank.objects.get_treebank_from_title(treebank_title)
+        sent_count = len(Sentence.objects.filter(treebank=treebank))
+        sent_id = f'{treebank_title}-{sent_count+1}'
+        sentence = request.POST['sentence']
         if treebank == None:
             message = 'There is no treebank with that title.'
         else:
