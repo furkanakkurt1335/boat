@@ -7,10 +7,6 @@ while ! nc -z db 5432; do
 done
 echo "PostgreSQL started"
 
-# Debug: Print PYTHONPATH and check if Django is available
-echo "PYTHONPATH: $PYTHONPATH"
-python -c "import django; print(django.__file__)" || echo "Django not found"
-
 # Run database migrations and start the development server
 python manage.py makemigrations
 python manage.py migrate

@@ -5,11 +5,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as login_f, logout as logout_f, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import UploadFileForm, TreebankForm
-from .models import Treebank, Sentence, Annotation, Word_Line, ExtendUser, TreebankFile
+from .models import Treebank, Sentence, Annotation, Word_Line, ExtendUser
 from . import conllu
 from django_project.settings import DUMMY_USER_NAME, DUMMY_USER_PW
 from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime
 # from spacy.lang.en import English
 # from spacy import displacy
 
@@ -147,7 +146,7 @@ def download_conllu(request):
                     content += f'# sent_id = {sentence_t.sent_id}\n'
                     content += f'# text = {sentence_t.text}\n'
                 for word_line_t in word_lines_sorted:
-                    content += f'{word_line_t.id_f}\t{word_line_t.form}\t{word_line_t.lemma}\t{word_line_t.upos}\t{word_line_t.xpos}\t{word_line_t.feats}\t{word_line_t.head}\t{word_line_t.deprel}\n{word_line_t.deps}\t{word_line_t.misc}\n'
+                    content += f'{word_line_t.id_f}\t{word_line_t.form}\t{word_line_t.lemma}\t{word_line_t.upos}\t{word_line_t.xpos}\t{word_line_t.feats}\t{word_line_t.head}\t{word_line_t.deprel}\t{word_line_t.deps}\t{word_line_t.misc}\n'
                 content += '\n'
     return render(request, 'download_conllu.html', {'content': content})
 
@@ -599,6 +598,8 @@ def annotate(request, treebank, order):
                 number = request.POST['number']
             elif button_type == 'profile':
                 return redirect('profile')
+            elif button_type == 'home':
+                return redirect('home')
             else:
                 number = None
             return redirect(replace_path(current_path, button_type, number))
