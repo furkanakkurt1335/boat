@@ -190,7 +190,9 @@
                     for (let i = 0; i < divs.length; i++) {
                         let div = divs[i];
                         let key = div.getElementsByTagName('input')[0].value;
+                        key = key.trim();
                         let value = div.getElementsByTagName('input')[1].value;
+                        value = value.trim();
                         new_metadata[key] = value;
                     }
                     $.post("/edit_metadata/",
