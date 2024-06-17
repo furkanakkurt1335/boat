@@ -35,7 +35,7 @@
                         if (Object.keys(res_t).includes('comments')) {
                             one_result['comments'] = res_t['comments'];
                         }
-                        else one_result['comments'] = "";
+                        else one_result['comments'] = {};
                         window.results.push(JSON.parse(JSON.stringify(one_result)));
                         if (i <= 20) create_row(one_result);
                     }
@@ -91,6 +91,7 @@
             data.innerHTML = result['text'];
             row.append(data);
 
+            // Annotate
             data = document.createElement("td");
             data.className = "text-center";
             let a = document.createElement('a');
@@ -108,55 +109,88 @@
             data.append(button);
             row.append(data);
 
-            // <button class="btn btn-light btn-outline-secondary delete" id="{{tb.title}}" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-placement="bottom" title="Delete the treebank">
+            // Metadata
             data = document.createElement("td");
             data.className = "text-center";
             button = document.createElement("button");
-            // get the trash icon
-            trash_icon = $('#trash')[0].cloneNode(true);
-            img = trash_icon.children[0];
+            img = $('#pencil-square')[0].cloneNode(true);
             img.hidden = false;
             button.setAttribute('data-bs-toggle', 'modal');
-            button.setAttribute('data-bs-target', '#deleteModal');
+            button.setAttribute('data-bs-target', '#metadataModal');
             button.setAttribute('data-bs-placement', 'bottom');
-            button.setAttribute('title', 'Delete the sentence');
+            button.setAttribute('title', 'Edit metadata');
             button.className = "btn btn-light btn-sm border";
             let sent_id = result['sent_id'];
+            let metadata = result['comments'];
+            button.append(img);
             button.addEventListener('click', function () {
-                document.getElementById('delete-message').innerHTML = 'Delete the sentence <i>' + sent_id + '</i> from the treebank <i>' + treebank_title + '</i>?';
-                document.getElementById('modalDeleteButton').addEventListener('click', function () {
-                    $.post("/delete_sentence/",
+                document.getElementById('md-modal-title').innerHTML = `Metadata for ${sent_id}`;
+                let modal_body = document.getElementById('md-modal-body');
+                modal_body.innerHTML = '';
+                // add two text fields
+                let keys = Object.keys(metadata);
+                for (let i = 0; i < keys.length; i++) {
+                    let key = keys[i];
+                    let value = metadata[key];
+                    let div = document.createElement('div');
+                    div.className = 'mb-3 d-flex justify-content-between';
+                    div.id = `md_${key}`;
+                    let input1 = document.createElement('input');
+                    input1.className = 'form-control me-2';
+                    input1.id = key;
+                    input1.value = key;
+                    let input2 = document.createElement('input');
+                    input2.className = 'form-control';
+                    input2.id = value;
+                    input2.value = value;
+                    div.append(input1);
+                    div.append(input2);
+                    modal_body.append(div);
+                }
+                // add new key-value pair
+                let div = document.createElement('div');
+                div.className = 'mb-3 d-flex justify-content-between';
+                let input1 = document.createElement('input');
+                input1.className = 'form-control me-2';
+                input1.id = 'new_key';
+                input1.placeholder = 'New key';
+                let input2 = document.createElement('input');
+                input2.className = 'form-control';
+                input2.id = 'new_value';
+                input2.placeholder = 'New value';
+                div.append(input1);
+                div.append(input2);
+                modal_body.append(div);
+                // add save button
+                let save_button = document.createElement('button');
+                save_button.className = 'btn btn-primary';
+                save_button.innerHTML = 'Save';
+                save_button.addEventListener('click', function () {
+                    let new_metadata = {};
+                    // find all md_ divs
+                    let divs = document.getElementById('md-modal-body').getElementsByTagName('div');
+                    for (let i = 0; i < divs.length; i++) {
+                        let div = divs[i];
+                        let key = div.getElementsByTagName('input')[0].value;
+                        let value = div.getElementsByTagName('input')[1].value;
+                        new_metadata[key] = value;
+                    }
+                    $.post("/edit_metadata/",
                         {
                             title: treebank_title,
-                            sent_id: sent_id
+                            sent_id: sent_id,
+                            metadata: JSON.stringify(new_metadata)
                         },
                         function () {
                             window.location.replace('/view_treebank/' + treebank_title_in_url);
                         });
                 });
+                modal_body.append(save_button);
             });
-            button.append(img);
             data.append(button);
             row.append(data);
 
-            // data = document.createElement("td");
-            // data.style = 'text-align:center';
-            // button = document.createElement("button");
-            // img = $('#eye')[0].cloneNode(true);
-            // img.hidden = false;
-            // button.setAttribute('data-bs-toggle', 'modal');
-            // button.setAttribute('data-bs-target', '#metadataModal');
-            // button.setAttribute('data-bs-placement', 'bottom');
-            // button.setAttribute('title', 'See the metadata');
-            // button.className = "btn btn-light btn-sm border";
-            // button.append(img);
-            // button.addEventListener('click', function () {
-            //     document.getElementById('md-modal-title').innerHTML = `Metadata for ${result['sent_id']}`;
-            //     let modal_body = document.getElementById('md-modal-body');
-            // });
-            // data.append(button);
-            // row.append(data);
-
+            // See annotations
             // data = document.createElement("td");
             // data.style = 'text-align:center';
             // button = document.createElement("button");
@@ -251,6 +285,35 @@
             // });
             // data.append(button);
             // row.append(data);
+
+            data = document.createElement("td");
+            data.className = "text-center";
+            button = document.createElement("button");
+            trash_icon = $('#trash')[0].cloneNode(true); // get the trash icon
+            img = trash_icon.children[0];
+            img.hidden = false;
+            button.append(img);
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#deleteModal');
+            button.setAttribute('data-bs-placement', 'bottom');
+            button.setAttribute('title', 'Delete the sentence');
+            button.className = "btn btn-light btn-sm border";
+            button.addEventListener('click', function () {
+                document.getElementById('delete-message').innerHTML = 'Delete the sentence <i>' + sent_id + '</i> from the treebank <i>' + treebank_title + '</i>?';
+                document.getElementById('modalDeleteButton').addEventListener('click', function () {
+                    $.post("/delete_sentence/",
+                        {
+                            title: treebank_title,
+                            sent_id: sent_id
+                        },
+                        function () {
+                            window.location.replace('/view_treebank/' + treebank_title_in_url);
+                        });
+                });
+            });
+            data.append(button);
+            row.append(data);
+
             $('#result-body')[0].append(row);
         }
     };
@@ -272,8 +335,8 @@
                     <th>Sentence ID</th>
                     <th>Text</th>
                     <th>Annotate</th>
+                    <th>Edit metadata</th>
                     <th>Delete</th>
-                    <!-- <th>Metadata</th> -->
                     <!-- <th>See annotations</th> -->
                 </tr>
             </thead>
@@ -311,6 +374,24 @@
     </div>
 </div> -->
 
+<!-- Metadata Modal -->
+<div class="modal fade" id="metadataModal" tabindex="-1" aria-labelledby="metadataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="md-modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="md-modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -329,24 +410,6 @@
         </div>
     </div>
 </div>
-
-<!-- Metadata Modal -->
-<!-- <div class="modal fade" id="metadataModal" tabindex="-1" aria-labelledby="metadataModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="md-modal-title"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="md-modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <span hidden id="trash">
     {% bs_icon 'trash' color='black' %}

@@ -434,6 +434,20 @@ def delete_sentence(request):
         return render(request, 'delete_sentence.html', {'sent_id': ''})
 
 @csrf_exempt
+def edit_metadata(request):
+    if request.method == 'POST':
+        sent_id = request.POST['sent_id']
+        treebank_title = request.POST['title']
+        treebank = Treebank.objects.get_treebank_from_title(treebank_title)
+        sentence = Sentence.objects.get(sent_id=sent_id, treebank=treebank)
+        comments = json.loads(request.POST['metadata'])
+        sentence.comments = comments
+        sentence.save()
+        return render(request, 'edit_metadata.html', {'sent_id': sent_id, 'treebank_title': treebank_title, 'comments': comments})
+    else:
+        return render(request, 'edit_metadata.html', {'sent_id': '', 'treebank_title': '', 'comments': {}})
+
+@csrf_exempt
 def delete_treebank(request):
     if request.method == 'POST':
         tb_title = request.POST['treebank_title']
@@ -491,7 +505,7 @@ def view_treebanks(request):
         if len(sent_l) == 0:
             progress = 0.0
         else:
-            progress = round(progress / len(sent_l) * 100, 2)
+            progress = int(progress / len(sent_l) * 100)
         tb_ct_d.append(
             {'title': tb, 'size': len(sent_l), 'progress': progress})
     context = {'tbs': tb_ct_d}
@@ -526,6 +540,7 @@ def replace_path(current_path, type, number=None):
 
 @login_required
 def annotate(request, treebank, order):
+    print(request.POST)
     sentence, message, annotation, errors, cats, language = None, None, None, None, None, None
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
     if not treebank_selected:
@@ -533,7 +548,6 @@ def annotate(request, treebank, order):
         return render(request, 'annotate.html', {'message': message})
     else:
         language = treebank_selected.language
-        sentence_count = len(Sentence.objects.filter(treebank=treebank_selected))
         sentences_filtered = Sentence.objects.filter(
             treebank=treebank_selected, order=order)
         if len(sentences_filtered) == 0:

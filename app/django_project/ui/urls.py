@@ -27,5 +27,6 @@ urlpatterns = [
     path('compute_agreement/', views.compute_agreement, name='compute_agreement'),
     path('delete_treebank/', views.delete_treebank, name='delete_treebank'),
     path('delete_sentence/', views.delete_sentence, name='delete_sentence'),
+    path('edit_metadata/', views.edit_metadata, name='edit_metadata'),
     path('parse_save_file/', views.parse_save_file, name='parse_save_file'),
 ]
