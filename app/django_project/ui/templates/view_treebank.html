@@ -8,6 +8,7 @@
     window.onload = function () {
         let treebank_title = $('div#treebank_title')[0].innerHTML;
         window.results = [];
+        window.metadata = {};
         $.get(`/api/get_treebank/?treebank_title=${treebank_title}`,
             function (data) {
                 let keys = Object.keys(data);
@@ -36,6 +37,7 @@
                             one_result['comments'] = res_t['comments'];
                         }
                         else one_result['comments'] = {};
+                        window.metadata[res_t['sent_id']] = res_t['comments'];
                         window.results.push(JSON.parse(JSON.stringify(one_result)));
                         if (i <= 20) create_row(one_result);
                     }
@@ -63,6 +65,59 @@
             }
             let new_results = window.results.slice(20 * (window.current_page - 1), 20 * (window.current_page - 1) + 20);
             for (let i = 0; i < new_results.length; i++) create_row(new_results[i]);
+        }
+
+        function prepare_metadata(sent_id) {
+            let modal_body = document.getElementById('md-modal-body');
+            modal_body.innerHTML = '';
+            let keys = Object.keys(window.metadata[sent_id]);
+            for (let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                let value = window.metadata[sent_id][key];
+                let div = document.createElement('div');
+                div.className = 'mb-3 d-flex justify-content-between';
+                div.id = `md_${i}`;
+                let input1 = document.createElement('input');
+                input1.className = 'form-control me-2';
+                input1.id = key;
+                input1.value = key;
+                let input2 = document.createElement('input');
+                input2.className = 'form-control';
+                input2.id = value;
+                input2.value = value;
+                // add delete button
+                let delete_button = document.createElement('button');
+                delete_button.className = 'btn btn-secondary';
+                delete_button.innerHTML = '-';
+                delete_button.addEventListener('click', function () {
+                    delete window.metadata[sent_id][key];
+                    prepare_metadata(sent_id);
+                });
+                div.append(input1);
+                div.append(input2);
+                div.append(delete_button);
+                modal_body.append(div);
+            }
+            // add + button
+            let div = document.createElement('div');
+            div.className = 'mb-3 d-flex justify-content-between';
+            div.id = `md_${keys.length}`;
+            let input1 = document.createElement('input');
+            input1.className = 'form-control me-2';
+            input1.placeholder = 'New key';
+            let input2 = document.createElement('input');
+            input2.className = 'form-control';
+            input2.placeholder = 'New value';
+            div.append(input1);
+            div.append(input2);
+            let add_button = document.createElement('button');
+            add_button.className = 'btn btn-secondary';
+            add_button.innerHTML = '+';
+            add_button.addEventListener('click', function () {
+                prepare_metadata(sent_id);
+            });
+            div.append(add_button);
+            modal_body.append(div);
         }
 
         function create_row(result) {
@@ -125,46 +180,9 @@
             button.append(img);
             button.addEventListener('click', function () {
                 document.getElementById('md-modal-title').innerHTML = `Metadata for ${sent_id}`;
-                let modal_body = document.getElementById('md-modal-body');
-                modal_body.innerHTML = '';
-                // add two text fields
-                let keys = Object.keys(metadata);
-                for (let i = 0; i < keys.length; i++) {
-                    let key = keys[i];
-                    let value = metadata[key];
-                    let div = document.createElement('div');
-                    div.className = 'mb-3 d-flex justify-content-between';
-                    div.id = `md_${key}`;
-                    let input1 = document.createElement('input');
-                    input1.className = 'form-control me-2';
-                    input1.id = key;
-                    input1.value = key;
-                    let input2 = document.createElement('input');
-                    input2.className = 'form-control';
-                    input2.id = value;
-                    input2.value = value;
-                    div.append(input1);
-                    div.append(input2);
-                    modal_body.append(div);
-                }
-                // add new key-value pair
-                let div = document.createElement('div');
-                div.className = 'mb-3 d-flex justify-content-between';
-                let input1 = document.createElement('input');
-                input1.className = 'form-control me-2';
-                input1.id = 'new_key';
-                input1.placeholder = 'New key';
-                let input2 = document.createElement('input');
-                input2.className = 'form-control';
-                input2.id = 'new_value';
-                input2.placeholder = 'New value';
-                div.append(input1);
-                div.append(input2);
-                modal_body.append(div);
-                // add save button
-                let save_button = document.createElement('button');
-                save_button.className = 'btn btn-primary';
-                save_button.innerHTML = 'Save';
+                prepare_metadata(sent_id);
+                // link save button
+                let save_button = document.getElementById('md-modal-save');
                 save_button.addEventListener('click', function () {
                     let new_metadata = {};
                     // find all md_ divs
@@ -185,7 +203,6 @@
                             window.location.replace('/view_treebank/' + treebank_title_in_url);
                         });
                 });
-                modal_body.append(save_button);
             });
             data.append(button);
             row.append(data);
@@ -386,6 +403,7 @@
 
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="md-modal-save">Save</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

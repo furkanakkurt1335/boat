@@ -145,6 +145,9 @@ def download_conllu(request):
                     word_lines_sorted = sort_word_lines(word_lines_t)
                     content += f'# sent_id = {sentence_t.sent_id}\n'
                     content += f'# text = {sentence_t.text}\n'
+                    if sentence_t.comments:
+                        for key in sentence_t.comments.keys():
+                            content += f'# {key} = {sentence_t.comments[key]}\n'
                 for word_line_t in word_lines_sorted:
                     content += f'{word_line_t.id_f}\t{word_line_t.form}\t{word_line_t.lemma}\t{word_line_t.upos}\t{word_line_t.xpos}\t{word_line_t.feats}\t{word_line_t.head}\t{word_line_t.deprel}\t{word_line_t.deps}\t{word_line_t.misc}\n'
                 content += '\n'
@@ -441,6 +444,8 @@ def edit_metadata(request):
         treebank = Treebank.objects.get_treebank_from_title(treebank_title)
         sentence = Sentence.objects.get(sent_id=sent_id, treebank=treebank)
         comments = json.loads(request.POST['metadata'])
+        if '' in comments.keys():
+            del comments['']
         sentence.comments = comments
         sentence.save()
         return render(request, 'edit_metadata.html', {'sent_id': sent_id, 'treebank_title': treebank_title, 'comments': comments})
