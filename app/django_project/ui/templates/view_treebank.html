@@ -110,13 +110,6 @@
             input2.placeholder = 'New value';
             div.append(input1);
             div.append(input2);
-            let add_button = document.createElement('button');
-            add_button.className = 'btn btn-secondary';
-            add_button.innerHTML = '+';
-            add_button.addEventListener('click', function () {
-                prepare_metadata(sent_id);
-            });
-            div.append(add_button);
             modal_body.append(div);
         }
 
