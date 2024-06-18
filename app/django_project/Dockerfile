@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.9.6-alpine as builder
+FROM python:3.11.9-alpine as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -14,25 +14,27 @@ ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+    && apk add postgresql-dev gcc python3-dev musl-dev git
 
 # lint
 RUN pip install --upgrade pip
+RUN pip install pipenv
 RUN pip install flake8==3.9.2
 COPY . .
 RUN flake8 --ignore=E501,F401 ./django_project
 
-# install dependencies
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+# copy Pipfile and Pipfile.lock first to leverage Docker cache
+COPY Pipfile Pipfile.lock /usr/src/app/
 
+# install dependencies
+RUN pipenv install --system --deploy
 
 #########
 # FINAL #
 #########
 
 # pull official base image
-FROM python:3.9.6-alpine
+FROM python:3.11.9-alpine
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -50,9 +52,9 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apk update && apk add libpq
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --no-cache /wheels/*
+COPY --from=builder /usr/src/app/Pipfile /usr/src/app/Pipfile.lock $APP_HOME/
+RUN pip install --no-cache-dir pipenv
+RUN pipenv install --deploy --system
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
