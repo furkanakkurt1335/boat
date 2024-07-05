@@ -27,12 +27,16 @@
 </div>
 {% if path %}
 <script>
-    $.post("/parse_save_file/",
-        {
-            file_path: "{{path}}",
-            title: '{{treebank_title}}'
-        }
-    );
+    // if path is not "None", do
+    if ("{{path}}" !== "None") {
+        // send a post request to parse_save_file view
+        $.post("/parse_save_file/",
+            {
+                file_path: "{{path}}",
+                title: '{{treebank_title}}'
+            }
+        );
+    }
 </script>
 {% endif %}
 

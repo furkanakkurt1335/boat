@@ -51,22 +51,14 @@ def compute_anno_agr(annos):
                     # agreement_score += 1
                     if wls[i].upos == wls[j].upos:
                         score_t += 1
-                    else:
-                        print('UPOS', wls[i].upos, wls[j].upos)
                     # if wls[i].xpos == wls[j].xpos:
                     #     agreement_score += 1
                     if wls[i].feats == wls[j].feats:
                         score_t += 1
-                    else:
-                        print('FEATS', wls[i].feats, wls[j].feats)
                     if wls[i].head == wls[j].head:
                         score_t += 1
-                    else:
-                        print('HEAD', wls[i].head, wls[j].head)
                     if wls[i].deprel == wls[j].deprel:
                         score_t += 1
-                    else:
-                        print('DEPREL', wls[i].deprel, wls[j].deprel)
                     # if wls[i].deps == wls[j].deps:
                     #     agreement_score += 1
                 score_sum += score_t
@@ -358,7 +350,7 @@ def parse_save_file(request):
             line_t = cats[key]
             id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc = key, line_t['form'], line_t['lemma'], line_t[
                 'upos'], line_t['xpos'], line_t['feats'], line_t['head'], line_t['deprel'], line_t['deps'], line_t['misc']
-            word_line_t = Word_Line.objects.create_word_line(
+            _ = Word_Line.objects.create_word_line(
                 anno_t, id_f, form, lemma, upos, xpos, feats, head, deprel, deps, misc)
     return render(request, 'parse_save_file.html')
 
@@ -376,11 +368,12 @@ def upload_file(request):
                 error = False
                 if not error:
                     message = 'You have uploaded a file successfully.'
+                    context['path'] = file.file.path.replace('\\', '/')
             else:
-                message = 'The file was not in the correct conllu format.'
-            context['message'], context['path'], context['treebank_title'] = message, file.file.path.replace('\\', '/'), request.POST['title']
+                message = 'The file was not in the correct CoNLL-U format.'
+                context['path'] = 'None'
+            context['message'], context['treebank_title'] = message, request.POST['title']
     return render(request, 'upload_file.html', context)
-
 
 @login_required
 @csrf_exempt
@@ -490,7 +483,6 @@ def test(request):
     context = {}
     return render(request, 'test.html', context)
 
-
 @login_required
 def view_treebanks(request):
     treebanks = Treebank.objects.all()
@@ -545,7 +537,6 @@ def replace_path(current_path, type, number=None):
 
 @login_required
 def annotate(request, treebank, order):
-    print(request.POST)
     sentence, message, annotation, errors, cats, language = None, None, None, None, None, None
     treebank_selected = Treebank.objects.get_treebank_from_url(treebank)
     if not treebank_selected:

@@ -37,7 +37,7 @@
                             one_result['comments'] = res_t['comments'];
                         }
                         else one_result['comments'] = {};
-                        window.metadata[res_t['sent_id']] = res_t['comments'];
+                        window.metadata[res_t['sent_id']] = one_result['comments'];
                         window.results.push(JSON.parse(JSON.stringify(one_result)));
                         if (i <= 20) create_row(one_result);
                     }
@@ -75,16 +75,16 @@
                 let key = keys[i];
                 let value = window.metadata[sent_id][key];
                 let div = document.createElement('div');
-                div.className = 'mb-3 d-flex justify-content-between';
+                div.className = 'mb-3 d-flex justify-content-between form-control';
                 div.id = `md_${i}`;
-                let input1 = document.createElement('input');
-                input1.className = 'form-control me-2';
-                input1.id = key;
-                input1.value = key;
-                let input2 = document.createElement('input');
-                input2.className = 'form-control';
-                input2.id = value;
-                input2.value = value;
+                let textarea1 = document.createElement('textarea');
+                textarea1.className = 'form-control me-2';
+                textarea1.id = key;
+                textarea1.value = key;
+                let textarea2 = document.createElement('textarea');
+                textarea2.className = 'form-control';
+                textarea2.id = value;
+                textarea2.value = value;
                 // add delete button
                 let delete_button = document.createElement('button');
                 delete_button.className = 'btn btn-secondary';
@@ -93,23 +93,23 @@
                     delete window.metadata[sent_id][key];
                     prepare_metadata(sent_id);
                 });
-                div.append(input1);
-                div.append(input2);
+                div.append(textarea1);
+                div.append(textarea2);
                 div.append(delete_button);
                 modal_body.append(div);
             }
             // add + button
             let div = document.createElement('div');
-            div.className = 'mb-3 d-flex justify-content-between';
+            div.className = 'mb-3 d-flex justify-content-between form-control';
             div.id = `md_${keys.length}`;
-            let input1 = document.createElement('input');
-            input1.className = 'form-control me-2';
-            input1.placeholder = 'New key';
-            let input2 = document.createElement('input');
-            input2.className = 'form-control';
-            input2.placeholder = 'New value';
-            div.append(input1);
-            div.append(input2);
+            let textarea1 = document.createElement('textarea');
+            textarea1.className = 'form-control me-2';
+            textarea1.placeholder = 'New key';
+            let textarea2 = document.createElement('textarea');
+            textarea2.className = 'form-control';
+            textarea2.placeholder = 'New value';
+            div.append(textarea1);
+            div.append(textarea2);
             modal_body.append(div);
         }
 
@@ -169,10 +169,11 @@
             button.setAttribute('title', 'Edit metadata');
             button.className = "btn btn-light btn-sm border";
             let sent_id = result['sent_id'];
+            let text = result['text'];
             let metadata = result['comments'];
             button.append(img);
             button.addEventListener('click', function () {
-                document.getElementById('md-modal-title').innerHTML = `Metadata for ${sent_id}`;
+                document.getElementById('md-modal-title').innerHTML = `Metadata for the sentence with the ID "${sent_id}" and the text "${text}"`;
                 prepare_metadata(sent_id);
                 // link save button
                 let save_button = document.getElementById('md-modal-save');
@@ -182,9 +183,9 @@
                     let divs = document.getElementById('md-modal-body').getElementsByTagName('div');
                     for (let i = 0; i < divs.length; i++) {
                         let div = divs[i];
-                        let key = div.getElementsByTagName('input')[0].value;
+                        let key = div.getElementsByTagName('textarea')[0].value;
                         key = key.trim();
-                        let value = div.getElementsByTagName('input')[1].value;
+                        let value = div.getElementsByTagName('textarea')[1].value;
                         value = value.trim();
                         new_metadata[key] = value;
                     }
