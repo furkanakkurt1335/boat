@@ -122,6 +122,8 @@
         }
 
         function create_row(result) {
+            let sent_id = result['sent_id'];
+            let treebank_title = result['treebank_title'];
             let row = document.createElement("tr");
             row.setAttribute('data-toggle', 'collapse');
             row.setAttribute('data-target', `.order${result['order']}`);
@@ -194,7 +196,7 @@
                     let fullname = anno_t['annotator_fullname'];
                     if (fullname.trim() == "") fullname = "Upload version";
                     name.innerHTML = `<strong>Annotator:</strong> ${fullname}`;
-                    let anno_url = `/api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${result['sent_id']}`;
+                    let anno_url = `/api/annotations/?annotator__username=${anno_t['annotator_username']}&sentence__sent_id=${sent_id}&sentence__treebank__title=${treebank_title}`;
                     $.get(anno_url, function (data) {
                         let keys = Object.keys(data);
                         if (data['count'] != 0) {
