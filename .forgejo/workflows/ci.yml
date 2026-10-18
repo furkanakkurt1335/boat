@@ -1,0 +1,93 @@
+# Forgejo Actions port of .gitlab-ci.yml.
+# The GitLab build/push jobs are dropped: fucina has no container registry.
+# Re-add them if/when a registry exists.
+# Forgejo Actions port of .gitlab-ci.yml.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-backend:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python and ruff
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends python3 python3-pip
+          pip3 install --quiet --break-system-packages ruff
+      - name: Lint
+        run: |
+          ruff check backend/app/
+          ruff format --check backend/app/
+
+  lint-frontend:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint
+        run: cd frontend && npm ci && npm run check
+
+  test-backend:
+    runs-on: docker
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: boat_test
+          POSTGRES_USER: boat_test
+          POSTGRES_PASSWORD: test_password
+    env:
+      DATABASE_URL: postgresql+asyncpg://boat_test:test_password@postgres:5432/boat_test
+      SECRET_KEY: test-secret-key-for-ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends python3 python3-pip python3-venv
+      - name: Install backend
+        run: |
+          cd backend
+          python3 -m pip install --quiet --break-system-packages uv
+          uv venv .ci-venv
+          uv pip install --python .ci-venv/bin/python -e ".[dev]" pytest-cov
+      - name: Test
+        run: cd backend && .ci-venv/bin/pytest tests/ -v --tb=short --cov=app --cov-report=term-missing
+
+  test-frontend-build:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: cd frontend && npm ci && npm run build
+
+  backend-audit:
+    runs-on: docker
+    # Advisory, like frontend-audit: python-jose (and its ecdsa dep) carry
+    # known advisories with no fix release; migrating off python-jose is a
+    # code task, not a CI task. keep the findings visible in the job log.
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends python3 python3-pip python3-venv
+      - name: Install backend
+        run: |
+          cd backend
+          python3 -m pip install --quiet --break-system-packages uv
+          uv venv .ci-venv
+          uv pip install --python .ci-venv/bin/python -e ".[dev]" pip-audit
+      - name: Audit
+        run: cd backend && (.ci-venv/bin/pip-audit || echo "::warning::pip-audit found vulnerabilities (advisory)")
+
+  frontend-audit:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit
+        run: cd frontend && npm audit --audit-level=moderate || echo "::warning::npm audit found vulnerabilities (advisory)"

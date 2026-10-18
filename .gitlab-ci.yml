@@ -1,0 +1,154 @@
+stages:
+  - lint
+  - test
+  - security
+  - build
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.cache/npm"
+
+# ---------- Lint ----------
+
+lint-backend:
+  stage: lint
+  image: python:3.12-slim
+  cache:
+    key: pip
+    paths:
+      - .cache/pip
+  before_script:
+    - pip install ruff
+  script:
+    - ruff check backend/app/
+    - ruff format --check backend/app/
+
+lint-frontend:
+  stage: lint
+  image: node:22-slim
+  cache:
+    key: npm
+    paths:
+      - .cache/npm
+      - frontend/node_modules/
+  before_script:
+    - cd frontend && npm ci
+  script:
+    - npm run check
+
+# ---------- Test ----------
+
+test-backend:
+  stage: test
+  image: python:3.12-slim
+  services:
+    - postgres:16-alpine
+  variables:
+    POSTGRES_DB: boat_test
+    POSTGRES_USER: boat_test
+    POSTGRES_PASSWORD: test_password
+    DATABASE_URL: "postgresql+asyncpg://boat_test:test_password@postgres:5432/boat_test"
+    SECRET_KEY: "test-secret-key-for-ci"
+  cache:
+    key: pip
+    paths:
+      - .cache/pip
+  before_script:
+    - cd backend
+    - pip install uv
+    - uv pip install --system -e ".[dev]"
+  script:
+    - pip install pytest-cov
+    - python -m pytest tests/ -v --tb=short --cov=app --cov-report=term-missing
+  coverage: '/^TOTAL\s+\d+\s+\d+\s+(\d+%)/'
+
+test-frontend-build:
+  stage: test
+  image: node:22-slim
+  cache:
+    key: npm
+    paths:
+      - .cache/npm
+      - frontend/node_modules/
+  before_script:
+    - cd frontend && npm ci
+  script:
+    - npm run build
+
+# ---------- Security ----------
+
+backend-audit:
+  stage: security
+  image: python:3.12-slim
+  cache:
+    key: pip
+    paths:
+      - .cache/pip
+  before_script:
+    - cd backend
+    - pip install uv
+    - uv pip install --system -e ".[dev]"
+  script:
+    - pip install pip-audit
+    - pip-audit
+
+frontend-audit:
+  stage: security
+  image: node:22-slim
+  cache:
+    key: npm
+    paths:
+      - .cache/npm
+      - frontend/node_modules/
+  before_script:
+    - cd frontend && npm ci
+  script:
+    - npm audit --audit-level=moderate
+  allow_failure: true
+
+# ---------- Build ----------
+
+build-backend:
+  stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA" -t "$CI_REGISTRY_IMAGE/backend:latest" backend/
+    - docker push "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA"
+    - docker push "$CI_REGISTRY_IMAGE/backend:latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+build-docker-test:
+  stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - docker build backend/
+    - docker build frontend/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+build-frontend:
+  stage: build
+  image: docker:27
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build -t "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA" -t "$CI_REGISTRY_IMAGE/frontend:latest" frontend/
+    - docker push "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA"
+    - docker push "$CI_REGISTRY_IMAGE/frontend:latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

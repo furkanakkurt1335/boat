@@ -1,0 +1,42 @@
+{
+	# Disable automatic HTTPS — Cloudflare Tunnel handles TLS at the edge
+	auto_https off
+}
+
+:80 {
+	# Security headers
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+
+	# NOTE: Rate limiting on /api/auth/* endpoints should be configured at the
+	# Cloudflare level (WAF rate limiting rules), since Caddy's rate_limit
+	# directive requires the community plugin (caddy-ratelimit) which is not
+	# included in the official Docker image.
+
+	# API requests → backend
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	# Health check passthrough
+	handle /health {
+		reverse_proxy backend:8000
+	}
+
+	# Everything else → SvelteKit frontend
+	handle {
+		reverse_proxy frontend:3000
+	}
+
+	# Logging
+	log {
+		output stdout
+		format console
+	}
+}
